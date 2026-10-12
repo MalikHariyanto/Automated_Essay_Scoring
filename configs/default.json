@@ -1,0 +1,75 @@
+{
+  "csv": "data/source/dataset_aes_multitrait_DRAF.csv",
+  "rubric": "data/source/rubrik_multitrait_DRAF.json",
+  "output": "outputs",
+  "mode": "inspect",
+  "preprocessing": {
+    "normalize_punctuation": false
+  },
+  "models": {
+    "bge": {
+      "checkpoint": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "max_length": 1024
+    },
+    "roberta": {
+      "checkpoint": "flax-community/indonesian-roberta-base",
+      "revision": "cc5ecee7de8532880ad08d802292a6f42865bc83",
+      "dimension": 768,
+      "max_length": 512,
+      "overlap": 128
+    }
+  },
+  "scenarios": {
+    "S1": {
+      "dropout": 0.1
+    },
+    "S2": {
+      "hidden": 256,
+      "dropout": 0.1
+    },
+    "S3": {
+      "projection": 256,
+      "dropout": 0.1
+    }
+  },
+  "training": {
+    "effective_batch": 8,
+    "micro_batch": 1,
+    "max_epochs": 5,
+    "warmup_ratio": 0.1,
+    "patience": 2,
+    "weight_decay": 0.01,
+    "gradient_clip": 1.0,
+    "candidates": {
+      "A": {
+        "encoder_lr": 2e-05,
+        "head_lr": 0.001
+      },
+      "B": {
+        "encoder_lr": 1e-05,
+        "head_lr": 0.0005
+      }
+    },
+    "monitor": "mean_qwk_all_four",
+    "fallback": "validation_mse"
+  },
+  "split": {
+    "test_size": 0.2,
+    "seed": 2026,
+    "repeat_seeds": [
+      42,
+      123,
+      2026,
+      3407,
+      9999
+    ],
+    "folds": 5,
+    "review_file": "configs/data_review.json"
+  },
+  "sources": {
+    "proposal": "project_sources/02-PROPOSAL-MALIK-HARIYANTO-REVISI-AES.docx",
+    "paper": "project_sources/01-PAPER_RUJUKAN_MERGED.pdf"
+  }
+}

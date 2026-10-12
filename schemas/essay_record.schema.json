@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skema satu record CSV AES; bukan dataset",
+  "type": "object",
+  "properties": {
+    "essay_id": {
+      "type": "string"
+    },
+    "text_raw": {
+      "type": "string"
+    },
+    "text_clean": {
+      "type": "string"
+    },
+    "group_id": {
+      "type": "string"
+    },
+    "rubric_version": {
+      "type": "string"
+    },
+    "scoring_status": {
+      "type": "string"
+    },
+    "transcription_status": {
+      "type": "string"
+    },
+    "text_completeness": {
+      "type": "string"
+    },
+    "identity_status": {
+      "type": "string"
+    },
+    "group_status": {
+      "type": "string"
+    },
+    "rater_id": {
+      "type": "string"
+    },
+    "scoring_date": {
+      "type": "string"
+    },
+    "score_isi": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        {
+          "type": "string",
+          "enum": [
+            "",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ],
+      "description": "Kolom CSV berupa string; kosong tetap missing. Angka hanya skor guru sah."
+    },
+    "score_organisasi": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        {
+          "type": "string",
+          "enum": [
+            "",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ],
+      "description": "Kolom CSV berupa string; kosong tetap missing. Angka hanya skor guru sah."
+    },
+    "score_kebahasaan": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        {
+          "type": "string",
+          "enum": [
+            "",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ],
+      "description": "Kolom CSV berupa string; kosong tetap missing. Angka hanya skor guru sah."
+    },
+    "score_mekanik": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        {
+          "type": "string",
+          "enum": [
+            "",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ],
+      "description": "Kolom CSV berupa string; kosong tetap missing. Angka hanya skor guru sah."
+    },
+    "ready_for_training": {
+      "type": [
+        "boolean",
+        "string"
+      ],
+      "description": "Status hasil verifikasi, bukan flag untuk memaksa training."
+    }
+  },
+  "required": [
+    "essay_id",
+    "text_raw",
+    "text_clean",
+    "group_id",
+    "rubric_version",
+    "scoring_status",
+    "transcription_status",
+    "ready_for_training",
+    "score_isi",
+    "score_organisasi",
+    "score_kebahasaan",
+    "score_mekanik"
+  ],
+  "additionalProperties": true
+}

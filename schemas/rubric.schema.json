@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skema rubrik AES; deskriptor asli disediakan lokal",
+  "type": "object",
+  "required": [
+    "version",
+    "confirmed",
+    "scoring_rule",
+    "missing_rule",
+    "traits"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "confirmed": {
+      "type": "boolean"
+    },
+    "scoring_rule": {
+      "type": "string"
+    },
+    "missing_rule": {
+      "type": "string"
+    },
+    "traits": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/trait"
+            },
+            {
+              "properties": {
+                "name": {
+                  "const": "isi"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/trait"
+            },
+            {
+              "properties": {
+                "name": {
+                  "const": "organisasi"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/trait"
+            },
+            {
+              "properties": {
+                "name": {
+                  "const": "kebahasaan"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/trait"
+            },
+            {
+              "properties": {
+                "name": {
+                  "const": "mekanik"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "items": false
+    }
+  },
+  "$comment": "Loader memeriksa seluruh field trait, urutan, categories 1–5 dan levels. Skema ini tidak berisi deskriptor pengganti.",
+  "$defs": {
+    "trait": {
+      "type": "object",
+      "required": [
+        "name",
+        "min",
+        "max",
+        "scale_type",
+        "categories",
+        "definition",
+        "indicators",
+        "exclude",
+        "levels"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "min": {
+          "const": 1
+        },
+        "max": {
+          "const": 5
+        },
+        "scale_type": {
+          "const": "ordinal"
+        },
+        "categories": {
+          "const": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "definition": {
+          "type": "string"
+        },
+        "indicators": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "type": "string"
+        },
+        "levels": {
+          "type": "object",
+          "required": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "properties": {
+            "1": {
+              "type": "string"
+            },
+            "2": {
+              "type": "string"
+            },
+            "3": {
+              "type": "string"
+            },
+            "4": {
+              "type": "string"
+            },
+            "5": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,101 @@
+# Belajar AES: dari satu esai ke empat output
+
+Automated Essay Scoring (AES) mencoba memprediksi skor tulisan dari teks. Proyek Python ini memisahkan empat aspek (**trait**) dengan urutan **isi, organisasi, kebahasaan, mekanik**, masing-masing kategori 1–5. Tujuannya membantu memahami alur model sekaligus menyiapkan pipeline yang bisa menerima skor guru nanti.
+
+Saat audit publikasi, input lokal masih berisi 10 teks draf tanpa skor guru lengkap dan rubrik belum disahkan. Kita bisa melihat token, representasi dan empat angka dari head yang **UNTRAINED** (belum belajar menilai). Angka tersebut belum layak menjadi nilai siswa. Test yang lulus memeriksa mekanisme kode, bukan akurasi penilaian.
+
+Mulai dari [alur satu esai](docs/alur_model.md), [panduan mentoring: model → test → Git](docs/belajar_dan_bukti.md), dan [notebook utama](notebooks/01_belajar_alur_AES.ipynb). Bukti audit ada di [laporan verifikasi](docs/verification_report.md).
+
+## Apa yang ada di repo publik
+
+Repo memuat source, konfigurasi, skema input, notebook **tanpa output**, test dan dokumentasi. CSV/JSON penelitian, teks/identitas siswa, dokumen unggahan, executed notebook, output privat, cache dan bobot model **tetap lokal dan tidak ikut commit/push**. Repo publik tidak menyertakan dataset pengganti.
+
+Path default pada `configs/default.json` menunjuk input lokal:
+
+- `data/source/dataset_aes_multitrait_DRAF.csv`
+- `data/source/rubrik_multitrait_DRAF.json`
+
+Sediakan file asli di lokasi tersebut atau ubah path. [Skema record](schemas/essay_record.schema.json) dan [skema rubrik](schemas/rubric.schema.json) menjelaskan struktur tanpa membagikan teks/deskriptor sumber. Skema bukan rubrik pengganti; indikator dan deskriptor penelitian tetap dibaca dari JSON asli. Folder data dan hasil diabaikan Git, dan staged files diperiksa sebelum publikasi.
+
+## Pasang dan uji kode tanpa data siswa
+
+Dari root checkout, dengan Python 3.10+ (lingkungan yang diverifikasi: Python 3.12/Linux CPU):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+# CPU: wheel resmi agar tidak mengunduh runtime CUDA.
+pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt
+pip install -e . --no-deps
+export HF_HOME="$PWD/outputs/cache/huggingface"
+export OMP_NUM_THREADS=2
+export MKL_NUM_THREADS=2
+python -m pytest -q -rA
+```
+
+**Unit test** memeriksa perilaku bagian kode dengan input kecil yang disebut **fixture**. Unit test publik memakai fixture teknis di direktori sementara, bukan teks siswa atau rubrik asli. Misalnya, test mengecek apakah token terakhir masih masuk window dan loss menolak label `[B,1]` ketika output seharusnya `[B,4]`. Test model tiruan memeriksa shapes/gradien dengan encoder kecil; itu tidak menggantikan checkpoint asli untuk hasil penelitian.
+
+Test AC2 memanggil R `irrCAC`. Jika R belum tersedia, test referensi tersebut ditandai **skipped**, bukan diam-diam diklaim lulus. Pada Colab jalankan `bash scripts/setup_colab.sh`; pada Debian cloud tersedia `bash scripts/setup_r_local.sh`. Setelah R tersedia:
+
+```bash
+AES_RSCRIPT=/path/ke/Rscript python -m pytest -q -rA
+python scripts/verify_ac2.py --require-r --rscript /path/ke/Rscript
+```
+
+Di mesin tugas yang diaudit, interpreter ada di `/workspace/aes-venv/bin/python` dan R di `/workspace/aes-r-local/bin/Rscript`. `requirements.txt` berisi versi inti yang diuji, sedangkan `requirements.lock.txt` mencatat dependency lengkap Python 3.12/Linux CPU. GPU/AMP belum diverifikasi pada mesin ini; membutuhkan PyTorch CUDA yang sesuai. Jangan menafsirkan fixture training sebagai training penelitian.
+
+## Periksa input asli secara lokal
+
+Setelah CSV/JSON asli tersedia, jalankan:
+
+```bash
+python -m aes.cli --csv /path/dataset_aes_multitrait_DRAF.csv \
+  --rubric /path/rubrik_multitrait_DRAF.json inspect
+python -m aes.cli inspect --models
+```
+
+Perintah pertama memeriksa missing label, versi/status, duplikasi dan cleaning. Semua kolom dipertahankan pada file turunan lokal `outputs/cleaning_review.csv`; `text_raw` sumber tidak ditimpa. Perintah kedua memuat checkpoint asli BGE/RoBERTa, memeriksa config/revision, menghitung token/window, dan memperlihatkan shapes. Head baru diberi label UNTRAINED. Unduhan model sekitar 2,8 GB; cache/bobot tidak masuk repo.
+
+**Checkpoint** adalah bobot model yang disimpan. Smoke check terpisah menguji bahwa checkpoint asli dapat dimuat, forward (teks → output), backward (gradien), dan save/reload bekerja:
+
+```bash
+python scripts/smoke_real.py
+```
+
+Script ini membutuhkan CSV/JSON asli dan `outputs/model_revisions.json` dari inspeksi encoder. Backward memakai target fixture teknis 3 untuk memeriksa mekanisme; nilai itu **tidak ditulis ke CSV**, tidak menjadi penilaian siswa, dan checkpoint teknisnya hanya sementara. Bukti smoke terpisah dari jumlah unit test.
+
+Notebook lokal/Colab memakai modul `src/aes` yang sama. Letakkan checkout lengkap pada runtime, atur ROOT dan path CSV/JSON pada cell konfigurasi. Data draf tetap bisa menjalankan cell inspeksi; cell supervised berhenti/skip dengan alasan khusus. Jangan commit notebook yang sudah berisi teks/output siswa; versi publik harus tanpa output.
+
+## Training dan evaluasi setelah guru memberi skor
+
+**Training** memperbarui bobot berdasarkan pasangan teks dan skor guru. Sebelum menjalankannya, verifikasi teks lengkap, transkripsi/identitas/relasi duplikasi, empat integer guru 1–5, `rubric_version`, rater/tanggal, dan pengesahan rubrik. Isi `configs/data_review.json` terhadap hash CSV terkini. Ini catatan hasil pemeriksaan manusia, bukan flag untuk memaksa training.
+
+```bash
+python -m aes.cli train --mode learning --scenarios S1
+python -m aes.cli train --mode proposal
+```
+
+Learning ialah latihan satu epoch pada bagian train fold pertama. Mode proposal menguji S1/S2/S3 dengan manifest sama, tuning A/B pada fold pertama repeat pertama, 25 fold/run per skenario, refit fresh seed42, lalu test setelah seluruh konfigurasi dan refit selesai. Semua output/log penelitian tetap lokal. Group usulan tidak membuktikan identitas; pasangan terkait harus dipetakan dan tidak boleh bocor antarbagian.
+
+S1 memakai RoBERTa fine-tuned dan head linear. S2 memakai BGE frozen + MLP256. S3 menggabungkan RoBERTa768 dengan projection BGE256, lalu head linear empat output. BGE truncation1024 tanpa window; RoBERTa window512 termasuk special/overlap128 token isi. Loss MSE raw 1–5 berbobot sama; monitor mean QWK keempat trait jika defined, fallback validation MSE dicatat. Rincian, asumsi dan perbedaan proposal ada di [kontrak](docs/implementation_contract.md).
+
+Evaluasi melaporkan **QWK, Gwet AC2 kuadratik, RMSE, Pearson per trait**, bukan skor total. RMSE/Pearson memakai kontinu mentah; QWK/AC2 memakai salinan kategori setelah clipping/nearest category, midpoint memilih kategori rendah. Undefined tidak diganti nol. Tidak ada output holistik atau metrik error ternormalisasi.
+
+Sesudah checkpoint sungguh dilatih:
+
+```bash
+python -m aes.cli predict --checkpoint outputs/runs/proposal/S3/final/best.pt --file esai.txt
+python -m aes.cli evaluate --checkpoint outputs/runs/proposal/S3/final/best.pt \
+  --manifest outputs/manifest.json --partition test
+```
+
+Inference (memprediksi esai baru) memerlukan teks dan checkpoint, bukan skor guru. Rubrik/hash/order/tokenizer/preprocessing/revision disimpan dan diperiksa saat reload. Jika JSON lokal tidak ada, inference memakai rubrik yang tertanam dalam checkpoint; `--rubric` dapat dipakai untuk pemeriksaan tambahan. Checkpoint UNTRAINED ditolak untuk penilaian. Evaluasi tetap memerlukan label guru dan split yang sah.
+
+## Menemukan pekerjaan dan buktinya
+
+**Branch** adalah jalur perubahan; **commit** rekaman versi lokal; **push** mengirim rekaman itu ke GitHub. Audit awal menemukan seluruh kode masih untracked pada branch unborn `work` dan remote kosong. Karena belum ada commit/push, log test lama tidak pernah membuktikan bahwa GitHub diperbarui. Menyimpan draft lingkungan juga tidak mengirim kode ke GitHub.
+
+Laporan [verifikasi](docs/verification_report.md) memisahkan bukti test, smoke asli, notebook, data, dan publikasi. Branch hasil yang dituju `codex/aes-learning`; tidak melakukan merge ke main. Repo kosong belum memiliki base untuk PR biasa. Keberhasilan push harus dicek dengan SHA remote dan isi file, bukan diasumsikan dari commit lokal.
+
+Proposal/paper pernah diperiksa pada salinan lokal yang **tidak diterbitkan**. Catatan rujukannya ada di [pencocokan proposal](docs/source_reconciliation.md) dan [pemeriksaan paper](docs/paper_review.md). Path sumber tetap configurable; tidak perlu dokumen privat untuk menjalankan unit test. Kebijakan mentoring dan bukti kerja tersimpan di [AGENTS.md](AGENTS.md).

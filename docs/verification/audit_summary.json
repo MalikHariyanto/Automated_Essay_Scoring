@@ -1,0 +1,306 @@
+{
+  "audit_origin": "https://github.com/MalikHariyanto/Automated_Essay_Scoring.git",
+  "git_root": "/workspace/Automated_Essay_Scoring",
+  "initial_branch": "work",
+  "initial_HEAD": "unborn; no commits",
+  "initial_remote_refs": 0,
+  "historical_evidence": {
+    "runner": "pytest",
+    "log": "outputs/source_review/tests_after_review.log (private local artifact)",
+    "reported_cases": 26,
+    "historical_source_commit": null,
+    "limitation": "Old log has no commit binding; hash original untracked source and rerun before edits."
+  },
+  "baseline_rerun": {
+    "command": "HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python -m pytest -q -rA --junitxml=outputs/publication_audit/baseline_junit.xml",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "exit_code": 0,
+    "source_state": "original untracked project; no HEAD commit",
+    "collection_cases": 26,
+    "outcomes": {
+      "tests": 26,
+      "failed": 0,
+      "skipped": 0,
+      "passed": 26,
+      "xfailed": 0,
+      "xpassed": 0
+    }
+  },
+  "public_source_tests": {
+    "command": "HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python -m pytest -q -rA --junitxml=outputs/publication_audit/final_junit.xml",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "exit_code": 0,
+    "source_state": "publication preparation before first commit",
+    "outcomes": {
+      "tests": 28,
+      "failed": 0,
+      "skipped": 0,
+      "passed": 28,
+      "xfailed": 0,
+      "xpassed": 0
+    },
+    "input_kind": "technical fixtures/model doubles; no private CSV/rubric dependency",
+    "added_cases": "Actionable missing-input error and inference CLI routing without local CSV/JSON. Not additional research observations."
+  },
+  "dependencies": {
+    "torch": "2.6.0+cpu",
+    "transformers": "4.44.2",
+    "FlagEmbedding": "1.3.5",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "pytest": "8.3.5",
+    "nbformat": "5.10.4",
+    "nbclient": "0.10.2",
+    "python": "3.12.14"
+  },
+  "checkpoints": {
+    "bge": {
+      "checkpoint": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "model_type": "xlm-roberta",
+      "max_position_embeddings": 8194,
+      "tokenizer_class": "XLMRobertaTokenizerFast",
+      "special_tokens": 2
+    },
+    "roberta": {
+      "checkpoint": "flax-community/indonesian-roberta-base",
+      "revision": "cc5ecee7de8532880ad08d802292a6f42865bc83",
+      "dimension": 768,
+      "model_type": "roberta",
+      "max_position_embeddings": 514,
+      "tokenizer_class": "RobertaTokenizer",
+      "special_tokens": 2
+    }
+  },
+  "real_smoke": {
+    "command": "HF_HOME=/workspace/hf-cache OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python scripts/smoke_real.py",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "exit_code": 0,
+    "source_state": "original untracked source before publication edits",
+    "inputs": "actual private CSV text for first one/two essays; target 3 technical fixture only",
+    "results": [
+      {
+        "scenario": "S1",
+        "forward_cases": [
+          {
+            "essays": 1,
+            "windows": 2,
+            "shape": [
+              1,
+              4
+            ]
+          },
+          {
+            "essays": 2,
+            "windows": 3,
+            "shape": [
+              2,
+              4
+            ]
+          }
+        ],
+        "changed_trainable_groups": {
+          "roberta": true,
+          "head": true
+        },
+        "bge_frozen_unchanged": true,
+        "save_reload_eval_match": true,
+        "target_source": "technical_fixture_only"
+      },
+      {
+        "scenario": "S2",
+        "forward_cases": [
+          {
+            "essays": 1,
+            "windows": 2,
+            "shape": [
+              1,
+              4
+            ]
+          },
+          {
+            "essays": 2,
+            "windows": 3,
+            "shape": [
+              2,
+              4
+            ]
+          }
+        ],
+        "changed_trainable_groups": {
+          "head": true
+        },
+        "bge_frozen_unchanged": true,
+        "save_reload_eval_match": true,
+        "target_source": "technical_fixture_only"
+      },
+      {
+        "scenario": "S3",
+        "forward_cases": [
+          {
+            "essays": 1,
+            "windows": 2,
+            "shape": [
+              1,
+              4
+            ]
+          },
+          {
+            "essays": 2,
+            "windows": 3,
+            "shape": [
+              2,
+              4
+            ]
+          }
+        ],
+        "changed_trainable_groups": {
+          "roberta": true,
+          "projection": true,
+          "head": true
+        },
+        "bge_frozen_unchanged": true,
+        "save_reload_eval_match": true,
+        "target_source": "technical_fixture_only"
+      }
+    ],
+    "limitations": "CPU only; representative trainable parameter changed per group. BGE all requires_grad false; one representative encoder parameter compared unchanged. Not real teacher-label training."
+  },
+  "research_data_summary": {
+    "rows": 10,
+    "complete_label_rows": 0,
+    "missing_by_trait": {
+      "isi": 10,
+      "organisasi": 10,
+      "kebahasaan": 10,
+      "mekanik": 10
+    },
+    "traits": [
+      "isi",
+      "organisasi",
+      "kebahasaan",
+      "mekanik"
+    ],
+    "categories": [
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    ],
+    "rubric_confirmed": false,
+    "ready_for_training_counts": {
+      "false": 10
+    },
+    "transcription_status_counts": {
+      "draft_requires_review": 10
+    },
+    "text_completeness_counts": {
+      "body_observed_no_known_gap": 8,
+      "continuation_unassigned": 2
+    },
+    "proposed_group_count": 4
+  },
+  "research_training": {
+    "executed": false,
+    "reason": "Teacher labels missing; draft/unverified data and unapproved rubric"
+  },
+  "research_evaluation": {
+    "executed": false,
+    "reason": "No trained/validated model with real teacher labels"
+  },
+  "publication": {
+    "branch": "codex/aes-learning",
+    "status": "pending_commit_and_remote_verification",
+    "not_a_PR": "Initial remote has no base branch; no main created or merged"
+  },
+  "notebook": {
+    "executor": "nbclient fresh aes kernel",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "executed_cells": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "error_output_count": 0,
+    "mode": "inspect",
+    "private_actual_csv_used": true,
+    "teacher_labels_used_for_training": false,
+    "executed_artifact_private": "outputs/publication_audit/notebook_executed.ipynb",
+    "exit_code": 0,
+    "source_state": "publication preparation, uncommitted; actual private inputs retained locally"
+  },
+  "public_export": {
+    "cwd": "/tmp/aes-public-export-cebeqm2c",
+    "purpose": "export exact staged files only; no new Git worktree/repository",
+    "command": [
+      "/workspace/aes-venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-rA",
+      "--junitxml=/workspace/Automated_Essay_Scoring/outputs/publication_audit/export_junit.xml"
+    ],
+    "exit_code": 0,
+    "private_data_present": false,
+    "private_sources_present": false,
+    "aes_module_path": "/tmp/aes-public-export-cebeqm2c/src/aes",
+    "R_reference_available": true,
+    "R_absent_outcome": {
+      "command": [
+        "/workspace/aes-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-rA"
+      ],
+      "AES_RSCRIPT": "unset",
+      "Rscript_on_PATH": false,
+      "exit_code": 0,
+      "passed": 27,
+      "skipped": 1,
+      "failed": 0
+    },
+    "invalid_R_binding_probe": {
+      "binding": "Rscript_not_installed_fixture",
+      "outcome": "suite failed in required R reference call; not reclassified as skip",
+      "purpose": "diagnostic misconfiguration check, not normal final test run"
+    }
+  },
+  "source_identity": {
+    "baseline_hash_manifest": "original_untracked_source_hashes.json",
+    "final_tested_code_manifest": "tested_source_hashes.json",
+    "commit_binding": "will be verified in post-commit check; no false historical SHA"
+  }
+}

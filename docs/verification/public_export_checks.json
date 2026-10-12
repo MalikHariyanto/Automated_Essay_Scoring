@@ -1,0 +1,37 @@
+{
+  "cwd": "/tmp/aes-public-export-cebeqm2c",
+  "purpose": "export exact staged files only; no new Git worktree/repository",
+  "command": [
+    "/workspace/aes-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-rA",
+    "--junitxml=/workspace/Automated_Essay_Scoring/outputs/publication_audit/export_junit.xml"
+  ],
+  "exit_code": 0,
+  "private_data_present": false,
+  "private_sources_present": false,
+  "aes_module_path": "/tmp/aes-public-export-cebeqm2c/src/aes",
+  "R_reference_available": true,
+  "R_absent_outcome": {
+    "command": [
+      "/workspace/aes-venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-rA"
+    ],
+    "AES_RSCRIPT": "unset",
+    "Rscript_on_PATH": false,
+    "exit_code": 0,
+    "passed": 27,
+    "skipped": 1,
+    "failed": 0
+  },
+  "invalid_R_binding_probe": {
+    "binding": "Rscript_not_installed_fixture",
+    "outcome": "suite failed in required R reference call; not reclassified as skip",
+    "purpose": "diagnostic misconfiguration check, not normal final test run"
+  }
+}

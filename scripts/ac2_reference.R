@@ -1,0 +1,7 @@
+args <- commandArgs(trailingOnly=TRUE)
+if (length(args)!=1) stop('Gunakan Rscript scripts/ac2_reference.R ratings.csv')
+ratings <- as.matrix(read.csv(args[1]))
+stopifnot(ncol(ratings)==2, all(is.finite(ratings)))
+x <- irrCAC::gwet.ac1.raw(ratings, weights='quadratic', categ.labels=c(1,2,3,4,5))
+stopifnot(as.character(x$est$coeff.name)=='AC2')
+cat(sprintf('%.5f\n', x$est$coeff.val))

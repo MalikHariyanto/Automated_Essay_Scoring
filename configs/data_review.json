@@ -1,0 +1,11 @@
+{
+  "dataset_sha256": null,
+  "reviewer": null,
+  "reviewed_on": null,
+  "independence_verified": false,
+  "mode": null,
+  "groups": {},
+  "near_duplicates_reviewed": false,
+  "notes": "Isi sesudah pemeriksaan identitas dan hubungan versi/duplikasi. mode independent atau grouped; groups memetakan setiap essay_id ke kelompok terverifikasi. Jangan gunakan topic atau proposed group sebagai bukti identitas.",
+  "pair_decisions": {}
+}
