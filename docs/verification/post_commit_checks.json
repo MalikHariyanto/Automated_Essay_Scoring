@@ -1,0 +1,21 @@
+{
+  "source_commit": "3f4aa3af102bed8d067ec0f9b02069438cd864b5",
+  "tested_source_files_match_manifest": true,
+  "command": [
+    "/workspace/aes-venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-rA"
+  ],
+  "cwd": "/tmp/aes-committed-source-iuxxqnmh",
+  "source": "git archive 3f4aa3af102bed8d067ec0f9b02069438cd864b5; no private data/sources",
+  "exit_code": 0,
+  "passed": 28,
+  "failed": 0,
+  "skipped": 0,
+  "xfailed": 0,
+  "xpassed": 0,
+  "public_tests_log": "post_commit_tests.txt",
+  "scope": "CPU, technical fixtures; R reference available; not research training"
+}

@@ -237,8 +237,16 @@
   },
   "publication": {
     "branch": "codex/aes-learning",
-    "status": "pending_commit_and_remote_verification",
-    "not_a_PR": "Initial remote has no base branch; no main created or merged"
+    "status": "source_commit_push_verified",
+    "source_commit": "3f4aa3af102bed8d067ec0f9b02069438cd864b5",
+    "branch_url": "https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/aes-learning",
+    "source_commit_url": "https://github.com/MalikHariyanto/Automated_Essay_Scoring/commit/3f4aa3af102bed8d067ec0f9b02069438cd864b5",
+    "method": "fresh network ls-remote plus independent bare fetch from GitHub URL",
+    "anonymous_public_file_reads": "README, AGENTS, model: HTTP200 and bytes match",
+    "receipt": "remote_verification.json",
+    "reports_commit": "Receipt is added in a later docs-only commit; final head verified separately after that push",
+    "PR_created": false,
+    "main_created_or_merged": false
   },
   "notebook": {
     "executor": "nbclient fresh aes kernel",
@@ -301,6 +309,27 @@
   "source_identity": {
     "baseline_hash_manifest": "original_untracked_source_hashes.json",
     "final_tested_code_manifest": "tested_source_hashes.json",
-    "commit_binding": "will be verified in post-commit check; no false historical SHA"
+    "commit_binding": "Source commit 3f4aa3af102bed8d067ec0f9b02069438cd864b5 verified against source manifest and tested from git archive"
+  },
+  "post_commit_tests": {
+    "source_commit": "3f4aa3af102bed8d067ec0f9b02069438cd864b5",
+    "tested_source_files_match_manifest": true,
+    "command": [
+      "/workspace/aes-venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-rA"
+    ],
+    "cwd": "/tmp/aes-committed-source-iuxxqnmh",
+    "source": "git archive 3f4aa3af102bed8d067ec0f9b02069438cd864b5; no private data/sources",
+    "exit_code": 0,
+    "passed": 28,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "xpassed": 0,
+    "public_tests_log": "post_commit_tests.txt",
+    "scope": "CPU, technical fixtures; R reference available; not research training"
   }
 }

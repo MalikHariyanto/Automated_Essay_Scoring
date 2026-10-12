@@ -47,7 +47,9 @@ Contohnya, empat angka dari head baru tidak bisa dibandingkan dengan nilai guru 
 
 Branch hasil `codex/aes-learning` disiapkan sebagai rekaman awal. Tidak merge atau push ke main, tidak force push, tidak membuat PR terhadap base yang belum ada. Staging menggunakan daftar source/config/schema/notebook tanpa output/tests/docs; semua data dan hasil privat dikecualikan. `.gitignore` ditambah dan isi staged diperiksa, bukan hanya mengandalkan ignore.
 
-Status commit/push **harus dibuktikan tersendiri** dengan SHA remote dan isi file utama. Lihat `remote_verification.json` setelah publikasi dan link nyata di jawaban akhir. Bila push gagal, log harus menyebut kegagalan dan source bundle/commit lokal tetap tersedia; test lulus tidak boleh mengubah status publikasi menjadi sukses.
+Source commit `3f4aa3af102bed8d067ec0f9b02069438cd864b5` sudah dibuat dan push berhasil. `git ls-remote` dari jaringan mengembalikan SHA sama; independent bare fetch membaca README, AGENTS, model, notebook dan test dengan bytes yang sama. URL publik raw GitHub untuk README/AGENTS/model juga memberikan HTTP200 dan cocok. Receipt ada di `docs/verification/remote_verification.json`. Commit dokumentasi sesudahnya menyimpan receipt dan hasil test source commit ini; source/tests/config/notebook tidak berubah dalam commit dokumentasi tersebut. SHA head terakhir diperiksa kembali setelah push terakhir dan disampaikan pada jawaban.
+
+Source commit juga diuji dari `git archive` yang tidak memiliki data privat: 28 passed, exit0, sumber terikat ke SHA di `docs/verification/post_commit_checks.json`, bukan hanya folder lokal tanpa versi. Branch: https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/aes-learning . Source commit: https://github.com/MalikHariyanto/Automated_Essay_Scoring/commit/3f4aa3af102bed8d067ec0f9b02069438cd864b5 . Tidak ada main yang dibuat/di-merge dan tidak ada PR yang diklaim. Receipt publik mengacu ke source commit yang sudah diperiksa, bukan klaim SHA self-referential dari file receipt sendiri.
 
 ## Cara mengulang
 

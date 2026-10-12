@@ -1,0 +1,61 @@
+{
+  "verification_method": "fresh network ls-remote plus independent bare fetch from GitHub URL",
+  "remote_repository": "https://github.com/MalikHariyanto/Automated_Essay_Scoring.git",
+  "branch": "codex/aes-learning",
+  "checked_source_commit": "3f4aa3af102bed8d067ec0f9b02069438cd864b5",
+  "remote_commit": "3f4aa3af102bed8d067ec0f9b02069438cd864b5",
+  "files": [
+    {
+      "path": "README.md",
+      "remote_file_present": true,
+      "matches_local_commit": true,
+      "sha256": "3a094bef68e68bf9a4097f047275813fce656684e30e365d06cc33da6992d2f8"
+    },
+    {
+      "path": "AGENTS.md",
+      "remote_file_present": true,
+      "matches_local_commit": true,
+      "sha256": "ec5675b8e4ce805b5abe98845e23dd4e58a0379ff5659a0acd45a057cc612a3b"
+    },
+    {
+      "path": "src/aes/model.py",
+      "remote_file_present": true,
+      "matches_local_commit": true,
+      "sha256": "cc4bcf658080ba239f590a0eb54957217c67b53ac365b37cfefb1fb8d3158e96"
+    },
+    {
+      "path": "notebooks/01_belajar_alur_AES.ipynb",
+      "remote_file_present": true,
+      "matches_local_commit": true,
+      "sha256": "ec06ca2cee7a89ee71d0d812e2e404efc0598a58d1e31cb8a654c31c9f8575e9"
+    },
+    {
+      "path": "tests/test_pipeline.py",
+      "remote_file_present": true,
+      "matches_local_commit": true,
+      "sha256": "89a046cc5bd505d989f913bbb46f0d836c770b471e968fbcf0a25f3ccb8fb4a4"
+    }
+  ],
+  "private_source_directories_absent": true,
+  "branch_url": "https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/aes-learning",
+  "commit_url": "https://github.com/MalikHariyanto/Automated_Essay_Scoring/commit/3f4aa3af102bed8d067ec0f9b02069438cd864b5",
+  "PR_created": false,
+  "main_created_or_merged": false,
+  "anonymous_raw_http_checks": [
+    {
+      "path": "README.md",
+      "http_status": 200,
+      "content_matches_commit": true
+    },
+    {
+      "path": "AGENTS.md",
+      "http_status": 200,
+      "content_matches_commit": true
+    },
+    {
+      "path": "src/aes/model.py",
+      "http_status": 200,
+      "content_matches_commit": true
+    }
+  ]
+}
