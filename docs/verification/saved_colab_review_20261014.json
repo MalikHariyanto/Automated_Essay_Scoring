@@ -1,0 +1,119 @@
+{
+  "saved_commit": "0b52413771ed535b1767a23924f0b980e0159530",
+  "saved_notebook_sha256": "f58c5d0e05d1d109cca69a114d73ffb08d2b427a73b52ed704c1889f323ad55f",
+  "source_cells_unchanged": true,
+  "code_cells_executed": 11,
+  "error_outputs": 0,
+  "max_delta_from_independent_previous_run": 1.1355849318273048e-05,
+  "all_12_rows_finite": true,
+  "constant_train_mean_sanity_check": [
+    {
+      "trait": "isi",
+      "constant_train_mean": 3.75,
+      "constant_train_mean_RMSE": 0.5590169943749475,
+      "S3_RMSE": 0.990726,
+      "S3_beats_constant_RMSE": false
+    },
+    {
+      "trait": "organisasi",
+      "constant_train_mean": 4.0,
+      "constant_train_mean_RMSE": 0.7071067811865476,
+      "S3_RMSE": 0.609764,
+      "S3_beats_constant_RMSE": true
+    },
+    {
+      "trait": "kebahasaan",
+      "constant_train_mean": 3.75,
+      "constant_train_mean_RMSE": 0.5590169943749475,
+      "S3_RMSE": 1.042307,
+      "S3_beats_constant_RMSE": false
+    },
+    {
+      "trait": "mekanik",
+      "constant_train_mean": 3.75,
+      "constant_train_mean_RMSE": 0.75,
+      "S3_RMSE": 1.505894,
+      "S3_beats_constant_RMSE": false
+    }
+  ],
+  "AI_isi_and_kebahasaan_identical": true,
+  "proposed_group_cross_split": false,
+  "saved_test_runner_actual_counts": "not embedded; worker subprocess output absent in saved notebook",
+  "Colab_checkpoint_artifact_access": false,
+  "private_text_present_in_saved_public_notebook": true,
+  "reviewed_at_client_date": "2026-10-14",
+  "unit_checks": {
+    "source_commit": "0b52413771ed535b1767a23924f0b980e0159530",
+    "command": "HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python -m pytest -q --junitxml=outputs/saved_colab_review_pytest.xml",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "exit_code": 0,
+    "passed": 61,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "scope": "Technical fixtures; does not establish accuracy or source fairness. Counts from review rerun, not inferred from saved Colab output.",
+    "python": "3.12.14",
+    "versions": {
+      "torch": "2.6.0+cpu",
+      "transformers": "4.44.2",
+      "FlagEmbedding": "1.3.5",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "scikit-learn": "1.6.1",
+      "pytest": "8.3.5"
+    }
+  },
+  "trace_S3_isi": {
+    "four_metrics_recomputed": true,
+    "AC2_R_irrcac_verified": true,
+    "all_ordinal_predictions_same": true,
+    "coefficient_disagreement_explained_by_definitions": true
+  },
+  "code_review": {
+    "target_shape": "[B,4]",
+    "text_only_features": true,
+    "BGE_frozen": true,
+    "RoBERTa_in_optimizer": true,
+    "split_before_windowing": true,
+    "validation_used_in_training_loss_or_model_selection": false,
+    "training_is_AI_scope_not_teacher": true,
+    "normal_inference_rejects_AI_scope": true,
+    "teacher_labels_or_eligibility_flags_changed_by_code": false
+  },
+  "cleanup": {
+    "original_executed_notebook_retained_privately": true,
+    "public_cell_sources_unchanged": true,
+    "public_outputs_cleared": true,
+    "old_commit_outputs_remain_in_history": true,
+    "history_rewritten": false
+  },
+  "limitations": [
+    "No live Colab access or full uploaded workbook/checkpoint files.",
+    "One numerical trace contains all full-precision held-out predictions; other 11 rows compared to independent prior run, not directly recomputed from missing Colab prediction artifacts.",
+    "No demographic fairness evidence.",
+    "Validation four rows/two proposed similarity groups; identities unverified.",
+    "Training one nonzero-LR update; scenario superiority not established."
+  ],
+  "source_sha256": {
+    "src/aes/model.py": "a82e1ef6cb6d3d32774ae59787f0df85ddcb46d8d6062afad6686ba20c2548a2",
+    "src/aes/ai_learning.py": "6de67b14e85b7ba7b8307061d389eeb4f36a4ae39b2b74509767c73365d67774",
+    "src/aes/reporting.py": "1045e75d336fe1fef222d4e988fb2e4088c4b92fcd7af6aee3f11c147d80bb6f",
+    "src/aes/metrics.py": "b4f9da91fe604af4cff6e46bc1019aaaafa14fdfcc14b566b826f54433b82818",
+    "src/aes/workbook.py": "59efa9c6aec4ec0acfc2d92c79d7ad64ba1b8b962f8e0f8f84e3316388b3b791",
+    "src/aes/windows.py": "cee225501a04efe570bec7d3aa0d8765d27d43493b40a488d04f0cec7efba9d4",
+    "src/aes/cleaning.py": "b63f261b91dac5b2c2dc7c8610ea54cfa265577f54977784d9c993c82adea587",
+    "src/aes/inspection.py": "f27a91005d6f0dede635cc724d6a3df376aa9844d7249fe81c52c91132c017d3",
+    "src/aes/encoders.py": "908feb8016e0a01b7edd9379f00c4c2bc7ccef4bce920f7e8bd54f7394ed1bfe",
+    "src/aes/io.py": "228ec371d7a37a3e471d0a5afed0165a77bbfbc9c8e53fb3cae7f95e6f2fbf50",
+    "src/aes/metric_trace.py": "bea3ddfd03db244eb74ed4e988a20d9a7413a5fe16f692339a624dfa5dfe3054",
+    "src/aes/experiment.py": "4a84323d4b6ff23191188db7892daef50e62dcd4c15ee0eed51c4e652df22d0f",
+    "src/aes/audit.py": "9c3d4bb63f836e9a753c7d6cd0c8e7a7a0c541ae64dc943ca7f93856367ae427",
+    "src/aes/split.py": "8fdbd735d00fedebfaba100ece354fb9b17f0d9ea21905e6e082454bece61123",
+    "src/aes/script_entry.py": "4130533b4c2d775c956620a5eeae3cc2c1bcbb6c703191e8493e1a21e15c48fa",
+    "src/aes/inference.py": "67d7d6ee062cf0c48f3d3698a4f797d45514a237af7be86907a06b988d8bf415",
+    "src/aes/trainer.py": "9e4fbf059e63f3b863435b8be45ba51a6fc1284543d960d449d93dfdd584f373",
+    "src/aes/__init__.py": "3f0d8fbcba2714dd37e94fed16a3bd54f469f74579e1e8d36466917c2a9b7405",
+    "src/aes/cli.py": "b57eb6eb289aeaba34450f80699b2ef9b984d4da01e111340be1e954962dd76e",
+    "src/aes/checkpoint.py": "21a68e27b5b08dd35326b584dcf5022f4eac2887f9a8d1d459f349e7a436d8fb"
+  }
+}
