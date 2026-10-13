@@ -9,6 +9,7 @@ from .encoders import resolve_models,BGEEncoder,cached_bge,load_roberta
 from .model import AESModel
 from .windows import batch_windows
 from .trainer import device_name
+from .metrics import ordinal_prediction
 
 
 def inspect_data(cfg):
@@ -41,8 +42,23 @@ def inspect_models(cfg,df=None):
     _,_,all_stats=batch_windows(texts,tok,maximum=512,overlap=128)
     win,mapping,_=batch_windows(texts[:1],tok,device,512,128)
     roberta=load_roberta(resolved['roberta'])
-    model=AESModel('S3',roberta,**cfg['scenarios']['S3']).to(device).eval()
-    with torch.no_grad():p,features=model(windows=win,chunk_to_essay=mapping,bge=bge[:1].to(device),n_essays=1,return_features=True)
+    diagnostics={}
+    rubric=load_rubric(cfg['rubric'])
+    for scenario in ['S1','S2','S3']:
+        torch.manual_seed(42)  # Reproduksibilitas head diagnostik, bukan training.
+        model=AESModel(scenario,roberta if scenario!='S2' else None,
+                       **cfg['scenarios'][scenario]).to(device).eval()
+        with torch.no_grad():
+            p,features=model(windows=win,chunk_to_essay=mapping,bge=bge[:1].to(device),n_essays=1,return_features=True)
+        diagnostics[scenario]={
+            'status':'UNTRAINED_DIAGNOSTIC_NOT_ESSAY_ASSESSMENT',
+            'essay_id':df.iloc[0].essay_id,
+            'trait_order':[t['name'] for t in rubric['traits']],
+            'shapes':{**{k:list(v.shape) for k,v in features.items()},'output':list(p.shape)},
+            'vector_first_five':{k:v[0,:5].cpu().tolist() for k,v in features.items()},
+            'continuous':dict(zip([t['name'] for t in rubric['traits']],p[0].cpu().tolist())),
+            'categories':{t['name']:int(ordinal_prediction(p[0,j].cpu().item(),t))
+                          for j,t in enumerate(rubric['traits'])}}
     result={'status':'UNTRAINED_DIAGNOSTIC_NOT_ESSAY_ASSESSMENT','device':device,'resolved_models':resolved,
        'bge_tokenization':dict(zip(df.essay_id,stats)),'roberta_windows':dict(zip(df.essay_id,all_stats)),
        'truncated_essays':sum(s['truncated'] for s in stats),'removed_tokens':sum(s['tokens_removed'] for s in stats),
@@ -51,6 +67,6 @@ def inspect_models(cfg,df=None):
        'gradient_policy':{'bge_frozen':bge_frozen,'roberta_trainable':all(p.requires_grad for p in model.roberta.parameters()),'projection_trainable':all(p.requires_grad for p in model.projection.parameters())},
        'shapes':{**{k:list(v.shape) for k,v in features.items()},'output':list(p.shape)},
        'vector_first_five':{k:v[0,:5].cpu().tolist() for k,v in features.items()},
-       'untrained_output':p[0].cpu().tolist()}
+       'untrained_output':p[0].cpu().tolist(), 'scenarios':diagnostics}
     dump(Path(cfg['output'])/'forward_inspection.json',result)
     return result

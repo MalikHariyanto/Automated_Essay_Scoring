@@ -6,7 +6,7 @@ Buka [notebook utama](https://colab.research.google.com/github/MalikHariyanto/Au
 2. Buka notebook terbaru melalui link di atas. Jika ingin menyimpan hasil, simpan salinan pribadi di Drive; jangan kirim notebook berisi teks/output siswa ke GitHub publik.
 3. Jalankan dari cell paling atas atau **Runtime → Run all**. Tidak perlu menambahkan cell clone, pip install, reinstall NumPy, atau diagnosis dari chat sebelumnya.
 4. Cell input membuka pemilih file jika CSV/JSON belum ada. Pilih `dataset_aes_multitrait_DRAF.csv` dan `rubrik_multitrait_DRAF.json` asli; tunggu sampai upload selesai. Bila sudah ada, file itu digunakan kembali. Path bisa diganti pada cell input.
-5. Baca audit, satu esai/rubrik, dan cleaning. Bagian supervised menampilkan alasan skip bila label atau pengesahan belum lengkap.
+5. Baca audit, satu esai/rubrik, cleaning, token/vektor dan output UNTRAINED S1/S2/S3, lalu referensi AC2. Bagian supervised menampilkan alasan skip bila label atau pengesahan belum lengkap. Tabel empat metrik ada di bagian 11.
 
 ## Isi cell
 
@@ -18,13 +18,18 @@ Buka [notebook utama](https://colab.research.google.com/github/MalikHariyanto/Au
 | 4 | Audit/EDA melalui modul AES | Jumlah esai, label kosong/invalid, status, duplikasi, syarat training |
 | 5 | Membaca satu esai dan rubrik JSON | Teks, status, deskriptor asli |
 | 6 | Membandingkan cleaning | Teks sebelum/sesudah dan log turunan |
-| 7–8 | Tokenisasi dan forward encoder asli jika dipilih | Token/window, vektor, shapes, keluaran UNTRAINED |
-| 9 | Unit test dan referensi AC2/R jika dipilih | Hasil runner dan backend, bukan akurasi AES |
+| 7–8 | Tokenisasi dan forward encoder asli | Token/window, vektor, shapes, tabel keluaran UNTRAINED S1/S2/S3 |
+| 9 | Unit test dan referensi AC2/R | Hasil runner dan tabel AC2 Python/R pada fixture, bukan akurasi AES |
 | 10 | Pemeriksaan supervised | Kebutuhan konkret atau eksekusi mode yang dipilih setelah layak |
+| 11 | Tabel empat metrik per skenario/trait | 12 baris; nilai tersedia hanya dari test proposal yang sah |
 
-Biarkan `MODE="inspect"`, `RUN_ENCODERS=False`, `RUN_TESTS=False`, dan `RUN_AC2_REFERENCE=False` untuk putaran pertama. Notebook selesai dengan inspeksi dan pesan skip yang benar pada file draf. Untuk melihat alur encoder, ubah `RUN_ENCODERS=True` di cell 1 dan jalankan kembali dari atas; tidak perlu cell tambahan. Ini memakai BGE/RoBERTa asli, sekitar 2,8 GB unduhan, tetap head UNTRAINED. Setup ini memakai PyTorch CPU; memilih T4 saja tidak membuat wheel CPU menjadi GPU.
+Biarkan `MODE="inspect"`; sesuai permintaan belajar lengkap, `RUN_ENCODERS`, `RUN_TESTS`, dan `RUN_AC2_REFERENCE` default True. Notebook menampilkan alur encoder dan referensi AC2 tanpa training dari label kosong. BGE/RoBERTa asli memerlukan sekitar 2,8 GB unduhan dan head tetap UNTRAINED. Setup memakai PyTorch CPU; memilih T4 saja tidak membuat wheel CPU menjadi GPU. Ketiga pilihan bisa dibuat False untuk inspeksi ringan.
 
-Untuk unit test, pilih `RUN_TESTS=True`. Di Colab, aktifkan `RUN_AC2_REFERENCE=True` juga untuk menyiapkan R/irrCAC sebelum suite. Tanpa R/irrCAC, verifikasi referensi belum terbukti; dependency yang gagal tetap dilaporkan. Jangan menyebut tahap yang belum dipilih sebagai selesai.
+Colab menyiapkan R/irrCAC sebelum suite jika belum tersedia. Lima fixture unit test membandingkan point estimate AC2 Python dan R, termasuk kategori tak teramati; toleransi 5,01×10⁻⁶ mengikuti pembulatan lima desimal backend R. Jika dependency gagal, error tetap dilaporkan. `AES_RSCRIPT` dapat menunjuk backend R lokal. Jangan memindahkan angka fixture ini ke tabel evaluasi penelitian.
+
+Tabel bagian 11 berisi RMSE, Pearson, QWK, dan AC2 untuk masing-masing trait S1/S2/S3. Semua nilai —/null pada data draf berarti belum tersedia. Nilai berasal dari prediksi test proposal setelah seluruh konfigurasi/refit dikunci; label, manifest, review independensi, dan revision harus cocok. Output diagnostik head baru tidak dievaluasi sebagai hasil penelitian. Hasil learning satu epoch disimpan terpisah di `learning_summary.json`.
+
+Penjelasan matematika setelah tabel memakai satu contoh angka buatan untuk memperlihatkan mengapa QWK/AC2 dapat bernilai 1 sementara RMSE masih positif. Contoh itu tidak berasal dari data siswa dan tidak ditulis sebagai CSV/label/prediksi penelitian. Head diagnostik memakai seed 42 agar keluaran yang belum terlatih dapat diulang; ini bukan tuning konfigurasi atau hasil training.
 
 ## Mengapa setup berubah
 

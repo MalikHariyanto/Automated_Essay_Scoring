@@ -1,5 +1,5 @@
 """Fixture metrik buatan; tidak dipakai sebagai dataset training."""
-import argparse,csv,json,shutil,subprocess,sys,tempfile
+import argparse,csv,json,shutil,subprocess,sys,tempfile,os
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 from aes.metrics import gwet_ac2
@@ -21,7 +21,7 @@ def verify(rscript='Rscript'):
             rows.append({'ratings':list(zip(a,b)),'python':python,'irrCAC_AC2':ref,'absolute_error':abs(python-ref)})
     return rows
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--require-r',action='store_true');p.add_argument('--rscript',default='Rscript');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--require-r',action='store_true');p.add_argument('--rscript',default=os.environ.get('AES_RSCRIPT','Rscript'));args=p.parse_args()
     if not shutil.which(args.rscript):
         if args.require_r:raise SystemExit('Rscript belum terpasang; AC2 belum diverifikasi terhadap R.')
         print('SKIPPED: Rscript tidak tersedia');raise SystemExit(0)

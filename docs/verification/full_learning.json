@@ -1,0 +1,156 @@
+{
+  "timestamp_utc": "2026-10-13T07:06:13.216338+00:00",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "source_at_verification": {
+    "base_commit": "3575d20e894f212b4b5de87d2b0eec937262d027",
+    "uncommitted_changes": true,
+    "file_sha256": {
+      "src/aes/inspection.py": "393e9b752eaccb2918f6a3fade59697a982f63027018f910119d55be2df0555d",
+      "src/aes/reporting.py": "c7dffd311aa7891089636baaa65b6ba6ccc8e0e790b486babe6d2983ea7de1f8",
+      "scripts/notebook_step.py": "485395c27bd3ce5b8ca5782f784248d9f48698a48aa75da96c0e3555c418ca89",
+      "scripts/setup_colab.sh": "8ea2c56a77791064fd5a00434e546c8f2a05e16d1bfa7b65702fb005e70b0204",
+      "scripts/verify_ac2.py": "fbfdc7f52deafceb02af47eb576e999f0b980d98a59551ac5e2a2aa143ee4c46",
+      "notebooks/01_belajar_alur_AES.ipynb": "06ab925fe12aab5f8441e1a2509f2b69fa17dda11bf2fae8acf2c6ed736f83cd",
+      "aes-learning/notebooks/01_belajar_alur_AES.ipynb": "06ab925fe12aab5f8441e1a2509f2b69fa17dda11bf2fae8acf2c6ed736f83cd",
+      "tests/test_reporting.py": "d84ffef67edf83c85259aec2a32c237e09666858e2ab32b6c1c11e3d3ec25a7e"
+    }
+  },
+  "notebook": {
+    "command": "JUPYTER_PATH=/workspace/jupyter/share/jupyter HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript /workspace/aes-venv/bin/python /tmp/run_aes_full_learning.py",
+    "exit_code": 0,
+    "runner": "nbclient.NotebookClient fresh aes kernel, allow_errors=False",
+    "python": "3.12.14",
+    "executable_cells_match_final_source": true,
+    "later_edit": "Mathematical explanation markdown added after execution; executable cells unchanged.",
+    "code_cells": 11,
+    "errors": 0,
+    "seconds": 38.77,
+    "encoder_scenarios": {
+      "S1": {
+        "shapes": {
+          "roberta": [
+            1,
+            768
+          ],
+          "output": [
+            1,
+            4
+          ]
+        },
+        "status": "UNTRAINED_DIAGNOSTIC_NOT_ESSAY_ASSESSMENT",
+        "trait_order": [
+          "isi",
+          "organisasi",
+          "kebahasaan",
+          "mekanik"
+        ]
+      },
+      "S2": {
+        "shapes": {
+          "bge": [
+            1,
+            1024
+          ],
+          "output": [
+            1,
+            4
+          ]
+        },
+        "status": "UNTRAINED_DIAGNOSTIC_NOT_ESSAY_ASSESSMENT",
+        "trait_order": [
+          "isi",
+          "organisasi",
+          "kebahasaan",
+          "mekanik"
+        ]
+      },
+      "S3": {
+        "shapes": {
+          "roberta": [
+            1,
+            768
+          ],
+          "bge": [
+            1,
+            1024
+          ],
+          "projection": [
+            1,
+            256
+          ],
+          "concat": [
+            1,
+            1024
+          ],
+          "output": [
+            1,
+            4
+          ]
+        },
+        "status": "UNTRAINED_DIAGNOSTIC_NOT_ESSAY_ASSESSMENT",
+        "trait_order": [
+          "isi",
+          "organisasi",
+          "kebahasaan",
+          "mekanik"
+        ]
+      }
+    },
+    "revisions": {
+      "bge": {
+        "checkpoint": "BAAI/bge-m3",
+        "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+        "dimension": 1024,
+        "model_type": "xlm-roberta",
+        "max_position_embeddings": 8194,
+        "tokenizer_class": "XLMRobertaTokenizerFast",
+        "special_tokens": 2
+      },
+      "roberta": {
+        "checkpoint": "flax-community/indonesian-roberta-base",
+        "revision": "cc5ecee7de8532880ad08d802292a6f42865bc83",
+        "dimension": 768,
+        "model_type": "roberta",
+        "max_position_embeddings": 514,
+        "tokenizer_class": "RobertaTokenizer",
+        "special_tokens": 2
+      }
+    },
+    "device": "cpu",
+    "ac2_fixtures": 5,
+    "ac2_max_absolute_error": 3.7815126049389747e-06,
+    "research_table_rows": 12,
+    "research_available_rows": 0,
+    "teacher_training_run": false
+  },
+  "unit_tests": {
+    "command": "AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript HF_HOME=/workspace/hf-cache OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 outputs/notebook_env/bin/python -m pytest -q -rA --junitxml=outputs/full_learning/tests_final.xml",
+    "exit_code": 0,
+    "passed": 39,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "new_checks": [
+      "Missing teacher labels keep 12 rows unavailable despite stale artifacts.",
+      "Technical labelled fixture produces per-trait metrics from matching locked test artifacts.",
+      "Test-ID mismatch rejected.",
+      "Incomplete refit across three scenarios rejected.",
+      "Changed independence review rejected."
+    ],
+    "fixtures_are_research_data": false
+  },
+  "actual_data": {
+    "rows": 10,
+    "complete_four_label_rows": 0,
+    "rubric_confirmed": false,
+    "csv_sha256": "d73b5e609f2a2933656f37d3b71a6280c6562da5f87e45d69dc742300d4a4986",
+    "rubric_sha256": "fc33c8931b268ef469fce46669ee5f71fa4cfd5472b31468eed74ae27aa93ee2"
+  },
+  "limits": [
+    "Not a live check of user Colab tab; browser/apt R setup must execute there.",
+    "Original BGE/RoBERTa forward exercised on actual CSV; no new original-checkpoint backward run in this change.",
+    "No teacher-score training, research metrics, or full proposal runs; pending table values are null.",
+    "Labelled artifacts in unit tests are synthetic technical fixtures only.",
+    "Default CPU; GPU/AMP not exercised."
+  ]
+}

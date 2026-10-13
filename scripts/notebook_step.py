@@ -10,6 +10,7 @@ from aes.audit import EligibilityError, validate_inputs_for_training
 from aes.cleaning import clean
 from aes.inspection import inspect_data, inspect_models
 from aes.io import dump, load_config, sha256
+from aes.reporting import final_report
 
 
 def audit_step(cfg):
@@ -72,7 +73,7 @@ def models_step(cfg):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('step', choices=['audit', 'models', 'supervised'])
+    parser.add_argument('step', choices=['audit', 'models', 'supervised', 'report'])
     parser.add_argument('--config', required=True)
     parser.add_argument('--mode', choices=['inspect', 'learning', 'proposal'], default='inspect')
     args = parser.parse_args()
@@ -81,6 +82,11 @@ def main():
         audit_step(cfg)
     elif args.step == 'models':
         models_step(cfg)
+    elif args.step == 'report':
+        df,rubric,_=inspect_data(cfg)
+        report=final_report(cfg,df,rubric)
+        print('Tabel final:',len(report['rows']),'baris; tersedia:',
+              sum(row['status']=='available_final_test' for row in report['rows']))
     else:
         supervised_step(cfg, args.mode)
 
