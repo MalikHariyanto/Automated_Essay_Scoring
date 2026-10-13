@@ -8,6 +8,7 @@ import pandas as pd
 from .audit import training_blockers
 from .io import dump, sha256, targets
 from .metrics import evaluate
+from .metric_trace import metric_trace
 
 SCENARIOS = ['S1', 'S2', 'S3']
 METRICS = ['RMSE', 'Pearson', 'QWK', 'AC2']
@@ -18,7 +19,7 @@ def final_report(cfg, df, rubric):
     review_path = Path(cfg['split']['review_file'])
     review = json.loads(review_path.read_text()) if review_path.exists() else None
     blockers = training_blockers(df, rubric, review, sha256(cfg['csv']))
-    result = {'scope': 'proposal_final_held_out_test', 'rows': [],
+    result = {'scope': 'proposal_final_held_out_test', 'rows': [], 'metric_traces': {},
               'data_blockers': blockers,
               'note': 'Tidak mengevaluasi head UNTRAINED. Null berarti belum tersedia/undefined, bukan nol.'}
     manifest_path = out/'manifest.json'
@@ -64,6 +65,7 @@ def final_report(cfg, df, rubric):
                         a,b=metrics[trait][metric],saved['metrics'][trait][metric]
                         if (a is None) != (b is None) or (a is not None and not np.isclose(a,b,rtol=1e-9,atol=1e-12)):
                             raise ValueError('Laporan final: angka tersimpan tidak cocok dengan prediksi/label test.')
+            result['metric_traces'][scenario] = metric_trace(teacher,predicted,rubric,ids)
         for trait in rubric['traits']:
             name = trait['name']
             row = {'scenario':scenario, 'trait':name,

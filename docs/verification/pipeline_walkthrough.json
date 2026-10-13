@@ -1,0 +1,80 @@
+{
+  "source_state": "Working tree before commit; not attributed to parent commit.",
+  "parent_commit": "53f9d2930962bbd9010fef0efaff5c9f7a5fd711",
+  "source_sha256": {
+    "src/aes/metric_trace.py": "bea3ddfd03db244eb74ed4e988a20d9a7413a5fe16f692339a624dfa5dfe3054",
+    "src/aes/model.py": "a82e1ef6cb6d3d32774ae59787f0df85ddcb46d8d6062afad6686ba20c2548a2",
+    "src/aes/inspection.py": "f27a91005d6f0dede635cc724d6a3df376aa9844d7249fe81c52c91132c017d3",
+    "src/aes/reporting.py": "1045e75d336fe1fef222d4e988fb2e4088c4b92fcd7af6aee3f11c147d80bb6f",
+    "scripts/export_review_excel.py": "b308d0633035c48fe1bd8bbdd96b37693d324ed13d2571790df3e1536f4d4317",
+    "notebooks/01_belajar_alur_AES.ipynb": "7b3a0fc24ff94a2b69605565758b981f2e4c2bb7d3024124fc0d86a8bfd8de0d",
+    "tests/test_metric_trace.py": "0128f7e64c1eec99c6a26ef031bf48124a7f330609fbe29ac0ffb25d30faa265",
+    "tests/test_review_export.py": "b2bf1bcca034a3724bca3c37ca92be1999f104dfcc316375436cc1b0c1448eb0",
+    "tests/test_reporting.py": "89d5e928923fff6425be9f43eaf23a17dffcb2c8eccd9e7ab0ce10f129a9c5e9"
+  },
+  "versions": {
+    "torch": "2.6.0+cpu",
+    "transformers": "4.44.2",
+    "FlagEmbedding": "1.3.5",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "openpyxl": "3.1.5"
+  },
+  "unit_checks": {
+    "command": "HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python -m pytest -q -rA",
+    "exit_code": 0,
+    "passed": 51,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "scope": "Technical fixtures/double encoders. Existing R/irrCAC reference checks pass. Trace hand-calculation, raw/category separation, undefined/missing, true-source UI and reconstruction-scope tests included."
+  },
+  "actual_checkpoint_notebook": {
+    "code_cells_executed": 11,
+    "errors": 0,
+    "real_checkpoint_forward_S1_S2_S3": true,
+    "token_and_vector_tables_rendered": true,
+    "concat_parts_actual": true,
+    "teacher_target_table_shown": true,
+    "supervised_training": false,
+    "real_label_evaluation": false,
+    "final_research_table_rows_pending": 12,
+    "R_reference_in_this_notebook": false,
+    "unit_suite_in_this_notebook": false
+  },
+  "private_review_workbook": {
+    "numeric_ai_candidates": 40,
+    "essays": 10,
+    "teacher_labels_written": 0,
+    "raw_source_preserved": true,
+    "reconstructions_separate": 2,
+    "mechanic_simulation_not_verified_student_grades": true,
+    "opens_numeric_summary": true,
+    "public_workbook_upload": false
+  },
+  "internet_review": {
+    "official_sites_requested": [
+      "ejaan.kemendikdasmen.go.id",
+      "www.ipb.ac.id",
+      "www.fao.org"
+    ],
+    "access": "Proxy 403 Forbidden",
+    "facts_verified_online": false,
+    "domain_configuration_draft_saved": true,
+    "publish_required": true
+  },
+  "actual_teacher_training": false,
+  "actual_teacher_test_evaluation": false,
+  "complete_ai_workbook_notebook": {
+    "code_cells": 11,
+    "errors": 0,
+    "ai_scores_displayed": 40,
+    "teacher_labels_written": 0,
+    "reconstruction_scopes_displayed": true,
+    "head_forward_run_this_check": false,
+    "prior_original_forward_verified_separately": true,
+    "training_run": false,
+    "research_evaluation_run": false
+  }
+}

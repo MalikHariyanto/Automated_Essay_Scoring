@@ -33,6 +33,17 @@ if set(R) != {(row['essay_id'],trait) for row in rows for trait in traits}:raise
 now=transfer['timestamp_bangkok']
 deferred_ids=[row['essay_id'] for row in rows if all(R[(row['essay_id'],trait)]['score'] is None for trait in traits)]
 numeric_count=sum(value['score'] is not None for value in R.values())
+continuations=transfer.get('ai_continuations',{})
+scopes=transfer.get('assessment_scopes',{})
+if set(continuations)-{row['essay_id'] for row in rows}:raise ValueError('ID rekonstruksi tidak ada dalam sumber.')
+review_texts={row['essay_id']:row['text_raw']+continuations.get(row['essay_id'],{}).get('added_text','') for row in rows}
+for row in rows:
+ essay_id=row['essay_id']
+ if row.get('text_completeness')=='continuation_unassigned' and any(R[(essay_id,t)]['score'] is not None for t in traits):
+  if essay_id not in continuations:raise ValueError('Teks tidak lengkap: skor hanya boleh pada versi rekonstruksi berlabel, bukan teks asli.')
+ if R[(essay_id,'mekanik')]['score'] is not None and row.get('transcription_status')!='verified':
+  if not scopes.get(essay_id,{}).get('mechanic_transcription_simulation'):
+   raise ValueError('Skor mekanik pada transkripsi draf memerlukan label simulasi eksplisit.')
 reviews=[]
 for row in rows:
  for trait in rubric['traits']:
@@ -40,14 +51,16 @@ for row in rows:
   assert a['score'] is None or a['score'] in trait['categories']
   quotes=[]
   for quote in a['quotes']:
-   start=row['text_raw'].find(quote)
+   start=review_texts[row['essay_id']].find(quote)
    assert start>=0,(row['essay_id'],trait['name'],quote)
-   paragraph=row['text_raw'][:start].count('\n\n')+1
+   paragraph=review_texts[row['essay_id']][:start].count('\n\n')+1
    quotes.append({'quote':quote,'paragraph':paragraph,'start_char_zero_based':start,'end_char_exclusive':start+len(quote)})
   reviews.append({'essay_id':row['essay_id'],'trait':trait['name'],'ai_provisional_score':a['score'],
      'assessment_source':'AI_ASSISTANT_NOT_TEACHER','status':'provisional_for_teacher_review' if a['score'] is not None else 'deferred_requires_source_review',
      'rubric_level_original':trait['levels'][str(a['score'])] if a['score'] is not None else rubric['missing_rule'],
-     'reason':a['reason'],'higher_level_or_defer_reason':a['higher'],'evidence':quotes,'teacher_next_step':a['review']})
+     'reason':a['reason'],'higher_level_or_defer_reason':a['higher'],'evidence':quotes,'teacher_next_step':a['review'],
+     'assessment_scope':scopes.get(row['essay_id'],{}),
+     'evidence_text_source':'AI_RECONSTRUCTION' if row['essay_id'] in continuations else 'ORIGINAL_DRAFT_TRANSCRIPTION'})
 report={'assessment_source':'AI_ASSISTANT_NOT_TEACHER','teacher_validated':False,'timestamp_bangkok':now,
         'rubric_version':rubric['version'],'rubric_confirmed_original':rubric['confirmed'],'source_hashes':hashes,
         'teacher_score_columns_unchanged':True,'original_rows_preserved':len(rows),'reviews':reviews}
@@ -90,7 +103,7 @@ put(guide,['USULAN PENILAIAN AI — BUKAN SKOR GURU','Keterangan'])
 items=[
  ('Tujuan','Membantu guru membaca esai dan menilai dengan rubrik. Usulan bukan ground truth guru dan tidak membuat penelitian siap training.'),
  ('Yang benar-benar dilakukan',f'Seluruh {len(rows)} text_raw dibaca satu per satu. Best fit per trait, bukan mean subindikator. Setiap usulan memiliki kutipan literal dan lokasi paragraf. Nilai huruf lama diabaikan sebagai target.'),
- ('Batas penilaian',f'{numeric_count} usulan angka. Mekanik ditunda jika transkripsi belum verified; teks tidak lengkap ditunda. ID ditunda seluruh trait: {", ".join(deferred_ids)}.'),
+ ('Batas penilaian',f'{numeric_count} usulan angka. Bila transkripsi belum verified, mekanik berangka hanya simulasi pada teks draf. Skor versi rekonstruksi tidak menjadi skor teks asli. ID tanpa usulan angka: {", ".join(deferred_ids)}.'),
  ('Sumber penilai','AI_ASSISTANT_NOT_TEACHER. Tidak ada guru yang diwakili atau pengesahan yang diasumsikan.'),
  ('Waktu usulan (Asia/Bangkok)',now),('Versi rubrik',rubric['version']),
  ('Rubrik asli confirmed',str(rubric['confirmed']).lower()),
@@ -102,6 +115,7 @@ items=[
  ('Syarat Colab penelitian','Empat skor guru valid pada esai yang sama, rubrik disahkan dengan identitas/tanggal guru, teks lengkap/verified, identitas/duplikasi/group diperiksa, review hash terkini dan split sah. Menyalin usulan ke score_* saja tidak memenuhi syarat.'),
  ('Larangan representasi','Jangan menyebut angka AI sebagai skor guru, mengubah confirmed/ready_for_training agar lolos, atau mengubah A/A+ menjadi skor trait. Tidak ada loss/metrik penelitian dihitung dari usulan ini.'),
  ('Data_asli',f'Seluruh kolom CSV dan seluruh {len(rows)} baris disalin tanpa mengisi score_* atau mengubah status. Untuk_CSV_Guru masih merupakan salinan awal yang sama, menunggu guru.'),
+ ('Rekonstruksi AI','Rekonstruksi_AI memisahkan teks asli dan tambahan yang diusulkan. Tidak membuktikan halaman hilang atau penulis yang sama. Skor guru tetap kosong.'),
  ('Bukti yang belum ada','Tidak memeriksa foto/naskah asli atau tugas lengkap. Tidak memverifikasi sumber eksternal klaim gizi/harga. Kalimat bertanda masalah dapat berasal dari transkripsi; reviewer harus membedakannya.'),
  ('Kemiripan','Usulan yang sama pada teks mirip tidak membuktikan siswa yang sama atau validitas label. Jangan menggabungkan/menghapus atau menyebar group usulan ke split tanpa review.'),
  ('Hash CSV asli (SHA256)',hashes['csv']),('Hash JSON asli (SHA256)',hashes['rubric']),
@@ -113,9 +127,10 @@ summary=wb.create_sheet('Ringkasan_AI')
 put(summary,['essay_id','topic','text_completeness','ai_usul_isi','ai_usul_organisasi','ai_usul_kebahasaan','ai_usul_mekanik','status_usulan','catatan_review'])
 for row in rows:
  candidates=[R[(row['essay_id'],t)]['score'] for t in traits]
- note='Mekanik ditunda: draft transkripsi, bandingkan dengan foto. Semua angka masih usulan AI untuk review guru.'
- if row['text_completeness']=='continuation_unassigned':note='Seluruh skor ditunda: penutup berakhir di tengah kalimat; kepemilikan lanjutan belum ditetapkan.'
- put(summary,[row['essay_id'],row['topic'],row['text_completeness'],*candidates,'AI_NOT_TEACHER_PENDING_REVIEW',note])
+ note='Usulan AI pada transkripsi draf, bukan skor guru. Mekanik berangka adalah simulasi; bandingkan dengan foto.'
+ if row['essay_id'] in continuations:note='SIMULASI VERSI REKONSTRUKSI AI; teks asli masih terpotong dan tidak memperoleh label guru.'
+ elif row['text_completeness']=='continuation_unassigned':note='Seluruh skor ditunda: teks asli terpotong dan lanjutan belum diketahui.'
+ put(summary,[row['essay_id'],row.get('topic',''),row['text_completeness'],*candidates,'AI_RECONSTRUCTION_SIMULATION' if row['essay_id'] in continuations else 'AI_DRAFT_NOT_TEACHER_PENDING_REVIEW',note])
 finish(summary,[12,16,32,16,21,22,20,36,78],table='UsulanAI',height=64)
 for r in range(2,len(rows)+2):
  for col in range(4,8):
@@ -123,12 +138,24 @@ for r in range(2,len(rows)+2):
   summary.cell(r,col).comment=Comment('Usulan AI, bukan skor guru. Kosong berarti ditunda; jangan isi 0.','Catatan review')
 
 trait_sheet=wb.create_sheet('Review_trait')
-put(trait_sheet,['essay_id','trait','ai_usulan_1_5','status','deskriptor_JSON_ASLI','alasan_best_fit_AI','batas_level_atau_penundaan','kutipan_bukti_LITERAL','lokasi_bukti','tindak_lanjut_guru'])
+put(trait_sheet,['essay_id','trait','ai_usulan_1_5','status','deskriptor_JSON_ASLI','alasan_best_fit_AI','batas_level_atau_penundaan','kutipan_bukti_LITERAL','lokasi_bukti','tindak_lanjut_guru','sumber_teks_bukti','cakupan_AI'])
 for item in reviews:
  evidence='\n\n'.join(f"P{x['paragraph']}: {x['quote']}" for x in item['evidence'])
  location='; '.join(f"P{x['paragraph']}; karakter {x['start_char_zero_based']}:{x['end_char_exclusive']} (0-based)" for x in item['evidence'])
- put(trait_sheet,[item['essay_id'],item['trait'],item['ai_provisional_score'],item['status'],item['rubric_level_original'],item['reason'],item['higher_level_or_defer_reason'],evidence,location,item['teacher_next_step']])
-finish(trait_sheet,[12,19,17,35,65,75,75,65,43,70],table='BuktiUsulan',height=132)
+ put(trait_sheet,[item['essay_id'],item['trait'],item['ai_provisional_score'],item['status'],item['rubric_level_original'],item['reason'],item['higher_level_or_defer_reason'],evidence,location,item['teacher_next_step'],item['evidence_text_source'],json.dumps(item['assessment_scope'],ensure_ascii=False)])
+finish(trait_sheet,[12,19,17,35,65,75,75,65,43,70,35,55],table='BuktiUsulan',height=132)
+
+if continuations:
+ reconstruction=wb.create_sheet('Rekonstruksi_AI')
+ put(reconstruction,['essay_id','teks_asli_TIDAK_DIUBAH','tambahan_AI_BUKAN_TULISAN_ASLI','teks_versi_rekonstruksi','rujukan_gaya_dari_dataset','status_sumber','penulis_sama_terverifikasi'])
+ for row in rows:
+  essay_id=row['essay_id']
+  if essay_id in continuations:
+   item=continuations[essay_id]
+   put(reconstruction,[essay_id,row['text_raw'],item['added_text'],review_texts[essay_id],item.get('reference_essay_id',''),
+                       'USULAN_REKONSTRUKSI_AI_BUKAN_HALAMAN_ASLI','false'])
+ finish(reconstruction,[14,100,90,110,30,65,30],height=300)
+ for i in range(2,reconstruction.max_row+1):reconstruction.cell(i,3).fill=PatternFill('solid',fgColor=amber)
 
 teacher=wb.create_sheet('Keputusan_guru')
 put(teacher,['essay_id','score_isi','score_organisasi','score_kebahasaan','score_mekanik','rater_id','scoring_date','evidence_isi','evidence_organisasi','evidence_kebahasaan','evidence_mekanik','keputusan_review','catatan_guru'])
@@ -168,8 +195,17 @@ finish(audit_sheet,[40,130],height=65)
 for row in range(2,audit_sheet.max_row+1):
  if audit_sheet.cell(row,1).value in ['statuses','near_duplicates']:audit_sheet.row_dimensions[row].height=225
 
+if transfer.get('reference_access'):
+ refs=wb.create_sheet('Akses_rujukan')
+ put(refs,['rujukan','URL_yang_dicoba','hasil_akses_aktual','status_verifikasi_fakta'])
+ for item in transfer['reference_access']:
+  put(refs,[item['key'],item['url'],item.get('error',str(item.get('status','unknown'))),
+            'BELUM_DIVERIFIKASI' if 'error' in item else 'Akses tercatat; baca dan tinjau isi sumber sebelum verifikasi fakta'])
+ finish(refs,[30,90,80,70],height=85)
+
 path=args.output
 path.parent.mkdir(parents=True,exist_ok=True)
+wb.active=wb.sheetnames.index('Ringkasan_AI')
 wb.save(path)
 # Periksa kembali nilai, urutan, keutuhan sumber, dan semua kutipan.
 check=load_workbook(path,data_only=False)
@@ -181,14 +217,15 @@ for i,row in enumerate(rows,2):
  for j in range(2,6):assert check['Keputusan_guru'].cell(i,j).value is None
 assert json.loads(check['JSON_asli']['B4'].value)==rubric
 assert sum(item['ai_provisional_score'] is not None for item in reviews)==numeric_count
-assert all(item['ai_provisional_score'] is None for item in reviews if item['trait']=='mekanik' or item['essay_id'] in deferred_ids)
+assert all(item['ai_provisional_score'] is None for item in reviews if item['essay_id'] in deferred_ids)
 assert csv_path.read_bytes()==source_bytes and rub_path.read_bytes()==rub_bytes
 # String formulas tidak muncul dari teks/provenance unggahan.
 assert not any(c.data_type=='f' for ws in check for row in ws for c in row)
 proof={'workbook':path.name,'workbook_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
  'source_hashes':hashes,'original_sources_unchanged':True,'essays':len(rows),'trait_reviews':len(reviews),
  'provisional_ai_numeric_candidates':numeric_count,'teacher_labels_written':0,'mechanic_scores_deferred':sum(R[(row['essay_id'],'mekanik')]['score'] is None for row in rows),
- 'all_traits_deferred_ids':deferred_ids,'literal_evidence_all_verified':True,'rubric_original_roundtrip':True,
+ 'all_traits_deferred_ids':deferred_ids,'reconstruction_ids':list(continuations),
+ 'mechanic_transcription_simulation_ids':[key for key,value in scopes.items() if value.get('mechanic_transcription_simulation')],'literal_evidence_all_verified':True,'rubric_original_roundtrip':True,
  'research_training_or_evaluation_run':False,'public_repository_upload':False,'sheets':check.sheetnames}
 path.with_suffix('.verification.json').write_text(json.dumps(proof,ensure_ascii=False,indent=2))
 print(json.dumps(proof,ensure_ascii=False,indent=2))

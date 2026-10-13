@@ -62,6 +62,7 @@ def test_draft_table_keeps_all_twelve_rows_unavailable_even_with_stale_results(t
     assert all(row[m] is None for row in report['rows'] for m in ['RMSE','Pearson','QWK','AC2'])
     assert all(row['status']=='not_available' for row in report['rows'])
     assert report['data_blockers']
+    assert report['metric_traces']=={}
     assert [row['trait'] for row in report['rows'][:4]]==['isi','organisasi','kebahasaan','mekanik']
 
 
@@ -72,6 +73,10 @@ def test_final_table_reads_matching_locked_test_artifacts_per_trait(technical_so
     assert all(row['status']=='available_final_test' for row in report['rows'])
     assert report['rows'][0]['RMSE']==pytest.approx(np.sqrt((.4**2+.5**2)/2))
     assert report['rows'][0]['out_of_range_fraction']==.5
+    assert set(report['metric_traces'])=={'S1','S2','S3'}
+    trace=report['metric_traces']['S1']['isi']
+    assert [p['essay_id'] for p in trace['pairs']]==df.essay_id.tolist()[-2:]
+    assert trace['RMSE_steps']['RMSE']==report['rows'][0]['RMSE']
     # Label/hasil fixture teknis bukan bukti training model asli.
 
 
@@ -98,3 +103,23 @@ def test_final_table_refuses_changed_independence_review(technical_source):
     dump(path,review)
     with pytest.raises(ValueError,match='review independensi'):
         final_report(cfg,df,rubric)
+
+
+def test_notebook_renders_metric_steps_only_from_matching_test_pairs(technical_source,capsys):
+    # Hanya fixture teknis untuk menjangkau cabang UI berlabel; bukan hasil penelitian.
+    cfg,df,rubric=labelled_artifacts(technical_source)
+    root=Path(__file__).resolve().parents[1]
+    nb=json.loads((root/'notebooks/01_belajar_alur_AES.ipynb').read_text())
+    cell=next(''.join(c['source']) for c in nb['cells']
+              if c['cell_type']=='code' and ''.join(c['source']).startswith("run_aes([ROOT/'scripts/notebook_step.py', 'report'"))
+    tables=[]
+    namespace=dict(ROOT=root,OUTPUT=Path(cfg['output']),CONFIG_PATH='TECHNICAL_FIXTURE',
+        TRACE_SCENARIO='S3',TRACE_TRAIT='isi',json=json,
+        run_aes=lambda _:final_report(cfg,df,rubric),show_table=lambda columns,rows:tables.append((columns,rows)))
+    exec(compile(cell,'technical_metric_steps_cell','exec'),namespace)
+    pairs=next(rows for columns,rows in tables if 'squared_error' in columns)
+    assert [p['essay_id'] for p in pairs]==df.essay_id.tolist()[-2:]
+    matrices=[rows for columns,rows in tables if columns[0]=='Kategori guru']
+    assert len(matrices)==4 and all(len(rows)==5 for rows in matrices)
+    output=capsys.readouterr().out
+    assert 'Pa:' in output and 'Expected disagreement:' in output

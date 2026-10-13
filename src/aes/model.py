@@ -23,6 +23,7 @@ class AESModel(nn.Module):
             cls=self.roberta(**windows).last_hidden_state[:,0,:]
             essay=mean_by_essay(cls,chunk_to_essay,n_essays)
             features['roberta']=essay
+            if return_features:features['roberta_window_cls']=cls
         if self.scenario=='S1':pred=self.head(self.dropout(essay))
         elif self.scenario=='S2':
             if bge is None or bge.shape[1]!=1024:raise ValueError('BGE [B,1024] wajib')

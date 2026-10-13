@@ -8,7 +8,7 @@ Buka [notebook utama](https://colab.research.google.com/github/MalikHariyanto/Au
 4. Pada cell pertama pilih `INPUT_FORMAT="csv"` untuk CSV asli atau `"xlsx"` untuk workbook review. Untuk Excel, isi `EXCEL_FILENAME` sesuai nama sebenarnya dan pertahankan `EXCEL_SHEET="Untuk_CSV_Guru"`. Cell input meminta dataset yang dipilih dan JSON rubrik jika belum tersedia. File Excel di `/content/aes_review_privat/` juga dapat digunakan langsung. Tunggu upload selesai, lalu lanjutkan dari atas.
 5. Baca audit, satu esai/rubrik, cleaning, token/vektor dan output UNTRAINED S1/S2/S3, lalu referensi AC2. Bagian supervised menampilkan alasan skip bila label atau pengesahan belum lengkap. Tabel empat metrik ada di bagian 11.
 
-Default input kini Excel untuk workflow review: `INPUT_FORMAT="xlsx"`, `EXCEL_FILENAME="Review_Esai_AI.xlsx"`, `EXCEL_SHEET="Untuk_CSV_Guru"`. Pilih csv bila ingin memakai CSV asli. Pilihan input dicetak pada akhir cell pertama agar tidak tertukar.
+Default input kini Excel untuk workflow review: `INPUT_FORMAT="xlsx"`, `EXCEL_FILENAME="Review_Esai_AI_Lengkap.xlsx"`, `EXCEL_SHEET="Untuk_CSV_Guru"`. Pilih csv bila ingin memakai CSV asli. Pilihan input dicetak pada akhir cell pertama agar tidak tertukar.
 
 Cell pertama langsung mencetak `Mulai cell 1`, lalu tahap Git yang berjalan. Cell ini tidak memasang paket atau mengunduh encoder. Clone baru mengambil satu commit (`--depth 1`); clone/fetch dibatasi 120 detik, pemeriksaan lokal 20 detik, merge 30 detik. Prompt login interaktif dinonaktifkan; kegagalan atau timeout tidak dilaporkan sebagai keberhasilan dan tidak menghapus data/perubahan pengguna. Kalau hanya Running tanpa output pada versi lama, penyebab proses belum diketahui; hentikan dan buka notebook terbaru. Jika versi baru belum mencetak pesan awal, periksa status koneksi/runtime Colab. Batas waktu kode baru berlaku ketika runtime mulai menjalankan cell.
 
@@ -26,6 +26,10 @@ Cell pertama langsung mencetak `Mulai cell 1`, lalu tahap Git yang berjalan. Cel
 | 9 | Unit test dan referensi AC2/R | Hasil runner dan tabel AC2 Python/R pada fixture, bukan akurasi AES |
 | 10 | Pemeriksaan supervised | Kebutuhan konkret atau eksekusi mode yang dipilih setelah layak |
 | 11 | Tabel empat metrik per skenario/trait | 12 baris; nilai tersedia hanya dari test proposal yang sah |
+
+Bagian 4 kini menunjukkan tabel empat target guru aktual selain tabel usulan AI. Bagian 7–8 menunjukkan urutan teks → potongan token/ID → input window → CLS tiap window → mean per esai. S2 memperlihatkan BGE/MLP, sedangkan S3 memperlihatkan proyeksi dan dua bagian concat (RoBERTa 0–767, proyeksi BGE 768–1023). Sampel lima angka membantu mengenali bentuk vektor tanpa mencetak ribuan elemen. Semua output inspeksi tetap UNTRAINED.
+
+Bagian 11 mempunyai walkthrough hasil test yang sah. Pilih `TRACE_SCENARIO` dan `TRACE_TRAIT` di cell pertama. Setelah guru memberi empat skor, data/rubrik/relasi diverifikasi, dan mode proposal menyelesaikan training/test, tampilan menunjukkan pasangan essay_id, label guru, prediksi kontinu, selisih/kuadrat, clipping/kategori, RMSE/Pearson, QWK disagreement, AC2 agreement/Pa/Pe dan matriks perhitungannya. Ini rincian dari angka tabel, bukan eksperimen atau metrik baru. Tanpa pasangan sah, langkah numerik tetap menunggu; notebook tidak mengganti skor guru dengan usulan AI.
 
 Biarkan `MODE="inspect"`; sesuai permintaan belajar lengkap, `RUN_ENCODERS`, `RUN_TESTS`, dan `RUN_AC2_REFERENCE` default True. Notebook menampilkan alur encoder dan referensi AC2 tanpa training dari label kosong. BGE/RoBERTa asli memerlukan sekitar 2,8 GB unduhan dan head tetap UNTRAINED. Setup memakai PyTorch CPU; memilih T4 saja tidak membuat wheel CPU menjadi GPU. Ketiga pilihan bisa dibuat False untuk inspeksi ringan.
 

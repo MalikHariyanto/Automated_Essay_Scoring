@@ -81,7 +81,13 @@ def test_forward_backward_reload(scenario,b,tmp_path):
     assert any(k.startswith('head.') for k in changed)
     if scenario!='S2':assert any(k.startswith('roberta.') for k in changed)
     if scenario=='S3':assert any(k.startswith('projection.') for k in changed)
-    model.eval();before=model(**kw)
+    model.eval();before,features=model(**kw,return_features=True)
+    if scenario!='S2':
+        assert features['roberta_window_cls'].shape==(b*2,768)
+        assert torch.allclose(features['roberta'],mean_by_essay(features['roberta_window_cls'],kw['chunk_to_essay'],b))
+    if scenario=='S3':
+        assert torch.equal(features['concat'][:,:768],features['roberta'])
+        assert torch.equal(features['concat'][:,768:],features['projection'])
     torch.save(model.state_dict(),tmp_path/'weights.pt')
     other=AESModel(scenario,EncoderFixture() if scenario!='S2' else None);other.load_state_dict(torch.load(tmp_path/'weights.pt',weights_only=True));other.eval()
     assert torch.allclose(before,other(**kw))
