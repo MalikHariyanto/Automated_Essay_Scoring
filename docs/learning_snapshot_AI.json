@@ -1,0 +1,291 @@
+{
+  "saved_commit": "0b52413771ed535b1767a23924f0b980e0159530",
+  "notebook_sha256": "f58c5d0e05d1d109cca69a114d73ffb08d2b427a73b52ed704c1889f323ad55f",
+  "source_notebook": "notebooks/02_latihan_acuan_AI.ipynb",
+  "scope": "AI_PROVISIONAL_NOT_TEACHER",
+  "code_cells": 11,
+  "saved_error_outputs": 0,
+  "rows": [
+    {
+      "scenario": "S1",
+      "trait": "isi",
+      "RMSE": 3.079618,
+      "Pearson": 0.981986,
+      "QWK": 0.0,
+      "AC2": 0.018868
+    },
+    {
+      "scenario": "S1",
+      "trait": "organisasi",
+      "RMSE": 2.734631,
+      "Pearson": -0.870606,
+      "QWK": 0.0,
+      "AC2": 0.018868
+    },
+    {
+      "scenario": "S1",
+      "trait": "kebahasaan",
+      "RMSE": 2.390219,
+      "Pearson": 0.908306,
+      "QWK": 0.0,
+      "AC2": 0.018868
+    },
+    {
+      "scenario": "S1",
+      "trait": "mekanik",
+      "RMSE": 3.137486,
+      "Pearson": -0.510418,
+      "QWK": 0.0,
+      "AC2": -0.543147
+    },
+    {
+      "scenario": "S2",
+      "trait": "isi",
+      "RMSE": 3.47917,
+      "Pearson": -0.993617,
+      "QWK": 0.0,
+      "AC2": 0.018868
+    },
+    {
+      "scenario": "S2",
+      "trait": "organisasi",
+      "RMSE": 3.469781,
+      "Pearson": 0.998634,
+      "QWK": 0.0,
+      "AC2": 0.018868
+    },
+    {
+      "scenario": "S2",
+      "trait": "kebahasaan",
+      "RMSE": 3.466481,
+      "Pearson": -0.861419,
+      "QWK": 0.0,
+      "AC2": 0.018868
+    },
+    {
+      "scenario": "S2",
+      "trait": "mekanik",
+      "RMSE": 4.052809,
+      "Pearson": 0.174545,
+      "QWK": 0.0,
+      "AC2": -0.543147
+    },
+    {
+      "scenario": "S3",
+      "trait": "isi",
+      "RMSE": 0.990726,
+      "Pearson": -0.995694,
+      "QWK": 0.0,
+      "AC2": 0.951807
+    },
+    {
+      "scenario": "S3",
+      "trait": "organisasi",
+      "RMSE": 0.609764,
+      "Pearson": -0.721759,
+      "QWK": 0.0,
+      "AC2": 0.951807
+    },
+    {
+      "scenario": "S3",
+      "trait": "kebahasaan",
+      "RMSE": 1.042307,
+      "Pearson": 0.897399,
+      "QWK": 0.333333,
+      "AC2": 0.849057
+    },
+    {
+      "scenario": "S3",
+      "trait": "mekanik",
+      "RMSE": 1.505894,
+      "Pearson": 0.294372,
+      "QWK": 0.0,
+      "AC2": 0.81323
+    }
+  ],
+  "training": {
+    "S1": {
+      "initial_mse": 17.652631,
+      "final_mse": 9.489605,
+      "epochs": 2,
+      "active_steps": 1,
+      "parameter_samples_changed": {
+        "roberta": true,
+        "head": true
+      }
+    },
+    "S2": {
+      "initial_mse": 14.741891,
+      "final_mse": 14.38749,
+      "epochs": 2,
+      "active_steps": 1,
+      "parameter_samples_changed": {
+        "head": true
+      }
+    },
+    "S3": {
+      "initial_mse": 13.113072,
+      "final_mse": 1.263832,
+      "epochs": 2,
+      "active_steps": 1,
+      "parameter_samples_changed": {
+        "roberta": true,
+        "projection": true,
+        "head": true
+      }
+    }
+  },
+  "out_of_range": {
+    "S1:isi": 1.0,
+    "S1:organisasi": 1.0,
+    "S1:kebahasaan": 0.0,
+    "S1:mekanik": 0.75,
+    "S2:isi": 1.0,
+    "S2:organisasi": 1.0,
+    "S2:kebahasaan": 1.0,
+    "S2:mekanik": 1.0,
+    "S3:isi": 0.0,
+    "S3:organisasi": 0.0,
+    "S3:kebahasaan": 0.0,
+    "S3:mekanik": 0.0
+  },
+  "versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "torch": "2.6.0+cpu",
+    "transformers": "4.44.2",
+    "FlagEmbedding": "1.3.5"
+  },
+  "models": {
+    "bge": {
+      "checkpoint": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dimension": 1024,
+      "model_type": "xlm-roberta",
+      "max_position_embeddings": 8194,
+      "tokenizer_class": "XLMRobertaTokenizerFast",
+      "special_tokens": 2
+    },
+    "roberta": {
+      "checkpoint": "flax-community/indonesian-roberta-base",
+      "revision": "cc5ecee7de8532880ad08d802292a6f42865bc83",
+      "dimension": 768,
+      "model_type": "roberta",
+      "max_position_embeddings": 514,
+      "tokenizer_class": "RobertaTokenizer",
+      "special_tokens": 2
+    }
+  },
+  "python": "3.12.13",
+  "rows_read": 10,
+  "eligible_drafts": 8,
+  "excluded_incomplete": 2,
+  "train_count": 4,
+  "validation_count": 4,
+  "teacher_labels_complete": 0,
+  "rubric_confirmed": false,
+  "groups_train": 2,
+  "groups_validation": 2,
+  "token_summary": {
+    "maximum_bge_tokens": 609,
+    "bge_truncated": 0,
+    "bge_tokens_removed": 0,
+    "roberta_windows_total_inspection": 12,
+    "example_content_tokens": 514,
+    "example_window_lengths": [
+      512,
+      134
+    ]
+  },
+  "vector_first_five": {
+    "roberta": [
+      0.7669639587402344,
+      0.39638516306877136,
+      0.873576283454895,
+      1.5267524719238281,
+      -0.20673173666000366
+    ],
+    "bge": [
+      0.006703220307826996,
+      0.03684022277593613,
+      0.020350534468889236,
+      0.0026020691730082035,
+      0.0002035676152445376
+    ],
+    "projection": [
+      0.7417728900909424,
+      -0.8553985953330994,
+      0.8501951098442078,
+      -0.1876882165670395,
+      -1.539725422859192
+    ],
+    "concat": [
+      0.7669639587402344,
+      0.39638516306877136,
+      0.873576283454895,
+      1.5267524719238281,
+      -0.20673173666000366
+    ]
+  },
+  "trace": {
+    "scenario": "S3",
+    "trait": "isi",
+    "RMSE": {
+      "sum_squared_errors": 3.926154117916724,
+      "mean_squared_error": 0.981538529479181,
+      "RMSE": 0.9907262636466144
+    },
+    "Pearson": {
+      "mean_reference_AI": 3.5,
+      "mean_raw_prediction": 2.7428794503211975,
+      "sum_centered_products": -0.2777165174484253,
+      "sum_squared_centered_reference_AI": 1.0,
+      "sum_squared_centered_raw_prediction": 0.07779497603614516,
+      "denominator": 0.27891750758269934,
+      "Pearson": -0.9956941027306505
+    },
+    "observed_counts": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "Pa": 0.96875,
+    "Pe": 0.3515625,
+    "observed_disagreement": 0.03125,
+    "expected_disagreement": 0.03125
+  },
+  "privacy": "No essay text/IDs, individual scores, original rubric descriptors, workbook, cache or weights."
+}

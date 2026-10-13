@@ -1,0 +1,72 @@
+{
+  "parent_commit": "76a76c2df926a7d280181fd52d05ba5d02803f49",
+  "source_state": "New/modified documentation and HTML tools before commit; AES pipeline/notebooks/dependencies unchanged.",
+  "snapshot_commit": "0b52413771ed535b1767a23924f0b980e0159530",
+  "source_sha256": {
+    "scripts/build_colab_study.py": "393f4c72c5197e95be82ec975790a462bb7993e6f03f93cb83341920f35ed6e1",
+    "scripts/check_colab_study.py": "9875ef7b736d543ff07dc9ca8902bfc7180c7aef5d71eae18c6e39b40f4aefd3",
+    "scripts/templates/colab_study.html": "499f7e98473cb423780d61d3a1502ab0b9bb1122adc66d548b72907abf5c3ab2",
+    "docs/learning_snapshot_AI.json": "98744c181f683b099544dc174fbc11ca7ab2ad9230f7bcdc8f459bc7c4172309",
+    "docs/belajar_colab_AI_interaktif.html": "d9de5a529d9d184abef6e94627ceb4485dcdffe1720d4e3e9f9117e5a0ca75d9"
+  },
+  "artifact_bytes": 191371,
+  "browser_check": {
+    "exit_code": 0,
+    "browser": "Chromium via Playwright",
+    "browser_version": "154.0.8037.57",
+    "AC2_fixtures_matching_R": 5,
+    "origin": "Local HTTP; no user-facing localhost preview.",
+    "page_errors": [],
+    "external_resource_requests": 0,
+    "chapters": 11,
+    "source_files": 17,
+    "code_cells": 11,
+    "actual_metric_rows": 12,
+    "metric_fixtures_matching_Python": 55,
+    "window_coverage_cases": 9,
+    "optimizer_schedule_cases": 18,
+    "private_actual_notebook_cells_checked": 11,
+    "untrusted_HTML_not_executed": true,
+    "private_data_not_in_localStorage": true,
+    "mobile_horizontal_overflow": false,
+    "print_all_chapters": true,
+    "tested_interactions": [
+      "tabs/keyboard",
+      "language modes",
+      "theme",
+      "reading persistence/reset",
+      "quizzes",
+      "source dropdown",
+      "S1/S2/S3 batch shapes",
+      "window boundaries",
+      "LR scheduling",
+      "metric filter/trace",
+      "numeric input errors",
+      "8/2 hypothetical diagram",
+      "local notebook open/forget"
+    ],
+    "artifact_sha256": "d9de5a529d9d184abef6e94627ceb4485dcdffe1720d4e3e9f9117e5a0ca75d9"
+  },
+  "command": "HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python scripts/check_colab_study.py --private-notebook outputs/user_saved_AI_notebook_20261014.ipynb",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "versions": {
+    "python": "3.12.14",
+    "playwright": "1.62.0",
+    "numpy": "2.2.6",
+    "scikit-learn": "1.6.1"
+  },
+  "build_repeat_identical": true,
+  "privacy": {
+    "essay_text_absent": true,
+    "original_rubric_descriptors_absent": true,
+    "individual_ID_scores_absent": true,
+    "workbook_cache_weights_absent": true,
+    "local_file_viewer_no_network_or_data_persistence": true
+  },
+  "scope": "Public source, aggregate actual Colab output, anonymous vector excerpts and illustrations; private complete output available only through local file selected by reader.",
+  "limits": [
+    "No new ML training, final teacher evaluation or 8/2 experiment.",
+    "No live access to Colab; uses saved audited notebook.",
+    "Browser tested using local HTTP; no external resource requests. File-mode design avoids remote dependencies."
+  ]
+}

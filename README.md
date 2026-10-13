@@ -134,3 +134,7 @@ Workbook review privat dapat memuat usulan AI empat dimensi dan rekonstruksi ber
 Untuk belajar sebelum skor guru tersedia, buka [02_latihan_acuan_AI.ipynb](notebooks/02_latihan_acuan_AI.ipynb). Default mode sudah `ai_learning`. Upload workbook **Review_Esai_AI_Lengkap.xlsx** dan JSON rubrik yang sama; jalankan dari atas. S1/S2/S3 benar-benar dilatih dua epoch, lalu dievaluasi terhadap usulan AI pada kelompok validation yang terpisah. Tabel berisi RMSE, Pearson, QWK, AC2 per trait, dengan sumber acuan AI yang eksplisit; bukan hasil penelitian terhadap guru. Dua teks terpotong/rekonstruksi tidak masuk latihan. Kolom skor guru dan status sumber tidak diubah.
 
 Baca [petunjuk dan batas latihan AI](docs/latihan_acuan_AI.md), termasuk arti setiap output, split latihan 50/50 yang terpisah dari proposal, bukti pembaruan parameter dan penggunaan ulang hasil yang cocok hash.
+
+## Buku HTML untuk membedah hasil Colab
+
+Unduh [belajar_colab_AI_interaktif.html](docs/belajar_colab_AI_interaktif.html) lewat **Download raw file** di GitHub, lalu buka di browser. Buku standalone memiliki tab per proses, bahasa Santai/Teknis, source code penting, hasil aktual latihan AI, dan simulator window/LR/empat metrik. [Petunjuk membuka dan membaca output pribadi](docs/cara_membuka_buku_Colab.md) menjelaskan cara memilih notebook lokal tanpa mempublikasikan data siswa. Tidak ada training tambahan atau perubahan split pada tugas buku ini.
