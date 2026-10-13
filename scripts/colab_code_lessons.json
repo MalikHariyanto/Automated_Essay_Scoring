@@ -1,0 +1,623 @@
+[
+  {
+    "chapter": "mulai",
+    "title": "1. Cell Colab memanggil program Python proyek",
+    "path": "scripts/notebook_step.py",
+    "anchor": "cfg = load_config(args.config)",
+    "count": 1,
+    "meaning": "Notebook mengatur urutan; perhitungan model berjalan di program Python yang dipanggilnya. Lo tidak perlu menulis kelas model langsung di setiap cell.",
+    "terms": [
+      [
+        "cfg",
+        "Kotak pengaturan: lokasi file, model, batas token, dan cara latihan."
+      ],
+      [
+        "load_config(...)",
+        "Nama fungsi buatan proyek untuk membaca pengaturan. Tanda (...) berisi masukan fungsi."
+      ]
+    ],
+    "connection": "Cell 1 baru memeriksa folder/Python. Cell 2 menampilkan versi paket dan IMPORT OK; itu belum output penilaian esai."
+  },
+  {
+    "chapter": "input",
+    "title": "1. Teks dibaca menjadi tabel",
+    "path": "src/aes/io.py",
+    "anchor": "df = pd.read_csv(path, encoding='utf-8-sig', dtype=str, keep_default_na=False)",
+    "count": 1,
+    "meaning": "pd.read_csv membaca file CSV. Hasilnya disimpan dengan nama df agar kolom dan baris dapat diperiksa.",
+    "terms": [
+      [
+        "pd",
+        "Nama singkat pandas, pustaka pembaca tabel."
+      ],
+      [
+        "df",
+        "Tabel data, bukan model."
+      ],
+      [
+        "keep_default_na=False",
+        "Sel kosong tetap teks kosong saat pembacaan; tidak berubah menjadi skor 0."
+      ]
+    ],
+    "connection": "Cell 4 menghitung 10 baris dibaca dan 0 target guru lengkap. Ini audit data, bukan hasil training."
+  },
+  {
+    "chapter": "input",
+    "title": "2. Angka acuan latihan AI dibaca terpisah",
+    "path": "src/aes/ai_learning.py",
+    "anchor": "value=pd.to_numeric(ref.get('ai_usul_'+t['name'],''),errors='coerce')",
+    "count": 1,
+    "meaning": "Untuk trait yang sedang diperiksa, program membaca kolom ai_usul_*. Angka ini adalah acuan AI; tidak ditulis ke score_* guru.",
+    "terms": [
+      [
+        "ref",
+        "Baris ringkasan usulan AI untuk esai yang sama."
+      ],
+      [
+        "t['name']",
+        "Nama trait: isi, organisasi, kebahasaan atau mekanik."
+      ],
+      [
+        "value",
+        "Satu angka acuan, yang selanjutnya diperiksa apakah kategori 1–5 sah."
+      ]
+    ],
+    "connection": "Tabel acuan AI di Cell 4 terpisah dari skor guru. Buku publik hanya menampilkan ringkasan; tabel per esai bisa dibuka dari notebook pribadi."
+  },
+  {
+    "chapter": "cleaning",
+    "title": "1. Teks masuk ke fungsi clean",
+    "path": "src/aes/cleaning.py",
+    "anchor": "text = unicodedata.normalize('NFC', text).replace('\\r\\n','\\n').replace('\\r','\\n')",
+    "count": 1,
+    "meaning": "Baris ini merapikan representasi karakter dan cara penyimpanan baris baru. Ia tidak membetulkan isi tulisan siswa.",
+    "terms": [
+      [
+        "text",
+        "Isi tulisan yang sedang diproses."
+      ],
+      [
+        "normalize",
+        "Menyamakan representasi karakter yang secara Unicode setara."
+      ],
+      [
+        "replace",
+        "Mengganti penanda baris teknis, bukan mengganti kata siswa."
+      ]
+    ],
+    "connection": "Cell 6 mencetak Berubah: False pada contoh yang ditampilkan. Itu berarti cleaning minimal tidak mengubah contoh tersebut."
+  },
+  {
+    "chapter": "token",
+    "title": "1. RoBERTa memakai tokenizer-nya sendiri",
+    "path": "src/aes/trainer.py",
+    "anchor": "self.tokenizer=AutoTokenizer.from_pretrained(resolved['roberta']['checkpoint']",
+    "count": 1,
+    "meaning": "AutoTokenizer.from_pretrained memuat pemecah teks yang cocok dengan checkpoint RoBERTa. Tokenizer menghasilkan token/ID; ia belum menghasilkan skor.",
+    "terms": [
+      [
+        "AutoTokenizer",
+        "Kelas dari Transformers untuk memilih tokenizer sesuai model."
+      ],
+      [
+        "from_pretrained",
+        "Memuat komponen yang sudah tersedia pada checkpoint tertentu."
+      ],
+      [
+        "resolved['roberta']['checkpoint']",
+        "Nama checkpoint RoBERTa yang sudah diperiksa dan dikunci revision-nya."
+      ]
+    ],
+    "connection": "Cell 7 menampilkan token dan token_id terpisah untuk BGE serta RoBERTa. Jangan menukar ID kedua tokenizer."
+  },
+  {
+    "chapter": "token",
+    "title": "2. Teks diubah menjadi daftar ID",
+    "path": "src/aes/windows.py",
+    "anchor": "ids = tokenizer.encode(text, add_special_tokens=False)",
+    "count": 1,
+    "meaning": "encode mengubah teks menjadi daftar nomor token. Special tokens belum ditambahkan karena nanti masing-masing window mendapatkannya sekali.",
+    "terms": [
+      [
+        "ids",
+        "Daftar nomor token isi, bukan embedding."
+      ],
+      [
+        "tokenizer.encode(...)",
+        "Pemanggilan fungsi untuk menokenisasi teks."
+      ],
+      [
+        "add_special_tokens=False",
+        "Jangan tambahkan token pembuka/penutup pada daftar isi ini dulu."
+      ]
+    ],
+    "connection": "Contoh Cell 7 memiliki 514 token isi RoBERTa; angka ini bukan jumlah kata atau jumlah esai."
+  },
+  {
+    "chapter": "token",
+    "title": "3. Hitung kapasitas sebelum memotong window",
+    "path": "src/aes/windows.py",
+    "anchor": "capacity = maximum - tokenizer.num_special_tokens_to_add(pair=False)",
+    "count": 1,
+    "meaning": "maximum adalah batas seluruh input. Program mengurangi tempat untuk special tokens agar isi tidak melewati 512.",
+    "terms": [
+      [
+        "capacity",
+        "Jumlah tempat untuk token isi: 512 − 2 = 510."
+      ],
+      [
+        "overlap",
+        "Isi yang dibaca lagi pada window berikutnya: 128 token."
+      ],
+      [
+        "stride",
+        "Perpindahan awal window: 510 − 128 = 382."
+      ]
+    ],
+    "connection": "Output Cell 7: starts [0,382], panjang [512,134], input padding [2,512], dan chunk_to_essay [0,0]. Kedua window tetap milik satu esai."
+  },
+  {
+    "chapter": "vector",
+    "title": "1. Inilah baris yang benar-benar menjalankan RoBERTa",
+    "path": "src/aes/model.py",
+    "anchor": "cls=self.roberta(**windows).last_hidden_state[:,0,:]",
+    "count": 1,
+    "meaning": "self.roberta(...) memproses tensor token. Dari semua hidden state, kode mengambil token pertama pada setiap window untuk mewakili window itu.",
+    "terms": [
+      [
+        "self.roberta",
+        "Model RoBERTa yang disimpan di dalam AESModel."
+      ],
+      [
+        "**windows",
+        "Membuka kamus input menjadi argumen seperti input_ids dan attention_mask."
+      ],
+      [
+        "last_hidden_state",
+        "Vektor kontekstual setiap token pada setiap window."
+      ],
+      [
+        "[:,0,:]",
+        "Ambil semua window, token posisi 0, dan semua koordinat vektor."
+      ]
+    ],
+    "connection": "Pada contoh inspeksi dua window, CLS menjadi [2,768]. Pada contoh forward setelah latihan yang hanya satu window, roberta_window_cls adalah [1,768]. Ini dua contoh yang berbeda, bukan shape yang bertentangan."
+  },
+  {
+    "chapter": "vector",
+    "title": "2. Beberapa window diringkas menjadi satu esai",
+    "path": "src/aes/model.py",
+    "anchor": "essay=mean_by_essay(cls,chunk_to_essay,n_essays)",
+    "count": 1,
+    "meaning": "mean_by_essay merata-ratakan vektor window yang berasal dari esai yang sama. Variabel essay di baris ini berisi vektor, bukan teks.",
+    "terms": [
+      [
+        "cls",
+        "Vektor token awal semua window."
+      ],
+      [
+        "chunk_to_essay",
+        "Nomor esai untuk setiap window."
+      ],
+      [
+        "n_essays",
+        "Jumlah esai pada batch, bukan jumlah window."
+      ],
+      [
+        "essay",
+        "Representasi akhir per esai: [B,768]."
+      ]
+    ],
+    "connection": "Output roberta [1,768] berarti satu esai memiliki 768 koordinat. Empat skor belum dibuat pada tahap ini."
+  },
+  {
+    "chapter": "vector",
+    "title": "3. BGE mengambil dense_vecs resmi",
+    "path": "src/aes/encoders.py",
+    "anchor": "dense=np.asarray(result['dense_vecs'],dtype=np.float32)",
+    "count": 1,
+    "meaning": "Dari hasil encoder BGE, proyek mengambil representasi dense. Sparse dan ColBERT tidak dipakai untuk skenario ini.",
+    "terms": [
+      [
+        "result['dense_vecs']",
+        "Keluaran dense dari FlagEmbedding, bukan skor rubrik."
+      ],
+      [
+        "dense",
+        "Matriks representasi: satu vektor 1024 dimensi per esai."
+      ],
+      [
+        "float32",
+        "Jenis bilangan desimal yang dipakai untuk menyimpan koordinat."
+      ]
+    ],
+    "connection": "Output bge [1,1024] dan lima koordinat yang ditampilkan di buku berasal dari forward tersimpan. Lima koordinat itu bukan lima nilai siswa."
+  },
+  {
+    "chapter": "scenario",
+    "title": "1. Nama checkpoint RoBERTa ada di konfigurasi",
+    "path": "configs/default.json",
+    "anchor": "\"checkpoint\": \"flax-community/indonesian-roberta-base\"",
+    "count": 1,
+    "meaning": "Ini nama model di Hugging Face. Nama checkpoint berbeda dari nama variabel Python yang menyimpan model setelah dimuat.",
+    "terms": [
+      [
+        "flax-community/indonesian-roberta-base",
+        "Identitas checkpoint yang dipakai; bukan nama fungsi."
+      ],
+      [
+        "roberta",
+        "Kunci konfigurasi dan kemudian nama variabel/atribut di proyek."
+      ],
+      [
+        "revision",
+        "Versi checkpoint yang dikunci agar pemuatan konsisten."
+      ]
+    ],
+    "connection": "Cell 7 mencetak Revision/config. Nama checkpoint dan dimension 768 di buku diambil dari output tersebut."
+  },
+  {
+    "chapter": "scenario",
+    "title": "2. Trainer meminta RoBERTa lewat load_roberta",
+    "path": "src/aes/trainer.py",
+    "anchor": "roberta=load_roberta(resolved['roberta']) if scenario!='S2' else None",
+    "count": 1,
+    "meaning": "load_roberta adalah fungsi buatan proyek. Ia dipanggil untuk S1 dan S3. S2 tidak memakai RoBERTa, sehingga variabel ini menjadi None.",
+    "terms": [
+      [
+        "roberta",
+        "Variabel yang menerima model siap pakai."
+      ],
+      [
+        "load_roberta(...)",
+        "Pembungkus agar pemuatan checkpoint dan pemeriksaan dimensi konsisten."
+      ],
+      [
+        "scenario!='S2'",
+        "Baca: jika skenario bukan S2."
+      ]
+    ],
+    "connection": "Ini menjelaskan mengapa alur S1/S3 memiliki roberta [1,768], sedangkan S2 hanya mempunyai jalur BGE."
+  },
+  {
+    "chapter": "scenario",
+    "title": "3. Di dalam fungsi itu, API Transformers dipanggil",
+    "path": "src/aes/encoders.py",
+    "anchor": "model=AutoModel.from_pretrained(spec['checkpoint'],revision=spec['revision'],add_pooling_layer=False)",
+    "count": 1,
+    "meaning": "AutoModel.from_pretrained memuat encoder dari checkpoint. Model itu dikembalikan oleh load_roberta dan kemudian dipakai sebagai self.roberta.",
+    "terms": [
+      [
+        "AutoModel",
+        "Kelas Transformers yang memilih arsitektur encoder sesuai config checkpoint."
+      ],
+      [
+        "spec",
+        "Pengaturan model yang diteruskan ke fungsi."
+      ],
+      [
+        "spec['checkpoint']",
+        "Nama model: flax-community/indonesian-roberta-base."
+      ],
+      [
+        "add_pooling_layer=False",
+        "Pooler bawaan tidak dipakai karena proyek mengambil hidden token awal lalu mean window sendiri."
+      ]
+    ],
+    "connection": "IMPORT OK pada Cell 2 belum menjalankan baris pemuatan ini. Bukti forward checkpoint asli muncul di Cell 7–8."
+  },
+  {
+    "chapter": "scenario",
+    "title": "4. BGE dipanggil lewat BGEM3FlagModel",
+    "path": "src/aes/encoders.py",
+    "anchor": "self.encoder=BGEM3FlagModel(path,use_fp16=False,devices=[device],normalize_embeddings=True)",
+    "count": 1,
+    "meaning": "BGEM3FlagModel adalah kelas dari FlagEmbedding. Ia memuat BGE-M3 dari snapshot lokal yang revision-nya sudah dikunci.",
+    "terms": [
+      [
+        "BGEM3FlagModel",
+        "Nama kelas yang benar-benar dipakai untuk BGE-M3."
+      ],
+      [
+        "path",
+        "Lokasi snapshot checkpoint BAAI/bge-m3."
+      ],
+      [
+        "self.encoder",
+        "Tempat menyimpan encoder BGE pada objek BGEEncoder."
+      ]
+    ],
+    "connection": "Cell 7 menampilkan checkpoint BAAI/bge-m3 dan dense 1024 dimensi. Nama BGEEncoder adalah pembungkus proyek, bukan checkpoint baru."
+  },
+  {
+    "chapter": "scenario",
+    "title": "5. Proyeksi memendekkan vektor BGE",
+    "path": "src/aes/model.py",
+    "anchor": "features['projection']=self.projection(bge)",
+    "count": 1,
+    "meaning": "self.projection menjalankan Linear(1024,256) lalu LayerNorm. Encoder BGE tetap frozen, tetapi proyeksi ini belajar saat training.",
+    "terms": [
+      [
+        "bge",
+        "Input dense BGE, [B,1024]."
+      ],
+      [
+        "self.projection",
+        "Lapisan trainable yang didefinisikan pada AESModel.__init__."
+      ],
+      [
+        "features['projection']",
+        "Vektor hasil proyeksi yang dapat diperlihatkan untuk belajar."
+      ]
+    ],
+    "connection": "Cell 11 mencetak projection [1,256] setelah latihan S3."
+  },
+  {
+    "chapter": "scenario",
+    "title": "6. Concat menyambungkan dua representasi",
+    "path": "src/aes/model.py",
+    "anchor": "features['concat']=torch.cat([essay,features['projection']],dim=1)",
+    "count": 1,
+    "meaning": "torch.cat menempelkan koordinat RoBERTa dan proyeksi BGE. Tidak menjumlahkan kedua vektor.",
+    "terms": [
+      [
+        "essay",
+        "Representasi RoBERTa, [B,768]."
+      ],
+      [
+        "features['projection']",
+        "Representasi BGE setelah proyeksi, [B,256]."
+      ],
+      [
+        "dim=1",
+        "Gabungkan pada arah kolom/koordinat, bukan menambah jumlah esai."
+      ]
+    ],
+    "connection": "Output concat [1,1024] karena 768 + 256. Lima koordinat awal concat sama dengan RoBERTa; bagian proyeksi mulai pada posisi 768."
+  },
+  {
+    "chapter": "scenario",
+    "title": "7. Head membuat empat skor",
+    "path": "src/aes/model.py",
+    "anchor": "pred=self.head(self.dropout(features['concat']))",
+    "count": 1,
+    "meaning": "self.head mengubah representasi gabungan menjadi empat prediksi kontinu. Dropout dipakai saat training; pada eval mekanismenya dimatikan.",
+    "terms": [
+      [
+        "self.head",
+        "Lapisan Linear(1024,4) untuk S3. S1/S2 memiliki head sesuai arsitekturnya."
+      ],
+      [
+        "pred",
+        "Tensor empat skor prediksi, bukan acuan guru/AI."
+      ],
+      [
+        "self.dropout(...)",
+        "Bagian training untuk mengurangi ketergantungan pada koordinat tertentu."
+      ]
+    ],
+    "connection": "Cell 11 menampilkan output [1,4]. Angka individual lengkap tetap ada pada pembaca notebook pribadi; tabel evaluasi publik berisi hasil agregatnya."
+  },
+  {
+    "chapter": "train",
+    "title": "1. RoBERTa diizinkan belajar",
+    "path": "src/aes/encoders.py",
+    "anchor": "model.requires_grad_(True)",
+    "count": 1,
+    "meaning": "requires_grad_ mengaktifkan pelacakan perubahan untuk parameter RoBERTa. Setelah backward, optimizer dapat memakai gradien itu.",
+    "terms": [
+      [
+        "model",
+        "Encoder RoBERTa yang baru dimuat."
+      ],
+      [
+        "requires_grad_(True)",
+        "Aktifkan gradien; ini berbeda dari eval/train yang mengatur perilaku dropout."
+      ]
+    ],
+    "connection": "Tabel Cell 11 menyatakan sampel parameter roberta berubah pada S1/S3; bukan berarti semua parameter diperiksa satu per satu."
+  },
+  {
+    "chapter": "train",
+    "title": "2. BGE dibekukan",
+    "path": "src/aes/encoders.py",
+    "anchor": "for p in self.encoder.model.parameters(): p.requires_grad_(False)",
+    "count": 1,
+    "meaning": "Parameter encoder BGE tidak diperbarui. Head S2 serta proyeksi/head S3 tetap trainable.",
+    "terms": [
+      [
+        "p",
+        "Satu parameter dari encoder BGE."
+      ],
+      [
+        "requires_grad_(False)",
+        "Tidak membentuk gradien untuk parameter itu."
+      ]
+    ],
+    "connection": "Output Frozen/trainable aktual di Cell 8 menyebut bge_frozen=True, roberta_trainable=True dan projection_trainable=True."
+  },
+  {
+    "chapter": "train",
+    "title": "3. Prediksi dan acuan dibandingkan melalui loss",
+    "path": "src/aes/trainer.py",
+    "anchor": "p=engine.forward(ids);loss=loss_mse(p.float(),labels)",
+    "count": 1,
+    "meaning": "engine.forward memproses esai batch. loss_mse membandingkan prediksinya dengan labels. Di mode latihan ini labels berasal dari acuan AI.",
+    "terms": [
+      [
+        "p",
+        "Prediksi kontinu [B,4]."
+      ],
+      [
+        "labels",
+        "Acuan AI [B,4] untuk esai train yang sama."
+      ],
+      [
+        "loss_mse(...)",
+        "Fungsi pembanding, bukan metrik validation baru."
+      ]
+    ],
+    "connection": "MSE train sebelum/sesudah di Cell 11 mengukur kecocokan pada train. Tabel RMSE/Pearson/QWK/AC2 memakai validation yang dipisahkan."
+  },
+  {
+    "chapter": "train",
+    "title": "4. Backward menghitung arah perubahan",
+    "path": "src/aes/trainer.py",
+    "anchor": "scaler.scale(scaled_loss).backward()",
+    "count": 1,
+    "meaning": "backward menghitung gradien: petunjuk bagaimana bobot dapat diubah untuk mengurangi loss. Ia belum melakukan langkah optimizer.",
+    "terms": [
+      [
+        "scaled_loss",
+        "Loss yang bobotnya disesuaikan dengan ukuran micro-batch."
+      ],
+      [
+        "scaler",
+        "Helper untuk AMP; pada eksekusi CPU ini scaling GPU tidak aktif."
+      ],
+      [
+        "backward()",
+        "Menghitung gradien, bukan mencetak nilai esai."
+      ]
+    ],
+    "connection": "Backward dilakukan pada setiap micro-batch, lalu gradien dikumpulkan. Dua epoch run ini menghasilkan dua step optimizer, tetapi hanya satu step dengan LR aktif yang mengubah bobot."
+  },
+  {
+    "chapter": "train",
+    "title": "5. Optimizer menjalankan pembaruan",
+    "path": "src/aes/trainer.py",
+    "anchor": "scaler.step(optimizer);scaler.update();scheduler.step();optimizer_steps+=1",
+    "count": 1,
+    "meaning": "step meminta optimizer memperbarui bobot. Scheduler menyiapkan learning rate untuk langkah berikutnya. Jika LR nol, bobot tidak berubah pada langkah itu.",
+    "terms": [
+      [
+        "optimizer",
+        "AdamW: pelaksana perubahan parameter."
+      ],
+      [
+        "scheduler",
+        "Pengatur ukuran langkah (learning rate)."
+      ],
+      [
+        "optimizer_steps",
+        "Penghitung langkah optimizer; bukan jumlah esai."
+      ]
+    ],
+    "connection": "Cell 11: epoch=2 dan Step LR aktif=1 untuk ketiga skenario. Itulah mengapa dua epoch belum berarti model sudah cukup terlatih."
+  },
+  {
+    "chapter": "metric",
+    "title": "1. Empat metrik dihitung dari pasangan validation",
+    "path": "src/aes/ai_learning.py",
+    "anchor": "metrics=evaluate(y[valid],p,rubric)",
+    "count": 1,
+    "meaning": "evaluate menerima acuan AI dan prediksi untuk esai validation yang sama. Ia menghitung tiap trait terpisah.",
+    "terms": [
+      [
+        "y[valid]",
+        "Ambil hanya acuan validation dari matriks target."
+      ],
+      [
+        "p",
+        "Prediksi validation dari model setelah latihan tetap selesai."
+      ],
+      [
+        "rubric",
+        "Aturan kategori dan urutan trait dari JSON."
+      ]
+    ],
+    "connection": "Cell 11 menghasilkan 12 baris: 3 skenario × 4 trait. Parameter bernama teacher di modul metrics adalah nama generik source; pada mode ini nilai yang masuk adalah AI, bukan guru."
+  },
+  {
+    "chapter": "metric",
+    "title": "2. RMSE memakai prediksi kontinu asli",
+    "path": "src/aes/metrics.py",
+    "anchor": "rmse=float(np.sqrt(np.mean((a-b)**2)))",
+    "count": 1,
+    "meaning": "a dan b adalah satu kolom trait. Selisih dikuadratkan, dirata-ratakan, lalu diakar. Kategori yang dibulatkan tidak dipakai di baris ini.",
+    "terms": [
+      [
+        "a",
+        "Acuan pada trait yang sedang dihitung."
+      ],
+      [
+        "b",
+        "Prediksi kontinu asli pada trait itu."
+      ],
+      [
+        "**2",
+        "Pangkat dua; ini berbeda dari **windows yang membuka kamus argumen."
+      ],
+      [
+        "np.mean / np.sqrt",
+        "Rata-rata / akar kuadrat dari NumPy."
+      ]
+    ],
+    "connection": "Untuk S3–isi pada Cell 11: sum kuadrat error 3,926154, mean 0,981539, RMSE 0,990726. Angka ini dihitung ulang pada audit, bukan contoh buatan."
+  },
+  {
+    "chapter": "metric",
+    "title": "3. Konversi kategori dilakukan pada salinan",
+    "path": "src/aes/metrics.py",
+    "anchor": "o=ordinal_prediction(b,t); reasons={}",
+    "count": 1,
+    "meaning": "ordinal_prediction mengubah salinan prediksi ke kategori 1–5 untuk QWK/AC2. Prediksi asli b tetap dipakai untuk RMSE/Pearson.",
+    "terms": [
+      [
+        "o",
+        "Kategori prediksi sesudah clipping dan nearest category."
+      ],
+      [
+        "t",
+        "Aturan trait dari rubrik."
+      ],
+      [
+        "reasons",
+        "Tempat mencatat alasan metrik undefined."
+      ]
+    ],
+    "connection": "S3–isi: kategori prediksi semuanya 3, QWK=0 dan AC2≈0,951807. Angka kontinu tetap berbeda, sehingga Pearson-nya bukan undefined."
+  },
+  {
+    "chapter": "bias",
+    "title": "1. Hasil dilabeli scope latihan AI",
+    "path": "src/aes/ai_learning.py",
+    "anchor": "'note':'Latihan meniru usulan AI pada transkripsi draf; bukan akurasi terhadap guru atau hasil penelitian.'",
+    "count": 1,
+    "meaning": "Program menambahkan keterangan sumber acuan pada laporan. Nilai metrik tidak boleh dipindahkan menjadi klaim akurasi terhadap guru.",
+    "terms": [
+      [
+        "scope",
+        "Jenis penggunaan hasil: latihan acuan AI."
+      ],
+      [
+        "reference_source",
+        "Siapa pemberi acuan yang dibandingkan dengan model."
+      ]
+    ],
+    "connection": "Keterangan di bawah tabel Cell 11 sama dengan sumber hasil buku. Kekhawatiran bias penilaian AI tidak dapat diselesaikan hanya dari angka RMSE."
+  },
+  {
+    "chapter": "lanjut",
+    "title": "1. Kelompok dijaga tetap bersama saat split",
+    "path": "src/aes/ai_learning.py",
+    "anchor": "GroupShuffleSplit(n_splits=1,test_size=fraction,random_state=seed)",
+    "count": 1,
+    "meaning": "GroupShuffleSplit membagi kelompok, bukan memecah setiap teks secara bebas. fraction=.5 pada run terakhir menghasilkan 4/4 setelah dua teks ditunda.",
+    "terms": [
+      [
+        "GroupShuffleSplit",
+        "Pembagi data dari scikit-learn."
+      ],
+      [
+        "fraction",
+        "Proporsi kelompok untuk holdout latihan: 0,5 pada kode aktif ini."
+      ],
+      [
+        "seed",
+        "Nomor pengaturan acak agar pembagian dapat diulang."
+      ]
+    ],
+    "connection": "Output Cell 11 mencetak empat train, empat validation dan dua ditunda. Tombol 8/2 di buku hanya ilustrasi; kode Colab tidak diubah untuk menjalankannya."
+  }
+]

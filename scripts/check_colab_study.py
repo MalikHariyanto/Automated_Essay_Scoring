@@ -132,8 +132,12 @@ def check(private_notebook=None):
             assert page.locator('#mark-read').is_checked()
             page.locator('#reset').click()
             assert page.locator('#progress-text').inner_text().startswith('0 dari')
-            page.locator('#page-metric [data-correct="true"]').click()
-            assert 'Benar' in page.locator('#page-metric .quiz-feedback').inner_text()
+            assert page.locator('[data-quiz]').count() == 0
+            assert page.locator('.code-lesson').count() == 27
+            page.locator('#tab-scenario').click()
+            assert 'AutoModel.from_pretrained' in page.locator('#page-scenario .guided-code').inner_text()
+            assert 'self.roberta' in page.locator('#page-scenario .guided-code').inner_text()
+            page.locator('#tab-metric').click()
             page.locator('#theme').click()
             assert page.locator('html').get_attribute('data-theme') == 'dark'
             page.screenshot(path=str(out / 'desktop_metrics_dark.png'))
@@ -207,14 +211,14 @@ def check(private_notebook=None):
                       'AC2_fixtures_matching_R': len(r_references),
                       'origin': 'Local HTTP; no user-facing localhost preview.',
                       'page_errors': errors, 'external_resource_requests': 0,
-                      'chapters': 11, 'source_files': 17, 'code_cells': 11,
+                      'chapters': 11, 'source_files': 17, 'code_cells': 11, 'guided_code_steps': 27, 'quizzes': 0,
                       'actual_metric_rows': 12, 'metric_fixtures_matching_Python': len(cases),
                       'window_coverage_cases': 9, 'optimizer_schedule_cases': 18,
                       'private_actual_notebook_cells_checked': private_cells,
                       'untrusted_HTML_not_executed': True, 'private_data_not_in_localStorage': True,
                       'mobile_horizontal_overflow': False, 'print_all_chapters': True,
                       'tested_interactions': ['tabs/keyboard', 'language modes', 'theme',
-                          'reading persistence/reset', 'quizzes', 'source dropdown',
+                          'reading persistence/reset', 'guided code names and explanation', 'source dropdown',
                           'S1/S2/S3 batch shapes', 'window boundaries',
                           'LR scheduling', 'metric filter/trace', 'numeric input errors',
                           '8/2 hypothetical diagram', 'local notebook open/forget']}

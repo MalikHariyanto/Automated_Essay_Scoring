@@ -175,7 +175,17 @@ def build(notebook=None):
     for cell in nb['cells']:
         if cell['cell_type'] == 'markdown': heading = ''.join(cell['source']).splitlines()[0].lstrip('# ')
         else: cells.append({'number': len(cells) + 1, 'title': heading, 'source': ''.join(cell['source'])})
-    payload = {'snapshot': snapshot, 'sources': sources, 'cells': cells}
+    lessons = json.loads((ROOT / 'scripts/colab_code_lessons.json').read_text())
+    by_path = {item['path']: item for item in sources}
+    for lesson in lessons:
+        lines = by_path[lesson['path']]['source'].splitlines()
+        matches = [i for i, line in enumerate(lines) if lesson['anchor'] in line]
+        if len(matches) != 1:
+            raise ValueError('Potongan kode harus cocok satu baris source: ' + lesson['title'])
+        start = matches[0]
+        lesson['line'] = start + 1
+        lesson['code'] = '\n'.join(lines[start:start + lesson['count']])
+    payload = {'snapshot': snapshot, 'sources': sources, 'cells': cells, 'lessons': lessons}
     encoded = json.dumps(payload, ensure_ascii=False).replace('<', '\\u003c')
     template = (ROOT / 'scripts/templates/colab_study.html').read_text()
     TARGET.write_text(template.replace('__STUDY_DATA__', encoded))

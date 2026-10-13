@@ -13,7 +13,7 @@ Pilihan **Santai** menjelaskan istilah dengan bahasa sederhana; **Teknis** mempe
 
 ## Isi
 
-Sebelas bab membahas setup, input/audit, cleaning, token/window, vektor/CLS, S1/S2/S3, loss/training, empat metrik, error/bias, pertanyaan 8/2, dan peta kode. Buku memuat 11 source cell Colab, 17 file source/config, 12 baris hasil evaluasi aktual, shapes dan contoh lima koordinat vektor, MSE train sebelum/sesudah, serta walkthrough agregat S3–isi.
+Sebelas bab membahas setup, input/audit, cleaning, token/window, vektor/CLS, S1/S2/S3, loss/training, empat metrik, error/bias, pertanyaan 8/2, dan peta kode. Buku memuat 27 langkah penjelasan kode yang selalu terlihat, 11 source cell Colab, 17 file source/config, 12 baris hasil evaluasi aktual, shapes dan contoh lima koordinat vektor, MSE train sebelum/sesudah, serta walkthrough agregat S3–isi.
 
 Angka aktual berasal dari notebook pada commit `0b52413` yang sudah diaudit, bukan eksperimen baru. Training menggunakan usulan AI pada delapan teks draf; empat train dan empat validation, dua teks terpotong ditunda. Tidak ada skor guru/penelitian baru. Ilustrasi 8/2 berlaku bila sepuluh teks layak; sekitar 6/2 jika delapan layak, dengan kelompok tetap utuh. Simulator tidak mengubah split, model, atau hasil notebook.
 
@@ -27,7 +27,7 @@ Pembaca memakai file lokal dalam memori browser. Tidak mengunggahnya ke internet
 
 Window simulator menunjukkan coverage isi dengan capacity 510/stride 382. Diagram S1/S2/S3 dapat mengganti B untuk mempelajari shapes. Simulator LR memperlihatkan mengapa 4 dan 8 esai train, pada effective batch 8 dan dua epoch, sama-sama hanya menghasilkan satu update aktif. Lab metrik memakai angka ilustrasi yang bisa diubah; RMSE/Pearson raw, QWK/AC2 kategori, midpoint ke bawah, undefined tetap dijelaskan. Semua latihan ini matematika, tidak disimpan sebagai dataset/skor siswa.
 
-Navigasi, mode baca, quiz, theme, penyimpanan progres, input kosong/extreme, pembaca file, mobile dan print diperiksa di Chromium. Perhitungan JS dicocokkan ke Python dan backend R. Bukti tersimpan di `docs/verification/colab_study_html.json`. Tidak menjalankan training ML baru pada tugas HTML ini.
+Navigasi, mode baca, penjelasan kode runtut, theme, penyimpanan progres, input kosong/extreme, pembaca file, mobile dan print diperiksa di Chromium. Perhitungan JS dicocokkan ke Python dan backend R. Bukti versi awal tersimpan di `docs/verification/colab_study_html.json`; versi tanpa kuis dengan penjelasan kode terdapat di `docs/verification/colab_code_explanations.json`. Tidak menjalankan training ML baru pada tugas HTML ini.
 
 ## Memperbarui buku sebagai developer
 
@@ -36,3 +36,11 @@ Navigasi, mode baca, quiz, theme, penyimpanan progres, input kosong/extreme, pem
 `--notebook` dibatasi checksum notebook Colab yang diaudit; bukan importer umum bagi hasil baru tanpa audit. Untuk snapshot baru, audit dulu sumber/hasil dan aturan privasi sebelum memperbarui extractor. Snapshot tidak berisi teks, ID, skor individual, rubric descriptors, workbook, cache atau bobot.
 
 Browser verification menggunakan Playwright + Chromium yang tersedia di lingkungan developer dan dependency proyek, bukan dependency untuk pembaca HTML. Contoh perintah cloud: `AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript /workspace/aes-venv/bin/python scripts/check_colab_study.py`. `--private-notebook` opsional menguji pembaca dengan notebook lokal; hasil privat tidak dicetak ke bukti publik.
+
+## Membaca kode sebagai pemula
+
+Kuis dihapus sesuai preferensi pengguna. Pada setiap proses, baca **Baca kode pelan-pelan** sebelum kotak output: nama yang dipanggil → tugas baris → arti variabel/tanda → hubungan ke cell/output Colab. Potongan diambil dari source asli dan diperiksa kesesuaiannya saat build. Fungsi lengkap masih tersedia sebagai bacaan lanjutan.
+
+Contoh RoBERTa: checkpoint `flax-community/indonesian-roberta-base` → fungsi proyek `load_roberta(...)` → API Transformers `AutoModel.from_pretrained(...)` → pemakaian model `self.roberta(**windows)` → ambil hidden token awal → mean window → head empat output. Tab **Jelajah kode** menyediakan peta nama model dan lima tanda Python yang cukup dikenali dulu.
+
+Output aktual tetap snapshot Colab `0b52413`; perubahan penjelasan tidak melatih ulang atau mengganti angka. Contoh CLS sebelum latihan (dua window) dan forward setelah latihan (contoh satu window) diberi konteks agar shape berbeda tidak dianggap error. Data pribadi lengkap tetap dibuka lokal dari notebook sendiri.
