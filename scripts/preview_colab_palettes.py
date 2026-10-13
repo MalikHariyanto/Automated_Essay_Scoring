@@ -31,7 +31,7 @@ with sync_playwright() as p:
   page.locator('[data-palette-choice='+name+']').focus();page.keyboard.press('Enter')
   assert page.evaluate('JSON.parse(localStorage.getItem("aes-study-v2:palette-main"))')==name
   page.goto(origin+'/docs/belajar_colab_AI_interaktif.html')
-  assert page.locator('html').get_attribute('data-palette')=='rose'
+  assert page.locator('html').get_attribute('data-palette')=='navy'
   for width in [390,768,1024,1440]:
    page.set_viewport_size({'width':width,'height':844})
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(name,width)
@@ -42,9 +42,9 @@ with sync_playwright() as p:
    page.locator('#tab-mulai').click()
   page.locator('#theme').click()
   assert page.locator('html').get_attribute('data-theme')=='dark'
-  assert page.locator('html').get_attribute('data-palette')=='rose'
+  assert page.locator('html').get_attribute('data-palette')=='navy'
   assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-  result['palettes'][name]={'colors':colors,'preview':f'docs/previews/colab_classy_{name}.png','png_sha256':hashlib.sha256((target/f'colab_classy_{name}.png').read_bytes()).hexdigest(),'widths_checked':[390,768,1024,1440],'keyboard_activation':True,'selected_rose_after_reload':True,'dark_theme_compatible':True}
+  result['palettes'][name]={'colors':colors,'preview':f'docs/previews/colab_classy_{name}.png','png_sha256':hashlib.sha256((target/f'colab_classy_{name}.png').read_bytes()).hexdigest(),'widths_checked':[390,768,1024,1440],'keyboard_activation':True,'selected_navy_after_reload':True,'dark_theme_compatible':True}
   context.close()
  browser.close()
 server.shutdown()

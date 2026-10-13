@@ -127,6 +127,27 @@ def extract_snapshot(path):
     setup = stream(nb['cells'][4])
     versions = {name: re.search(re.escape(name) + r': (\S+)', setup).group(1)
                 for name in ['numpy', 'scipy', 'scikit-learn', 'torch', 'transformers', 'FlagEmbedding']}
+    inspection = stream(nb['cells'][16])
+    inspection_shapes = {scenario: ast.literal_eval(value)
+                         for scenario, value in re.findall(r'(S[123]) \| SHAPES AKTUAL: (.*)', inspection)}
+    trained_shapes = {scenario: ast.literal_eval(value)
+                      for scenario, value in re.findall(r'(S[123]) FORWARD SETELAH LATIHAN AI: (.*)', final_stream)}
+    # Shapes and aggregate matrices only: no per-essay predictions or IDs.
+    for shapes in [inspection_shapes, trained_shapes]:
+        if set(shapes) != {'S1', 'S2', 'S3'} or any(
+            not isinstance(v, list) or not all(isinstance(n, int) for n in v)
+            for values in shapes.values() for v in values.values()
+        ):
+            raise ValueError('Shape encoder harus tiga skenario dengan dimensi integer.')
+    reference_table = next(t for t in tables(nb['cells'][18]) if t[0][0] == 'Fixture unit test')
+    reference_rows = [{'fixture': int(r[0]), 'python': float(r[1]),
+                       'R_irrCAC': float(r[2]), 'absolute_error': float(r[3])}
+                      for r in reference_table[1:]]
+    status = following_dict(stream(nb['cells'][20]), '')
+    status = {key: status[key] for key in ['mode', 'status', 'ai_training_run',
+                                         'teacher_training_run', 'reused_completed_run']}
+    numeric_matrix = lambda table: [[float(v) for v in row[1:]] for row in table[1:]]
+    pooled = ast.literal_eval(re.search(r'Proporsi kategori gabungan: (.*)', final_stream).group(1))
     snapshot = {
         'saved_commit': '0b52413771ed535b1767a23924f0b980e0159530',
         'notebook_sha256': hashlib.sha256(Path(path).read_bytes()).hexdigest(),
@@ -145,9 +166,17 @@ def extract_snapshot(path):
                           'example_content_tokens': next(iter(roberta_stats.values()))['content_tokens'],
                           'example_window_lengths': [512, 134]},
         'vector_first_five': vectors,
+        'inspection_shapes': inspection_shapes, 'trained_shapes': trained_shapes,
+        'ac2_fixture_rows': reference_rows, 'training_status': status,
+        'cleaning_changed': re.search(r'Berubah: (True|False)', stream(nb['cells'][12])).group(1) == 'True',
+        'public_cell_output_counts': [len(c.get('outputs', [])) for c in nb['cells'] if c['cell_type'] == 'code'],
         'trace': {'scenario': 'S3', 'trait': 'isi', 'RMSE': rmse, 'Pearson': pearson,
                   'observed_counts': observed, 'Pa': 0.96875, 'Pe': 0.3515625,
-                  'observed_disagreement': 0.03125, 'expected_disagreement': 0.03125},
+                  'observed_disagreement': 0.03125, 'expected_disagreement': 0.03125,
+                  'expected_counts': numeric_matrix(matrix_tables[1]),
+                  'disagreement_weights': numeric_matrix(matrix_tables[2]),
+                  'agreement_weights': numeric_matrix(matrix_tables[3]),
+                  'pooled_category_proportions': pooled},
         'privacy': 'No essay text/IDs, individual scores, original rubric descriptors, workbook, cache or weights.',
     }
     if len(rows) != 12 or len(training) != 3:
@@ -202,6 +231,8 @@ def build(notebook=None, private_output=None):
                'lessons': lessons, 'cell_notes': cell_notes}
     encoded = json.dumps(payload, ensure_ascii=False).replace('<', '\\u003c')
     template = (ROOT / 'scripts/templates/colab_study.html').read_text()
+    template = template.replace('__OUTPUT_STUDY_JS__',
+                                (ROOT / 'scripts/templates/colab_outputs.js').read_text())
     public_html = template.replace('__STUDY_DATA__', encoded).replace('__PRIVATE_NOTEBOOK__', 'null')
     TARGET.write_text(public_html)
     if private_output:

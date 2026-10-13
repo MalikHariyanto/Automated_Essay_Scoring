@@ -19,7 +19,9 @@ Snapshot diperbarui dari notebook terbaru yang diunggah pengguna (SHA-256 `47302
 
 ## Melihat output pribadi lengkap
 
-Teks siswa, rubric descriptors dan nilai per esai tidak dipublikasikan di buku. Di Colab pilih **File → Download → Download .ipynb**. Pada tab pertama HTML pilih **Pilih notebook pribadi**; source dan output tersimpan muncul pada pilihan **Colab lo** di Meja belajar tiap tab. Pilih cell yang ingin dibaca; tombol **Ke output tersimpan** membawa langsung ke hasil di dalam box. Tabel ditampilkan sebagai tabel teks aman, disertai catatan cara membacanya.
+Tab **Colab lo** langsung menampilkan source sebelas cell serta ringkasan output terbaru tanpa unggahan. Pilih cell dan gunakan tombol **Ke output tersimpan**. Ini ringkasan yang disaring dari notebook pengguna, bukan salinan seluruh stdout.
+
+Teks siswa, rubric descriptors dan nilai per esai tidak dipublikasikan di buku. Untuk bagian pribadi itu, di Colab pilih **File → Download → Download .ipynb**. Pada tab pertama HTML pilih **Pilih notebook pribadi**; source dan output tersimpan muncul pada pilihan **Colab lo** di Meja belajar tiap tab. Pilih cell yang ingin dibaca; tombol **Ke output tersimpan** membawa langsung ke hasil di dalam box. Tabel ditampilkan sebagai tabel teks aman, disertai catatan cara membacanya.
 
 Pembaca memakai file lokal dalam memori browser. Tidak mengunggahnya ke internet atau menyimpan data tersebut dalam localStorage. Script/widget dari output tidak dijalankan. Gunakan **Lepaskan notebook pribadi** atau reload untuk melepaskannya. Tabel ringkas publik tetap snapshot audit; tidak dicampur dengan hasil file yang mungkin berbeda. Jangan membagikan notebook terisi/hasil privat ke repo publik.
 
@@ -31,7 +33,7 @@ Navigasi, mode baca, sticky note, highlight baris, scroll di dalam box, tema, pe
 
 ## Memperbarui buku sebagai developer
 
-`python scripts/build_colab_study.py` membangun ulang HTML dari snapshot agregat aman yang sudah ada dan whitelist source publik. Tidak memerlukan dataset siswa. Template berada di `scripts/templates/colab_study.html`.
+`python scripts/build_colab_study.py` membangun ulang HTML dari snapshot agregat aman yang sudah ada dan whitelist source publik. Tidak memerlukan dataset siswa. Template berada di `scripts/templates/colab_study.html`; modul penjelasan output di `scripts/templates/colab_outputs.js` dimasukkan saat build agar HTML tetap satu file offline.
 
 `--notebook` dibatasi checksum notebook Colab yang diaudit; bukan importer umum bagi hasil baru tanpa audit. Untuk snapshot baru, audit dulu sumber/hasil dan aturan privasi sebelum memperbarui extractor. Notebook terbaru di atas sudah diaudit; source cocok dan hasil agregat tidak berubah. Snapshot tidak berisi teks, ID, skor individual, rubric descriptors, workbook, cache atau bobot.
 
@@ -58,12 +60,24 @@ File pribadi harus berada dalam `outputs/`, yang diabaikan Git. File ini berisi 
 
 ## Tiga preview warna classy
 
-Tema utama terbaru yang dipilih pengguna adalah **Rose & Navy** (bawah kanan): pink, cokelat, dan navy. Preferensi warna percobaan sebelumnya tidak mengganti pilihan awal ini.
+Tema utama terbaru yang dipilih pengguna adalah **Navy & Cognac** (atas kiri): navy, putih, dan cokelat. Preferensi warna percobaan sebelumnya tidak mengganti pilihan awal ini.
 
-Di bagian atas halaman pertama, klik **Navy & Cognac** (atas kiri), **Olive & Cream** (bawah kiri), atau **Rose & Navy** (bawah kanan). Warna diadaptasi dari referensi Old Money pengguna. Pilihan berlaku pada seluruh buku dan sticky note selama halaman dibuka. Saat membuka ulang buku, tema pilihan pengguna **Rose & Navy** selalu diterapkan; pilihan preview yang tersimpan sebelumnya tidak menimpanya. Tema terang/gelap tetap tersedia.
+Di bagian atas halaman pertama, klik **Navy & Cognac** (atas kiri), **Olive & Cream** (bawah kiri), atau **Rose & Navy** (bawah kanan). Warna diadaptasi dari referensi Old Money pengguna. Pilihan berlaku pada seluruh buku dan sticky note selama halaman dibuka. Saat membuka ulang buku, tema pilihan pengguna **Navy & Cognac** selalu diterapkan; pilihan preview yang tersimpan sebelumnya tidak menimpanya. Tema terang/gelap tetap tersedia.
 
 Gambar halaman pertama: [navy](previews/colab_classy_navy.png), [olive](previews/colab_classy_olive.png), [rose](previews/colab_classy_rose.png). Gambar hanya berasal dari buku publik yang menampilkan hasil agregat.
 
 Untuk membuat ulang ketiga preview dan memeriksa tombol, keyboard, penyimpanan pilihan, mode gelap, serta layout 390/768/1024/1440 px, jalankan `python scripts/preview_colab_palettes.py`. Build HTML tetap `python scripts/build_colab_study.py`. Bukti ada di `docs/verification/colab_classy_palettes.json`.
 
 Versi bernama **belajar_colab_Rose_Navy.html** memuat buku publik yang sama dengan tema bawah kanan saat dibuka. Untuk membangunnya ulang: `python scripts/build_colab_study.py` lalu `cp docs/belajar_colab_AI_interaktif.html docs/belajar_colab_Rose_Navy.html`. Mode perbandingan developer harus diaktifkan eksplisit dengan `?preview=1&palette=navy` (atau `olive`/`rose`); URL `?palette=navy` saja tidak mengganti tema buku terbitan.
+
+## Output yang dibedah seperti kode
+
+**Output aktual** kini memiliki catatan untuk field setup, audit, cleaning, token/window, matriks representasi/shape, koordinat vektor, concat, status training, MSE, langkah optimizer, empat metrik, dan pembanding sederhana. Catatan menjelaskan apa angkanya, arti sumbu/field, dan batas kesimpulannya.
+
+Pada tab **Empat metrik → Output aktual**, pilih salah satu dari empat matriks S3–isi: hitungan pasangan, hitungan harapan QWK, bobot disagreement, atau bobot agreement AC2. Klik sel; tombol panah memindahkan pilihan. Baris selalu acuan AI, kolom selalu prediksi. Sel baris 4/kolom 3 pada hitungan aktual berisi 2: dua pasangan memiliki acuan 4 dan prediksi kategori 3. Angka 0 di matriks hitungan berarti tidak ada pasangan; diagonal bobot disagreement 0 berarti kategori cocok; diagonal agreement 1 berarti bobot cocok penuh. Ini tiga arti berbeda.
+
+Rumus harapan, bobot, Pa, Pe, dan QWK diverifikasi ulang terhadap matriks dari notebook dan modul Python. Hasil angka tersimpan tidak diganti; tidak melatih model atau menjalankan ulang notebook. Bukti pemeriksaan versi ini ada di `docs/verification/colab_output_explanations.json`.
+
+File baru **belajar_colab_Navy_Cognac.html** adalah salinan buku utama terbaru. Buat ulang dengan `python scripts/build_colab_study.py` lalu `cp docs/belajar_colab_AI_interaktif.html docs/belajar_colab_Navy_Cognac.html`. Gunakan file ini untuk versi navy terbaru; file/tautan Rose_Navy sebelumnya merupakan versi historis.
+
+Preview versi ini: [Colab lo sudah terisi](previews/colab_public_cells.png) dan [penjelasan sel matriks](previews/colab_output_matrix.png).

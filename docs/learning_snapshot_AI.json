@@ -228,6 +228,167 @@
       -0.20673173666000366
     ]
   },
+  "inspection_shapes": {
+    "S1": {
+      "roberta": [
+        1,
+        768
+      ],
+      "roberta_window_cls": [
+        2,
+        768
+      ],
+      "output": [
+        1,
+        4
+      ]
+    },
+    "S2": {
+      "bge": [
+        1,
+        1024
+      ],
+      "mlp_hidden": [
+        1,
+        256
+      ],
+      "output": [
+        1,
+        4
+      ]
+    },
+    "S3": {
+      "roberta": [
+        1,
+        768
+      ],
+      "roberta_window_cls": [
+        2,
+        768
+      ],
+      "bge": [
+        1,
+        1024
+      ],
+      "projection": [
+        1,
+        256
+      ],
+      "concat": [
+        1,
+        1024
+      ],
+      "output": [
+        1,
+        4
+      ]
+    }
+  },
+  "trained_shapes": {
+    "S1": {
+      "roberta": [
+        1,
+        768
+      ],
+      "roberta_window_cls": [
+        1,
+        768
+      ],
+      "output": [
+        1,
+        4
+      ]
+    },
+    "S2": {
+      "bge": [
+        1,
+        1024
+      ],
+      "output": [
+        1,
+        4
+      ]
+    },
+    "S3": {
+      "roberta": [
+        1,
+        768
+      ],
+      "roberta_window_cls": [
+        1,
+        768
+      ],
+      "bge": [
+        1,
+        1024
+      ],
+      "projection": [
+        1,
+        256
+      ],
+      "concat": [
+        1,
+        1024
+      ],
+      "output": [
+        1,
+        4
+      ]
+    }
+  },
+  "ac2_fixture_rows": [
+    {
+      "fixture": 1,
+      "python": 1.0,
+      "R_irrCAC": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "fixture": 2,
+      "python": 0.912088,
+      "R_irrCAC": 0.91209,
+      "absolute_error": 2e-06
+    },
+    {
+      "fixture": 3,
+      "python": 0.865546,
+      "R_irrCAC": 0.86555,
+      "absolute_error": 4e-06
+    },
+    {
+      "fixture": 4,
+      "python": 1.0,
+      "R_irrCAC": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "fixture": 5,
+      "python": -1.0,
+      "R_irrCAC": -1.0,
+      "absolute_error": 0.0
+    }
+  ],
+  "training_status": {
+    "mode": "ai_learning",
+    "status": "completed_ai_reference_learning",
+    "ai_training_run": true,
+    "teacher_training_run": false,
+    "reused_completed_run": false
+  },
+  "cleaning_changed": false,
+  "public_cell_output_counts": [
+    1,
+    1,
+    3,
+    5,
+    1,
+    1,
+    5,
+    9,
+    2,
+    1,
+    15
+  ],
   "trace": {
     "scenario": "S3",
     "trait": "isi",
@@ -285,7 +446,125 @@
     "Pa": 0.96875,
     "Pe": 0.3515625,
     "observed_disagreement": 0.03125,
-    "expected_disagreement": 0.03125
+    "expected_disagreement": 0.03125,
+    "expected_counts": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "disagreement_weights": [
+      [
+        0.0,
+        0.0625,
+        0.25,
+        0.5625,
+        1.0
+      ],
+      [
+        0.0625,
+        0.0,
+        0.0625,
+        0.25,
+        0.5625
+      ],
+      [
+        0.25,
+        0.0625,
+        0.0,
+        0.0625,
+        0.25
+      ],
+      [
+        0.5625,
+        0.25,
+        0.0625,
+        0.0,
+        0.0625
+      ],
+      [
+        1.0,
+        0.5625,
+        0.25,
+        0.0625,
+        0.0
+      ]
+    ],
+    "agreement_weights": [
+      [
+        1.0,
+        0.9375,
+        0.75,
+        0.4375,
+        0.0
+      ],
+      [
+        0.9375,
+        1.0,
+        0.9375,
+        0.75,
+        0.4375
+      ],
+      [
+        0.75,
+        0.9375,
+        1.0,
+        0.9375,
+        0.75
+      ],
+      [
+        0.4375,
+        0.75,
+        0.9375,
+        1.0,
+        0.9375
+      ],
+      [
+        0.0,
+        0.4375,
+        0.75,
+        0.9375,
+        1.0
+      ]
+    ],
+    "pooled_category_proportions": [
+      0.0,
+      0.0,
+      0.75,
+      0.25,
+      0.0
+    ]
   },
   "privacy": "No essay text/IDs, individual scores, original rubric descriptors, workbook, cache or weights."
 }

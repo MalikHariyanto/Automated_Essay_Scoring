@@ -41,10 +41,10 @@ def check(private_notebook=None, private_html=None):
             errors, requests = [], []
             page.on('pageerror', lambda e: errors.append(str(e)))
             page.on('request', lambda r: requests.append(r.url))
-            page.add_init_script("localStorage.setItem('aes-study-v2:palette-main',JSON.stringify('navy'));localStorage.setItem('aes-study-v2:palette-default',JSON.stringify('rose'))")
-            page.goto(origin + '/docs/belajar_colab_AI_interaktif.html?palette=navy')
+            page.add_init_script("localStorage.setItem('aes-study-v2:palette-main',JSON.stringify('rose'));localStorage.setItem('aes-study-v2:palette-default',JSON.stringify('navy'))")
+            page.goto(origin + '/docs/belajar_colab_AI_interaktif.html?palette=rose')
             assert page.locator('.palette-choice').count() == 3
-            assert page.locator('html').get_attribute('data-palette') == 'rose'
+            assert page.locator('html').get_attribute('data-palette') == 'navy'
             assert page.locator('.chapter-tab').count() == 11
             assert page.locator('.page:visible').count() == 1
             assert page.locator('#setup-output').inner_text().find('2.6.0+cpu') >= 0
@@ -55,6 +55,25 @@ def check(private_notebook=None, private_html=None):
                 assert page.locator('#page-' + chapter).is_visible()
                 assert page.locator('.page:visible').count() == 1
                 assert page.locator('#tab-' + chapter).get_attribute('aria-selected') == 'true'
+            # All eleven chapters have useful Colab source/output before an upload.
+            assert page.locator('.colab-placeholder').count() == 0
+            for chapter in ['mulai','input','cleaning','token','vector','scenario',
+                            'train','metric','bias','lanjut','code']:
+                page.locator('#tab-' + chapter).click()
+                page.locator('#desk-tab-' + chapter + '-colab').click()
+                public = page.locator('#desk-pane-' + chapter + '-colab .public-colab')
+                assert public.is_visible()
+                assert public.locator('.public-cell-output').inner_text().strip()
+                assert public.locator('.code-sheet').count() > 0
+                assert public.locator('.output-reading').count() > 0
+            page.locator('#tab-code').click()
+            public = page.locator('#desk-pane-code-colab .public-colab')
+            assert public.locator('.public-cell-select option').count() == 11
+            for cell in range(1, 12):
+                public.locator('select').select_option(str(cell))
+                assert public.locator('.public-cell-output').inner_text().strip()
+            assert public.locator('.public-cell-output tbody tr').count() >= 12
+            page.locator('#tab-mulai').click()
             page.locator('#tab-mulai').focus()
             page.keyboard.press('ArrowRight')
             assert page.locator('#page-input').is_visible()
@@ -100,6 +119,36 @@ def check(private_notebook=None, private_html=None):
                 assert metric in page.locator('#metric-walkthrough').inner_text()
             page.locator('[data-metric="AC2"]').click()
             assert '0.951807' in page.locator('#metric-walkthrough').inner_text()
+            matrix = page.locator('#desk-pane-metric-output .matrix-explorer')
+            assert matrix.locator('.matrix-cell').count() == 25
+            for kind, value in [('observed', 2), ('expected', 2),
+                                ('disagreement', .0625), ('agreement', .9375)]:
+                matrix.locator('[data-matrix-kind=' + kind + ']').click()
+                selected = matrix.locator('[data-row="3"][data-col="2"]')
+                selected.click()
+                assert float(selected.inner_text()) == value
+                assert 'Baris acuan 4 / kolom prediksi 3' in matrix.locator('.matrix-explanation').inner_text()
+            matrix.locator('[data-matrix-kind=observed]').click()
+            matrix.locator('[data-row="3"][data-col="2"]').focus()
+            page.keyboard.press('ArrowUp')
+            assert matrix.locator('[data-row="2"][data-col="2"]').get_attribute('aria-pressed') == 'true'
+            assert 'kategori cocok' in matrix.locator('.matrix-explanation').inner_text()
+            snapshot = page.evaluate('ColabStudy.snapshot')
+            observed = np.asarray(snapshot['trace']['observed_counts'])
+            n = observed.sum()
+            expected = np.outer(observed.sum(1), observed.sum(0)) / n
+            disagreement = ((np.arange(1, 6)[:, None] - np.arange(1, 6)[None, :]) / 4) ** 2
+            agreement = 1 - disagreement
+            assert np.allclose(expected, snapshot['trace']['expected_counts'], atol=1e-12)
+            assert np.allclose(disagreement, snapshot['trace']['disagreement_weights'], atol=1e-12)
+            assert np.allclose(agreement, snapshot['trace']['agreement_weights'], atol=1e-12)
+            assert abs((observed * disagreement).sum()/n - snapshot['trace']['observed_disagreement']) < 1e-12
+            pa = (observed * agreement).sum()/n
+            pooled = (observed.sum(1) + observed.sum(0))/(2*n)
+            pe = agreement.sum()*sum(pooled*(1-pooled))/(5*4)
+            assert abs(pa - snapshot['trace']['Pa']) < 1e-12
+            assert abs(pe - snapshot['trace']['Pe']) < 1e-12
+            assert sum(snapshot['public_cell_output_counts']) == 44
             rng = random.Random(2026)
             cases = [([1, 2, 3, 4, 5], [1.5, 2.5, 3.5, 4.5, 8]),
                      ([3, 3, 4, 4], [3, 3, 3, 3]),
@@ -228,7 +277,7 @@ def check(private_notebook=None, private_html=None):
                 for cell in range(1, 12):
                     page.locator('#private-cell-select').select_option(str(cell))
                     embedded_outputs += page.locator('.saved-output').count()
-                    assert page.locator('.output-note').count() == 1
+                    assert page.locator('#private-output-cells .output-note').count() == 1
                 assert embedded_outputs == 44
                 assert page.locator('.output-table table').count() > 0
                 assert page.evaluate('Boolean(window.PRIVATE_EXECUTED)') is False
@@ -254,12 +303,16 @@ def check(private_notebook=None, private_html=None):
                       'embedded_private_outputs_checked': embedded_outputs,
                       'untrusted_HTML_not_executed': True, 'private_data_not_in_localStorage': True,
                       'mobile_horizontal_overflow': False, 'print_control_removed': True, 'bounded_code_output_scroll': True,
-                      'cached_navy_and_old_palette_url_do_not_override_selected_rose': True,
+                      'cached_rose_and_old_palette_url_do_not_override_selected_navy': True,
+                      'chapters_with_public_colab_before_upload': 11,
+                      'public_cells_with_saved_output_summaries': 11,
+                      'four_matrices_matched_snapshot_and_formula': True,
+                      'matrix_cells_keyboard_click_explanations': True,
                       'tested_interactions': ['tabs/keyboard', 'language modes', 'theme',
                           'reading persistence/reset', 'guided code names and explanation', 'source dropdown',
                           'S1/S2/S3 batch shapes', 'window boundaries',
                           'LR scheduling', 'metric filter/trace', 'numeric input errors',
-                          '8/2 hypothetical diagram', 'local notebook open/forget', 'line highlight/margin notes', 'inner reading tabs/keyboard', 'bounded scrolling']}
+                          '8/2 hypothetical diagram', 'local notebook open/forget', 'line highlight/margin notes', 'inner reading tabs/keyboard', 'bounded scrolling', 'public Colab cells before upload', 'output field notes', 'matrix cell meanings/keyboard', 'four matrix formulas']}
             browser.close()
     finally:
         server.shutdown()
