@@ -58,7 +58,7 @@ File pribadi harus berada dalam `outputs/`, yang diabaikan Git. File ini berisi 
 
 ## Tiga preview warna classy
 
-Tema utama yang dipilih pengguna adalah **Navy & Cognac** (atas kiri): navy, putih, dan cokelat. Preferensi warna percobaan sebelumnya tidak mengganti pilihan awal ini.
+Tema utama terbaru yang dipilih pengguna adalah **Rose & Navy** (bawah kanan): pink, cokelat, dan navy. Preferensi warna percobaan sebelumnya tidak mengganti pilihan awal ini.
 
 Di bagian atas halaman pertama, klik **Navy & Cognac** (atas kiri), **Olive & Cream** (bawah kiri), atau **Rose & Navy** (bawah kanan). Warna diadaptasi dari referensi Old Money pengguna. Pilihan berlaku pada seluruh buku dan sticky note; disimpan lokal sebagai preferensi warna. Tema terang/gelap tetap tersedia.
 
