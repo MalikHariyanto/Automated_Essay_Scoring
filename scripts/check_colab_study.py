@@ -172,7 +172,7 @@ def check(private_notebook=None, private_html=None):
             assert 'TECHNICAL_OUTPUT' in page.locator('#private-output-cells').inner_text()
             assert page.evaluate('Boolean(window.PRIVATE_EXECUTED)') is False
             keys = page.evaluate('Object.keys(localStorage)')
-            assert all(k in ['aes-study-v2:theme', 'aes-study-v2:level', 'aes-study-v2:read', 'aes-study-v2:palette'] for k in keys)
+            assert all(k in ['aes-study-v2:theme', 'aes-study-v2:level', 'aes-study-v2:read', 'aes-study-v2:palette', 'aes-study-v2:palette-main'] for k in keys)
             page.locator('#forget-private-inline').click()
             assert page.locator('#private-output').is_hidden()
             private_cells = 0

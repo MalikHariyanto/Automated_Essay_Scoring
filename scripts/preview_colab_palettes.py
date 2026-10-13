@@ -29,7 +29,7 @@ with sync_playwright() as p:
    page.locator('[data-palette-choice='+choice+']').click()
    assert page.locator('html').get_attribute('data-palette')==choice
   page.locator('[data-palette-choice='+name+']').focus();page.keyboard.press('Enter')
-  assert page.evaluate('JSON.parse(localStorage.getItem("aes-study-v2:palette"))')==name
+  assert page.evaluate('JSON.parse(localStorage.getItem("aes-study-v2:palette-main"))')==name
   page.goto(origin+'/docs/belajar_colab_AI_interaktif.html')
   assert page.locator('html').get_attribute('data-palette')==name
   for width in [390,768,1024,1440]:

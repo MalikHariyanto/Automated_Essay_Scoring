@@ -73,7 +73,7 @@ html[data-palette] .code-sheet .syntax-number{color:#dbb68f}
 <main id="main" tabindex="-1">
 <section class="page" id="page-mulai" role="tabpanel" aria-labelledby="tab-mulai">
 <section class="palette-preview" aria-labelledby="palette-preview-title">
-<div class="palette-preview-head"><div><span class="eyebrow">Old Money / tiga pilihan warna</span><h2 id="palette-preview-title">Coba nuansa bukunya.</h2></div><p>Klik satu kombinasi. Lihat warna halaman ini berubah, termasuk sticky note-nya.</p></div>
+<div class="palette-preview-head"><div><span class="eyebrow">Old Money / tema pilihan lo</span><h2 id="palette-preview-title">Navy & Cognac.</h2></div><p>Navy, putih, dan cokelat jadi warna utama buku ini, termasuk sticky note-nya.</p></div>
 <div class="palette-choices" role="group" aria-label="Pilihan kombinasi warna">
 <button class="palette-choice" data-palette-choice="navy" aria-pressed="true"><span class="palette-dots" aria-hidden="true"><i style="background:#14275d"></i><i style="background:#ffffff"></i><i style="background:#a96e3a"></i></span><span><strong>01 / Navy & Cognac</strong><small>Atas kiri · navy, putih, cokelat</small></span></button>
 <button class="palette-choice" data-palette-choice="olive" aria-pressed="false"><span class="palette-dots" aria-hidden="true"><i style="background:#77724c"></i><i style="background:#b6aa97"></i><i style="background:#eee3cf"></i></span><span><strong>02 / Olive & Cream</strong><small>Bawah kiri · olive, taupe, krem</small></span></button>
@@ -200,8 +200,8 @@ let active=0,scenario='S3',metric='RMSE',privateNotebook=JSON.parse($('private-n
 function stored(k,fallback){try{return JSON.parse(localStorage.getItem('aes-study-v2:'+k))??fallback}catch(e){return fallback}}
 function store(k,v){try{localStorage.setItem('aes-study-v2:'+k,JSON.stringify(v))}catch(e){}}
 const paletteNames={navy:'01 / Navy & Cognac',olive:'02 / Olive & Cream',rose:'03 / Rose & Navy'},previewQuery=new URLSearchParams(location.search);
-function palette(value,persist=true){if(!Object.hasOwn(paletteNames,value))value='navy';document.documentElement.dataset.palette=value;document.querySelectorAll('[data-palette-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.paletteChoice===value)));$('palette-active').textContent='Preview aktif: '+paletteNames[value];if(persist)store('palette',value)}
-palette(previewQuery.get('palette')||stored('palette','navy'));
+function palette(value,persist=true){if(!Object.hasOwn(paletteNames,value))value='navy';document.documentElement.dataset.palette=value;document.querySelectorAll('[data-palette-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.paletteChoice===value)));$('palette-active').textContent='Preview aktif: '+paletteNames[value];if(persist)store('palette-main',value)}
+palette(previewQuery.get('palette')||stored('palette-main','navy'));
 document.querySelectorAll('[data-palette-choice]').forEach(b=>b.onclick=()=>palette(b.dataset.paletteChoice));
 
 let completed=new Set(stored('read',[]).filter(x=>chapters.some(c=>c[0]===x)));
