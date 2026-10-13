@@ -19,7 +19,7 @@ Sediakan file asli di lokasi tersebut atau ubah path. [Skema record](schemas/ess
 
 ## Pasang dan uji kode tanpa data siswa
 
-Dari root checkout, dengan Python 3.10+ (lingkungan yang diverifikasi: Python 3.12/Linux CPU):
+Dari root checkout, gunakan Python 3.12 (lingkungan yang diverifikasi: Linux CPU):
 
 ```bash
 python -m venv .venv
@@ -66,6 +66,10 @@ python scripts/smoke_real.py
 Script ini membutuhkan CSV/JSON asli dan `outputs/model_revisions.json` dari inspeksi encoder. Backward memakai target fixture teknis 3 untuk memeriksa mekanisme; nilai itu **tidak ditulis ke CSV**, tidak menjadi penilaian siswa, dan checkpoint teknisnya hanya sementara. Bukti smoke terpisah dari jumlah unit test.
 
 Notebook lokal/Colab memakai modul `src/aes` yang sama. Letakkan checkout lengkap pada runtime, atur ROOT dan path CSV/JSON pada cell konfigurasi. Data draf tetap bisa menjalankan cell inspeksi; cell supervised berhenti/skip dengan alasan khusus. Jangan commit notebook yang sudah berisi teks/output siswa; versi publik harus tanpa output.
+
+Untuk Colab, buka [notebook berurutan](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/01_belajar_alur_AES.ipynb). Pilih **CPU, Runtime version 2026.07 / Python 3.12**, lalu jalankan dari atas. Clone/update, setup, pengecekan import, dan pemilih CSV/JSON sudah ada di notebook. Default inspeksi tidak mengunduh encoder atau menjalankan training. Ubah `RUN_ENCODERS=True` setelah siap melihat checkpoint asli. [Panduan cell](docs/colab_berurutan.md) menjelaskan urutan dan batas bukti.
+
+Notebook menjalankan modul AES melalui `scripts/notebook_step.py` dalam proses baru di `outputs/notebook_env`. `scripts/setup_notebook.py` membuat lingkungan tanpa paket bawaan Colab, memasang lock CPU, menjalankan `pip check`, dan benar-benar mengimpor pustaka model. Ini menghindari konflik NumPy yang sudah dimuat di memori notebook. Log ada di `outputs/notebook_setup.log`; data sumber tidak diubah. Salinan `aes-learning/notebooks/` disamakan karena sebelumnya tersimpan dari Colab ke path tersebut.
 
 ## Training dan evaluasi setelah guru memberi skor
 

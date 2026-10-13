@@ -1,0 +1,130 @@
+{
+  "timestamp_utc": "2026-10-13T05:44:23.040445+00:00",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "source_at_test": {
+    "base_commit": "54cd33f0e98b7636e9d7cbdd11e90a64ea3da1fa",
+    "tracked_changes_and_new_source": true,
+    "file_sha256": {
+      "notebooks/01_belajar_alur_AES.ipynb": "baa60a50235c8e451895056bb77479857a83e1eb905fd0a618de56fd022d34ab",
+      "aes-learning/notebooks/01_belajar_alur_AES.ipynb": "baa60a50235c8e451895056bb77479857a83e1eb905fd0a618de56fd022d34ab",
+      "scripts/setup_notebook.py": "8d0a232824f46d49eabde53ca306c1871c3f931c1200fc4eca342ad5b45c7203",
+      "scripts/notebook_step.py": "5b232bc8d87c52ea8faf61ec9ea349876722953447efbe9cfe38184aa23513c4",
+      "scripts/setup_colab.sh": "4221a679d1705094362ddcee9d7f06a1efed81dc5afb943440e593bc64cc3365",
+      "tests/test_notebook_workflow.py": "7a63d4ff508f53c6398620649af19b841a3a35fff2c6b928e1571d52a012b369",
+      "requirements.lock.txt": "0ef05679a520858c2197eed684cec41610f8a901ccfc9247c861867b75360ee0"
+    }
+  },
+  "unit_test": {
+    "command": "AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript HF_HOME=/workspace/hf-cache OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 outputs/notebook_env/bin/python -m pytest -q -rA --junitxml=outputs/colab_cleanup/tests_final.xml",
+    "collection_command": "outputs/notebook_env/bin/python -m pytest --collect-only -q",
+    "exit_code": 0,
+    "counts": {
+      "collected": 32,
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0
+    },
+    "inputs": "Technical fixtures and model doubles; R/irrCAC reference exercised. Research data not used as labels."
+  },
+  "setup": {
+    "command": "/workspace/aes-venv/bin/python scripts/setup_notebook.py --environment outputs/colab_cleanup/clean_env",
+    "exit_code": 0,
+    "system_site_packages": false,
+    "dependency_check": "pip check: No broken requirements found",
+    "python": "3.12.14",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "scikit-learn": "1.6.1",
+      "torch": "2.6.0+cpu",
+      "transformers": "4.44.2",
+      "FlagEmbedding": "1.3.5"
+    },
+    "lock_sha256": "0ef05679a520858c2197eed684cec41610f8a901ccfc9247c861867b75360ee0"
+  },
+  "notebook_default": {
+    "command": "JUPYTER_PATH=/workspace/jupyter/share/jupyter HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript /workspace/aes-venv/bin/python /tmp/run_clean_aes_notebook.py",
+    "runner": "nbclient.NotebookClient, fresh aes kernel, allow_errors=False",
+    "exit_code": 0,
+    "code_cells": 10,
+    "errors": 0,
+    "actual_csv_json": true,
+    "encoders_selected": false,
+    "teacher_training_run": false
+  },
+  "notebook_forward_isolation": {
+    "command": "JUPYTER_PATH=/workspace/jupyter/share/jupyter HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript /workspace/aes-venv/bin/python /tmp/run_clean_aes_forward_notebook.py",
+    "runner": "nbclient.NotebookClient, fresh aes kernel, allow_errors=False",
+    "exit_code": 0,
+    "code_cells": 11,
+    "technical_extra_cells": 1,
+    "errors": 0,
+    "host_numpy_fixture": "replaced_in_kernel_sys_modules",
+    "actual_checkpoint_forward": true,
+    "device": "cpu",
+    "shapes": {
+      "roberta": [
+        1,
+        768
+      ],
+      "bge": [
+        1,
+        1024
+      ],
+      "projection": [
+        1,
+        256
+      ],
+      "concat": [
+        1,
+        1024
+      ],
+      "output": [
+        1,
+        4
+      ]
+    },
+    "revisions": {
+      "bge": {
+        "checkpoint": "BAAI/bge-m3",
+        "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+        "dimension": 1024,
+        "model_type": "xlm-roberta",
+        "max_position_embeddings": 8194,
+        "tokenizer_class": "XLMRobertaTokenizerFast",
+        "special_tokens": 2
+      },
+      "roberta": {
+        "checkpoint": "flax-community/indonesian-roberta-base",
+        "revision": "cc5ecee7de8532880ad08d802292a6f42865bc83",
+        "dimension": 768,
+        "model_type": "roberta",
+        "max_position_embeddings": 514,
+        "tokenizer_class": "RobertaTokenizer",
+        "special_tokens": 2
+      }
+    },
+    "teacher_training_run": false
+  },
+  "local_actual_data": {
+    "rows": 10,
+    "four_labels_empty_all_rows": true,
+    "rubric_confirmed": false,
+    "csv_sha256": "d73b5e609f2a2933656f37d3b71a6280c6562da5f87e45d69dc742300d4a4986",
+    "rubric_sha256": "fc33c8931b268ef469fce46669ee5f71fa4cfd5472b31468eed74ae27aa93ee2",
+    "source_modified": false
+  },
+  "publication_safety": {
+    "notebook_outputs_empty": true,
+    "mirrors_identical": true,
+    "student_text_and_inputs_committed": false
+  },
+  "limitations": [
+    "Not executed in the user live Colab browser; local Python 3.12.14/Linux CPU execution verified.",
+    "Colab upload dialog tested with technical stub; real browser picker requires user action.",
+    "GPU/AMP not exercised; setup installs CPU torch.",
+    "No teacher-score training, held-out research evaluation, or full proposal experiments.",
+    "Real-checkpoint backward was not rerun for this notebook cleanup; unit tests exercise model doubles."
+  ]
+}

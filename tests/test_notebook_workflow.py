@@ -1,0 +1,106 @@
+"""Fixture teknis: setup/runtime dan worker notebook, bukan skor penelitian."""
+import importlib.util
+import json
+from pathlib import Path
+import sys
+import os
+import hashlib
+import types
+
+import pytest
+from requests.exceptions import RequestException
+from aes.io import sha256
+
+
+def script_module(name):
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location(name, root / 'scripts' / f'{name}.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_python_313_rejected_before_environment_or_download(tmp_path, monkeypatch):
+    setup = script_module('setup_notebook')
+    with monkeypatch.context() as patch:
+        patch.setattr(sys, 'version_info', (3, 13, 0))
+        with pytest.raises(RuntimeError, match='Python 3.12'):
+            setup.setup(tmp_path, tmp_path / 'env')
+    assert not (tmp_path / 'env').exists()
+
+
+def test_draft_worker_runs_inspection_and_skips_learning_without_mutating_inputs(technical_source):
+    _, _, cfg = technical_source
+    worker = script_module('notebook_step')
+    original = {key: sha256(cfg[key]) for key in ['csv', 'rubric']}
+    worker.audit_step(cfg)
+    worker.supervised_step(cfg, 'learning')
+    output = Path(cfg['output'])
+    preview = json.loads((output / 'notebook_preview.json').read_text())
+    result = json.loads((output / 'notebook_supervised.json').read_text())
+    assert result['status'] == 'skip_data_ineligible'
+    assert result['teacher_training_run'] is False
+    assert any('skor guru' in reason for reason in result['blockers'])
+    assert preview['rubric']['confirmed'] is False
+    assert preview['essay']['ready_for_training'] == 'false'
+    assert all(preview['essay']['score_' + name] == '' for name in
+               ['isi', 'organisasi', 'kebahasaan', 'mekanik'])
+    assert {key: sha256(cfg[key]) for key in original} == original
+
+
+def test_worker_reports_network_blocker_but_does_not_hide_model_bug(tmp_path, monkeypatch):
+    worker = script_module('notebook_step')
+    cfg = {'output': str(tmp_path)}
+    def network_error(config):
+        raise RequestException('Fixture teknis: jaringan tidak tersedia')
+    monkeypatch.setattr(worker, 'inspect_models', network_error)
+    worker.models_step(cfg)
+    status = json.loads((tmp_path / 'notebook_models_status.json').read_text())
+    assert status['status'] == 'checkpoint_access_blocked'
+    assert 'RequestException' in status['reason']
+    def shape_error(config):
+        raise RuntimeError('Fixture teknis: shape output salah')
+    monkeypatch.setattr(worker, 'inspect_models', shape_error)
+    with pytest.raises(RuntimeError, match='shape output salah'):
+        worker.models_step(cfg)
+
+
+def test_colab_input_cell_uploads_to_private_folder_without_replacing_existing_rubric(
+        technical_source, tmp_path, monkeypatch):
+    # Tiruan dialog upload; data hanya fixture teknis, bukan unggahan siswa.
+    _, _, cfg = technical_source
+    source_root = Path(__file__).resolve().parents[1]
+    root = tmp_path / 'notebook_checkout'
+    (root / 'configs').mkdir(parents=True)
+    (root / 'configs/default.json').write_bytes((source_root / 'configs/default.json').read_bytes())
+    private = root / 'data/source'
+    private.mkdir(parents=True)
+    existing_rubric = private / 'rubrik_multitrait_DRAF.json'
+    existing_rubric.write_bytes(Path(cfg['rubric']).read_bytes())
+    original_hash = sha256(existing_rubric)
+    csv_bytes = Path(cfg['csv']).read_bytes()
+    def upload():
+        assert Path.cwd() == private
+        name = 'dataset_aes_multitrait_DRAF.csv'
+        Path(name).write_bytes(csv_bytes)
+        return {name: csv_bytes}
+    google = types.ModuleType('google')
+    colab = types.ModuleType('google.colab')
+    colab.files = types.SimpleNamespace(upload=upload)
+    monkeypatch.setitem(sys.modules, 'google', google)
+    monkeypatch.setitem(sys.modules, 'google.colab', colab)
+    monkeypatch.chdir(root)
+    output = root / 'outputs'
+    output.mkdir()
+    namespace = dict(ROOT=root, OUTPUT=output, IN_COLAB=True, MODE='inspect',
+                     Path=Path, os=os, json=json, hashlib=hashlib)
+    nb = json.loads((source_root / 'notebooks/01_belajar_alur_AES.ipynb').read_text())
+    cell = next(''.join(c['source']) for c in nb['cells']
+                if c['cell_type'] == 'code' and ''.join(c['source']).startswith('CSV_PATH ='))
+    exec(compile(cell, 'notebook_input_cell', 'exec'), namespace)
+    assert (private / 'dataset_aes_multitrait_DRAF.csv').read_bytes() == csv_bytes
+    assert sha256(existing_rubric) == original_hash
+    assert not (root / 'dataset_aes_multitrait_DRAF.csv').exists()
+    assert Path.cwd() == root
+    effective = json.loads((output / 'notebook_config.json').read_text())
+    assert effective['csv'] == str(private / 'dataset_aes_multitrait_DRAF.csv')
