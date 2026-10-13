@@ -55,3 +55,11 @@ python scripts/build_colab_study.py --notebook /path/notebook-terbaru.ipynb \
 ```
 
 File pribadi harus berada dalam `outputs/`, yang diabaikan Git. File ini berisi data pribadi dari output notebook dan tidak untuk publikasi. HTML publik di `docs/` hanya menyertakan agregat aman. Melepas notebook menghapus hasil dari tampilan; file HTML pribadi tetap menyimpan snapshot aslinya dan dapat dimuat kembali dengan membuka ulang file. Tidak ada training baru atau perubahan notebook sumber.
+
+## Tiga preview warna classy
+
+Di bagian atas halaman pertama, klik **Navy & Cognac** (atas kiri), **Olive & Cream** (bawah kiri), atau **Rose & Navy** (bawah kanan). Warna diadaptasi dari referensi Old Money pengguna. Pilihan berlaku pada seluruh buku dan sticky note; disimpan lokal sebagai preferensi warna. Tema terang/gelap tetap tersedia.
+
+Gambar halaman pertama: [navy](previews/colab_classy_navy.png), [olive](previews/colab_classy_olive.png), [rose](previews/colab_classy_rose.png). Gambar hanya berasal dari buku publik yang menampilkan hasil agregat.
+
+Untuk membuat ulang ketiga preview dan memeriksa tombol, keyboard, penyimpanan pilihan, mode gelap, serta layout 390/768/1024/1440 px, jalankan `python scripts/preview_colab_palettes.py`. Build HTML tetap `python scripts/build_colab_study.py`. Bukti ada di `docs/verification/colab_classy_palettes.json`.

@@ -1,0 +1,120 @@
+{
+  "palettes": {
+    "navy": {
+      "colors": {
+        "background": "rgb(246, 245, 241)",
+        "hero": "rgb(20, 39, 93)",
+        "accent": "rgb(225, 179, 134)"
+      },
+      "preview": "docs/previews/colab_classy_navy.png",
+      "png_sha256": "e61f1608538418b24cc5cf15d4cab7c6adb468a92ad7a0de5cf27c97bde588ed",
+      "widths_checked": [
+        390,
+        768,
+        1024,
+        1440
+      ],
+      "keyboard_activation": true,
+      "persisted_after_reload": true,
+      "dark_theme_compatible": true
+    },
+    "olive": {
+      "colors": {
+        "background": "rgb(242, 236, 223)",
+        "hero": "rgb(101, 97, 63)",
+        "accent": "rgb(241, 227, 202)"
+      },
+      "preview": "docs/previews/colab_classy_olive.png",
+      "png_sha256": "94129ad69b3933b203579c6bafb57905d432485a8cafa48a59bad066699813c5",
+      "widths_checked": [
+        390,
+        768,
+        1024,
+        1440
+      ],
+      "keyboard_activation": true,
+      "persisted_after_reload": true,
+      "dark_theme_compatible": true
+    },
+    "rose": {
+      "colors": {
+        "background": "rgb(248, 240, 236)",
+        "hero": "rgb(20, 39, 93)",
+        "accent": "rgb(239, 199, 203)"
+      },
+      "preview": "docs/previews/colab_classy_rose.png",
+      "png_sha256": "7932488bff6639945e2411dcc38adfbff9a7846c6ae93d1ae4c951143745b487",
+      "widths_checked": [
+        390,
+        768,
+        1024,
+        1440
+      ],
+      "keyboard_activation": true,
+      "persisted_after_reload": true,
+      "dark_theme_compatible": true
+    }
+  },
+  "commands": {
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "build": "python scripts/build_colab_study.py",
+    "palette_preview": "python scripts/preview_colab_palettes.py"
+  },
+  "browser_errors": [],
+  "external_requests": [],
+  "browser_version": "154.0.8037.57",
+  "html_sha256": "f41465c79ce25987e797508ef17dc44f41987e8bdec37ea136a1e8400f653226",
+  "base_commit": "ec83eb21d7e8a126f59ffc2a18bc59d21427f14a",
+  "browser_regression": {
+    "exit_code": 0,
+    "browser": "Chromium via Playwright",
+    "browser_version": "154.0.8037.57",
+    "AC2_fixtures_matching_R": 0,
+    "origin": "Local HTTP; no user-facing localhost preview.",
+    "page_errors": [],
+    "external_resource_requests": 0,
+    "chapters": 11,
+    "source_files": 17,
+    "code_cells": 11,
+    "guided_code_steps": 27,
+    "quizzes": 0,
+    "actual_metric_rows": 12,
+    "metric_fixtures_matching_Python": 55,
+    "window_coverage_cases": 9,
+    "optimizer_schedule_cases": 18,
+    "private_actual_notebook_cells_checked": 11,
+    "embedded_private_outputs_checked": 44,
+    "untrusted_HTML_not_executed": true,
+    "private_data_not_in_localStorage": true,
+    "mobile_horizontal_overflow": false,
+    "print_control_removed": true,
+    "bounded_code_output_scroll": true,
+    "tested_interactions": [
+      "tabs/keyboard",
+      "language modes",
+      "theme",
+      "reading persistence/reset",
+      "guided code names and explanation",
+      "source dropdown",
+      "S1/S2/S3 batch shapes",
+      "window boundaries",
+      "LR scheduling",
+      "metric filter/trace",
+      "numeric input errors",
+      "8/2 hypothetical diagram",
+      "local notebook open/forget",
+      "line highlight/margin notes",
+      "inner reading tabs/keyboard",
+      "bounded scrolling"
+    ],
+    "artifact_sha256": "f41465c79ce25987e797508ef17dc44f41987e8bdec37ea136a1e8400f653226"
+  },
+  "source_hashes": {
+    "scripts/templates/colab_study.html": "c6aa2f5dae31b1f354ed320e8d60122fb258369384572a37ad967ca9c84f199c",
+    "scripts/preview_colab_palettes.py": "1a2a5ab2b5a085b906d342a0771a91334806c2372c3c2f68988e41477e2da572",
+    "scripts/check_colab_study.py": "69f321ff3e1ec681eaf9cb27b8137c7dc536e51b9a17cf1931c53b2fc6933146"
+  },
+  "exit_code": 0,
+  "notebook_executed_again": false,
+  "training_run": false
+}

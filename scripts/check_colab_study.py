@@ -42,6 +42,8 @@ def check(private_notebook=None, private_html=None):
             page.on('pageerror', lambda e: errors.append(str(e)))
             page.on('request', lambda r: requests.append(r.url))
             page.goto(origin + '/docs/belajar_colab_AI_interaktif.html')
+            assert page.locator('.palette-choice').count() == 3
+            assert page.locator('html').get_attribute('data-palette') == 'navy'
             assert page.locator('.chapter-tab').count() == 11
             assert page.locator('.page:visible').count() == 1
             assert page.locator('#setup-output').inner_text().find('2.6.0+cpu') >= 0
@@ -170,7 +172,7 @@ def check(private_notebook=None, private_html=None):
             assert 'TECHNICAL_OUTPUT' in page.locator('#private-output-cells').inner_text()
             assert page.evaluate('Boolean(window.PRIVATE_EXECUTED)') is False
             keys = page.evaluate('Object.keys(localStorage)')
-            assert all(k in ['aes-study-v2:theme', 'aes-study-v2:level', 'aes-study-v2:read'] for k in keys)
+            assert all(k in ['aes-study-v2:theme', 'aes-study-v2:level', 'aes-study-v2:read', 'aes-study-v2:palette'] for k in keys)
             page.locator('#forget-private-inline').click()
             assert page.locator('#private-output').is_hidden()
             private_cells = 0
