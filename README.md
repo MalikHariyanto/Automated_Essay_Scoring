@@ -2,6 +2,8 @@
 
 Automated Essay Scoring (AES) mencoba memprediksi skor tulisan dari teks. Proyek Python ini memisahkan empat aspek (**trait**) dengan urutan **isi, organisasi, kebahasaan, mekanik**, masing-masing kategori 1–5. Tujuannya membantu memahami alur model sekaligus menyiapkan pipeline yang bisa menerima skor guru nanti.
 
+Untuk memperdalam kode setelah menjalankan notebook, unduh [panduan HTML interaktif](docs/panduan_AES_interaktif.html), lalu buka file tersebut di browser. Satu file ini bisa dipakai offline: 10 bab, penjelasan 11 cell, jelajah 30 file/59 fungsi source, diagram S1/S2/S3, latihan posisi window, MSE/gradien, dan empat metrik. Latihan angka hanya ilustrasi matematika; tidak menilai esai atau mengisi CSV. Tabel penelitian tetap dibedakan dari UNTRAINED dan fixture teknis. Tema terang/gelap, pencarian fungsi, kemajuan membaca dan tampilan cetak tersedia. Source explorer dapat diperbarui dengan `python scripts/build_learning_html.py`; script memakai whitelist source publik dan tidak membaca dataset siswa.
+
 Saat audit publikasi, input lokal masih berisi 10 teks draf tanpa skor guru lengkap dan rubrik belum disahkan. Kita bisa melihat token, representasi dan empat angka dari head yang **UNTRAINED** (belum belajar menilai). Angka tersebut belum layak menjadi nilai siswa. Test yang lulus memeriksa mekanisme kode, bukan akurasi penilaian.
 
 Mulai dari [alur satu esai](docs/alur_model.md), [panduan mentoring: model → test → Git](docs/belajar_dan_bukti.md), dan [notebook utama](notebooks/01_belajar_alur_AES.ipynb). Bukti audit ada di [laporan verifikasi](docs/verification_report.md).

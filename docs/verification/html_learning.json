@@ -1,0 +1,59 @@
+{
+  "timestamp_utc": "2026-10-13T08:59:31.407646+00:00",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "verified_artifact": {
+    "path": "docs/panduan_AES_interaktif.html",
+    "sha256": "ae57145890195864ec39c6906b0e62f58b265190238bbc6efde96d3a64429a70",
+    "bytes": 192610,
+    "embedded_source_version": "242416fe4cb5e083a351fc0dc1530e5ca2cc7708",
+    "files": 30,
+    "function_explanations": 59,
+    "notebook_cells": 11,
+    "chapters": 10,
+    "standalone_no_CDN": true,
+    "build_repeat_identical": true
+  },
+  "browser_check": {
+    "command": "HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python /tmp/check_aes_html.py",
+    "exit_code": 0,
+    "page_errors": [],
+    "no_external_resource_requests": true,
+    "browser_origin": "local HTTP; file navigation disallowed by environment Chromium policy",
+    "metric_fixtures_matching_python": 46,
+    "ac2_fixtures_matching_R": 5,
+    "ac2_max_R_error": 3.7815126049389747e-06,
+    "window_coverage_fixtures": 8,
+    "research_table_rows": 12,
+    "notebook_cells": 11,
+    "source_files": 30,
+    "mobile_horizontal_overflow": false,
+    "tested_interactions": [
+      "scenario/batch",
+      "window boundaries",
+      "missing inputs",
+      "metric presets/undefined",
+      "loss",
+      "source search/highlight",
+      "chapter persistence/reset",
+      "quiz",
+      "theme"
+    ],
+    "browser": "Chromium via Playwright",
+    "print_styles_verified": true,
+    "extreme_numeric_input_errors_verified": true,
+    "source_version": "242416fe4cb5e083a351fc0dc1530e5ca2cc7708"
+  },
+  "privacy": {
+    "essay_texts_absent": true,
+    "original_rubric_descriptors_absent": true,
+    "no_original_CSV_JSON_or_weights_embedded": true,
+    "only_theme_and_reading_progress_stored": "localStorage"
+  },
+  "source_identity": "Application code is unchanged from 242416f; new HTML/docs/build script are uncommitted at verification.",
+  "limits": [
+    "Browser tested via local HTTP because managed Chromium prohibits file navigation; page requests no external resources.",
+    "No new ML training/evaluation or model forward run in this documentation task.",
+    "All interactive numeric examples are mathematical illustrations, never research labels/data.",
+    "User reports successful Colab execution; live Colab outputs were not read."
+  ]
+}
