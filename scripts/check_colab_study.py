@@ -22,11 +22,11 @@ class QuietHandler(SimpleHTTPRequestHandler):
         pass
 
 
-def check(private_notebook=None):
+def check(private_notebook=None, private_html=None):
     out = ROOT / 'outputs/colab_study'
     out.mkdir(parents=True, exist_ok=True)
     server = ThreadingHTTPServer(('127.0.0.1', 0),
-        partial(QuietHandler, directory=str(ROOT / 'docs')))
+        partial(QuietHandler, directory=str(ROOT)))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     origin = 'http://127.0.0.1:' + str(server.server_port)
@@ -41,7 +41,7 @@ def check(private_notebook=None):
             errors, requests = [], []
             page.on('pageerror', lambda e: errors.append(str(e)))
             page.on('request', lambda r: requests.append(r.url))
-            page.goto(origin + '/belajar_colab_AI_interaktif.html')
+            page.goto(origin + '/docs/belajar_colab_AI_interaktif.html')
             assert page.locator('.chapter-tab').count() == 11
             assert page.locator('.page:visible').count() == 1
             assert page.locator('#setup-output').inner_text().find('2.6.0+cpu') >= 0
@@ -89,6 +89,7 @@ def check(private_notebook=None):
             assert page.locator('#step-timeline .zero').count() == 1
             page.locator('#tab-metric').click()
             assert page.locator('#actual-metrics tbody tr').count() == 12
+            page.locator('#desk-tab-metric-output').click()
             page.locator('#scenario-filter').select_option('S3')
             assert page.locator('#actual-metrics tbody tr').count() == 4
             for metric in ['Pearson', 'QWK', 'AC2', 'RMSE']:
@@ -164,9 +165,8 @@ def check(private_notebook=None):
             page.locator('#tab-mulai').click()
             page.locator('#private-file').set_input_files({'name': 'technical.ipynb',
                 'mimeType': 'application/json', 'buffer': json.dumps(fixture).encode()})
+            page.locator('#desk-tab-mulai-colab').click()
             assert page.locator('#private-output').is_visible()
-            page.locator('#private-output > details > summary').click()
-            page.locator('#private-output-cells > details > summary').click()
             assert 'TECHNICAL_OUTPUT' in page.locator('#private-output-cells').inner_text()
             assert page.evaluate('Boolean(window.PRIVATE_EXECUTED)') is False
             keys = page.evaluate('Object.keys(localStorage)')
@@ -179,7 +179,8 @@ def check(private_notebook=None):
                 expect(page.locator('#private-file-status')).to_contain_text('Source cell cocok', timeout=5000)
                 for chapter, expected in [('input', 2), ('token', 1), ('metric', 1), ('code', 11)]:
                     page.locator('#tab-' + chapter).click()
-                    assert page.locator('#private-output-cells > details').count() == expected
+                    page.locator('#desk-tab-' + chapter + '-colab').click()
+                    assert page.locator('#private-cell-select option').count() == expected
                 private_cells = 11
                 page.locator('#forget-private-inline').click()
             page.set_viewport_size({'width': 390, 'height': 844})
@@ -194,10 +195,42 @@ def check(private_notebook=None):
             page.screenshot(path=str(out / 'mobile_scenario.png'))
             page.locator('#tab-metric').click()
             page.screenshot(path=str(out / 'mobile_metrics.png'))
-            page.emulate_media(media='print')
-            assert page.locator('.topbar').is_hidden()
-            assert page.locator('.page:visible').count() == 11
-            page.emulate_media(media='screen')
+            assert page.locator('#print').count() == 0
+            assert page.locator('.study-desk').count() == 11
+            # Each code viewport scrolls without stretching the document.
+            page.set_viewport_size({'width': 1440, 'height': 1050})
+            page.locator('#tab-scenario').click()
+            page.locator('#desk-tab-scenario-guided').click()
+            viewport = page.locator('#page-scenario .desk-scroll')
+            assert viewport.evaluate('(el)=>el.scrollHeight>el.clientHeight')
+            before = page.evaluate('document.documentElement.scrollHeight')
+            viewport.evaluate('(el)=>el.scrollTop=el.scrollHeight')
+            page.wait_for_function('(el)=>el.scrollTop>0', arg=viewport.element_handle())
+            assert page.evaluate('document.documentElement.scrollHeight') == before
+            assert page.locator('#page-scenario .code-focus').count() >= 7
+            assert page.locator('#page-scenario .margin-note').count() >= 7
+            # Inner tabs are also operable with the keyboard.
+            page.locator('#desk-tab-scenario-guided').focus()
+            page.keyboard.press('ArrowRight')
+            assert page.locator('#desk-pane-scenario-output').is_visible()
+            page.keyboard.press('End')
+            assert page.locator('#desk-pane-scenario-source').is_visible()
+            embedded_outputs = 0
+            if private_html:
+                page.goto(origin + '/' + private_html.relative_to(ROOT).as_posix())
+                assert 'sudah terpasang' in page.locator('#private-file-status').inner_text()
+                page.locator('#tab-code').click()
+                page.locator('#desk-tab-code-colab').click()
+                assert page.locator('#private-cell-select option').count() == 11
+                for cell in range(1, 12):
+                    page.locator('#private-cell-select').select_option(str(cell))
+                    embedded_outputs += page.locator('.saved-output').count()
+                    assert page.locator('.output-note').count() == 1
+                assert embedded_outputs == 44
+                assert page.locator('.output-table table').count() > 0
+                assert page.evaluate('Boolean(window.PRIVATE_EXECUTED)') is False
+                page.locator('#forget-private-inline').click()
+                assert page.locator('#private-output-cells').inner_text() == ''
             assert not errors, errors
             assert all(r.startswith(origin + '/') for r in requests), requests
             r_references = []
@@ -215,13 +248,14 @@ def check(private_notebook=None):
                       'actual_metric_rows': 12, 'metric_fixtures_matching_Python': len(cases),
                       'window_coverage_cases': 9, 'optimizer_schedule_cases': 18,
                       'private_actual_notebook_cells_checked': private_cells,
+                      'embedded_private_outputs_checked': embedded_outputs,
                       'untrusted_HTML_not_executed': True, 'private_data_not_in_localStorage': True,
-                      'mobile_horizontal_overflow': False, 'print_all_chapters': True,
+                      'mobile_horizontal_overflow': False, 'print_control_removed': True, 'bounded_code_output_scroll': True,
                       'tested_interactions': ['tabs/keyboard', 'language modes', 'theme',
                           'reading persistence/reset', 'guided code names and explanation', 'source dropdown',
                           'S1/S2/S3 batch shapes', 'window boundaries',
                           'LR scheduling', 'metric filter/trace', 'numeric input errors',
-                          '8/2 hypothetical diagram', 'local notebook open/forget']}
+                          '8/2 hypothetical diagram', 'local notebook open/forget', 'line highlight/margin notes', 'inner reading tabs/keyboard', 'bounded scrolling']}
             browser.close()
     finally:
         server.shutdown()
@@ -235,4 +269,6 @@ def check(private_notebook=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--private-notebook', type=Path)
-    check(parser.parse_args().private_notebook)
+    parser.add_argument('--private-html', type=Path)
+    args = parser.parse_args()
+    check(args.private_notebook, args.private_html)

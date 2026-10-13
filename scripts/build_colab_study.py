@@ -82,7 +82,8 @@ def following_dict(text, marker):
 
 
 def extract_snapshot(path):
-    expected = 'f58c5d0e05d1d109cca69a114d73ffb08d2b427a73b52ed704c1889f323ad55f'
+    # Notebook terbaru yang diunggah: source 11 cell cocok dengan repo; output diaudit.
+    expected = '473021666e2e38d21ac8911c816a30b23eb99dad81dc77896d891bee0d3da068'
     if hashlib.sha256(Path(path).read_bytes()).hexdigest() != expected:
         raise ValueError('Buku ini mengikat snapshot Colab yang diaudit; notebook berbeda perlu audit baru.')
     nb = json.loads(Path(path).read_text())
@@ -154,7 +155,9 @@ def extract_snapshot(path):
     return snapshot
 
 
-def build(notebook=None):
+def build(notebook=None, private_output=None):
+    if private_output and not notebook:
+        raise ValueError('--private-output membutuhkan --notebook yang diaudit.')
     if notebook:
         snapshot = extract_snapshot(notebook)
         SNAPSHOT.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + '\n')
@@ -185,14 +188,54 @@ def build(notebook=None):
         start = matches[0]
         lesson['line'] = start + 1
         lesson['code'] = '\n'.join(lines[start:start + lesson['count']])
-    payload = {'snapshot': snapshot, 'sources': sources, 'cells': cells, 'lessons': lessons}
+        context_start = max(0, start - 2)
+        lesson['context_line'] = context_start + 1
+        lesson['context_code'] = '\n'.join(lines[context_start:start + lesson['count'] + 3])
+    cell_notes = json.loads((ROOT / 'scripts/colab_cell_notes.json').read_text())
+    for note in cell_notes:
+        lines = cells[note['cell'] - 1]['source'].splitlines()
+        matches = [i for i, line in enumerate(lines) if note['anchor'] in line]
+        if len(matches) != 1:
+            raise ValueError('Catatan cell harus cocok satu baris: ' + note['title'])
+        note['line'] = matches[0] + 1
+    payload = {'snapshot': snapshot, 'sources': sources, 'cells': cells,
+               'lessons': lessons, 'cell_notes': cell_notes}
     encoded = json.dumps(payload, ensure_ascii=False).replace('<', '\\u003c')
     template = (ROOT / 'scripts/templates/colab_study.html').read_text()
-    TARGET.write_text(template.replace('__STUDY_DATA__', encoded))
+    public_html = template.replace('__STUDY_DATA__', encoded).replace('__PRIVATE_NOTEBOOK__', 'null')
+    TARGET.write_text(public_html)
+    if private_output:
+        destination = Path(private_output).resolve()
+        private_root = (ROOT / 'outputs').resolve()
+        if not destination.is_relative_to(private_root):
+            raise ValueError('HTML pribadi harus di outputs/ yang diabaikan Git.')
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        # Keep only source and passive output representations, never widget state
+        # or executable notebook metadata. HTML is converted to safe text in JS.
+        nb = json.loads(Path(notebook).read_text())
+        private = {'cells': []}
+        for cell in nb['cells']:
+            if cell['cell_type'] != 'code':
+                continue
+            outputs = []
+            for output in cell.get('outputs', []):
+                safe = {k: output[k] for k in ['output_type', 'text', 'ename', 'evalue'] if k in output}
+                if 'data' in output:
+                    safe['data'] = {k: v for k, v in output['data'].items()
+                                    if k in ['text/plain', 'text/html']}
+                outputs.append(safe)
+            private['cells'].append({'cell_type': 'code', 'source': cell['source'],
+                                     'execution_count': cell.get('execution_count'), 'outputs': outputs})
+        private_json = json.dumps(private, ensure_ascii=False).replace('<', '\\u003c')
+        destination.write_text(template.replace('__STUDY_DATA__', encoded)
+                               .replace('__PRIVATE_NOTEBOOK__', private_json))
+        print('Built private HTML in ignored outputs/; notebook outputs are embedded locally.')
     print('Built', TARGET.relative_to(ROOT), len(sources), 'source files;', len(cells), 'code cells; 12 actual metric rows.')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--notebook', type=Path, help='Notebook terisi privat untuk memperbarui snapshot agregat.')
-    build(parser.parse_args().notebook)
+    parser.add_argument('--private-output', type=Path, help='HTML pribadi di outputs/, berisi output notebook.')
+    args = parser.parse_args()
+    build(args.notebook, args.private_output)

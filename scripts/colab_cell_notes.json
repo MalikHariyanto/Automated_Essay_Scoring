@@ -1,0 +1,140 @@
+[
+  {
+    "cell": 1,
+    "anchor": "MODE =",
+    "title": "Mode latihan AI",
+    "meaning": "Tanda = menyimpan pilihan mode. ai_learning belajar dari usulan AI, bukan dari skor guru. Pilihan ini terlihat lagi pada output “Mode”."
+  },
+  {
+    "cell": 1,
+    "anchor": "AES_PYTHON =",
+    "title": "Python khusus AES",
+    "meaning": "AES_PYTHON menyimpan lokasi Python terpisah. Perhitungan model memakai lingkungan ini supaya paket notebook tidak tercampur."
+  },
+  {
+    "cell": 2,
+    "anchor": "setup_result = subprocess.run",
+    "title": "Menjalankan setup",
+    "meaning": "subprocess.run menjalankan program setup di proses lain. Hasilnya disimpan dalam setup_result; kode keluar diperiksa sesudahnya."
+  },
+  {
+    "cell": 2,
+    "anchor": "def run_aes",
+    "title": "Pintu ke program AES",
+    "meaning": "def membuat fungsi bernama run_aes. Cell berikut memakainya untuk menjalankan audit, model, latihan, dan laporan dengan Python AES."
+  },
+  {
+    "cell": 3,
+    "anchor": "CSV_PATH = OUTPUT/",
+    "title": "CSV turunan dari Excel",
+    "meaning": "Path CSV diarahkan ke outputs/inputs. Workbook tetap utuh; proses impor membaca tab guru yang dipilih, bukan otomatis memindahkan usulan AI."
+  },
+  {
+    "cell": 3,
+    "anchor": "cfg.setdefault('ai_learning'",
+    "title": "Mengaktifkan jalur AI",
+    "meaning": "cfg adalah kamus pengaturan. enabled bernilai True hanya saat mode ai_learning, sehingga jalur belajar AI dibedakan dari penelitian."
+  },
+  {
+    "cell": 4,
+    "anchor": "report = json.loads",
+    "title": "Membaca hasil audit",
+    "meaning": "json.loads mengubah isi audit.json menjadi kamus Python bernama report. Baris sesudahnya menampilkan jumlah label, status rubrik, dan masalah data."
+  },
+  {
+    "cell": 4,
+    "anchor": "used = [row for row",
+    "title": "Rekonstruksi dikecualikan",
+    "meaning": "Daftar used menyaring status AI_RECONSTRUCTION_SIMULATION. Angka usulan untuk versi rekonstruksi tidak masuk daftar latihan ini."
+  },
+  {
+    "cell": 5,
+    "anchor": "print('\\nTEKS ASLI",
+    "title": "Melihat teks sumber",
+    "meaning": "essay['text_raw'] mengambil tulisan asli dari kamus essay. Baris ini hanya menampilkan teks; tidak menilai atau memperbaikinya."
+  },
+  {
+    "cell": 6,
+    "anchor": "print('Berubah:'",
+    "title": "Membandingkan sebelum & sesudah",
+    "meaning": "!= berarti tidak sama. False pada output berarti teks_model contoh ini sama dengan teks asli setelah cleaning minimal."
+  },
+  {
+    "cell": 7,
+    "anchor": "'models', '--config'",
+    "title": "Forward encoder asli",
+    "meaning": "run_aes meminta worker menjalankan tahap models. Tahap ini menghasilkan token, window, dan vektor; head masih UNTRAINED."
+  },
+  {
+    "cell": 7,
+    "anchor": "print('Input token RoBERTa",
+    "title": "Membaca bentuk input",
+    "meaning": "Shape [2,512] berarti dua window dengan panjang padding 512. Dua window berasal dari satu esai, bukan dua target penilaian."
+  },
+  {
+    "cell": 8,
+    "anchor": "print('Frozen/trainable",
+    "title": "Bobot mana yang boleh berubah?",
+    "meaning": "gradient_policy menjelaskan frozen dan trainable. BGE frozen; head, serta RoBERTa pada S1/S3, dapat belajar pada tahap latihan."
+  },
+  {
+    "cell": 8,
+    "anchor": "if scenario == 'S3':",
+    "title": "Dua jalur bertemu",
+    "meaning": "Blok S3 menampilkan proyeksi BGE dan concat. Concat menyambung 768 angka RoBERTa dan 256 hasil proyeksi menjadi 1024 angka."
+  },
+  {
+    "cell": 9,
+    "anchor": "ac2_fixture_results =",
+    "title": "Pembanding AC2 di R",
+    "meaning": "File ini berisi hasil fixture teknis Python vs R/irrCAC. Kesamaan keduanya memeriksa rumus, bukan kualitas penilaian esai."
+  },
+  {
+    "cell": 9,
+    "anchor": "run_aes(['-m', 'pytest'",
+    "title": "Menjalankan test kode",
+    "meaning": "pytest menjalankan pemeriksaan perilaku kode. Jumlah test tidak sama dengan jumlah esai atau ukuran akurasi model."
+  },
+  {
+    "cell": 10,
+    "anchor": "'supervised', '--config'",
+    "title": "Memulai latihan sesuai mode",
+    "meaning": "Tahap supervised menerima MODE. Pada ai_learning, target berasal dari acuan AI dan parameter model benar-benar diperbarui."
+  },
+  {
+    "cell": 11,
+    "anchor": "'report', '--config'",
+    "title": "Membuat laporan",
+    "meaning": "Worker menulis laporan untuk mode aktif. Notebook membacanya lalu menampilkan tabel, alur forward, dan langkah perhitungan."
+  },
+  {
+    "cell": 11,
+    "anchor": "show_table(['Skenario','Trait','RMSE'",
+    "title": "Empat metrik per trait",
+    "meaning": "Tabel ini menampilkan 3 skenario × 4 trait. RMSE/Pearson memakai angka kontinu; QWK/AC2 memakai salinan kategori."
+  },
+  {
+    "cell": 11,
+    "anchor": "trace = traces[TRACE_SCENARIO]",
+    "title": "Mengambil satu contoh perhitungan",
+    "meaning": "TRACE_SCENARIO dan TRACE_TRAIT memilih walkthrough. Di notebook ini yang dipilih adalah S3–isi dari validation latihan AI."
+  },
+  {
+    "cell": 11,
+    "anchor": "print(json.dumps(trace['RMSE_steps']",
+    "title": "Selisih → kuadrat → mean → akar",
+    "meaning": "RMSE_steps sudah dihitung oleh modul proyek. Notebook hanya menampilkan tahapnya; angka di sini berasal dari pasangan yang sama dengan tabel hasil."
+  },
+  {
+    "cell": 11,
+    "anchor": "qwk = trace['QWK_steps']",
+    "title": "Kategori untuk kesepakatan",
+    "meaning": "qwk dan ac2 menyimpan langkah dua ukuran kesepakatan. Pembulatan kategori ini tidak dipakai untuk mengecilkan RMSE kontinu."
+  },
+  {
+    "cell": 11,
+    "anchor": "show_table(['Skenario','MSE train sebelum'",
+    "title": "Bukti bobot belajar",
+    "meaning": "MSE sebelum/sesudah, epoch, langkah aktif, dan sampel bobot berubah dibaca dari laporan training. MSE train turun belum membuktikan akurasi pada esai baru."
+  }
+]

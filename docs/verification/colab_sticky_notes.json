@@ -1,0 +1,82 @@
+{
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "base_commit": "292e652cd55be9cbb151e6a10aa163f25223d8e6",
+  "browser": {
+    "exit_code": 0,
+    "browser": "Chromium via Playwright",
+    "browser_version": "154.0.8037.57",
+    "AC2_fixtures_matching_R": 0,
+    "origin": "Local HTTP; no user-facing localhost preview.",
+    "page_errors": [],
+    "external_resource_requests": 0,
+    "chapters": 11,
+    "source_files": 17,
+    "code_cells": 11,
+    "guided_code_steps": 27,
+    "quizzes": 0,
+    "actual_metric_rows": 12,
+    "metric_fixtures_matching_Python": 55,
+    "window_coverage_cases": 9,
+    "optimizer_schedule_cases": 18,
+    "private_actual_notebook_cells_checked": 11,
+    "embedded_private_outputs_checked": 44,
+    "untrusted_HTML_not_executed": true,
+    "private_data_not_in_localStorage": true,
+    "mobile_horizontal_overflow": false,
+    "print_control_removed": true,
+    "bounded_code_output_scroll": true,
+    "tested_interactions": [
+      "tabs/keyboard",
+      "language modes",
+      "theme",
+      "reading persistence/reset",
+      "guided code names and explanation",
+      "source dropdown",
+      "S1/S2/S3 batch shapes",
+      "window boundaries",
+      "LR scheduling",
+      "metric filter/trace",
+      "numeric input errors",
+      "8/2 hypothetical diagram",
+      "local notebook open/forget",
+      "line highlight/margin notes",
+      "inner reading tabs/keyboard",
+      "bounded scrolling"
+    ],
+    "artifact_sha256": "ef3aec2651de22b05601b7bf81be2268de5db7b151bf0ab7c5d22c9062459558"
+  },
+  "code_suite": {
+    "command": "HF_HOME=\"$PWD/outputs/cache/huggingface\" OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 outputs/notebook_env/bin/python -m pytest -q -rA --junitxml=outputs/colab_study/code-tests.xml",
+    "exit_code": 0,
+    "collected": 61,
+    "passed": 60,
+    "skipped": 1,
+    "failed": 0,
+    "skip_reason": "R/irrCAC not installed; network prerequisite remains unresolved"
+  },
+  "browser_command": "PYTHONPATH=src python scripts/check_colab_study.py --private-notebook <local uploaded notebook> --private-html outputs/colab_study/Belajar_Colab_Terbaru.html",
+  "versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "torch": "2.6.0+cpu",
+    "transformers": "4.44.2",
+    "FlagEmbedding": "1.3.5"
+  },
+  "notebook_sha256": "473021666e2e38d21ac8911c816a30b23eb99dad81dc77896d891bee0d3da068",
+  "source_hashes": {
+    "scripts/build_colab_study.py": "687b13dbe7af5c7972895912ff8542b910a1d641554b7c73a79084f2590a8c43",
+    "scripts/check_colab_study.py": "391ae905bcd87c48770a03a60d608544229788172d9c223e0a9bc4cd9af40bc6",
+    "scripts/templates/colab_study.html": "5aa56af2e47da2edb4ba3ce392c16bb9269c3dc87fd4766a5c95360e6a232109",
+    "scripts/colab_cell_notes.json": "e4aefa51555395c786addb21e8abed24869f08361fa610b64f56bcc7f62c6203",
+    "scripts/colab_code_lessons.json": "f26cc599e3f062d5ad0cb156ad299766d3e6453bb9fb1ab9a6a770a0fae9c08a",
+    "docs/learning_snapshot_AI.json": "626937b1e540e011bb662b3dfede8ed1ef8860a01fa6e7ed5865f027d2fd8e8f"
+  },
+  "additional_checks": {
+    "jump_code_output": true,
+    "private_essay_excluded_from_public_html": true
+  },
+  "training_run": false,
+  "notebook_executed_again": false,
+  "published_to_github": false
+}
