@@ -77,6 +77,19 @@ Setup tidak bergantung pada `ensurepip`: lingkungan dibuat tanpa pip, lalu pip i
 
 Notebook menampilkan tabel diagnostik empat output per skenario dengan label UNTRAINED, tabel pemeriksaan AC2 Python/R pada fixture unit test, dan tabel penelitian RMSE/Pearson/QWK/AC2 untuk 12 kombinasi skenario/trait. `src/aes/reporting.py` mengisi tabel penelitian hanya dari test proposal berlabel dengan manifest/hash dan konfigurasi ketiga skenario yang cocok serta refit selesai. Dengan data draf, nilainya `null`/— beserta alasan, bukan nol. Setelah eksperimen selesai pada data yang sama, tabel membaca hasil final tanpa merancang ulang notebook.
 
+Untuk workbook review Excel, pada cell pertama pilih `INPUT_FORMAT="xlsx"`, isi `EXCEL_FILENAME` dengan nama file sebenarnya, dan pertahankan `EXCEL_SHEET="Untuk_CSV_Guru"`. Upload Excel dan JSON rubrik saat diminta. Nama dataset boleh berbeda; pipeline membaca tab dengan teks, seluruh metadata dan `score_*`. `Ringkasan_AI` ditampilkan terpisah sebagai usulan, tanpa dipindahkan ke target guru. Workbook asli tetap utuh; impor menghasilkan CSV turunan dan catatan hash di `outputs/inputs/`. Skor di tab `Keputusan_guru` perlu dipindahkan oleh reviewer ke `Untuk_CSV_Guru` sesuai essay_id; kedua tab tidak tersambung otomatis.
+
+CLI memakai impor yang sama:
+
+```bash
+python scripts/import_workbook.py --workbook /path/Review_Esai_AI.xlsx \
+  --sheet Untuk_CSV_Guru --output outputs/inputs/teacher_data.csv
+python -m aes.cli --csv outputs/inputs/teacher_data.csv \
+  --rubric /path/rubrik_multitrait_DRAF.json inspect
+```
+
+Jika teacher `score_*` masih kosong, Excel belum menyediakan label guru meskipun usulan AI berbentuk angka. Setelah penilaian dan verifikasi manusia selesai, review independensi serta manifest harus merujuk hash CSV turunan terkini. Mengimpor Excel tidak mengesahkan rubrik, mengubah status, atau membuat training/evaluasi penelitian otomatis tersedia.
+
 ## Training dan evaluasi setelah guru memberi skor
 
 **Training** memperbarui bobot berdasarkan pasangan teks dan skor guru. Sebelum menjalankannya, verifikasi teks lengkap, transkripsi/identitas/relasi duplikasi, empat integer guru 1–5, `rubric_version`, rater/tanggal, dan pengesahan rubrik. Isi `configs/data_review.json` terhadap hash CSV terkini. Ini catatan hasil pemeriksaan manusia, bukan flag untuk memaksa training.

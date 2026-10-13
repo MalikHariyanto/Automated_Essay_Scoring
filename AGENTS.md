@@ -35,3 +35,7 @@ Pengguna ingin menjalankan notebook dari atas tanpa menambah cell debugging dari
 ## Panduan HTML belajar
 
 `docs/panduan_AES_interaktif.html` adalah buku belajar offline, bukan aplikasi pemberi skor. Penjelasan mengikuti source yang diembed oleh `scripts/build_learning_html.py`; jangan mengganti metode model agar sesuai ilustrasi. Semua angka yang dapat diubah dalam latihan adalah penjelasan matematika, tidak disimpan sebagai skor/data penelitian. Jika rumus interaktif berubah, cocokkan dengan modul Python serta referensi AC2. Pertahankan akses tanpa CDN, tampilan HP, keyboard, dan pemisahan bukti unit test/forward/training/GitHub. Source publik boleh diembed; teks siswa dan deskriptor rubrik asli tidak boleh masuk HTML.
+
+## Workbook review privat
+
+Pengguna mengizinkan usulan penilaian AI untuk review guru pada workbook privat. Jangan menyebutnya skor guru atau menaikkan kelayakan penelitian. Impor Excel memakai tab `Untuk_CSV_Guru` secara eksplisit, mengekspor CSV turunan tanpa menimpa sumber, dan menampilkan `Ringkasan_AI` terpisah. Tidak ada pemetaan otomatis ai_usul_* ke score_*. JSON eksternal tetap rubrik aktif. Pilihan format/nama/tab berada di notebook sehingga pengguna tidak perlu menambah cell debugging. Workbook, payload review dan notebook terisi tetap privat; hanya kode impor, fixture teknis dan dokumentasi aman yang dipublikasikan.

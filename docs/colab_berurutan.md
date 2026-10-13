@@ -5,7 +5,7 @@ Buka [notebook utama](https://colab.research.google.com/github/MalikHariyanto/Au
 1. Pilih **Runtime → Change runtime type → CPU**, dan **Runtime version 2026.07** (Python 3.12.13). Daftar versi berasal dari [repo resmi Colab](https://github.com/googlecolab/backend-info#colabs-past-runtime-versions).
 2. Buka notebook terbaru melalui link di atas. Jika ingin menyimpan hasil, simpan salinan pribadi di Drive; jangan kirim notebook berisi teks/output siswa ke GitHub publik.
 3. Jalankan dari cell paling atas atau **Runtime → Run all**. Tidak perlu menambahkan cell clone, pip install, reinstall NumPy, atau diagnosis dari chat sebelumnya.
-4. Cell input membuka pemilih file jika CSV/JSON belum ada. Pilih `dataset_aes_multitrait_DRAF.csv` dan `rubrik_multitrait_DRAF.json` asli; tunggu sampai upload selesai. Bila sudah ada, file itu digunakan kembali. Path bisa diganti pada cell input.
+4. Pada cell pertama pilih `INPUT_FORMAT="csv"` untuk CSV asli atau `"xlsx"` untuk workbook review. Untuk Excel, isi `EXCEL_FILENAME` sesuai nama sebenarnya dan pertahankan `EXCEL_SHEET="Untuk_CSV_Guru"`. Cell input meminta dataset yang dipilih dan JSON rubrik jika belum tersedia. File Excel di `/content/aes_review_privat/` juga dapat digunakan langsung. Tunggu upload selesai, lalu lanjutkan dari atas.
 5. Baca audit, satu esai/rubrik, cleaning, token/vektor dan output UNTRAINED S1/S2/S3, lalu referensi AC2. Bagian supervised menampilkan alasan skip bila label atau pengesahan belum lengkap. Tabel empat metrik ada di bagian 11.
 
 ## Isi cell
@@ -14,7 +14,7 @@ Buka [notebook utama](https://colab.research.google.com/github/MalikHariyanto/Au
 | --- | --- | --- |
 | 1 | Mengambil/memperbarui source yang bersih dan memilih mode | Python, lokasi proyek, pilihan mode |
 | 2 | Memasang lock CPU pada lingkungan Python AES terpisah | Versi pustaka, import nyata; log pemasangan |
-| 3 | Memilih CSV/JSON asli | Path dan hash sumber |
+| 3 | Memilih CSV/Excel dan JSON rubrik | Hash sumber; untuk Excel, tab guru dan hash CSV turunan |
 | 4 | Audit/EDA melalui modul AES | Jumlah esai, label kosong/invalid, status, duplikasi, syarat training |
 | 5 | Membaca satu esai dan rubrik JSON | Teks, status, deskriptor asli |
 | 6 | Membandingkan cleaning | Teks sebelum/sesudah dan log turunan |
@@ -24,6 +24,8 @@ Buka [notebook utama](https://colab.research.google.com/github/MalikHariyanto/Au
 | 11 | Tabel empat metrik per skenario/trait | 12 baris; nilai tersedia hanya dari test proposal yang sah |
 
 Biarkan `MODE="inspect"`; sesuai permintaan belajar lengkap, `RUN_ENCODERS`, `RUN_TESTS`, dan `RUN_AC2_REFERENCE` default True. Notebook menampilkan alur encoder dan referensi AC2 tanpa training dari label kosong. BGE/RoBERTa asli memerlukan sekitar 2,8 GB unduhan dan head tetap UNTRAINED. Setup memakai PyTorch CPU; memilih T4 saja tidak membuat wheel CPU menjadi GPU. Ketiga pilihan bisa dibuat False untuk inspeksi ringan.
+
+Workbook memiliki fungsi tab yang berbeda. `Ringkasan_AI` memuat kandidat skor dan tidak menjadi target. `Untuk_CSV_Guru` memuat teks serta kolom `score_*` yang dibaca pipeline; hanya isi dari keputusan guru. `Keputusan_guru` membantu mencatat review, tetapi belum terhubung otomatis ke tab data: pindahkan keputusan sesuai essay_id jika memakai tab tersebut. JSON rubrik eksternal tetap sumber rubrik aktif. Setelah impor, workbook sumber tidak diubah; CSV turunan berada di `outputs/inputs/`, bersama metadata hash/tab. Review dan manifest penelitian menggunakan hash CSV turunan ini.
 
 Colab menyiapkan R/irrCAC sebelum suite jika belum tersedia. Lima fixture unit test membandingkan point estimate AC2 Python dan R, termasuk kategori tak teramati; toleransi 5,01×10⁻⁶ mengikuti pembulatan lima desimal backend R. Jika dependency gagal, error tetap dilaporkan. `AES_RSCRIPT` dapat menunjuk backend R lokal. Jangan memindahkan angka fixture ini ke tabel evaluasi penelitian.
 

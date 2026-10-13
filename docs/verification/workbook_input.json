@@ -1,0 +1,48 @@
+{
+  "verified_at_utc": "2026-10-13T11:29:06.610317+00:00",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "source_state": "Working tree changes before commit; not attributed to parent commit.",
+  "parent_commit": "d1afa665c07a6be50650c9f3f1a3438bc381cfc5",
+  "source_sha256": {
+    "src/aes/workbook.py": "59efa9c6aec4ec0acfc2d92c79d7ad64ba1b8b962f8e0f8f84e3316388b3b791",
+    "scripts/import_workbook.py": "52db484f11f7d8c2ee8c0c4c5bae5eb11b28cdc9cb2267f4f7ff183c7e28c029",
+    "tests/test_workbook.py": "1c157d78b288b4e187760488a93c0afa127a796967c92f54cb56bab655f51b66",
+    "notebooks/01_belajar_alur_AES.ipynb": "7aa8ff5e0b33c6f793464b0c5dbae0268be360eb34b2ade576ca96019fea2aff",
+    "requirements.txt": "1055fa941bdcb40bf5de13937cc24f7ae0fafa9e411827973e869eff9210a4c2",
+    "requirements.lock.txt": "754b442aab4a07e9cd67a897b4a68ca5a86415db91d4b7934459ba7cb8b09a03"
+  },
+  "unit_tests": {
+    "command": "AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript HF_HOME=/workspace/hf-cache OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python -m pytest -q -rA",
+    "exit_code": 0,
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "new_excel_cases": 3,
+    "inputs": "Technical fixtures; model doubles. Includes existing AC2/R reference test."
+  },
+  "real_private_workbook_import": {
+    "rows": 10,
+    "all_columns_and_cell_values_match_original_csv": true,
+    "teacher_labels_complete": 0,
+    "ai_scores_imported_as_teacher": false,
+    "rubric_confirmed": false,
+    "source_modified": false
+  },
+  "notebook_execution": {
+    "kernel": "aes / Python 3.12",
+    "code_cells_executed": 11,
+    "errors": 0,
+    "format": "xlsx",
+    "worksheet": "Untuk_CSV_Guru",
+    "ai_summary_displayed_separately": true,
+    "final_research_rows_pending": 12,
+    "RUN_ENCODERS": false,
+    "RUN_TESTS": false,
+    "RUN_AC2_REFERENCE": false,
+    "note": "Suite executed separately. Fresh-kernel inspection run tested Excel import/setup/audit/display/supervised skip/final table; did not rerun original encoders or R in this notebook run."
+  },
+  "new_research_training": false,
+  "new_research_evaluation": false,
+  "private_artifacts_published": false
+}
