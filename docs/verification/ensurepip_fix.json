@@ -1,0 +1,70 @@
+{
+  "timestamp_utc": "2026-10-13T06:07:18.105382+00:00",
+  "source_at_verification": {
+    "base_commit": "0e121a9a53790f927cef0db11baf281c0bad685c",
+    "uncommitted_changes": true,
+    "file_sha256": {
+      "scripts/setup_notebook.py": "fc228f3bfa6deddd7280236b75847b7e44eaecb54324badf20776fd7798f4fb0",
+      "tests/test_notebook_workflow.py": "aec34e7d07fa115659c517f4d324d9a4dfcc540ff4b1210de43bf3edcd4455bb",
+      "notebooks/01_belajar_alur_AES.ipynb": "3c1dba1c1f019ea05cb1b25711dc2065b8984a38cac42a1563c6c56241d37b39",
+      "aes-learning/notebooks/01_belajar_alur_AES.ipynb": "3c1dba1c1f019ea05cb1b25711dc2065b8984a38cac42a1563c6c56241d37b39"
+    }
+  },
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "reported_colab_failure": "venv with_pip=True failed invoking ensurepip in cell 2; underlying captured ensurepip output was not supplied.",
+  "fix": "venv with_pip=False; parent pip --python target installs pip 25.0.1 if target pip missing. Existing partial environment retained.",
+  "official_reference": "https://pip.pypa.io/en/stable/topics/python-option/",
+  "technical_recovery_smoke": {
+    "command": "/workspace/aes-venv/bin/python scripts/setup_notebook.py --environment outputs/ensurepip_fix/recovery_env",
+    "exit_code": 0,
+    "before_target_pip_exit_code": 1,
+    "bootstrap_pip_version": "25.0.1",
+    "full_locked_dependencies_installed": true,
+    "imports_ok": true,
+    "python": "3.12.14",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "scikit-learn": "1.6.1",
+      "torch": "2.6.0+cpu",
+      "transformers": "4.44.2",
+      "FlagEmbedding": "1.3.5"
+    },
+    "repeat_same_command_exit_code": 0,
+    "repeat_did_not_bootstrap_pip_again": true,
+    "preexisting_sentinel_preserved": true
+  },
+  "unit_tests": {
+    "command": "AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript HF_HOME=/workspace/hf-cache OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 outputs/notebook_env/bin/python -m pytest -q -rA --junitxml=outputs/ensurepip_fix/tests.xml",
+    "exit_code": 0,
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "new_checks": [
+      "Real environment creation despite unusable ensurepip; missing pip and existing sentinel retained.",
+      "Bootstrap pip error propagates instead of marking setup successful."
+    ],
+    "synthetic_inputs": "Technical fixtures only, not research labels."
+  },
+  "notebook_default": {
+    "command": "JUPYTER_PATH=/workspace/jupyter/share/jupyter HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript /workspace/aes-venv/bin/python /tmp/run_clean_aes_notebook.py",
+    "exit_code": 0,
+    "runner": "nbclient.NotebookClient fresh aes kernel, allow_errors=False",
+    "code_cells": 10,
+    "errors": 0,
+    "actual_csv_json": true,
+    "teacher_training_run": false,
+    "encoders_selected": false
+  },
+  "limitations": [
+    "Verified in task Linux/Python 3.12.14; not in user live Colab browser.",
+    "This fix did not rerun original-checkpoint forward/backward; existing model methods unchanged.",
+    "No teacher-score training or research metrics."
+  ],
+  "public_notebook": {
+    "runtime_version_preserved": "2026.07",
+    "outputs_empty": true,
+    "mirrors_identical": true
+  }
+}

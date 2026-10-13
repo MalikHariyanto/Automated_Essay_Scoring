@@ -34,17 +34,40 @@ def check_runtime(version_info):
         )
 
 
+def create_environment(environment):
+    """Tanpa ensurepip: distro Colab dapat menyediakan venv tanpa bundel pip."""
+    environment = Path(environment).resolve()
+    if environment.exists() and not (environment / 'pyvenv.cfg').is_file():
+        raise RuntimeError(f'{environment} bukan virtual environment; tidak ditimpa.')
+    interpreter = environment / 'bin/python'
+    if not interpreter.exists():
+        venv.EnvBuilder(with_pip=False, system_site_packages=False).create(environment)
+    return interpreter
+
+
+def ensure_pip(interpreter, root, child_env):
+    """Pulihkan juga venv parsial: pip --python tidak memerlukan pip target."""
+    probe = subprocess.run([str(interpreter), '-m', 'pip', '--version'],
+                           cwd=root, env=child_env, capture_output=True, text=True)
+    if probe.returncode:
+        print('Pip target belum siap; bootstrap melalui pip induk --python.', flush=True)
+        # Resmi sejak pip 22.3. Tidak mengunduh/menjalankan get-pip.py atau memakai
+        # ensurepip, dan tidak memasang paket ke Python sistem Colab.
+        subprocess.run([
+            sys.executable, '-m', 'pip', '--python', str(interpreter), 'install',
+            '--disable-pip-version-check', '--only-binary=:all:', 'pip==25.0.1'
+        ], cwd=root, env=child_env, check=True)
+    subprocess.run([str(interpreter), '-m', 'pip', '--version'],
+                   cwd=root, env=child_env, check=True)
+
+
 def setup(root, environment):
     check_runtime(sys.version_info)
     root, environment = Path(root).resolve(), Path(environment).resolve()
     lock = root / 'requirements.lock.txt'
-    interpreter = environment / 'bin/python'
+    interpreter = create_environment(environment)
     marker = environment / 'aes_setup.json'
     fingerprint = hashlib.sha256(lock.read_bytes()).hexdigest()
-    if environment.exists() and not (environment / 'pyvenv.cfg').is_file():
-        raise RuntimeError(f'{environment} bukan virtual environment; tidak ditimpa.')
-    if not interpreter.exists():
-        venv.EnvBuilder(with_pip=True, system_site_packages=False).create(environment)
     child_env = os.environ.copy()
     child_env.pop('PYTHONPATH', None)
     child_env.pop('PYTHONHOME', None)
@@ -52,6 +75,7 @@ def setup(root, environment):
     child_env['PIP_CACHE_DIR'] = str(root / 'outputs/cache/pip')
     child_env['OMP_NUM_THREADS'] = '2'
     child_env['MKL_NUM_THREADS'] = '2'
+    ensure_pip(interpreter, root, child_env)
     previous = json.loads(marker.read_text()) if marker.exists() else {}
     if previous.get('lock_sha256') != fingerprint:
         subprocess.run([

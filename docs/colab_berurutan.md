@@ -32,4 +32,8 @@ Log pengguna menunjukkan Python 3.13 mencoba membangun `tokenizers==0.19.1` dari
 
 Notebook baru tidak mengimpor pustaka numerik ke kernel Colab. Setup membuat lingkungan tanpa system-site-packages, memeriksa dependency/import, dan setiap langkah AES memakai proses baru. Semua perhitungan tetap berasal dari modul `src/aes`, sama dengan CLI. File CSV/JSON tidak diubah, dan tidak ada label buatan untuk membuat training berhasil.
 
+Pada Colab pengguna, pembuatan lingkungan lewat `venv(with_pip=True)` juga gagal di `ensurepip`, sebelum dependency AES dipasang. Setup kini membuat lingkungan dengan `with_pip=False` dan memakai [opsi resmi pip `--python`](https://pip.pypa.io/en/stable/topics/python-option/) untuk memasang pip 25.0.1 di target yang belum punya pip. Python sistem tetap dipertahankan. Lingkungan parsial dengan interpreter/pyvenv.cfg yang sudah ada dipulihkan tanpa menghapus folder; kegagalan bootstrap tetap menghentikan setup dan dicatat dalam log.
+
+Jika sudah membuka notebook dengan cell setup ini, setelah perbaikan dipublikasikan cukup jalankan kembali **cell 1** (fetch/update kode), lalu **cell 2** (setup). Tidak perlu cell tambahan atau menghapus lingkungan yang gagal. Salinan notebook lama tanpa cell update sebaiknya diganti melalui link utama.
+
 Folder `outputs/` menyimpan lingkungan, log, audit, preview, cache, dan konfigurasi efektif secara lokal. Restart session biasa mempertahankan file pada mesin yang sama. Mengganti/menghapus runtime dapat menghilangkan folder sementara; notebook dapat menyiapkan ulang dan meminta dua file asli kembali.

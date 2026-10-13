@@ -6,6 +6,7 @@ import sys
 import os
 import hashlib
 import types
+import subprocess
 
 import pytest
 from requests.exceptions import RequestException
@@ -27,6 +28,42 @@ def test_python_313_rejected_before_environment_or_download(tmp_path, monkeypatc
         with pytest.raises(RuntimeError, match='Python 3.12'):
             setup.setup(tmp_path, tmp_path / 'env')
     assert not (tmp_path / 'env').exists()
+
+
+def test_environment_creation_works_when_ensurepip_is_unusable(tmp_path, monkeypatch):
+    setup = script_module('setup_notebook')
+    def unusable_ensurepip(*args, **kwargs):
+        raise AssertionError('Fixture teknis: ensurepip tidak tersedia')
+    monkeypatch.setattr(setup.venv.EnvBuilder, '_setup_pip', unusable_ensurepip)
+    environment = tmp_path / 'without_pip'
+    interpreter = setup.create_environment(environment)
+    assert interpreter.is_file()
+    assert 'include-system-site-packages = false' in (environment / 'pyvenv.cfg').read_text()
+    missing_pip = subprocess.run([str(interpreter), '-m', 'pip', '--version'],
+                                 capture_output=True, text=True)
+    assert missing_pip.returncode != 0
+    # Kondisi parsial setelah kegagalan lama: interpreter ada, pip belum ada.
+    sentinel = environment / 'keep_existing_file.txt'
+    sentinel.write_text('Fixture teknis: jangan hapus lingkungan yang sudah ada.')
+    assert setup.create_environment(environment) == interpreter
+    assert sentinel.read_text().startswith('Fixture teknis')
+
+
+def test_bootstrap_pip_failure_is_not_reported_as_setup_success(tmp_path, monkeypatch):
+    setup = script_module('setup_notebook')
+    interpreter = tmp_path / 'env/bin/python'
+    calls = []
+    def failure(command, **kwargs):
+        calls.append(command)
+        if '--version' in command:
+            return subprocess.CompletedProcess(command, 1, '', 'No module named pip')
+        raise subprocess.CalledProcessError(1, command)
+    monkeypatch.setattr(setup.subprocess, 'run', failure)
+    with pytest.raises(subprocess.CalledProcessError):
+        setup.ensure_pip(interpreter, tmp_path, {})
+    assert len(calls) == 2
+    assert '--python' in calls[1] and str(interpreter) in calls[1]
+    assert 'ensurepip' not in calls[1]
 
 
 def test_draft_worker_runs_inspection_and_skips_learning_without_mutating_inputs(technical_source):

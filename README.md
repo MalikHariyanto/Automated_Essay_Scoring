@@ -71,6 +71,8 @@ Untuk Colab, buka [notebook berurutan](https://colab.research.google.com/github/
 
 Notebook menjalankan modul AES melalui `scripts/notebook_step.py` dalam proses baru di `outputs/notebook_env`. `scripts/setup_notebook.py` membuat lingkungan tanpa paket bawaan Colab, memasang lock CPU, menjalankan `pip check`, dan benar-benar mengimpor pustaka model. Ini menghindari konflik NumPy yang sudah dimuat di memori notebook. Log ada di `outputs/notebook_setup.log`; data sumber tidak diubah. Salinan `aes-learning/notebooks/` disamakan karena sebelumnya tersimpan dari Colab ke path tersebut.
 
+Setup tidak bergantung pada `ensurepip`: lingkungan dibuat tanpa pip, lalu pip induk (22.3+) memakai `--python` untuk memasang pip target jika belum ada. Percobaan yang gagal setelah membuat lingkungan parsial dapat dilanjutkan dari cell 1 lalu cell 2 tanpa menghapus folder.
+
 ## Training dan evaluasi setelah guru memberi skor
 
 **Training** memperbarui bobot berdasarkan pasangan teks dan skor guru. Sebelum menjalankannya, verifikasi teks lengkap, transkripsi/identitas/relasi duplikasi, empat integer guru 1–5, `rubric_version`, rater/tanggal, dan pengesahan rubrik. Isi `configs/data_review.json` terhadap hash CSV terkini. Ini catatan hasil pemeriksaan manusia, bukan flag untuk memaksa training.
