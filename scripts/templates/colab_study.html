@@ -203,7 +203,8 @@ const paletteNames={navy:'01 / Navy & Cognac',olive:'02 / Olive & Cream',rose:'0
 const DEFAULT_PALETTE='rose';
 if(stored('palette-default',null)!==DEFAULT_PALETTE){store('palette-main',DEFAULT_PALETTE);store('palette-default',DEFAULT_PALETTE)}
 function palette(value,persist=true){if(!Object.hasOwn(paletteNames,value))value=DEFAULT_PALETTE;document.documentElement.dataset.palette=value;document.querySelectorAll('[data-palette-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.paletteChoice===value)));$('palette-active').textContent='Preview aktif: '+paletteNames[value];if(persist)store('palette-main',value)}
-palette(previewQuery.get('palette')||stored('palette-main',DEFAULT_PALETTE));
+// Published book always opens with the selected palette; old previews cannot override it.
+palette(previewQuery.get('preview')==='1'?(previewQuery.get('palette')||DEFAULT_PALETTE):DEFAULT_PALETTE);
 document.querySelectorAll('[data-palette-choice]').forEach(b=>b.onclick=()=>palette(b.dataset.paletteChoice));
 
 let completed=new Set(stored('read',[]).filter(x=>chapters.some(c=>c[0]===x)));

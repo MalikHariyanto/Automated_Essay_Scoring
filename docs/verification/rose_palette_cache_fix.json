@@ -1,0 +1,104 @@
+{
+  "exit_code": 0,
+  "checks": [
+    {
+      "file": "belajar_colab_AI_interaktif.html",
+      "old_palette_url": false,
+      "cached_navy_ignored": true,
+      "rose_title_and_button_RGB": [
+        239,
+        199,
+        203
+      ],
+      "reload_retains_selected_rose": true
+    },
+    {
+      "file": "belajar_colab_AI_interaktif.html",
+      "old_palette_url": true,
+      "cached_navy_ignored": true,
+      "rose_title_and_button_RGB": [
+        239,
+        199,
+        203
+      ],
+      "reload_retains_selected_rose": true
+    },
+    {
+      "file": "belajar_colab_Rose_Navy.html",
+      "old_palette_url": false,
+      "cached_navy_ignored": true,
+      "rose_title_and_button_RGB": [
+        239,
+        199,
+        203
+      ],
+      "reload_retains_selected_rose": true
+    },
+    {
+      "file": "belajar_colab_Rose_Navy.html",
+      "old_palette_url": true,
+      "cached_navy_ignored": true,
+      "rose_title_and_button_RGB": [
+        239,
+        199,
+        203
+      ],
+      "reload_retains_selected_rose": true
+    }
+  ],
+  "page_errors": [],
+  "source_sha256": "25950fe6f20da0206b21e031213c18220ec78e7c4b6915a714ffaa85b1cf6b9a",
+  "html_sha256": "b3fb5ccb328a8b00787bcaa4b3acc86babf979a4b5515235d80d0d6466613f7e",
+  "browser_regression": {
+    "exit_code": 0,
+    "browser": "Chromium via Playwright",
+    "browser_version": "154.0.8037.57",
+    "AC2_fixtures_matching_R": 0,
+    "origin": "Local HTTP; no user-facing localhost preview.",
+    "page_errors": [],
+    "external_resource_requests": 0,
+    "chapters": 11,
+    "source_files": 17,
+    "code_cells": 11,
+    "guided_code_steps": 27,
+    "quizzes": 0,
+    "actual_metric_rows": 12,
+    "metric_fixtures_matching_Python": 55,
+    "window_coverage_cases": 9,
+    "optimizer_schedule_cases": 18,
+    "private_actual_notebook_cells_checked": 0,
+    "embedded_private_outputs_checked": 0,
+    "untrusted_HTML_not_executed": true,
+    "private_data_not_in_localStorage": true,
+    "mobile_horizontal_overflow": false,
+    "print_control_removed": true,
+    "bounded_code_output_scroll": true,
+    "cached_navy_and_old_palette_url_do_not_override_selected_rose": true,
+    "tested_interactions": [
+      "tabs/keyboard",
+      "language modes",
+      "theme",
+      "reading persistence/reset",
+      "guided code names and explanation",
+      "source dropdown",
+      "S1/S2/S3 batch shapes",
+      "window boundaries",
+      "LR scheduling",
+      "metric filter/trace",
+      "numeric input errors",
+      "8/2 hypothetical diagram",
+      "local notebook open/forget",
+      "line highlight/margin notes",
+      "inner reading tabs/keyboard",
+      "bounded scrolling"
+    ],
+    "artifact_sha256": "b3fb5ccb328a8b00787bcaa4b3acc86babf979a4b5515235d80d0d6466613f7e"
+  },
+  "base_commit": "acc527a8a3a4aa414bf9c19256efc1c7be0febbd",
+  "regression_command": "PYTHONPATH=src python scripts/check_colab_study.py",
+  "source_hashes": {
+    "scripts/check_colab_study.py": "be30186c57bd78b98c6fc44f85d1e8dd2139750f45a5223cf769126c4593f415",
+    "scripts/preview_colab_palettes.py": "d09bccc703a9a962ea956b1fe95bd7d3a3872a450401459c60cbb4505772a074",
+    "scripts/templates/colab_study.html": "25950fe6f20da0206b21e031213c18220ec78e7c4b6915a714ffaa85b1cf6b9a"
+  }
+}

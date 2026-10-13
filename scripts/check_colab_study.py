@@ -41,7 +41,8 @@ def check(private_notebook=None, private_html=None):
             errors, requests = [], []
             page.on('pageerror', lambda e: errors.append(str(e)))
             page.on('request', lambda r: requests.append(r.url))
-            page.goto(origin + '/docs/belajar_colab_AI_interaktif.html')
+            page.add_init_script("localStorage.setItem('aes-study-v2:palette-main',JSON.stringify('navy'));localStorage.setItem('aes-study-v2:palette-default',JSON.stringify('rose'))")
+            page.goto(origin + '/docs/belajar_colab_AI_interaktif.html?palette=navy')
             assert page.locator('.palette-choice').count() == 3
             assert page.locator('html').get_attribute('data-palette') == 'rose'
             assert page.locator('.chapter-tab').count() == 11
@@ -253,6 +254,7 @@ def check(private_notebook=None, private_html=None):
                       'embedded_private_outputs_checked': embedded_outputs,
                       'untrusted_HTML_not_executed': True, 'private_data_not_in_localStorage': True,
                       'mobile_horizontal_overflow': False, 'print_control_removed': True, 'bounded_code_output_scroll': True,
+                      'cached_navy_and_old_palette_url_do_not_override_selected_rose': True,
                       'tested_interactions': ['tabs/keyboard', 'language modes', 'theme',
                           'reading persistence/reset', 'guided code names and explanation', 'source dropdown',
                           'S1/S2/S3 batch shapes', 'window boundaries',

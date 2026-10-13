@@ -60,8 +60,10 @@ File pribadi harus berada dalam `outputs/`, yang diabaikan Git. File ini berisi 
 
 Tema utama terbaru yang dipilih pengguna adalah **Rose & Navy** (bawah kanan): pink, cokelat, dan navy. Preferensi warna percobaan sebelumnya tidak mengganti pilihan awal ini.
 
-Di bagian atas halaman pertama, klik **Navy & Cognac** (atas kiri), **Olive & Cream** (bawah kiri), atau **Rose & Navy** (bawah kanan). Warna diadaptasi dari referensi Old Money pengguna. Pilihan berlaku pada seluruh buku dan sticky note; disimpan lokal sebagai preferensi warna. Tema terang/gelap tetap tersedia.
+Di bagian atas halaman pertama, klik **Navy & Cognac** (atas kiri), **Olive & Cream** (bawah kiri), atau **Rose & Navy** (bawah kanan). Warna diadaptasi dari referensi Old Money pengguna. Pilihan berlaku pada seluruh buku dan sticky note selama halaman dibuka. Saat membuka ulang buku, tema pilihan pengguna **Rose & Navy** selalu diterapkan; pilihan preview yang tersimpan sebelumnya tidak menimpanya. Tema terang/gelap tetap tersedia.
 
 Gambar halaman pertama: [navy](previews/colab_classy_navy.png), [olive](previews/colab_classy_olive.png), [rose](previews/colab_classy_rose.png). Gambar hanya berasal dari buku publik yang menampilkan hasil agregat.
 
 Untuk membuat ulang ketiga preview dan memeriksa tombol, keyboard, penyimpanan pilihan, mode gelap, serta layout 390/768/1024/1440 px, jalankan `python scripts/preview_colab_palettes.py`. Build HTML tetap `python scripts/build_colab_study.py`. Bukti ada di `docs/verification/colab_classy_palettes.json`.
+
+Versi bernama **belajar_colab_Rose_Navy.html** memuat buku publik yang sama dengan tema bawah kanan saat dibuka. Untuk membangunnya ulang: `python scripts/build_colab_study.py` lalu `cp docs/belajar_colab_AI_interaktif.html docs/belajar_colab_Rose_Navy.html`. Mode perbandingan developer harus diaktifkan eksplisit dengan `?preview=1&palette=navy` (atau `olive`/`rose`); URL `?palette=navy` saja tidak mengganti tema buku terbitan.
