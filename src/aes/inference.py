@@ -9,6 +9,8 @@ import torch
 def predict(checkpoint,texts,expected_rubric=None):
     device=device_name();model,p=load_checkpoint(checkpoint,device,expected_rubric)
     if not p['training'].get('trained'):raise ValueError('Checkpoint UNTRAINED tidak boleh digunakan untuk penilaian')
+    if p['training'].get('scope')=='ai_reference_learning_only':
+        raise ValueError('Checkpoint latihan acuan AI tidak boleh digunakan sebagai penilaian siswa; lihat laporan latihan AI.')
     cfg=p['config'];texts=[clean(t,**cfg['preprocessing']) for t in texts]
     if any(not t.strip() for t in texts):raise ValueError('Teks kosong')
     bge=None

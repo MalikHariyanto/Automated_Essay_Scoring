@@ -1,0 +1,130 @@
+{
+  "parent_commit": "79ffffb2206da8b80b89f6b2f7d61ce25ab7d169",
+  "source_state": "Modified/untracked working tree before commit; source hashes identify tested files, not the parent commit.",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "python": "3.12.14",
+  "source_sha256": {
+    "src/aes/ai_learning.py": "6de67b14e85b7ba7b8307061d389eeb4f36a4ae39b2b74509767c73365d67774",
+    "src/aes/trainer.py": "9e4fbf059e63f3b863435b8be45ba51a6fc1284543d960d449d93dfdd584f373",
+    "src/aes/inference.py": "67d7d6ee062cf0c48f3d3698a4f797d45514a237af7be86907a06b988d8bf415",
+    "src/aes/cli.py": "b57eb6eb289aeaba34450f80699b2ef9b984d4da01e111340be1e954962dd76e",
+    "scripts/notebook_step.py": "8430081861cf8bf56d38e38bf08130e130b8e58fe07f4517bd080fcb9fbd386c",
+    "configs/default.json": "5874071134bfed71e0c89d202018a575ea8cb01417c137735ab7d2ceef05663c",
+    "notebooks/02_latihan_acuan_AI.ipynb": "2224431e83fd8ba650b994a5aab8df7b0e28848c208d8a2fdea8d3246efd4baa",
+    "notebooks/01_belajar_alur_AES.ipynb": "3b206bfae7fc8b7cac6ae235422d326cabcfa1752c60f209a1f33c4ddf08cfdc",
+    "tests/test_ai_learning.py": "72979fa19026ec2bb544a76ce026110800974213648284241e5b4aa5069f8af9",
+    "tests/test_reporting.py": "74550ed0c30b8bd47081c0b759899247a8345ecb044ecfefa3116a406d7961fb",
+    "scripts/build_learning_html.py": "1c314a2faa5f3a95fff4364439b16d8f066ab4a9bc8fa527769afc21580f6e17"
+  },
+  "versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "torch": "2.6.0+cpu",
+    "transformers": "4.44.2",
+    "FlagEmbedding": "1.3.5",
+    "openpyxl": "3.1.5",
+    "pytest": "8.3.5"
+  },
+  "unit_checks": {
+    "command": "HF_HOME=/workspace/hf-cache AES_RSCRIPT=/workspace/aes-r-local/bin/Rscript OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python -m pytest -q --junitxml=outputs/ai_learning_pytest.xml",
+    "collection_command": "/workspace/aes-venv/bin/python -m pytest --collect-only -q",
+    "collected": 61,
+    "exit_code": 0,
+    "passed": 61,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "scope": "Technical fixtures; mocked encoder/tokenizer for isolated backward checks; R/irrCAC reference fixture tests. Not AES accuracy."
+  },
+  "actual_ai_reference_training": {
+    "command": "HF_HOME=/workspace/hf-cache OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 /workspace/aes-venv/bin/python /tmp/run_aes_ai.py",
+    "entry_point": "aes.ai_learning.run_ai_learning(cfg) with private workbook import metadata and explicit enabled=true",
+    "exit_code": 0,
+    "device": "cpu",
+    "real_checkpoints": true,
+    "models": {
+      "bge": {
+        "checkpoint": "BAAI/bge-m3",
+        "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+        "dimension": 1024,
+        "max_length": 1024
+      },
+      "roberta": {
+        "checkpoint": "flax-community/indonesian-roberta-base",
+        "revision": "cc5ecee7de8532880ad08d802292a6f42865bc83",
+        "dimension": 768,
+        "max_length": 512,
+        "overlap": 128
+      }
+    },
+    "eligible_original_drafts": 8,
+    "excluded_incomplete_reconstructed": 2,
+    "train_count": 4,
+    "validation_count": 4,
+    "scope": "ai_reference_learning_only",
+    "validation_tuning": false,
+    "S1_S2_S3": {
+      "S1": {
+        "completed_epochs": 2,
+        "steps_with_nonzero_learning_rate": 1,
+        "parameter_sample_changes": {
+          "roberta": true,
+          "head": true
+        },
+        "monitor_kind": "fixed_epochs_no_validation",
+        "training_scope": "ai_reference_learning_only"
+      },
+      "S2": {
+        "completed_epochs": 2,
+        "steps_with_nonzero_learning_rate": 1,
+        "parameter_sample_changes": {
+          "head": true
+        },
+        "monitor_kind": "fixed_epochs_no_validation",
+        "training_scope": "ai_reference_learning_only"
+      },
+      "S3": {
+        "completed_epochs": 2,
+        "steps_with_nonzero_learning_rate": 1,
+        "parameter_sample_changes": {
+          "roberta": true,
+          "projection": true,
+          "head": true
+        },
+        "monitor_kind": "fixed_epochs_no_validation",
+        "training_scope": "ai_reference_learning_only"
+      }
+    },
+    "validation_predictions_finite": true,
+    "metric_rows": 12,
+    "raw_RMSE_Pearson_and_ordinal_QWK_AC2": true,
+    "sample_parameter_change_check": true,
+    "BGE_frozen_requires_grad_false_eval_and_dense_cache_unchanged": true,
+    "checkpoint_reload_in_eval": true,
+    "R_AC2_actual_learning_estimates_checked": 12,
+    "R_tolerance": 5.01e-06,
+    "original_csv_rubric_hashes_unchanged": true,
+    "teacher_labels_written": 0,
+    "rubric_confirmed": false,
+    "teacher_supervised_training": false,
+    "proposal_CV_refit_final_test": false
+  },
+  "actual_fresh_kernel_notebook": {
+    "code_cells_executed": 11,
+    "errors": 0,
+    "cells_with_html": 5,
+    "RUN_ENCODERS": true,
+    "RUN_TESTS": true,
+    "RUN_AC2_REFERENCE": true,
+    "actual_colab_browser_access": false,
+    "command": "/workspace/aes-venv/bin/python /tmp/execute_ai_notebook.py (NotebookClient, kernel aes)",
+    "exit_code": 0,
+    "ai_training_results_reused_from_separately_completed_run": true,
+    "numeric_AI_reference_and_12_metric_rows_rendered": true,
+    "metric_trace_pairs_same_as_AI_validation": true
+  },
+  "known_corrections": "First attempted fixed-epoch run exposed missing validation_mse key; fixed nullable result for no-validation training. One-step all-zero learning-rate warmup corrected and regression-tested.",
+  "privacy": "No workbook, essay text, AI score arrays, executed notebook, cache or model weights included in this public evidence."
+}

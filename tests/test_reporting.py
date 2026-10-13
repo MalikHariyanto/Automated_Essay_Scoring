@@ -114,7 +114,7 @@ def test_notebook_renders_metric_steps_only_from_matching_test_pairs(technical_s
               if c['cell_type']=='code' and ''.join(c['source']).startswith("run_aes([ROOT/'scripts/notebook_step.py', 'report'"))
     tables=[]
     namespace=dict(ROOT=root,OUTPUT=Path(cfg['output']),CONFIG_PATH='TECHNICAL_FIXTURE',
-        TRACE_SCENARIO='S3',TRACE_TRAIT='isi',json=json,
+        TRACE_SCENARIO='S3',TRACE_TRAIT='isi',json=json,MODE='proposal',
         run_aes=lambda _:final_report(cfg,df,rubric),show_table=lambda columns,rows:tables.append((columns,rows)))
     exec(compile(cell,'technical_metric_steps_cell','exec'),namespace)
     pairs=next(rows for columns,rows in tables if 'squared_error' in columns)

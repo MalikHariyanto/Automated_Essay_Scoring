@@ -3,6 +3,13 @@
   "rubric": "data/source/rubrik_multitrait_DRAF.json",
   "output": "outputs",
   "mode": "inspect",
+  "ai_learning": {
+    "enabled": false,
+    "epochs": 2,
+    "validation_fraction": 0.5,
+    "split_seed": 2026,
+    "reuse_completed": true
+  },
   "preprocessing": {
     "normalize_punctuation": false
   },

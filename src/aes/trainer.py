@@ -24,12 +24,12 @@ class BatchEngine:
     def __init__(self,model,texts,bge,resolved,cfg,device):
         self.model=model;self.texts=texts;self.bge=bge;self.cfg=cfg;self.device=device
         self.tokenizer=AutoTokenizer.from_pretrained(resolved['roberta']['checkpoint'], revision=resolved['roberta']['revision'], use_fast=False) if model.scenario!='S2' else None
-    def forward(self,indices):
+    def forward(self,indices,return_features=False):
         bge=self.bge[indices].to(self.device) if self.model.scenario!='S1' else None
-        if self.model.scenario=='S2':return self.model(bge=bge)
+        if self.model.scenario=='S2':return self.model(bge=bge,return_features=return_features)
         s=self.cfg['models']['roberta']
         win,mapping,_=batch_windows([self.texts[i] for i in indices],self.tokenizer,self.device,s['max_length'],s['overlap'])
-        return self.model(windows=win,chunk_to_essay=mapping,bge=bge,n_essays=len(indices))
+        return self.model(windows=win,chunk_to_essay=mapping,bge=bge,n_essays=len(indices),return_features=return_features)
     def predict(self,indices,micro=1):
         self.model.eval();out=[]
         with torch.no_grad():
@@ -37,7 +37,8 @@ class BatchEngine:
         return np.concatenate(out)
 
 
-def train_run(scenario,candidate,train_ids,valid_ids,texts,y,bge,resolved,cfg,rubric,seed,out,epochs=None,early_stop=True):
+def train_run(scenario,candidate,train_ids,valid_ids,texts,y,bge,resolved,cfg,rubric,seed,out,epochs=None,early_stop=True,training_scope='teacher_supervised'):
+    if training_scope not in ['teacher_supervised','ai_reference_learning_only']:raise ValueError('Scope training tidak dikenali')
     seed_everything(seed);device=device_name();out=Path(out)
     roberta=load_roberta(resolved['roberta']) if scenario!='S2' else None
     model=AESModel(scenario,roberta,**cfg['scenarios'][scenario]).to(device)
@@ -53,11 +54,22 @@ def train_run(scenario,candidate,train_ids,valid_ids,texts,y,bge,resolved,cfg,ru
     n_epochs=epochs or c['max_epochs']
     if not 1<=n_epochs<=5:raise ValueError('Jumlah epoch harus 1–5')
     steps=math.ceil(len(train_ids)/effective)*n_epochs
-    scheduler=get_linear_schedule_with_warmup(optimizer,math.ceil(c['warmup_ratio']*steps),steps)
+    # Pada satu step latihan, warmup satu step akan membuat LR nol selama seluruh run.
+    warmup_steps=min(math.ceil(c['warmup_ratio']*steps),max(0,steps-1))
+    scheduler=get_linear_schedule_with_warmup(optimizer,warmup_steps,steps)
+    learning_ai=training_scope=='ai_reference_learning_only'
+    samples={}
+    if learning_ai:
+        for name,param in model.named_parameters():
+            group=name.split('.')[0]
+            if param.requires_grad and group not in samples:
+                samples[group]=(name,param.detach().reshape(-1)[:64].cpu().clone())
+        initial_train_mse=float(np.mean((engine.predict(train_ids,micro)-y[train_ids])**2))
     scaler=torch.amp.GradScaler('cuda',enabled=device=='cuda')
     amp_dtype=torch.bfloat16 if device=='cuda' and torch.cuda.is_bf16_supported() else torch.float16
-    best=None;best_epoch=0;stale=0;history=[];fallback=False;best_metrics=None;optimizer_steps=0
+    best=None;best_epoch=0;stale=0;history=[];fallback=False;best_metrics=None;optimizer_steps=0;nonzero_lr_steps=0
     for epoch in range(1,n_epochs+1):
+        if learning_ai:print(f'{scenario}: latihan acuan AI, epoch {epoch}/{n_epochs}; {len(train_ids)} esai train.',flush=True)
         model.train();order=np.random.permutation(train_ids).tolist();loss_sum=0
         # Satu effective batch berisi <=8 esai, bukan delapan chunks.
         for start in range(0,len(order),effective):
@@ -69,9 +81,11 @@ def train_run(scenario,candidate,train_ids,valid_ids,texts,y,bge,resolved,cfg,ru
                     scaled_loss=loss*(len(ids)/len(batch))
                 scaler.scale(scaled_loss).backward();loss_sum+=loss.item()*len(ids)
             scaler.unscale_(optimizer);torch.nn.utils.clip_grad_norm_(model.parameters(),c['gradient_clip'])
+            if any(g['lr']>0 for g in optimizer.param_groups):nonzero_lr_steps+=1
             scaler.step(optimizer);scaler.update();scheduler.step();optimizer_steps+=1
         log={'epoch':epoch,'train_mse':loss_sum/len(train_ids),'optimizer_steps':optimizer_steps,
-             'effective_batch_essays':8,'micro_batch_essays':micro,'last_batch_can_be_smaller':True}
+             'effective_batch_essays':8,'micro_batch_essays':micro,'last_batch_can_be_smaller':True,
+             'warmup_optimizer_steps':warmup_steps}
         if valid_ids is not None:
             pred=engine.predict(valid_ids,micro);metrics=evaluate(y[valid_ids],pred,rubric)
             mse=float(np.mean((y[valid_ids]-pred)**2));kind,value=selection_monitor(metrics,mse,fallback)
@@ -84,13 +98,22 @@ def train_run(scenario,candidate,train_ids,valid_ids,texts,y,bge,resolved,cfg,ru
         if improved:
             best=value;best_epoch=epoch;stale=0;best_metrics=metrics
             save_checkpoint(out/'best.pt',model,cfg,resolved,rubric,{'trained':True,'seed':seed,'candidate':candidate,
-               'epoch':epoch,'monitor':kind,'train_essay_count':len(train_ids),'validation_essay_count':len(valid_ids) if valid_ids is not None else 0})
+               'epoch':epoch,'monitor':kind,'scope':training_scope,'optimizer_steps':optimizer_steps,
+               'steps_with_nonzero_learning_rate':nonzero_lr_steps,
+               'train_essay_count':len(train_ids),'validation_essay_count':len(valid_ids) if valid_ids is not None else 0})
         else:stale+=1
         history.append(log);dump(out/'history.json',history)
         if early_stop and stale>=c['patience']:break
     result={'candidate':candidate,'best_epoch':best_epoch,'best_monitor':best,'monitor_kind':kind,
-         'metrics':best_metrics,'best_validation_mse':next((h['validation_mse'] for h in history if h['epoch']==best_epoch),None),
-         'checkpoint':str(out/'best.pt'),'completed_epochs':len(history)}
+         'metrics':best_metrics,'best_validation_mse':next((h.get('validation_mse') for h in history if h['epoch']==best_epoch),None),
+         'checkpoint':str(out/'best.pt'),'completed_epochs':len(history),'training_scope':training_scope}
+    if learning_ai:
+        named=dict(model.named_parameters())
+        result.update({'initial_train_mse':initial_train_mse,
+           'final_train_mse':float(np.mean((engine.predict(train_ids,micro)-y[train_ids])**2)),
+           'steps_with_nonzero_learning_rate':nonzero_lr_steps,
+           'parameter_sample_changes':{group:not torch.equal(before,named[name].detach().reshape(-1)[:64].cpu())
+                                       for group,(name,before) in samples.items()}})
     dump(out/'result.json',result)
     del engine,model,optimizer
     if device=='cuda':torch.cuda.empty_cache()

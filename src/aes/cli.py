@@ -14,7 +14,7 @@ def main(argv=None):
     p.add_argument('--config',default='configs/default.json');p.add_argument('--csv');p.add_argument('--rubric');p.add_argument('--output')
     sub=p.add_subparsers(dest='command',required=True)
     i=sub.add_parser('inspect');i.add_argument('--models',action='store_true',help='Unduh checkpoint asli dan forward UNTRAINED')
-    t=sub.add_parser('train');t.add_argument('--mode',choices=['learning','proposal'],default='learning');t.add_argument('--scenarios',nargs='+',choices=['S1','S2','S3'],default=['S1','S2','S3'])
+    t=sub.add_parser('train');t.add_argument('--mode',choices=['ai_learning','learning','proposal'],default='learning');t.add_argument('--scenarios',nargs='+',choices=['S1','S2','S3'],default=['S1','S2','S3'])
     pred=sub.add_parser('predict');pred.add_argument('--checkpoint',required=True)
     g=pred.add_mutually_exclusive_group(required=True);g.add_argument('--text');g.add_argument('--file')
     e=sub.add_parser('evaluate');e.add_argument('--checkpoint',required=True);e.add_argument('--partition',choices=['validation','test'],required=True)
@@ -34,8 +34,13 @@ def main(argv=None):
             df,r,a=inspect_data(cfg);print(json.dumps(a,ensure_ascii=False,indent=2))
             if args.models:print(json.dumps(inspect_models(cfg,df),ensure_ascii=False,indent=2))
         elif args.command=='train':
-            from .experiment import run
-            run(cfg,args.mode,args.scenarios)
+            if args.mode=='ai_learning':
+                from .ai_learning import run_ai_learning
+                cfg['ai_learning']['enabled']=True
+                run_ai_learning(cfg)
+            else:
+                from .experiment import run
+                run(cfg,args.mode,args.scenarios)
         elif args.command=='predict':
             texts=[args.text] if args.text is not None else [Path(args.file).read_text(encoding='utf-8')]
             expected=cfg['rubric'] if Path(cfg['rubric']).is_file() else None

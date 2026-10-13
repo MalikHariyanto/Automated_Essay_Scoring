@@ -27,6 +27,14 @@ def audit_step(cfg):
 
 
 def supervised_step(cfg, mode):
+    if mode=='ai_learning':
+        from aes.ai_learning import run_ai_learning
+        report=run_ai_learning(cfg)
+        dump(Path(cfg['output'])/'notebook_supervised.json',{
+            'mode':mode,'status':'completed_ai_reference_learning','ai_training_run':True,
+            'teacher_training_run':False,'reference_source':report['reference_source'],
+            'reused_completed_run':report['reused_completed_run']})
+        return
     df, rubric, report = inspect_data(cfg)
     review_path = Path(cfg['split']['review_file'])
     review = json.loads(review_path.read_text()) if review_path.exists() else None
@@ -75,7 +83,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('step', choices=['audit', 'models', 'supervised', 'report'])
     parser.add_argument('--config', required=True)
-    parser.add_argument('--mode', choices=['inspect', 'learning', 'proposal'], default='inspect')
+    parser.add_argument('--mode', choices=['inspect', 'ai_learning', 'learning', 'proposal'], default='inspect')
     args = parser.parse_args()
     cfg = load_config(args.config)
     if args.step == 'audit':
@@ -83,6 +91,11 @@ def main():
     elif args.step == 'models':
         models_step(cfg)
     elif args.step == 'report':
+        if args.mode=='ai_learning':
+            from aes.ai_learning import run_ai_learning
+            report=run_ai_learning(cfg)
+            print('Tabel latihan acuan AI:',len(report['rows']),'baris; bukan hasil penelitian guru.')
+            return
         df,rubric,_=inspect_data(cfg)
         report=final_report(cfg,df,rubric)
         print('Tabel final:',len(report['rows']),'baris; tersedia:',
