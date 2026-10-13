@@ -1,0 +1,30 @@
+{
+  "fresh_shallow_clone_seconds": 1.227,
+  "existing_clean_checkout_update_seconds": 0.639,
+  "native_git_commands_completed": true,
+  "model_or_package_download_started": false,
+  "user_colab_runtime_observed": false,
+  "source_state": "Merged notebook source and saved Colab metadata tested before publishing; code outputs cleared.",
+  "parent_commit": "cb27651d57921ff613bb8363ca11adc65658da50",
+  "source_sha256": {
+    "notebooks/01_belajar_alur_AES.ipynb": "3357b488f93f425977201bcac041a88e8b3dfeacb94bf47e79d21fd7bf3835f7",
+    "tests/test_notebook_workflow.py": "93f4fd9056aead310fc7c5fefe3c4db364bcbf04e08461504b1936251b84c2f6"
+  },
+  "unit_command": "HF_HOME=/workspace/hf-cache /workspace/aes-venv/bin/python -m pytest -q tests/test_notebook_workflow.py tests/test_workbook.py",
+  "unit_exit_code": 0,
+  "passed": 11,
+  "failed": 0,
+  "skipped": 0,
+  "xfailed": 0,
+  "new_cases": "2 mocked Git cases: timeout aborts before merge/setup and preserves user files; success announces stages and shallow clone, with Excel selected.",
+  "native_smoke": "Execute first cell with Colab detection simulated and AES_NOTEBOOK_ROOT in an owned temporary checkout. Real HTTPS Git clone/fetch/merge; not a live Colab execution.",
+  "limits_seconds": {
+    "clone": 120,
+    "fetch": 120,
+    "status": 20,
+    "branch": 20,
+    "merge": 30
+  },
+  "user_colab_hang_cause": "Not established. User reported Running without output.",
+  "integration": "Preserved Colab runtime_version 2026.07 and notebook metadata from user saves; reapplied progress/timeout/Excel default changes; reran 11 targeted checks and native Git smoke."
+}

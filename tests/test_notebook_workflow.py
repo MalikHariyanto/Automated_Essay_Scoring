@@ -141,3 +141,62 @@ def test_colab_input_cell_uploads_to_private_folder_without_replacing_existing_r
     assert Path.cwd() == root
     effective = json.loads((output / 'notebook_config.json').read_text())
     assert effective['csv'] == str(private / 'dataset_aes_multitrait_DRAF.csv')
+
+
+def first_cell_source():
+    root = Path(__file__).resolve().parents[1]
+    nb = json.loads((root/'notebooks/01_belajar_alur_AES.ipynb').read_text())
+    return next(''.join(cell['source']) for cell in nb['cells']
+                if cell['cell_type']=='code')
+
+
+def test_git_timeout_stops_first_cell_and_preserves_existing_files(tmp_path, monkeypatch, capsys):
+    root = tmp_path/'checkout';root.mkdir()
+    sentinel = root/'keep.txt';sentinel.write_text('Fixture: file pengguna tidak dihapus.')
+    monkeypatch.setenv('AES_NOTEBOOK_ROOT', str(root))
+    actual_is_dir = Path.is_dir
+    monkeypatch.setattr(Path, 'is_dir', lambda p: True if str(p)=='/content' else actual_is_dir(p))
+    calls = []
+    def stalled_git(command, **kwargs):
+        calls.append(command)
+        assert kwargs['env']['GIT_TERMINAL_PROMPT']=='0'
+        assert kwargs['stdin']==subprocess.DEVNULL
+        if 'status' in command:
+            return subprocess.CompletedProcess(command,0,stdout='')
+        if 'branch' in command:
+            return subprocess.CompletedProcess(command,0,stdout='codex/aes-learning\n')
+        assert 'fetch' in command and kwargs['timeout']==120
+        raise subprocess.TimeoutExpired(command, kwargs['timeout'])
+    monkeypatch.setattr(subprocess,'run',stalled_git)
+    with pytest.raises(RuntimeError,match='melewati batas waktu'):
+        exec(compile(first_cell_source(),'notebook_first_cell','exec'),{})
+    assert sentinel.read_text()=='Fixture: file pengguna tidak dihapus.'
+    assert not any('merge' in command for command in calls)
+    assert not (root/'outputs').exists()
+    captured=capsys.readouterr().out
+    assert 'Mulai cell 1' in captured and 'Mengambil pembaruan dari GitHub' in captured
+    assert 'CELL 1 SELESAI' not in captured
+
+
+def test_first_cell_reports_stages_and_uses_shallow_clone(tmp_path, monkeypatch, capsys):
+    root=tmp_path/'new_checkout'
+    monkeypatch.setenv('AES_NOTEBOOK_ROOT',str(root))
+    actual_is_dir=Path.is_dir
+    monkeypatch.setattr(Path,'is_dir',lambda p: True if str(p)=='/content' else actual_is_dir(p))
+    previous=Path.cwd()
+    def clone(command,**kwargs):
+        assert 'clone' in command and '--depth' in command
+        assert kwargs['timeout']==120 and kwargs['env']['GIT_TERMINAL_PROMPT']=='0'
+        (root/'scripts').mkdir(parents=True)
+        (root/'scripts/setup_notebook.py').write_text('# Fixture: tidak menjalankan setup.')
+        return subprocess.CompletedProcess(command,0)
+    monkeypatch.setattr(subprocess,'run',clone)
+    try:
+        namespace={}
+        exec(compile(first_cell_source(),'notebook_first_cell','exec'),namespace)
+        assert namespace['INPUT_FORMAT']=='xlsx'
+        captured=capsys.readouterr().out
+        assert 'Mengambil source dari GitHub' in captured and 'CELL 1 SELESAI' in captured
+        assert not (root/'outputs/notebook_env').exists()
+    finally:
+        os.chdir(previous)

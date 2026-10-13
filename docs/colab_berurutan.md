@@ -8,6 +8,10 @@ Buka [notebook utama](https://colab.research.google.com/github/MalikHariyanto/Au
 4. Pada cell pertama pilih `INPUT_FORMAT="csv"` untuk CSV asli atau `"xlsx"` untuk workbook review. Untuk Excel, isi `EXCEL_FILENAME` sesuai nama sebenarnya dan pertahankan `EXCEL_SHEET="Untuk_CSV_Guru"`. Cell input meminta dataset yang dipilih dan JSON rubrik jika belum tersedia. File Excel di `/content/aes_review_privat/` juga dapat digunakan langsung. Tunggu upload selesai, lalu lanjutkan dari atas.
 5. Baca audit, satu esai/rubrik, cleaning, token/vektor dan output UNTRAINED S1/S2/S3, lalu referensi AC2. Bagian supervised menampilkan alasan skip bila label atau pengesahan belum lengkap. Tabel empat metrik ada di bagian 11.
 
+Default input kini Excel untuk workflow review: `INPUT_FORMAT="xlsx"`, `EXCEL_FILENAME="Review_Esai_AI.xlsx"`, `EXCEL_SHEET="Untuk_CSV_Guru"`. Pilih csv bila ingin memakai CSV asli. Pilihan input dicetak pada akhir cell pertama agar tidak tertukar.
+
+Cell pertama langsung mencetak `Mulai cell 1`, lalu tahap Git yang berjalan. Cell ini tidak memasang paket atau mengunduh encoder. Clone baru mengambil satu commit (`--depth 1`); clone/fetch dibatasi 120 detik, pemeriksaan lokal 20 detik, merge 30 detik. Prompt login interaktif dinonaktifkan; kegagalan atau timeout tidak dilaporkan sebagai keberhasilan dan tidak menghapus data/perubahan pengguna. Kalau hanya Running tanpa output pada versi lama, penyebab proses belum diketahui; hentikan dan buka notebook terbaru. Jika versi baru belum mencetak pesan awal, periksa status koneksi/runtime Colab. Batas waktu kode baru berlaku ketika runtime mulai menjalankan cell.
+
 ## Isi cell
 
 | Langkah | Yang dilakukan | Bukti yang ditampilkan |
