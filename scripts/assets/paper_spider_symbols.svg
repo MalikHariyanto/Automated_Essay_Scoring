@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden"><defs>
+  <!-- Original companion poses for the offline learning book. -->
+  <pattern id="spiderSuitWeb" width="18" height="18" patternUnits="userSpaceOnUse">
+    <path d="M0 0 18 18M18 0 0 18M9 0V18M0 9H18" fill="none" stroke="#790f28" stroke-width=".65" opacity=".65"/>
+    <path d="M2 2Q9 0 16 2M2 16Q9 18 16 16M2 2Q0 9 2 16M16 2Q18 9 16 16" fill="none" stroke="#790f28" stroke-width=".65" opacity=".5"/>
+  </pattern>
+
+  <symbol id="spiderHang" viewBox="0 0 160 200">
+    <path d="M80 0V47" fill="none" stroke="#092044" stroke-width="5"/>
+    <path d="M80 0V47M77 9l6 7-6 7 6 7-6 7" fill="none" stroke="#e4faff" stroke-width="2" stroke-linecap="round"/>
+    <g stroke="#091331" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+      <!-- Boots wrap the web while the knees bend outwards. -->
+      <path d="m77 41-19 17-14 25 23 26 17-14-20-17 17-25m5-11 18 16 12 29-19 21-17-14 16-14-16-27" fill="#165999"/>
+      <path d="m69 48 9-22c3-5 11-5 13 0l-4 27-12 7Zm15 4 3-23c1-4 6-6 9-2l5 14-5 16Z" fill="#e72020"/>
+      <path d="m69 48 9-22c3-5 11-5 13 0l-4 27-12 7Zm15 4 3-23c1-4 6-6 9-2l5 14-5 16Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m47 77 14 16m46-10-12 13" fill="none" stroke="#4fa7d8" stroke-width="3"/>
+      <!-- Arms are relaxed, with open fingertips. -->
+      <path d="M66 103 52 107l-13 18-7 10 11 10 15-20 13-5m28-15 14 7 5 17 9 10 10-8-10-18-12-18-17 5" fill="#e72020"/>
+      <path d="M66 103 52 107l-13 18-7 10 11 10 15-20 13-5m28-15 14 7 5 17 9 10 10-8-10-18-12-18-17 5" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m36 130-9 4-5 12c-1 4 2 6 4 3l5-7-4 13c-1 4 4 5 5 1l4-10-1 11c0 4 4 4 5 0l2-10 3-9Zm90-1 9 1 8 10c2 4-1 6-4 3l-5-5 6 11c2 4-3 6-5 2l-6-9 3 11c1 3-3 5-5 1l-5-11-1-8Z" fill="#e72020"/>
+      <path d="M67 89c9 7 21 8 32 0l4 38c-8 16-33 17-43 0Z" fill="#e72020"/>
+      <path d="M67 89c9 7 21 8 32 0l4 38c-8 16-33 17-43 0Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m66 92-4 21 8 7 5-25m20-1 6 20-9 8-4-27" fill="#165999" stroke-width="1.8"/>
+      <ellipse cx="83" cy="115" rx="3.8" ry="6" fill="#091331" stroke="none"/>
+      <path d="m81 112-8-6-5 2m13 7-10-2-4 4m14 1-9 5-2 5m15-16 8-6 5 2m-13 7 10-2 4 4m-14 1 9 5 2 5" fill="none" stroke-width="1.7"/>
+      <!-- Upside-down mask; eye points face toward the inverted brow. -->
+      <path d="M79 130c-19 1-29 17-26 34 2 19 15 30 31 27 20-3 30-20 25-38-4-15-16-25-30-23Z" fill="#e72020"/>
+      <path d="M79 130c-19 1-29 17-26 34 2 19 15 30 31 27 20-3 30-20 25-38-4-15-16-25-30-23Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="M58 170c8-1 17-5 22-13 0-8-7-13-13-8-6 6-8 13-9 21Zm45-3c-7 0-15-3-20-10-1-8 5-15 12-11 6 5 8 13 8 21Z" fill="#fffef4" stroke-width="3.5"/>
+      <path d="m61 178 7 7m-6-37 7-8" fill="none" stroke="#ff7864" stroke-width="2"/>
+    </g>
+  </symbol>
+
+  <symbol id="spiderPeek" viewBox="0 0 160 200">
+    <g stroke="#091331" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+      <!-- The shoulder and hands end at the edge of a real page or note. -->
+      <path d="M48 116c10-12 24-17 37-15 13 1 25 9 31 23l9 21H34Z" fill="#165999"/>
+      <path d="M58 112c12-10 26-12 41-3l4 36H55Z" fill="#e72020"/>
+      <path d="M58 112c12-10 26-12 41-3l4 36H55Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m47 119-13 6-8 13 14 8 15-18m49-10 16 7 10 13-14 8-14-17" fill="#e72020"/>
+      <path d="m47 119-13 6-8 13 14 8 15-18m49-10 16 7 10 13-14 8-14-17" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="M69 55c-20 4-31 24-27 45 3 22 18 36 38 33 21-3 36-21 35-44-1-23-21-39-46-34Z" fill="#e72020"/>
+      <path d="M69 55c-20 4-31 24-27 45 3 22 18 36 38 33 21-3 36-21 35-44-1-23-21-39-46-34Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m46 80 29 16c0 14-8 24-16 16-7-7-10-18-13-32Zm61-3L81 95c1 13 10 23 19 12 6-9 6-21 7-30Z" fill="#fffef4" stroke-width="4"/>
+      <path d="M55 72c3-5 8-9 13-10m-17 49 7 10" fill="none" stroke="#ff7864" stroke-width="2.4"/>
+      <!-- Rounded fingers curl over the paper edge. -->
+      <path d="M25 126c-7 2-9 11-6 16l4 8c2 4 7 2 6-2l-1-5 3 7c2 4 7 1 5-3l-2-5 4 5c3 3 7 0 5-3l-5-9 7 4c4 2 7-3 3-6l-12-8Z" fill="#e72020"/>
+      <path d="M126 124c7-1 13 7 13 12l-1 12c0 4-5 5-6 0v-6l-1 8c-1 4-6 3-6-1v-7l-3 6c-2 4-7 1-5-3l4-10-7 5c-4 2-7-2-3-5l10-9Z" fill="#e72020"/>
+      <path d="m23 133 5 5m7-7 5 5m84-4 5 3m-8 5 5 2" fill="none" stroke="#790f28" stroke-width="1.2"/>
+    </g>
+  </symbol>
+
+  <symbol id="spiderHold" viewBox="0 0 160 200">
+    <g stroke="#091331" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+      <!-- Crouched knees leave room for a real sticky note between the hands. -->
+      <path d="m63 139-25 12-17 27 16 10 26-23 17-3m15-23 24 12 18 27-17 10-26-23-16-4" fill="#165999"/>
+      <path d="m24 174-12 12c-3 3-2 8 3 9l27-2 5-11-12-9m98 2 15 11c4 4 2 8-2 9l-27-1-8-12 12-9" fill="#e72020"/>
+      <path d="m24 174-12 12c-3 3-2 8 3 9l27-2 5-11-12-9m98 2 15 11c4 4 2 8-2 8l-27-1-8-12 12-9" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m44 156 11 4m52-5-12 5" fill="none" stroke="#4fa7d8" stroke-width="3"/>
+      <path d="M57 95c14-8 31-8 45 0l3 44c-8 18-40 19-49 1Z" fill="#e72020"/>
+      <path d="M57 95c14-8 31-8 45 0l3 44c-8 18-40 19-49 1Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m57 102 13 8-5 32-9-3m45-37-13 8 6 32 12-3" fill="#165999" stroke-width="1.7"/>
+      <path d="M60 99 45 106l-13 18-6 6 13 12 17-19 9-8m32-16 17 8 15 17 6 7-13 11-19-21-12-7" fill="#e72020"/>
+      <path d="M60 99 45 106l-13 18-6 6 13 12 17-19 9-8m32-16 17 8 15 17 6 7-13 11-19-21-12-7" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <ellipse cx="80" cy="122" rx="3.7" ry="6" fill="#091331" stroke="none"/>
+      <path d="m78 118-7-5-4 2m11 6-10-1-3 4m13 1-8 5-2 5m14-17 7-5 4 2m-11 6 10-1 3 4m-13 1 8 5 2 5" fill="none" stroke-width="1.6"/>
+      <path d="M76 40c-19 0-31 15-32 33-1 21 12 39 32 42 20 2 36-14 38-35 3-22-13-40-38-40Z" fill="#e72020"/>
+      <path d="M76 40c-19 0-31 15-32 33-1 21 12 39 32 42 20 2 36-14 38-35 3-22-13-40-38-40Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m49 64 26 17c-1 14-8 23-16 15-6-7-9-19-10-32Zm58 2L82 81c1 14 8 23 17 15 6-8 7-18 8-30Z" fill="#fffef4" stroke-width="4"/>
+      <path d="M53 56c4-5 9-8 15-9m-14 51 8 7" fill="none" stroke="#ff7864" stroke-width="2.2"/>
+      <!-- Thumbs sit behind a note; the four fingers stay visible above it. -->
+      <path d="m27 127-10 2c-5 1-7 6-5 10l5 8c2 4 6 2 5-1l-2-5 4 6c3 3 7 0 5-3l-3-5 5 5c3 3 7-1 4-4l-4-5 8 3c4 1 6-4 2-6l-8-4Z" fill="#e72020"/>
+      <path d="m132 127 10 2c5 1 7 6 5 10l-5 8c-2 4-6 2-5-1l2-5-4 6c-3 3-7 0-5-3l3-5-5 5c-3 3-7-1-4-4l4-5-8 3c-4 1-6-4-2-6l8-4Z" fill="#e72020"/>
+      <path d="m18 133 5 5m9-7 5 4m105-2-5 5m-9-7-5 4" fill="none" stroke="#790f28" stroke-width="1.1"/>
+    </g>
+  </symbol>
+
+  <symbol id="spiderCrawl" viewBox="0 0 160 200">
+    <path d="M143 0c-5 32-10 46-27 67" fill="none" stroke="#092044" stroke-width="4"/>
+    <path d="M143 0c-5 32-10 46-27 67" fill="none" stroke="#e4faff" stroke-width="1.8" stroke-linecap="round"/>
+    <g stroke="#091331" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+      <!-- Long diagonal silhouette, with one hand anchored to the web. -->
+      <path d="m76 126-7 29-24 13-12 6 9 13 36-21 18-30m-4-1 24 14-2 19-5 13 16 7 10-34-27-31" fill="#165999"/>
+      <path d="m37 170-20 7c-5 2-5 6-1 10l21 9 10-12m66-6-7 9c-3 5 0 8 5 9h25c5-1 6-5 2-8l-13-9" fill="#e72020"/>
+      <path d="m37 170-20 7c-5 2-5 6-1 10l21 9 10-12m66-6-7 9c-3 5 0 8 5 9h25c5-1 6-5 2-8l-13-9" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m71 149 10 6m35 5 12 2" fill="none" stroke="#4fa7d8" stroke-width="3"/>
+      <path d="M78 90 98 81l15-21-11-8-22 20-17 4m-5 26-24 14-7 23 13 5 11-19 23-11" fill="#e72020"/>
+      <path d="M78 90 98 81l15-21-11-8-22 20-17 4m-5 26-24 14-7 23 13 5 11-19 23-11" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m104 54 1-9 8-7c3-3 7 0 4 3l-4 5 8-6c3-2 6 2 3 4l-8 7 9-3c3-1 5 4 1 5l-11 5-4 6-10-6Z" fill="#e72020"/>
+      <path d="M70 87c14-1 32 14 35 34l-18 25c-17-2-37-16-41-33Z" fill="#e72020"/>
+      <path d="M70 87c14-1 32 14 35 34l-18 25c-17-2-37-16-41-33Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m50 110 16-2 4 20 14 16-9-2-19-14m33-31-6 16 16 11 6-3" fill="#165999" stroke-width="1.7"/>
+      <ellipse cx="76" cy="116" rx="4" ry="6" fill="#091331" stroke="none" transform="rotate(-32 76 116)"/>
+      <path d="m72 114-9-2-3 3m12 2-9 3-1 4m13-3-5 8 1 4m6-22 5-8 4-1m-7 11 9-4 4 2m-11 5 10 3 3 4" fill="none" stroke-width="1.6"/>
+      <path d="M48 64c-19 1-30 18-28 37 2 20 16 34 34 33 21-1 33-17 31-36-2-21-18-36-37-34Z" fill="#e72020"/>
+      <path d="M48 64c-19 1-30 18-28 37 2 20 16 34 34 33 21-1 33-17 31-36-2-21-18-36-37-34Z" fill="url(#spiderSuitWeb)" stroke="none"/>
+      <path d="m24 91 25 9c2 13-4 24-12 18-7-5-11-15-13-27Zm51-8-22 17c4 13 13 18 19 9 5-7 4-17 3-26Z" fill="#fffef4" stroke-width="3.8"/>
+      <path d="m28 84 8-11m-4 46 8 7" fill="none" stroke="#ff7864" stroke-width="2.2"/>
+      <path d="m27 137-9 4-6 9c-2 4 2 6 4 3l4-4-2 9c-1 4 4 5 5 1l2-9 1 9c1 4 6 3 5-1v-8l4 4c3 3 7-1 3-4l-2-9Z" fill="#e72020"/>
+      <path d="m21 145 7 2m81-98 5 6" fill="none" stroke="#790f28" stroke-width="1.1"/>
+    </g>
+  </symbol>
+</defs></svg>

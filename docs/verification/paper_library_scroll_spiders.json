@@ -1,0 +1,51 @@
+{
+  "scope": "UI/browser verification only; not model training or research accuracy",
+  "passed": [
+    "reduced-motion and 42-source inventory",
+    "588 reading panes: desktop/mobile, all 42 sources × 7 tabs",
+    "topic, subtopic, BGE, source-type, text-search and empty-state filters",
+    "desktop/mobile independent filter wheel scrolling, no scroll chaining, preserved last selection and immediate paper opening",
+    "two-source comparison and Escape dismissal",
+    "context glossary, keyboard tabs, nested dialogs, bounded scrolling and saved reading progress",
+    "four distinct companion animations, multiple reader/notes poses, global pause/resume, static reduced-motion and noninteractive decorations",
+    "no browser exceptions, no external requests, offline equations"
+  ],
+  "failed": [],
+  "skipped": [],
+  "xfailed": [],
+  "reading_panes_checked": 588,
+  "python": "3.12.14",
+  "playwright": "1.62.0",
+  "chromium": "154.0.8037.57",
+  "html_sha256": "d2116106c999dea0d1aaaf09c1a72b6ea9291c5c35b2a001ece7b950f6472d6d",
+  "head_before_publication": "ea76f93a0be4a18ffd0b30bc5599e9c0d110be3e",
+  "command": "python scripts/check_paper_library.py",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "exit_code": 0,
+  "verified_at_utc": "2026-10-14T07:51:34.115728+00:00",
+  "change_scope": "Bounded independently scrolling usage filter with preserved selection; four additional original animated poses placed on page/cards/reader corners and sticky notes.",
+  "targeted_laptop_check": {
+    "viewport": "1440x720",
+    "result": "Last usage selection yields one source with open-paper button entirely visible",
+    "exit_code": 0
+  },
+  "data_sha256": "bb52899744cf7d72d78d4ee3a2a9cf8c6c9e9adacb158267e597b47ffc8709e4",
+  "raw_uploads_published": false,
+  "files_sha256": {
+    "docs/paper_library_interaktif.html": "d2116106c999dea0d1aaaf09c1a72b6ea9291c5c35b2a001ece7b950f6472d6d",
+    "scripts/build_paper_library.py": "7421d07882125faa53a5972600e17a5901985434953c477133a1ee77881e5283",
+    "scripts/check_paper_library.py": "22fb01ab082716629dabbd9bee81c6ff8b1e1475cde21b1554e89a172910b57e",
+    "scripts/templates/paper_library.html": "34ec3d8845e310152642b6bfd53468dcc05bf5e8871f4ea49c00f47cffe0bd9b",
+    "scripts/templates/paper_library_navigation.css": "0ee5a78522a95dcb9a64988d5928b797d1d301261a8a71c33d580bf72ac4242f",
+    "scripts/templates/paper_library_spider.css": "a423a75bc3007bfd796afe33fe72bdd4d3a69a807eabf4a478232e33bd205694",
+    "scripts/assets/paper_spider_symbols.svg": "7fcc6281121f2fa5e549769d13643fe2b1c2da8969f69ee6fb56ae71df8c9844",
+    "docs/previews/paper_library/01_beranda_desktop.png": "7528c407996c3b0c7a848898129fb11dca9ef624ba397fc5c5f0df3c5940acc2",
+    "docs/previews/paper_library/02_proses_bge.png": "588bb6cc3d0a6b0ae2263a0818de3e45b8e046a023786addc382d851ec6b01da",
+    "docs/previews/paper_library/03_rumus_bge.png": "6a70d303291780886fa0a892283b8a5174202f9307d5c8e73407f8c72d328e3a",
+    "docs/previews/paper_library/04_beranda_mobile.png": "56f312e3241945fcadaab7fa785527381a013606d854c20d866d65b71dd44e21",
+    "docs/previews/paper_library/05_membaca_matriks.png": "ec2fe96e83f38b8104668c70d3af5228cee45d71a87b09a2fee0b275c07777be",
+    "docs/previews/paper_library/06_katalog_full_colour.png": "6d88a01009478bb4cd644c6a3f9f61d085363d3ebd8ef30141b725840702f670",
+    "docs/previews/paper_library/07_filter_scroll_sendiri.png": "7c2fa235b354243bea68a4363c464250dc057ce9f9d4e29ae50a3759176e67ae",
+    "docs/previews/paper_library/08_spiderman_catatan_mobile.png": "80b26348199b8de4268cc603e35784d6abe89c79b7d4bfdae8f109a66ece0e95"
+  }
+}

@@ -65,6 +65,34 @@ def check(url):
         assert page.locator(".paper-card").count() > 0
         page.evaluate("PaperLibrary.resetFilters()")
         outcomes.append("topic, subtopic, BGE, source-type, text-search and empty-state filters")
+        # Reproduce the long-sidebar bug using real wheel input, then select the last item.
+        for width in (1440, 390):
+            page.set_viewport_size({"width": width, "height": 1050 if width > 500 else 844})
+            page.evaluate("PaperLibrary.resetFilters()")
+            page.locator(".catalog-body").evaluate("e=>e.scrollIntoView({block:'start'})")
+            box = page.locator("#subtopicList").bounding_box()
+            main_scroll = page.evaluate("scrollY")
+            page.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
+            page.mouse.wheel(0, 10000)
+            page.wait_for_timeout(200)
+            assert page.evaluate("scrollY") == main_scroll, (width, "filter moved main page")
+            list_scroll = page.locator("#subtopicList").evaluate("e=>e.scrollTop")
+            assert list_scroll > 0, (width, "filter failed to scroll")
+            page.mouse.wheel(0, 10000)
+            page.wait_for_timeout(150)
+            assert page.evaluate("scrollY") == main_scroll, (width, "filter scroll chained at bottom")
+            page.locator("#subtopicList [data-subtopic]").last.click()
+            assert page.locator("#subtopicList").evaluate("e=>e.scrollTop") == list_scroll, "Selection lost list position"
+            assert page.locator(".paper-card").count() == 1
+            if width > 500:
+                button = page.locator(".open-paper").bounding_box()
+                assert button["y"] >= 0 and button["y"] + button["height"] <= 1050, "Single result needs page hunting"
+            page.locator(".open-paper").click()
+            assert page.locator("#readerDialog").evaluate("e=>e.open")
+            page.evaluate("PaperLibrary.closeReader()")
+        page.set_viewport_size({"width": 1440, "height": 1050})
+        page.evaluate("PaperLibrary.resetFilters()")
+        outcomes.append("desktop/mobile independent filter wheel scrolling, no scroll chaining, preserved last selection and immediate paper opening")
         page.locator("[data-compare=p14]").check()
         page.locator("[data-compare=p13]").check()
         page.locator("#openCompare").click()
@@ -97,6 +125,23 @@ def check(url):
         assert page.locator("#glossaryResults .term-card").count() > 0
         page.keyboard.press("Escape")
         outcomes.append("context glossary, keyboard tabs, nested dialogs, bounded scrolling and saved reading progress")
+        page.emulate_media(reduced_motion="no-preference")
+        page.evaluate("PaperLibrary.openPaper('p14','process'); PaperLibrary.setMotion(false)")
+        assert page.locator("#readerContent .spider-friend").count() >= 5
+        animations = page.locator(".spider-friend").evaluate_all("nodes=>nodes.map(e=>getComputedStyle(e).animationName)")
+        assert len(set(animations) - {"none"}) >= 4, "Missing distinct animated poses"
+        assert page.locator(".spider-friend").evaluate_all("nodes=>nodes.every(e=>getComputedStyle(e).pointerEvents==='none' && e.closest('[aria-hidden=true]'))")
+        page.locator("#readerMotion").click()
+        assert page.locator(".spider-friend").evaluate_all("nodes=>nodes.every(e=>getComputedStyle(e).animationPlayState==='paused')")
+        page.wait_for_timeout(100)
+        stopped = page.locator(".spider-friend").evaluate_all("nodes=>nodes.map(e=>getComputedStyle(e).transform)")
+        page.wait_for_timeout(250)
+        assert stopped == page.locator(".spider-friend").evaluate_all("nodes=>nodes.map(e=>getComputedStyle(e).transform)"), "Paused pose still moves"
+        page.locator("#readerMotion").click()
+        assert page.locator(".spider-friend").evaluate_all("nodes=>nodes.every(e=>getComputedStyle(e).animationPlayState==='running')")
+        page.emulate_media(reduced_motion="reduce")
+        assert page.locator(".spider-friend").evaluate_all("nodes=>nodes.every(e=>getComputedStyle(e).animationName==='none')")
+        outcomes.append("four distinct companion animations, multiple reader/notes poses, global pause/resume, static reduced-motion and noninteractive decorations")
         assert not errors, errors
         assert not external, external
         outcomes.append("no browser exceptions, no external requests, offline equations")

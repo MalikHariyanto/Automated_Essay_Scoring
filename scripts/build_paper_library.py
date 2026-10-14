@@ -60,8 +60,12 @@ def build(output=OUTPUT):
         artwork[variable] = "data:image/svg+xml;base64," + base64.b64encode(svg).decode("ascii")
     colour_css = ":root{" + ";".join(f'--{key}:url("{value}")' for key, value in artwork.items()) + "}\n"
     colour_css += (ROOT / "scripts/templates/paper_library_full_colour.css").read_text(encoding="utf-8")
+    navigation_css = (ROOT / "scripts/templates/paper_library_navigation.css").read_text(encoding="utf-8")
     values = {
         "__FULL_COLOUR_CSS__": colour_css,
+        "__NAVIGATION_CSS__": navigation_css,
+        "__SPIDER_CSS__": (ROOT / "scripts/templates/paper_library_spider.css").read_text(encoding="utf-8"),
+        "__SPIDER_SYMBOLS__": (ROOT / "scripts/assets/paper_spider_symbols.svg").read_text(encoding="utf-8"),
         "__PAPER_LIBRARY_DATA__": json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c"),
         "__KATEX_JS__": (ROOT / "scripts/vendor/paper_katex.js").read_text().replace("</script", "<\\/script"),
         "__KATEX_CSS__": (ROOT / "scripts/vendor/paper_katex.css").read_text(),
@@ -70,7 +74,7 @@ def build(output=OUTPUT):
     for marker, value in values.items():
         assert html.count(marker) == 1, f"Missing or repeated marker: {marker}"
         html = html.replace(marker, value)
-    assert not re.search(r"__(?:PAPER_LIBRARY_DATA|KATEX_JS|KATEX_CSS|FULL_COLOUR_CSS)__", html)
+    assert not re.search(r"__(?:PAPER_LIBRARY_DATA|KATEX_JS|KATEX_CSS|FULL_COLOUR_CSS|NAVIGATION_CSS|SPIDER_CSS|SPIDER_SYMBOLS)__", html)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(html, encoding="utf-8")
     return {"sources": len(papers), "process_steps": sum(len(p["process"]) for p in papers),

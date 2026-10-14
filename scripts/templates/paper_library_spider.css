@@ -1,0 +1,80 @@
+/* Original, offline companion poses. Placement is chosen by the host scene. */
+.spider-friend {
+  --spider-direction: 1;
+  display: block;
+  width: 128px;
+  height: 160px;
+  max-width: none;
+  flex: none;
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(3px 4px 0 #09133155);
+  transform: scaleX(var(--spider-direction));
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.spider-friend.on-left { --spider-direction: -1; }
+.spider-friend.on-right { --spider-direction: 1; }
+.spider-hang {
+  transform-origin: 50% 0;
+  animation-name: spider-hanging;
+  animation-duration: 7s;
+}
+.spider-peek {
+  transform-origin: 50% 74%;
+  animation-name: spider-peeking;
+  animation-duration: 6.4s;
+  animation-delay: -.8s;
+}
+.spider-hold {
+  transform-origin: 50% 72%;
+  animation-name: spider-holding;
+  animation-duration: 7.8s;
+  animation-delay: -2s;
+}
+.spider-crawl {
+  transform-origin: 65% 48%;
+  animation-name: spider-crawling;
+  animation-duration: 8.8s;
+  animation-delay: -3s;
+}
+.spider-perch {
+  position: relative;
+  width: 128px;
+  height: 160px;
+  flex: none;
+  pointer-events: none;
+}
+.spider-perch > .spider-friend { width: 100%; height: 100%; }
+.paused .spider-friend { animation-play-state: paused !important; }
+
+@keyframes spider-hanging {
+  0%, 100% { transform: rotate(-2.5deg) scaleX(var(--spider-direction)); }
+  50% { transform: rotate(2.5deg) scaleX(var(--spider-direction)); }
+}
+@keyframes spider-peeking {
+  0%, 18%, 100% { transform: translateY(1px) scaleX(var(--spider-direction)); }
+  50%, 68% { transform: translateY(-3px) rotate(.8deg) scaleX(var(--spider-direction)); }
+}
+@keyframes spider-holding {
+  0%, 100% { transform: translateY(1px) rotate(-.7deg) scaleX(var(--spider-direction)); }
+  50% { transform: translateY(-1px) rotate(.7deg) scaleX(var(--spider-direction)); }
+}
+@keyframes spider-crawling {
+  0%, 100% { transform: translate(0, 0) rotate(-1deg) scaleX(var(--spider-direction)); }
+  50% { transform: translate(3px, -2px) rotate(1deg) scaleX(var(--spider-direction)); }
+}
+
+@media (max-width: 700px) {
+  .spider-friend, .spider-perch { width: 104px; height: 130px; }
+}
+@media (max-width: 430px) {
+  .spider-friend, .spider-perch { width: 88px; height: 110px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spider-friend {
+    animation: none !important;
+    transform: scaleX(var(--spider-direction)) !important;
+  }
+}
