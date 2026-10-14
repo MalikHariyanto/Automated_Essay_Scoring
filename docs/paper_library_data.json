@@ -47,7 +47,8 @@
       "Koleksi mencakup artikel, preprint, buku/cuplikan, tesis, laporan, dan kebijakan. Cakupan pilihan dijelaskan pada tiap kartu.",
       "Identitas mengikuti PDF yang dibaca. Status indeks belum diverifikasi dari pengindeks resmi; DOI dan jurnal tidak otomatis membuktikan Scopus, SINTA, atau kuartil."
     ],
-    "methodology": "Ringkasan dan alur belajar diparafrasakan dari dokumen unggahan, dengan penanda halaman PDF. Buku panjang dan cuplikan dibaca pada bagian relevan yang disebutkan dalam cakupan. Tidak ada eksperimen model baru yang dijalankan untuk panduan ini."
+    "methodology": "Ringkasan dan alur belajar diparafrasakan dari dokumen unggahan, dengan penanda halaman PDF. Buku panjang dan cuplikan dibaca pada bagian relevan yang disebutkan dalam cakupan. Tidak ada eksperimen model baru yang dijalankan untuk panduan ini.",
+    "visual_count": 82
   },
   "papers": [
     {
@@ -386,7 +387,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "9f80778ed02f3fb1f03c7055cbea88936732de5ca9f1814b3963b7d8b45da704",
-      "learning_order": 9
+      "learning_order": 9,
+      "visuals": [
+        {
+          "id": "p01_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 5,
+          "source_caption": "Figure 1. Proposed Architecture of Unified Multimodal Search Framework",
+          "asset": "scripts/assets/paper_visuals/p01_01.webp",
+          "asset_sha256": "4f41c037fe3e5f10a9e8ceda962e59fc7d1b857678a36e1fc111f4d25b0e5a62",
+          "width": 1776,
+          "height": 893,
+          "source_crop": [
+            30.24,
+            216.0,
+            473.76,
+            439.2
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Mulai dari gambar: jalur Qwen membuat caption, sedangkan jalur encoder visual membaca piksel.",
+            "Ikuti BGE-M3 pada jalur teks, lalu penggabungan fitur dan MLP menuju satu representasi.",
+            "Bedakan index/top-k untuk kandidat dari cross-encoder yang mengurutkan kandidat lagi."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "BGE-M3 di sini mewakili caption dalam pencarian gambar. Hasil akhir adalah gambar yang relevan, bukan nilai esai."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari A Unified Multimodal Search Framework Using Generative AI and Image Understanding for Enhanced Information Retrieval. Mulai dari gambar: jalur Qwen membuat caption, sedangkan jalur encoder visual membaca piksel."
+        },
+        {
+          "id": "p01_v2",
+          "kind": "findings",
+          "title": "Table 5 — baca hasilnya",
+          "source_label": "Table 5",
+          "page": 16,
+          "source_caption": "Table 5. Ablation Study of the Proposed Framework on COCO Captions and Fashion-Gen Datasets",
+          "asset": "scripts/assets/paper_visuals/p01_02.webp",
+          "asset_sha256": "4c1809121ac13248203f2fe792b8a92db3741fbb154420670d81789661a25c7a",
+          "width": 1279,
+          "height": 383,
+          "source_crop": [
+            37.0,
+            402.4,
+            449.28,
+            525.49
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Bandingkan konfigurasi A–E, bukan hanya satu angka paling tebal.",
+            "Kolom caption source, fusion, dan tanda re-ranking menjelaskan komponen yang berubah.",
+            "mAP dibaca per dataset COCO/Fashion-Gen; bandingkan dalam dataset yang sama."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Ablation menunjukkan perubahan pipeline. Label fusion pada tabel dan uraian metode tidak sepenuhnya konsisten; jangan menggabungkan angka AP dan mAP begitu saja."
+          },
+          "warning": "",
+          "alt": "Table 5 dari A Unified Multimodal Search Framework Using Generative AI and Image Understanding for Enhanced Information Retrieval. Bandingkan konfigurasi A–E, bukan hanya satu angka paling tebal."
+        }
+      ]
     },
     {
       "id": "p02",
@@ -681,7 +744,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "862621b5fd7b03695774687792fc11d10483492b0e3a9090e582a811ccb359b6",
-      "learning_order": 4
+      "learning_order": 4,
+      "visuals": [
+        {
+          "id": "p02_v1",
+          "kind": "process",
+          "title": "Fig. 1 — ikuti alurnya",
+          "source_label": "Fig. 1",
+          "page": 4,
+          "source_caption": "Fig. 1.  Our GPT-based hybrid model for AES.",
+          "asset": "scripts/assets/paper_visuals/p02_01.webp",
+          "asset_sha256": "608c9c5a6708215ab159f971aa0ffc585e0ffa45371e1f15978c594459db9462",
+          "width": 1367,
+          "height": 608,
+          "source_crop": [
+            121.37,
+            42.5,
+            562.17,
+            238.2
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Pisahkan training phase di kiri dan test phase di kanan.",
+            "Model GPT menghasilkan fitur embedding; fitur linguistik juga masuk ke vektor.",
+            "Vektor kemudian diteruskan ke model pemutus skor, bukan langsung dianggap nilai."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Nama GPT pada kotak tidak berarti ChatGPT otomatis menilai dengan prompt. Diagram menulis linear classifier, sementara metode paper membahas Random Forest; label diagram perlu dibaca bersama uraian metode."
+          },
+          "warning": "",
+          "alt": "Fig. 1 dari An LLM-based hybrid approach for enhanced automated essay scoring. Pisahkan training phase di kiri dan test phase di kanan."
+        },
+        {
+          "id": "p02_v2",
+          "kind": "findings",
+          "title": "Table 4 — baca hasilnya",
+          "source_label": "Table 4",
+          "page": 7,
+          "source_caption": "Table 4.  QWK for different AES approaches.",
+          "asset": "scripts/assets/paper_visuals/p02_02.webp",
+          "asset_sha256": "108ac00eb106070026ad7ed28ac80bf9432a561b1137dd2ed710919ed9753ac2",
+          "width": 552,
+          "height": 254,
+          "source_crop": [
+            147.9,
+            218.5,
+            325.8,
+            300.15
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Tabel ini berisi QWK, EA, dan AA, tiga ukuran yang berbeda.",
+            "Baca QWK 0,83 pada kolomnya; angka 1,0 pada AA bukan QWK sempurna.",
+            "Perbandingan dengan sistem lain berada pada tabel lain, jadi tabel kecil ini tidak menunjukkan semua baseline."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Skala dan definisi metrik menentukan arti angka. Ketiga kolom tidak bisa dipertukarkan atau otomatis disebut persentase akurasi."
+          },
+          "warning": "",
+          "alt": "Table 4 dari An LLM-based hybrid approach for enhanced automated essay scoring. Tabel ini berisi QWK, EA, dan AA, tiga ukuran yang berbeda."
+        }
+      ]
     },
     {
       "id": "p03",
@@ -927,7 +1052,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "79b4d91563cebaa2848cac05979b5cd1100d853c000389f323af13e8bef5ffe0",
-      "learning_order": 2
+      "learning_order": 2,
+      "visuals": [
+        {
+          "id": "p03_v1",
+          "kind": "process",
+          "title": "Gambar 1 — ikuti alurnya",
+          "source_label": "Gambar 1",
+          "page": 4,
+          "source_caption": "Gambar 1. Taksonomi Bloom    Berbeda  dengan ",
+          "asset": "scripts/assets/paper_visuals/p03_01.webp",
+          "asset_sha256": "f9e3392d90cc56fa4f129f098cc9112fe74528da55c6b6462eec06dbee1eb859",
+          "width": 491,
+          "height": 335,
+          "source_crop": [
+            336.6000061035156,
+            416.08001708984375,
+            494.4000244140625,
+            523.52001953125
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baca piramida dari remembering menuju creating.",
+            "Hubungkan tingkat itu dengan C1–C6; bagian atas digunakan untuk mengategorikan HOTS.",
+            "Kategori dibuat dari tuntutan berpikir soal, bukan kata kerja yang terdengar sulit saja."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Piramida adalah kerangka taksonomi. Ia belum membuktikan bahwa siswa menguasai tingkat berpikir tersebut."
+          },
+          "warning": "",
+          "alt": "Gambar 1 dari Analisis Kesesuaian Higher Order Thinking Skill (HOTS) Penilaian Sumatif Akhir Tahun pada Pembelajaran Bahasa Indonesia di Kelas X SMA. Baca piramida dari remembering menuju creating."
+        },
+        {
+          "id": "p03_v2",
+          "kind": "findings",
+          "title": "Tabel 2 — baca hasilnya",
+          "source_label": "Tabel 2",
+          "page": 7,
+          "source_caption": "Tabel 2. Hasil Penelitian ",
+          "asset": "scripts/assets/paper_visuals/p03_02.webp",
+          "asset_sha256": "95bf9ff2f5c2e7b54fa75f6c07783964353f160ee41538736b91ed78ba9ebc3b",
+          "width": 832,
+          "height": 628,
+          "source_crop": [
+            80.0,
+            216.0,
+            288.0,
+            373.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kolom LOTS memuat C1–C3, HOTS memuat C4–C6.",
+            "Nomor soal di tiap sel adalah butir yang dikelompokkan, bukan identitas siswa.",
+            "Baris Jumlah Soal menunjukkan C4=18 dan C6=2: total HOTS 20 dari 35 soal."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Bedakan 18/35 untuk C4 dari 20/35 untuk seluruh HOTS. Narasi persentase dalam sumber perlu diperiksa terhadap tabel."
+          },
+          "warning": "",
+          "alt": "Tabel 2 dari Analisis Kesesuaian Higher Order Thinking Skill (HOTS) Penilaian Sumatif Akhir Tahun pada Pembelajaran Bahasa Indonesia di Kelas X SMA. Kolom LOTS memuat C1–C3, HOTS memuat C4–C6."
+        }
+      ]
     },
     {
       "id": "p04",
@@ -1261,7 +1448,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "c314a040ebbc80dbaa1358890c185272841a72d11ba9513b266a389881f46d02",
-      "learning_order": 2
+      "learning_order": 2,
+      "visuals": [
+        {
+          "id": "p04_v1",
+          "kind": "process",
+          "title": "Gambar 2 — ikuti alurnya",
+          "source_label": "Gambar 2",
+          "page": 3,
+          "source_caption": "gambar 2. ",
+          "asset": "scripts/assets/paper_visuals/p04_01.webp",
+          "asset_sha256": "cfca7bd6dcb01d83b2e9ec9d8953f24af4202b829335e5debc57d336b2edb9fa",
+          "width": 896,
+          "height": 864,
+          "source_crop": [
+            321.0,
+            250.0,
+            545.0,
+            466.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Ikuti dataset menuju training, validation, dan testing yang terpisah.",
+            "Preprocessing mendahului pembangunan tiga jalur model pembanding.",
+            "Kotak scoring baru menghasilkan prediksi; evaluasi membandingkannya dengan nilai acuan."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Kemiripan jawaban dan kunci perlu dilatih/dipetakan pada skala yang tepat. Diagram ini juga membandingkan TF–IDF dengan IndoBERT."
+          },
+          "warning": "",
+          "alt": "Gambar 2 dari Automated Essay Scoring Menggunakan Semantic Textual Similarity Berbasis Transformer untuk Penilaian Ujian Esai. Ikuti dataset menuju training, validation, dan testing yang terpisah."
+        },
+        {
+          "id": "p04_v2",
+          "kind": "findings",
+          "title": "Tabel 2 — baca hasilnya",
+          "source_label": "Tabel 2",
+          "page": 6,
+          "source_caption": "Tabel 2. Hasil Evaluasi Model AES pada Data Testing ",
+          "asset": "scripts/assets/paper_visuals/p04_02.webp",
+          "asset_sha256": "f8b5bd5ff5ab86c8b8df36dd5cb5059b2062ef8bfc5ceb807e61fff849e4d0a1",
+          "width": 772,
+          "height": 300,
+          "source_crop": [
+            337.0,
+            211.0,
+            530.0,
+            286.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris menyatakan metode; kolom menyatakan MAE atau RMSE.",
+            "Dalam tabel ini, error lebih kecil berarti jarak prediksi ke acuan lebih kecil.",
+            "Baca IndoBERT 0,1285 MAE dan 0,2001 RMSE tanpa mengganti skala penilaian sumber."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Ini hasil dataset dan split paper tersebut. Angka kecil tidak menjamin hasil yang sama pada prompt atau bahasa/domain lain."
+          },
+          "warning": "",
+          "alt": "Tabel 2 dari Automated Essay Scoring Menggunakan Semantic Textual Similarity Berbasis Transformer untuk Penilaian Ujian Esai. Baris menyatakan metode; kolom menyatakan MAE atau RMSE."
+        }
+      ]
     },
     {
       "id": "p05",
@@ -1539,7 +1788,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "82d49ea5858cc6b2b09bdcfa44def175471366cbd391ba21293be1f3d0e90500",
-      "learning_order": 7
+      "learning_order": 7,
+      "visuals": [
+        {
+          "id": "p05_v1",
+          "kind": "process",
+          "title": "Prosedur empat fase — ikuti alurnya",
+          "source_label": "Prosedur empat fase",
+          "page": 9,
+          "source_caption": "Cuplikan teks dari artikel utama; tabel rinci yang disebut artikel berada pada suplemen yang tidak tersedia dalam unggahan.",
+          "asset": "scripts/assets/paper_visuals/p05_01.webp",
+          "asset_sha256": "6eb62120d8f9e5293e2c2861d28b3c1c1d6a9d6fafca9b5052a980bff45d7394",
+          "width": 1704,
+          "height": 856,
+          "source_crop": [
+            139.89,
+            154.91,
+            565.51,
+            368.75
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Cuplikan menyusun empat fase, dimulai dari definisi kriteria.",
+            "Tabel keputusan menerjemahkan kriteria menjadi aturan ya/tidak.",
+            "Format keluaran dan prompt dibuat sesudah aturan, agar respons bisa dibandingkan."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Ini teks metode asli, bukan flowchart yang dikarang. Tabel rinci yang disebut S11/S12 berada di suplemen yang tidak ada dalam unggahan."
+          },
+          "warning": "Artikel utama menunjuk tabel/gambar rinci pada suplemen. Unggahan hanya memuat artikel utama; yang tampil di sini adalah cuplikan prosedur/hasil yang tersedia.",
+          "alt": "Prosedur empat fase dari ChatGPT as a Stable and Fair Tool for Automated Essay Scoring. Cuplikan menyusun empat fase, dimulai dari definisi kriteria."
+        },
+        {
+          "id": "p05_v2",
+          "kind": "findings",
+          "title": "Hasil pengembangan algoritme — baca hasilnya",
+          "source_label": "Hasil pengembangan algoritme",
+          "page": 14,
+          "source_caption": "Cuplikan teks dari artikel utama; tabel rinci yang disebut artikel berada pada suplemen yang tidak tersedia dalam unggahan.",
+          "asset": "scripts/assets/paper_visuals/p05_02.webp",
+          "asset_sha256": "ade9b36db6bf4a2c97b573781fc5cff6aae8c3cfe3b89318a9e93e0cac5fcf0b",
+          "width": 1704,
+          "height": 860,
+          "source_crop": [
+            139.89,
+            180.16,
+            565.51,
+            394.85
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baca klaim hasil pengembangan algoritme secara terpisah dari hasil stabilitas skor.",
+            "Empat keluaran yang disebut adalah criteria, decision tables, structure, dan ready-to-use prompt.",
+            "Perhatikan siapa meninjau hasil dan bagaimana ketidakcocokan acuan diperiksa."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Pembuatan aturan yang konsisten belum sama dengan fairness untuk semua kelompok siswa. Uji satu jawaban berulang memiliki cakupan terbatas."
+          },
+          "warning": "Artikel utama menunjuk tabel/gambar rinci pada suplemen. Unggahan hanya memuat artikel utama; yang tampil di sini adalah cuplikan prosedur/hasil yang tersedia.",
+          "alt": "Hasil pengembangan algoritme dari ChatGPT as a Stable and Fair Tool for Automated Essay Scoring. Baca klaim hasil pengembangan algoritme secara terpisah dari hasil stabilitas skor."
+        }
+      ]
     },
     {
       "id": "p06",
@@ -1829,7 +2140,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "7c329e7a59e5f6c2cda29046043e4d104d0ac6de1ed3a25f8c8eea5cbd2f4402",
-      "learning_order": 2
+      "learning_order": 2,
+      "visuals": [
+        {
+          "id": "p06_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 2,
+          "source_caption": "Figure 1. ‌\u0007System architecture for the RAG-based EMR chatbot service. The proposed system architecture integrates a vector data- base management system, utilizing the Weaviate vector database to store vectorized medical text and semantic document  clusters. The query processing pipeline preprocesses user input and employs cosine similarity to retr",
+          "asset": "scripts/assets/paper_visuals/p06_01.webp",
+          "asset_sha256": "b10096b8d3310462f48d58964a74f2fd7f01253dc2647acb075aa052a974a1f6",
+          "width": 1801,
+          "height": 1209,
+          "source_crop": [
+            35.72,
+            301.61,
+            565.51,
+            657.18
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Ikuti dokumen menuju text extraction, training dataset, lalu fine-tuning embedding.",
+            "Query melewati model embedding menuju similarity matching dan dokumen relevan.",
+            "LLM memakai dokumen terpilih untuk menghasilkan respons."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Retrieval dan generation merupakan dua tahap. Kesalahan memilih konteks dapat ikut mengubah jawaban chatbot."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari Development and Evaluation of a Retrieval-Augmented Generation-Based Electronic Medical Record Chatbot System. Ikuti dokumen menuju text extraction, training dataset, lalu fine-tuning embedding."
+        },
+        {
+          "id": "p06_v2",
+          "kind": "findings",
+          "title": "Table 2 — baca hasilnya",
+          "source_label": "Table 2",
+          "page": 6,
+          "source_caption": "Table 2. Performance comparison of fine-tuned models",
+          "asset": "scripts/assets/paper_visuals/p06_02.webp",
+          "asset_sha256": "d6bd2351ec9009668864fe672091d0f594daec70a191c581610c7828dd6a260a",
+          "width": 1109,
+          "height": 388,
+          "source_crop": [
+            35.72,
+            400.82,
+            312.52,
+            497.65
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Pilih baris model, lalu bandingkan baseline dengan fine-tuned pada baris yang sama.",
+            "Kolom improvement merangkum perubahan terhadap baseline pada evaluasi yang dipakai paper.",
+            "Perhatikan bahwa tabel mengukur layanan EMR; bukan metrik pemberian skor esai."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Sumber menyebut ukuran query uji yang tidak konsisten di beberapa bagian. Jangan memindahkan accuracy 97,619 menjadi klaim umum seluruh chatbot."
+          },
+          "warning": "",
+          "alt": "Table 2 dari Development and Evaluation of a Retrieval-Augmented Generation-Based Electronic Medical Record Chatbot System. Pilih baris model, lalu bandingkan baseline dengan fine-tuned pada baris yang sama."
+        }
+      ]
     },
     {
       "id": "p07",
@@ -2115,7 +2488,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "b183fa4c5d032feb190ab3e0c2d0325f8ff72465d586bfac6675ee9d1487554d",
-      "learning_order": 6
+      "learning_order": 6,
+      "visuals": [
+        {
+          "id": "p07_v1",
+          "kind": "process",
+          "title": "Table 2 — ikuti alurnya",
+          "source_label": "Table 2",
+          "page": 8,
+          "source_caption": "Table 2 | Overview of evaluated embedding models",
+          "asset": "scripts/assets/paper_visuals/p07_01.webp",
+          "asset_sha256": "2c83d92f539836e332bc62b691ed0b12a947c0a96864bde32fe13e841f58322d",
+          "width": 1801,
+          "height": 987,
+          "source_crop": [
+            59.0,
+            443.0,
+            570.0,
+            723.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kelompok pertama memuat model proprietary, lalu model open source.",
+            "Baris Our embedding models memakai basis MiniLM, dengan tugas/loss berbeda.",
+            "Nama model dan deskripsi menunjukkan apa yang diubah melalui fine-tuning domain."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "HydroEmbed bukan BGE. Kesamaan kata embedding tidak berarti checkpoint dan tujuan training sama."
+          },
+          "warning": "",
+          "alt": "Table 2 dari Domain-specific embedding models for hydrology and environmental sciences: enhancing semantic retrieval and question answering. Kelompok pertama memuat model proprietary, lalu model open source."
+        },
+        {
+          "id": "p07_v2",
+          "kind": "findings",
+          "title": "Table 3 — baca hasilnya",
+          "source_label": "Table 3",
+          "page": 9,
+          "source_caption": "Table 3 | Comparative performance of baseline and ﬁne-tuned embedding models across QA formats in hydrological domain",
+          "asset": "scripts/assets/paper_visuals/p07_02.webp",
+          "asset_sha256": "781d61240bd7b039a40097de4baf498d2545bfd91e629887a33432871027aa37",
+          "width": 1801,
+          "height": 658,
+          "source_crop": [
+            43.88,
+            70.41,
+            566.79,
+            261.31
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Pisahkan bagian MCQ/FITB yang memiliki accuracy dari pertanyaan open-ended yang memakai MRR.",
+            "Count membantu membaca berapa contoh pada setiap bentuk pertanyaan.",
+            "Tanda kosong berarti nilai tidak dilaporkan/berlaku pada konfigurasi itu, bukan otomatis nol."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Bandingkan tugas dan ukuran sampelnya terlebih dahulu. Nilai cosine antarencoder berbeda juga belum menjadi skala universal kualitas jawaban."
+          },
+          "warning": "",
+          "alt": "Table 3 dari Domain-specific embedding models for hydrology and environmental sciences: enhancing semantic retrieval and question answering. Pisahkan bagian MCQ/FITB yang memiliki accuracy dari pertanyaan open-ended yang memakai MRR."
+        }
+      ]
     },
     {
       "id": "p08",
@@ -2455,7 +2890,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "0d2b49458c7a7e5f97f23999d951bf4222c8b4afac6e5e89bdf703f52514984f",
-      "learning_order": 3
+      "learning_order": 3,
+      "visuals": [
+        {
+          "id": "p08_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 4,
+          "source_caption": "Figure 1. Research methodology    3.3 Sentence embeddings SBERT ",
+          "asset": "scripts/assets/paper_visuals/p08_01.webp",
+          "asset_sha256": "ff11560d6ed73caac55b75dc7558209adf21cef39ae6d4ed2db58f2304da2c5a",
+          "width": 1099,
+          "height": 1347,
+          "source_crop": [
+            29.7,
+            184.98,
+            304.13,
+            521.32
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Jawaban referensi dan jawaban siswa masuk ke jalur SBERT masing-masing.",
+            "Pasangan vektor kemudian dipisah untuk training, validation, dan testing.",
+            "MaLSTM belajar dari pasangan itu sebelum scoring dan evaluation."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "SBERT digunakan sebagai pembentuk embedding; bagian yang dilatih di alur ini adalah MaLSTM. Jangan menyebut semuanya satu model yang di-fine-tune."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari Evaluating the Impact of Sentence Tokenization on Indonesian Automated Essay Scoring Using Pretrained Sentence Embeddings. Jawaban referensi dan jawaban siswa masuk ke jalur SBERT masing-masing."
+        },
+        {
+          "id": "p08_v2",
+          "kind": "findings",
+          "title": "Table 2 — baca hasilnya",
+          "source_label": "Table 2",
+          "page": 5,
+          "source_caption": "Table 2. RMSE of testing result   ",
+          "asset": "scripts/assets/paper_visuals/p08_02.webp",
+          "asset_sha256": "2574af1c5262398f047e5b22babf015aa19b6c4f4b85d48067db301e397bf47e",
+          "width": 1044,
+          "height": 488,
+          "source_crop": [
+            305.0,
+            565.0,
+            566.0,
+            687.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kolom bertingkat membedakan MaLSTM dan cosine, masing-masing Average dan All.",
+            "RMSE lebih kecil berarti error lebih kecil pada data dan skala paper ini.",
+            "Baris distiluse memperlihatkan 11,26 untuk Average versus 10,65 untuk All pada MaLSTM."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Selisih 0,61 di tabel adalah poin RMSE, bukan otomatis 0,61 persen. Pilihan terbaik juga bergantung pada encoder dan jenis pembanding."
+          },
+          "warning": "",
+          "alt": "Table 2 dari Evaluating the Impact of Sentence Tokenization on Indonesian Automated Essay Scoring Using Pretrained Sentence Embeddings. Kolom bertingkat membedakan MaLSTM dan cosine, masing-masing Average dan All."
+        }
+      ]
     },
     {
       "id": "p09",
@@ -2797,7 +3294,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "f406de84b41a2fffa1457af2f2228bf77fdcc254fb5d232e787b0de1bebbf762",
-      "learning_order": 7
+      "learning_order": 7,
+      "visuals": [
+        {
+          "id": "p09_v1",
+          "kind": "process",
+          "title": "Figure 2 — ikuti alurnya",
+          "source_label": "Figure 2",
+          "page": 11,
+          "source_caption": "Figure 2. Architecture diagram of vectorization",
+          "asset": "scripts/assets/paper_visuals/p09_01.webp",
+          "asset_sha256": "1feefdfbdbb7895e232420d030e0ad67871a07d20663bc55f56bc43b3a2fbf12",
+          "width": 1256,
+          "height": 433,
+          "source_crop": [
+            158.39,
+            527.65,
+            563.35,
+            667.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Teks dipecah menjadi chunk, kemudian setiap chunk menjadi vektor.",
+            "Kotak Average menggabungkan vektor chunk menjadi vektor dokumen.",
+            "Jangan menyamakan averaging ini dengan pencarian kandidat atau keputusan perkara."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Ini arsitektur vectorization. Strategi stride dan penanganan chunk terakhir menentukan bagian dokumen yang terwakili."
+          },
+          "warning": "",
+          "alt": "Figure 2 dari From Fact Drafts to Operational Systems: Semantic Search in Legal Decisions Using Fact Drafts. Teks dipecah menjadi chunk, kemudian setiap chunk menjadi vektor."
+        },
+        {
+          "id": "p09_v2",
+          "kind": "findings",
+          "title": "Table 6 — baca hasilnya",
+          "source_label": "Table 6",
+          "page": 15,
+          "source_caption": "Table 6. MRR average results for different chunking methods (multiplied by 100).",
+          "asset": "scripts/assets/paper_visuals/p09_02.webp",
+          "asset_sha256": "4f8c63b521fc044aa4c083881db2f41d280196581c1e13dbc77a744bc7e31012",
+          "width": 1576,
+          "height": 432,
+          "source_crop": [
+            158.0,
+            283.0,
+            552.0,
+            391.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris membedakan bagian dokumen; kolom membedakan stride dan Last Chunk Scaling.",
+            "Nilai MRR pada tabel dikalikan 100; contoh 73,40 dibaca sebagai MRR 0,7340.",
+            "Bandingkan kondisi tanpa LCS dan dengan LCS pada stride yang sama."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Peningkatan tidak terjadi pada semua konfigurasi. Lebih banyak chunk tidak selalu menghasilkan retrieval yang lebih baik."
+          },
+          "warning": "",
+          "alt": "Table 6 dari From Fact Drafts to Operational Systems: Semantic Search in Legal Decisions Using Fact Drafts. Baris membedakan bagian dokumen; kolom membedakan stride dan Last Chunk Scaling."
+        }
+      ]
     },
     {
       "id": "p10",
@@ -3166,7 +3725,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "1906c9110c9c0c250f865ec3c97cf27c97d76b463cdedf060b045ffefcacba62",
-      "learning_order": 5
+      "learning_order": 5,
+      "visuals": [
+        {
+          "id": "p10_v1",
+          "kind": "process",
+          "title": "Figure 7 — ikuti alurnya",
+          "source_label": "Figure 7",
+          "page": 9,
+          "source_caption": "Figure 7. General ﬂow of proposed model.",
+          "asset": "scripts/assets/paper_visuals/p10_01.webp",
+          "asset_sha256": "03fcbd30f527d876a8017b1267a42abb70447edeeeda8d6c249189b808e4dcde",
+          "width": 1288,
+          "height": 578,
+          "source_crop": [
+            154.94,
+            533.15,
+            570.21,
+            719.1
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Ikuti data esai menuju preprocessing.",
+            "Fitur handcrafted dan fitur BERT/RoBERTa digabung sebelum learning model.",
+            "Tiga kotak hasil di kanan adalah ukuran evaluasi, bukan tiga keluaran skor esai."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Embedding dan fitur bahasa menyumbang informasi berbeda. Model akhir harus dinilai pada data yang ditahan."
+          },
+          "warning": "",
+          "alt": "Figure 7 dari Hybrid Approach to Automated Essay Scoring: Integrating Deep Learning Embeddings with Handcrafted Linguistic Features for Improved Accuracy. Ikuti data esai menuju preprocessing."
+        },
+        {
+          "id": "p10_v2",
+          "kind": "findings",
+          "title": "Table 7 dan Figure 10 — baca hasilnya",
+          "source_label": "Table 7 dan Figure 10",
+          "page": 21,
+          "source_caption": "Table 7. Model performance metrics.",
+          "asset": "scripts/assets/paper_visuals/p10_02.webp",
+          "asset_sha256": "897436f85509a1e178bda95dfc6608ffb276b04dee15e6f6f727a77a255b211b",
+          "width": 1364,
+          "height": 1576,
+          "source_crop": [
+            160.0,
+            374.0,
+            501.0,
+            768.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Tabel memberi QWK, MSE, dan RMSE per model, sedangkan bar chart menonjolkan QWK.",
+            "QWK lebih tinggi berarti agreement lebih tinggi; MSE/RMSE adalah ukuran error.",
+            "Lihat arah sumbu vertikal grafik: titik awalnya 0,75, sehingga selisih batang terlihat lebih besar."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "MSE dan RMSE yang dilaporkan sumber tidak konsisten sebagai pasangan matematis. Jangan memakai bar chart QWK untuk menyatakan semua error sudah benar."
+          },
+          "warning": "",
+          "alt": "Table 7 dan Figure 10 dari Hybrid Approach to Automated Essay Scoring: Integrating Deep Learning Embeddings with Handcrafted Linguistic Features for Improved Accuracy. Tabel memberi QWK, MSE, dan RMSE per model, sedangkan bar chart menonjolkan QWK."
+        }
+      ]
     },
     {
       "id": "p11",
@@ -3522,7 +4143,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "12d2a0f4fc4ca07861e3dcb56ed25c7cb2e57205de6e9ff95b91d8513230a4a1",
-      "learning_order": 3
+      "learning_order": 3,
+      "visuals": [
+        {
+          "id": "p11_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 1,
+          "source_caption": "Figure 1: LLM-Embedder presents a unified embedding model for the diverse retrieval augmentation scenarios.",
+          "asset": "scripts/assets/paper_visuals/p11_01.webp",
+          "asset_sha256": "749c5d125224e443bab2ecacaac61c4e3f2ffe0cb10e22c69651d4df9ab0fab0",
+          "width": 727,
+          "height": 628,
+          "source_crop": [
+            298.1,
+            204.6,
+            532.41,
+            407.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Bagian bawah menyimpan knowledge, example, tool, dan memory dalam koleksi berbeda.",
+            "LLM-Embedder menjadi penghubung yang memilih konteks relevan dari tiap koleksi.",
+            "Bagian atas menunjukkan tujuan bantuan retrieval terhadap beberapa keterbatasan LLM."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Nama multi-task berarti satu retriever melayani beberapa skenario. Reward untuk memilih konteks tidak sama dengan nilai kualitas esai."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari A Multi-Task Embedder For Retrieval Augmented LLMs. Bagian bawah menyimpan knowledge, example, tool, dan memory dalam koleksi berbeda."
+        },
+        {
+          "id": "p11_v2",
+          "kind": "findings",
+          "title": "Table 1 — baca hasilnya",
+          "source_label": "Table 1",
+          "page": 7,
+          "source_caption": "Table 1: The impact of knowledge retrieval. “∗” and “†” indicate the SOTA general embedder and the task-specific embedder, respectively. The best metrics are in bold, and the second-best metrics are underlined.",
+          "asset": "scripts/assets/paper_visuals/p11_02.webp",
+          "asset_sha256": "e8cea09c46af9e2980cbeac748a049559730f1d9cfded1a8e82476804b5ba91c",
+          "width": 1801,
+          "height": 667,
+          "source_crop": [
+            45.24,
+            56.41,
+            559.56,
+            246.67
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Tabel memisahkan task MMLU, PopQA, dan QReCC; setiap kolom punya evaluasi sendiri.",
+            "Baca baseline dan LLM-Embedder pada kolom yang sama.",
+            "Avg merangkum subset tertentu, bukan rata-rata semua metrik di seluruh paper."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Peningkatan pada knowledge retrieval belum otomatis membuktikan peningkatan pada memory, tool, atau AES."
+          },
+          "warning": "",
+          "alt": "Table 1 dari A Multi-Task Embedder For Retrieval Augmented LLMs. Tabel memisahkan task MMLU, PopQA, dan QReCC; setiap kolom punya evaluasi sendiri."
+        }
+      ]
     },
     {
       "id": "p12",
@@ -3799,7 +4482,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "e8b41bcde3613d18a996a2ed206370d0b6f15269ff7f1c645d6cbf730d7aa32a",
-      "learning_order": 6
+      "learning_order": 6,
+      "visuals": [
+        {
+          "id": "p12_v1",
+          "kind": "process",
+          "title": "Fig. 1 — ikuti alurnya",
+          "source_label": "Fig. 1",
+          "page": 4,
+          "source_caption": "Fig. 1. The prompt used with each LLM.  ",
+          "asset": "scripts/assets/paper_visuals/p12_01.webp",
+          "asset_sha256": "0c53119511b36f5c0330ad4244781a12a91bf7b2ed6b6b010dcd1dc0a129a931",
+          "width": 1105,
+          "height": 306,
+          "source_crop": [
+            119.56,
+            47.42,
+            475.72,
+            145.5
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Prompt memberi peran expert serta skala holistik 1–6.",
+            "Kriteria dan placeholder tulisan siswa berada dalam instruksi, bukan model yang dilatih ulang.",
+            "Permintaan numeric grade menentukan format respons yang kemudian dianalisis."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Ini prompt yang benar-benar ditampilkan paper. Pernyataan expert dalam prompt tidak membuktikan kompetensi atau fairness model."
+          },
+          "warning": "",
+          "alt": "Fig. 1 dari Large language models and automated essay scoring of English language learner writing: Insights into validity and reliability. Prompt memberi peran expert serta skala holistik 1–6."
+        },
+        {
+          "id": "p12_v2",
+          "kind": "findings",
+          "title": "Fig. 2 — baca hasilnya",
+          "source_label": "Fig. 2",
+          "page": 5,
+          "source_caption": "Fig. 2. Box plots for mean scores from humans and LLMs at T1 and T2.  ",
+          "asset": "scripts/assets/paper_visuals/p12_02.webp",
+          "asset_sha256": "05898f2b7c767f71a4b39b4f1f781922c70cd89c5dd57cbe7eb867fc084e40fb",
+          "width": 818,
+          "height": 553,
+          "source_crop": [
+            31.63,
+            47.45,
+            295.45,
+            225.7
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Sumbu mendatar membedakan manusia/model serta T1 dan T2.",
+            "Kotak merangkum sebaran skor; garis/whisker berbeda dari satu nilai rata-rata.",
+            "Perubahan lokasi dan lebar kotak membantu melihat bias/sebaran, bukan otomatis agreement individual."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Korelasi, ICC, dan bias tetap perlu dibaca bersama. Dua distribusi yang mirip dapat memberi nilai berbeda pada esai yang sama."
+          },
+          "warning": "",
+          "alt": "Fig. 2 dari Large language models and automated essay scoring of English language learner writing: Insights into validity and reliability. Sumbu mendatar membedakan manusia/model serta T1 dan T2."
+        }
+      ]
     },
     {
       "id": "p13",
@@ -4163,7 +4908,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "da0ff604731338831773d86dd0e28acc966eed67962cbcc1c30ca4c4500d9e94",
-      "learning_order": 5
+      "learning_order": 5,
+      "visuals": [
+        {
+          "id": "p13_v1",
+          "kind": "process",
+          "title": "Figure 3 — ikuti alurnya",
+          "source_label": "Figure 3",
+          "page": 8,
+          "source_caption": "Figure 3. Word embeddings indexing (top part) and subsequent search and retrieval (bottom part).",
+          "asset": "scripts/assets/paper_visuals/p13_01.webp",
+          "asset_sha256": "87c917ee134f73d61fa881c5e9d072462b3f22af704eb1d038ea82ea5a033356",
+          "width": 1263,
+          "height": 526,
+          "source_crop": [
+            158.39,
+            180.23,
+            565.6,
+            349.5
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Bagian atas membangun index dari data tabel melalui LLM dan embedding.",
+            "Bagian bawah mengubah query menjadi embedding lalu mencari kolom relevan.",
+            "Data retrieved adalah hasil pencarian sensor, bukan skor jawaban mahasiswa."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "BGE-v1.5 berperan sebagai retriever. Mean pooling/representasi kolom ikut menentukan informasi sensor yang bisa ditemukan."
+          },
+          "warning": "",
+          "alt": "Figure 3 dari Leveraging Large Language Models for Sensor Data Retrieval. Bagian atas membangun index dari data tabel melalui LLM dan embedding."
+        },
+        {
+          "id": "p13_v2",
+          "kind": "findings",
+          "title": "Table 2 — baca hasilnya",
+          "source_label": "Table 2",
+          "page": 13,
+          "source_caption": "Table 2. P@1 and MMR for each model in the data retrieval task. Best results are boldfaced.",
+          "asset": "scripts/assets/paper_visuals/p13_02.webp",
+          "asset_sha256": "824da9caf7b5027b3f6572e4d9c0b8bda0550711303e9d2f4ecd52bb5bdce1e3",
+          "width": 1801,
+          "height": 547,
+          "source_crop": [
+            65.48,
+            130.49,
+            559.56,
+            280.35
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "P@1 melihat apakah kandidat pertama relevan; kolom MMR mengikuti label yang tercetak pada tabel.",
+            "Bandingkan baris model pada tugas sensor yang sama.",
+            "Baris bge-base-en-v1.5 memiliki 0,90 P@1 dan 0,94 pada kolom ranking sumber."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Label MMR di tabel dijelaskan sebagai ranking oleh paper; jangan menganggap ini nilai AES atau menyamakan ranking dengan similarity mentah."
+          },
+          "warning": "",
+          "alt": "Table 2 dari Leveraging Large Language Models for Sensor Data Retrieval. P@1 melihat apakah kandidat pertama relevan; kolom MMR mengikuti label yang tercetak pada tabel."
+        }
+      ]
     },
     {
       "id": "p14",
@@ -4524,7 +5331,99 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "eb38e53565da260dc1f3d49708f45441936447a7f3c7d7ef025ff62ea3e1e575",
-      "learning_order": 2
+      "learning_order": 2,
+      "visuals": [
+        {
+          "id": "p14_v1",
+          "kind": "process",
+          "title": "Figure 2 — ikuti alurnya",
+          "source_label": "Figure 2",
+          "page": 4,
+          "source_caption": "Figure 2: Multi-stage training process of M3-Embedding with self-knowledge distillation.",
+          "asset": "scripts/assets/paper_visuals/p14_01.webp",
+          "asset_sha256": "c9e146fdcddee758afca409cd8103d020ce126ce347a76cd2db00d1022acd605",
+          "width": 1401,
+          "height": 589,
+          "source_crop": [
+            62.87,
+            62.86,
+            532.3,
+            260.2
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Bagian awal menunjukkan pre-training, dilanjutkan fine-tuning dengan data berlabel dan sintetis.",
+            "Dense score adalah satu jalur; diagram kanan menambahkan multi-vec dan lex.",
+            "Inter score menjadi informasi guru dalam self-knowledge distillation."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Guru di sini adalah gabungan prediksi retrieval, bukan guru manusia pemberi nilai esai. Mode dense, sparse, dan multi-vector punya representasi/biaya berbeda."
+          },
+          "warning": "",
+          "alt": "Figure 2 dari M3-Embedding: Multi-Linguality, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation. Bagian awal menunjukkan pre-training, dilanjutkan fine-tuning dengan data berlabel dan sintetis."
+        },
+        {
+          "id": "p14_v2",
+          "kind": "findings",
+          "title": "Table 1 — baca hasilnya",
+          "source_label": "Table 1",
+          "page": 6,
+          "source_caption": "Table 1: Multi-lingual retrieval performance on the MIRACL dev set (measured by nDCG@10).",
+          "asset": "scripts/assets/paper_visuals/p14_02.webp",
+          "asset_sha256": "389b0bc3c710413c3a47c58b65778293ce97c1d666feb1a5fea9d8ad3b48cc07",
+          "width": 1801,
+          "height": 636,
+          "source_crop": [
+            40.48,
+            57.25,
+            565.51,
+            242.46
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Tabel memisahkan baseline, lalu mode Dense/Sparse/Multi-vec/All.",
+            "Kolom Avg dan kolom bahasa dibaca sebagai nDCG@10 pada MIRACL, bukan accuracy klasifikasi.",
+            "Untuk ablation, bandingkan mode yang sama antara M3-w.skd dan M3-w.o.skd."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Gabungan mode menaikkan relevansi retrieval dalam benchmark ini. Ia belum membuktikan bahwa memakai BGE-M3 tanpa scoring head sudah dapat menilai esai."
+          },
+          "warning": "",
+          "alt": "Table 1 dari M3-Embedding: Multi-Linguality, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation. Tabel memisahkan baseline, lalu mode Dense/Sparse/Multi-vec/All."
+        },
+        {
+          "id": "p14_v3",
+          "kind": "findings",
+          "title": "Table 5 — baca hasilnya",
+          "source_label": "Table 5",
+          "page": 9,
+          "source_caption": "Table 5: Ablation study of self-knowledge distillation on the MIRACL dev set (nDCG@10).",
+          "asset": "scripts/assets/paper_visuals/p14_03.webp",
+          "asset_sha256": "1b03aaaea28b18f6b10830ddf0967855343e10fc8ca76de2bd18d49e4e2e5715",
+          "width": 1048,
+          "height": 528,
+          "source_crop": [
+            40.0,
+            56.0,
+            302.0,
+            188.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris w.skd memakai self-knowledge distillation; w.o.skd mematikannya.",
+            "Bandingkan Dense dengan Dense, Sparse dengan Sparse, Multi-vec dengan Multi-vec.",
+            "Perubahan paling besar di jalur Sparse membantu memahami manfaat teacher gabungan."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Ablation mengubah satu komponen dengan kondisi yang dijaga. Ia mendukung efek komponen dalam protokol ini, bukan skor untuk satu esai."
+          },
+          "warning": "",
+          "alt": "Table 5 dari M3-Embedding: Multi-Linguality, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation. Baris w.skd memakai self-knowledge distillation; w.o.skd mematikannya."
+        }
+      ]
     },
     {
       "id": "p15",
@@ -4896,7 +5795,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "d8bf0598063ba56ec599324d3b29186a1dbfaf4d35f59b7feaa5c57e1c3d7d7c",
-      "learning_order": 8
+      "learning_order": 8,
+      "visuals": [
+        {
+          "id": "p15_v1",
+          "kind": "process",
+          "title": "Fig. 1 — ikuti alurnya",
+          "source_label": "Fig. 1",
+          "page": 3,
+          "source_caption": "Fig. 1  A high-level overview of the framework architecture",
+          "asset": "scripts/assets/paper_visuals/p15_01.webp",
+          "asset_sha256": "b4f8388f32f86681124d9e975fe1bcfa3a026d1f20848591af7adbe4111081fd",
+          "width": 1401,
+          "height": 637,
+          "source_crop": [
+            54.7,
+            80.58,
+            539.1,
+            300.4
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Researcher memberi pertanyaan dan bisa memakai prompt expansion sebelum search.",
+            "Dokumen menjadi chunk, embedding, dan vector storage/index.",
+            "Retrieval memakai index; jangan menukar tahap generate embedding dengan tahap menjawab query."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Kualitas embedding, jenis index, dan prompt engineering merupakan pilihan terpisah yang bisa diuji."
+          },
+          "warning": "",
+          "alt": "Fig. 1 dari Optimizing document retrieval using massive text embeddings and LLM prompt engineering. Researcher memberi pertanyaan dan bisa memakai prompt expansion sebelum search."
+        },
+        {
+          "id": "p15_v2",
+          "kind": "findings",
+          "title": "Table 6 — baca hasilnya",
+          "source_label": "Table 6",
+          "page": 16,
+          "source_caption": "Table 6  Zero shot results",
+          "asset": "scripts/assets/paper_visuals/p15_02.webp",
+          "asset_sha256": "ef0d3a3098e12f0b631e56fc13919c50721fd11443d41eb64ead4f3f039b1572",
+          "width": 1801,
+          "height": 2139,
+          "source_crop": [
+            44.65,
+            68.81,
+            562.54,
+            684.1
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kelompok baris membedakan dataset; di dalamnya, model embedding dibandingkan.",
+            "R@k/Recall@k menghitung relevansi yang ditemukan dalam k kandidat; AP/MAP memberi informasi urutan.",
+            "Jangan membandingkan nilai di dataset berbeda seolah kebutuhan dan ground truth-nya sama."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Tabel ini adalah zero-shot. Hasil few-shot dan prompt chaining berada pada tabel lain; model yang menang dapat berubah menurut task/metrik."
+          },
+          "warning": "",
+          "alt": "Table 6 dari Optimizing document retrieval using massive text embeddings and LLM prompt engineering. Kelompok baris membedakan dataset; di dalamnya, model embedding dibandingkan."
+        }
+      ]
     },
     {
       "id": "p16",
@@ -5279,7 +6240,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "025b26f2e974d747282afced172be7344f522cf343a8a9270bf404b47c5cf9d6",
-      "learning_order": 10
+      "learning_order": 10,
+      "visuals": [
+        {
+          "id": "p16_v1",
+          "kind": "process",
+          "title": "Fig. 2 — ikuti alurnya",
+          "source_label": "Fig. 2",
+          "page": 8,
+          "source_caption": "Fig. 2  Overall architecture of the RACES framework",
+          "asset": "scripts/assets/paper_visuals/p16_01.webp",
+          "asset_sha256": "827ff43e80477dd0951a4524bfdf16b73ca9c4d9e3d042a50769763965b031d3",
+          "width": 1801,
+          "height": 630,
+          "source_crop": [
+            65.48,
+            69.05,
+            565.51,
+            243.67
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "SFT memulai policy, kemudian reward model memberi sinyal untuk PPO.",
+            "Reference model dan KL membantu menahan perubahan policy; critic membantu estimasi return.",
+            "Ikuti garis pembaruan bobot, bukan menganggap setiap kotak merupakan encoder esai terpisah."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "RACES menilai skor dan konsistensi respons melalui optimasi berbasis reward. Reward model perlu diperiksa sebagai komponen, bukan dianggap benar otomatis."
+          },
+          "warning": "",
+          "alt": "Fig. 2 dari RACES: reward-aligned consistent essay scoring with large language models. SFT memulai policy, kemudian reward model memberi sinyal untuk PPO."
+        },
+        {
+          "id": "p16_v2",
+          "kind": "findings",
+          "title": "Fig. 5 — baca hasilnya",
+          "source_label": "Fig. 5",
+          "page": 17,
+          "source_caption": "Fig. 5  Evaluation of the RACES framework under four model configurations: a Quadratic Weighted Kappa (QWK)  for essay scoring; b SimCSE-based semantic similarity for auxiliary feedback consistency",
+          "asset": "scripts/assets/paper_visuals/p16_02.webp",
+          "asset_sha256": "dc78e2ac1ef36488747bdde0eaa4880a7048db976dc5c0a05ab49997c32919e4",
+          "width": 1801,
+          "height": 707,
+          "source_crop": [
+            71.43,
+            65.88,
+            559.56,
+            257.16
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Panel a menggunakan QWK; panel b menggunakan semantic similarity SimCSE.",
+            "Legenda membedakan reward model dan kondisi fine-tuned/pre-trained.",
+            "Bandingkan konfigurasi policy+reward yang sama sebelum mengambil klaim peningkatan."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Angka SimCSE di grafik dan sebagian narasi sumber berbeda. Kemiripan semantik tinggi juga belum membuktikan kualitas feedback atau fairness."
+          },
+          "warning": "",
+          "alt": "Fig. 5 dari RACES: reward-aligned consistent essay scoring with large language models. Panel a menggunakan QWK; panel b menggunakan semantic similarity SimCSE."
+        }
+      ]
     },
     {
       "id": "p17",
@@ -5630,7 +6653,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "825d1f10b9599583016b53a7195e0b9b1a46ccdc6d9186e52542769a1c78723d",
-      "learning_order": 1
+      "learning_order": 1,
+      "visuals": [
+        {
+          "id": "p17_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 7,
+          "source_caption": "Figure 1. The process ﬂow of the sentiment analysis with RoBERTa-GRU.",
+          "asset": "scripts/assets/paper_visuals/p17_01.webp",
+          "asset_sha256": "55988d77262b2a85a336da6216582419b7b1b9fbb25f58913b6e95e38349a0b3",
+          "width": 1268,
+          "height": 293,
+          "source_crop": [
+            158.39,
+            86.86,
+            567.28,
+            181.2
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Alur dimulai dari preprocessing dan data augmentation.",
+            "RoBERTa-GRU training menggabungkan representasi contextual dan informasi urutan.",
+            "Sentiment classification adalah hasil akhir alur ini."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Sentimen positif/negatif adalah kategori opini. Itu berbeda dari skor ordinal kualitas esai."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari RoBERTa-GRU: A Hybrid Deep Learning Model for Enhanced Sentiment Analysis. Alur dimulai dari preprocessing dan data augmentation."
+        },
+        {
+          "id": "p17_v2",
+          "kind": "findings",
+          "title": "Table 7 — baca hasilnya",
+          "source_label": "Table 7",
+          "page": 14,
+          "source_caption": "Table 7. The comparison results on the IMDb.",
+          "asset": "scripts/assets/paper_visuals/p17_02.webp",
+          "asset_sha256": "1e99cf8dd7eca77358ec95aa1a78d22845b95e068495a88563f6e52457c067ef",
+          "width": 1801,
+          "height": 731,
+          "source_crop": [
+            71.43,
+            82.51,
+            565.52,
+            282.88
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Table 7 khusus IMDb; dataset lain dibahas pada tabel terpisah.",
+            "Kolom accuracy, precision, recall, dan F-score menyatakan aspek evaluasi berbeda.",
+            "Baris RoBERTa-GRU boleh dibandingkan dengan metode lain di tabel ini, bukan dengan angka dataset lain tanpa konteks."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Jumlah data airline di beberapa bagian paper tidak konsisten. Hasil klasifikasi sentimen bukan bukti langsung model ini cocok untuk AES."
+          },
+          "warning": "",
+          "alt": "Table 7 dari RoBERTa-GRU: A Hybrid Deep Learning Model for Enhanced Sentiment Analysis. Table 7 khusus IMDb; dataset lain dibahas pada tabel terpisah."
+        }
+      ]
     },
     {
       "id": "p18",
@@ -6001,6 +7086,68 @@
             "Audit hitungan dari gambar: diagonal 924, jumlah seluruh sel 995, sehingga 924/995 ≈ 92,86%. Tabel 6 mencetak accuracy 0,92; sumber tidak menjelaskan rekonsiliasinya. Ini perhitungan ulang matriks sumber, bukan eksperimen baru."
           ]
         }
+      ],
+      "visuals": [
+        {
+          "id": "p18_v1",
+          "kind": "process",
+          "title": "Table 5 — ikuti alurnya",
+          "source_label": "Table 5",
+          "page": 6,
+          "source_caption": "Table 5. Training and Validation Performance Across Epochs  Epoch  Train ",
+          "asset": "scripts/assets/paper_visuals/p18_01.webp",
+          "asset_sha256": "36ef2d4e9a6f8a8bca032108fd476ff66ad1c57f41ccfd9a7ca2ee6ceb2fa07b",
+          "width": 1801,
+          "height": 422,
+          "source_crop": [
+            53.58,
+            661.0,
+            565.55,
+            780.57
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris epoch memperlihatkan urutan proses training.",
+            "Pisahkan train loss/accuracy/F1 dari validation loss/accuracy/F1.",
+            "Checkpoint dipilih berdasarkan validation; training epoch terakhir bukan otomatis yang terbaik."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Training makin bagus belum menjamin validation makin bagus. Paper memilih epoch 2; baca perubahan validation F1 per epoch."
+          },
+          "warning": "",
+          "alt": "Table 5 dari Sentiment Analysis of Indonesia’s Free Nutritious Meal Program on Platform X (Formerly Twitter) Using IndoBERT. Baris epoch memperlihatkan urutan proses training."
+        },
+        {
+          "id": "p18_v2",
+          "kind": "findings",
+          "title": "Figure 1 — baca hasilnya",
+          "source_label": "Figure 1",
+          "page": 7,
+          "source_caption": "Figure 1. Confusion Matrix of the IndoBERT-base-P2 Model on the Test Dataset  For positive sentiment, the model correctly classified 441 tweets, with minimal confusion toward neutral  (19) and negative (9) classes, indicating strong separability of explicitly supportive expressions toward the MBG  program. For negative sentiment, 91 tweets were cor",
+          "asset": "scripts/assets/paper_visuals/p18_02.webp",
+          "asset_sha256": "1f2ea1ebffa48d7d8e97fe68d27359d33cb8d5229718649b90b3bdb5341fdcb1",
+          "width": 425,
+          "height": 297,
+          "source_crop": [
+            238.72999572753906,
+            568.0699462890625,
+            392.0299987792969,
+            675.0699462890625
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris confusion matrix adalah label asli, kolom adalah label prediksi.",
+            "Diagonal 441, 91, dan 392 berarti prediksi benar; sel lain adalah jenis salahnya.",
+            "Contoh sel 11 berarti negatif diprediksi netral, sedangkan 10 berarti netral diprediksi negatif."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Jumlah diagonal 924 dari total 995 memberi 92,86% saat dihitung ulang. Tabel sumber mencetak accuracy 0,92, sehingga angka perlu direkonsiliasi sebelum dikutip."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari Sentiment Analysis of Indonesia’s Free Nutritious Meal Program on Platform X (Formerly Twitter) Using IndoBERT. Baris confusion matrix adalah label asli, kolom adalah label prediksi."
+        }
       ]
     },
     {
@@ -6343,7 +7490,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "85da766693abffe66e0446675b8b6b9059d6727474786c66d07e9b32f1acbe16",
-      "learning_order": 1
+      "learning_order": 1,
+      "visuals": [
+        {
+          "id": "p19_v1",
+          "kind": "process",
+          "title": "Figure 4 — ikuti alurnya",
+          "source_label": "Figure 4",
+          "page": 5,
+          "source_caption": "Figure 4. Proposed Framework ",
+          "asset": "scripts/assets/paper_visuals/p19_01.webp",
+          "asset_sha256": "58e2f4c70f7ca496380ebe31c8103e7582d719d6cad4fe409926c8bb6f82e231",
+          "width": 1367,
+          "height": 607,
+          "source_crop": [
+            77.28,
+            52.0,
+            517.99,
+            247.6
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Ikuti tabel kompleks ke Camelot parsing, bukan langsung membuang bentuk tabel menjadi teks.",
+            "Header/struktur dan substring/grouping membantu membentuk structured triple chunks.",
+            "Embedding/index menyediakan konteks bagi LLM generator."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Struktur kolom dan baris adalah informasi. Jika hilang, kalimat hasil ekstraksi bisa tetap rapi tetapi salah hubungan."
+          },
+          "warning": "",
+          "alt": "Figure 4 dari Structure-Aware Chunking for Complex Tables in Retrieval-Augmented Generation Systems. Ikuti tabel kompleks ke Camelot parsing, bukan langsung membuang bentuk tabel menjadi teks."
+        },
+        {
+          "id": "p19_v2",
+          "kind": "findings",
+          "title": "Table 4 — baca hasilnya",
+          "source_label": "Table 4",
+          "page": 10,
+          "source_caption": "Table 4. Evaluation Results ",
+          "asset": "scripts/assets/paper_visuals/p19_02.webp",
+          "asset_sha256": "b5b5dd26cc639c2a9269390e56aeb7e35e616d56acccf66de2333b9b71418e98",
+          "width": 1401,
+          "height": 1086,
+          "source_crop": [
+            71.3,
+            424.0,
+            523.56,
+            774.52
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Table 4 dan grafik membandingkan baseline dengan proposed method per metrik RAGAS.",
+            "Baca Context Recall terpisah dari Answer Accuracy; keduanya bukan ukuran yang sama.",
+            "Garis/kolom menunjukkan variasi antar metrik, bukan satu nilai keberhasilan universal."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Answer Accuracy 0,73 tidak otomatis berarti 73% semua jawaban benar. Nama embedding dalam bagian metode dan tabel setup sumber juga berbeda."
+          },
+          "warning": "",
+          "alt": "Table 4 dari Structure-Aware Chunking for Complex Tables in Retrieval-Augmented Generation Systems. Table 4 dan grafik membandingkan baseline dengan proposed method per metrik RAGAS."
+        }
+      ]
     },
     {
       "id": "p20",
@@ -6693,7 +7902,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "0cd4efba149c877ae5f03a9ad46cdc7938a134a86feed4a6ff91154ea3d86178",
-      "learning_order": 8
+      "learning_order": 8,
+      "visuals": [
+        {
+          "id": "p20_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 3,
+          "source_caption": "Figure 1: Overview of our TRATES framework.",
+          "asset": "scripts/assets/paper_visuals/p20_01.webp",
+          "asset_sha256": "ea8a01b0951fdc2afc18d0031f587c54b7c22d7fd001dc2df72582cc118df66f",
+          "width": 1401,
+          "height": 412,
+          "source_crop": [
+            63.52,
+            69.17,
+            524.88,
+            204.5
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "LLM membuat pertanyaan/fitur dari rubrik trait.",
+            "Tulisan dinilai pada fitur, kemudian fitur digabung ke regression model.",
+            "Prompt-specific rubric membantu trait yang berbeda, sementara targetnya tetap skor trait."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "LLM bukan satu-satunya pemutus nilai di TRATES. Ia membentuk fitur yang dipakai regressor."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari TRATES: Trait-Specific Rubric-Assisted Cross-Prompt Essay Scoring. LLM membuat pertanyaan/fitur dari rubrik trait."
+        },
+        {
+          "id": "p20_v2",
+          "kind": "findings",
+          "title": "Table 1 — baca hasilnya",
+          "source_label": "Table 1",
+          "page": 7,
+          "source_caption": "Table 1: QWK Performance of TRATES with the different LLMs compared to the baselines. Bold values indicate the best performance per trait, while values with ●outperform the SOTA.",
+          "asset": "scripts/assets/paper_visuals/p20_02.webp",
+          "asset_sha256": "61f81a02756454406ab3c968932027d1eabc66aefe947e295dee80b431c812c3",
+          "width": 1801,
+          "height": 700,
+          "source_crop": [
+            41.67,
+            66.51,
+            559.56,
+            267.72
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kolom ORG/WC/SF dan seterusnya adalah trait; AVG adalah ringkasan dalam konfigurasi itu.",
+            "Baris membedakan baseline, jenis fitur, dan LLM yang dipakai.",
+            "Nilai tebal/bertanda menandai kondisi menurut keterangan tabel, bukan bahwa satu baris menang di semua trait."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Perbandingan terbaik per trait dapat berasal dari konfigurasi berbeda. Baca juga cross-prompt split sebelum menyalin klaim generalisasi."
+          },
+          "warning": "",
+          "alt": "Table 1 dari TRATES: Trait-Specific Rubric-Assisted Cross-Prompt Essay Scoring. Kolom ORG/WC/SF dan seterusnya adalah trait; AVG adalah ringkasan dalam konfigurasi itu."
+        }
+      ]
     },
     {
       "id": "p21",
@@ -6975,7 +8246,69 @@
         "scope": "Bagian penting dari artikel yang tersedia lengkap: identitas, metode, eksperimen, hasil, dan batasnya. Ringkasan mengikuti urutan belajar; seluruh teks dan daftar pustaka tidak disalin."
       },
       "source_fingerprint": "6b173bd9317d88bb1d1ba3aef9b79f8ea7cc7caf7b7a47271a8ddd30fd04f575",
-      "learning_order": 3
+      "learning_order": 3,
+      "visuals": [
+        {
+          "id": "p21_v1",
+          "kind": "process",
+          "title": "Fig. 2 — ikuti alurnya",
+          "source_label": "Fig. 2",
+          "page": 4,
+          "source_caption": "Fig. 2 | Topic modeling results. Scatter plot showing a 2D-projection of all dis- cussion embeddings, where each point represents a discussion. The overlying color represents the associated group of that discussion based on the topic modeling. The",
+          "asset": "scripts/assets/paper_visuals/p21_01.webp",
+          "asset_sha256": "6cb67e6442d01574e4c8d3f388d9628a754ccaee8a3fe05630f78fc91d8935d5",
+          "width": 1401,
+          "height": 757,
+          "source_crop": [
+            31.7,
+            41.72,
+            548.45,
+            320.9
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Setiap titik adalah satu discussion embedding yang diproyeksikan ke dua dimensi.",
+            "Warna memberi topic group; legend menjelaskan kelompok diskusi.",
+            "Pemisahan titik bukan sumbu kualitas atau skala positif-negatif."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "BGE membuat embedding, Llama 2 memberi label topik, dan RoBERTa menganalisis sentimen. Visual ini memperlihatkan grouping, bukan skor esai."
+          },
+          "warning": "",
+          "alt": "Fig. 2 dari Using large language models to assess public perceptions around glucagon-like peptide-1 receptor agonists on social media. Setiap titik adalah satu discussion embedding yang diproyeksikan ke dua dimensi."
+        },
+        {
+          "id": "p21_v2",
+          "kind": "findings",
+          "title": "Fig. 1 — baca hasilnya",
+          "source_label": "Fig. 1",
+          "page": 3,
+          "source_caption": "Fig. 1 | Glucagon-like peptide-1 receptor agonist discussions over time. Heatmap showing the number of glucagon-like peptide-1 receptor agonist (GLP-1 RA) dis- cussions by the Reddit search string (generic name and all brand formulations) over time. Boxes are colored in logarithmic scale and annotated based on the number of",
+          "asset": "scripts/assets/paper_visuals/p21_02.webp",
+          "asset_sha256": "59224d68300259ec3757c16ad326d2f347792a54c97042e04ee95be45e1784be",
+          "width": 1401,
+          "height": 1468,
+          "source_crop": [
+            31.7,
+            41.72,
+            548.45,
+            583.4
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Sumbu tahun dibaca mendatar, obat dibaca per baris.",
+            "Warna memakai skala jumlah diskusi, sehingga beda warna menyatakan volume, bukan sentimen.",
+            "Bandingkan periode dalam baris obat yang sama sebelum membandingkan antarobat."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Jumlah posting dan proses pemilihan platform membatasi keterwakilan. Lebih ramai dibicarakan tidak membuktikan obat lebih baik atau opini lebih positif."
+          },
+          "warning": "",
+          "alt": "Fig. 1 dari Using large language models to assess public perceptions around glucagon-like peptide-1 receptor agonists on social media. Sumbu tahun dibaca mendatar, obat dibaca per baris."
+        }
+      ]
     },
     {
       "id": "m01",
@@ -7214,7 +8547,69 @@
         "end": 9
       },
       "source_fingerprint": null,
-      "learning_order": 1
+      "learning_order": 1,
+      "visuals": [
+        {
+          "id": "m01_v1",
+          "kind": "process",
+          "title": "Table 1 — ikuti alurnya",
+          "source_label": "Table 1",
+          "page": 2,
+          "source_caption": "Table 1: CRISP-DM process model descriptions [10]. ",
+          "asset": "scripts/assets/paper_visuals/m01_01.webp",
+          "asset_sha256": "b16b005e031a18b70c812dc7c1295f28f8cdb9462811a8005b16d3a28523e536",
+          "width": 1800,
+          "height": 912,
+          "source_crop": [
+            32.0,
+            422.0,
+            512.0,
+            665.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Mulai dari tujuan bisnis/penelitian sebelum memilih algoritme.",
+            "Data understanding dan preparation memastikan bahan yang dipakai sesuai tujuan.",
+            "Modeling diikuti evaluation dan deployment; hasil perlu bisa dipakai dan dipantau."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "CRISP-DM merupakan alur iteratif. Jangan memakai metrik bagus sebagai pengganti tujuan penelitian yang jelas."
+          },
+          "warning": "",
+          "alt": "Table 1 dari A Systematic Literature Review on Applying CRISP-DM Process Model. Mulai dari tujuan bisnis/penelitian sebelum memilih algoritme."
+        },
+        {
+          "id": "m01_v2",
+          "kind": "findings",
+          "title": "Figure 5 — baca hasilnya",
+          "source_label": "Figure 5",
+          "page": 5,
+          "source_caption": "Figure 5: Approaches of each phase of CRISP-DM. ",
+          "asset": "scripts/assets/paper_visuals/m01_02.webp",
+          "asset_sha256": "62c36bc680a5a8318ca73d7e8a5bd3bf33443410faddd7b9e0e3ea9ab51c5ac5",
+          "width": 1120,
+          "height": 1045,
+          "source_crop": [
+            91.15,
+            66.35,
+            452.2,
+            403.1
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Sumbu mendatar menunjukkan jumlah studi yang menguraikan pendekatan tertentu.",
+            "Kelompok baris mengacu pada enam fase CRISP-DM.",
+            "Perhatikan deployment yang kerap tidak dijelaskan; hasil ini merangkum literatur yang diseleksi."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Frekuensi laporan bukan akurasi model. Diagram tidak membuktikan bahwa pendekatan paling sering disebut selalu terbaik."
+          },
+          "warning": "",
+          "alt": "Figure 5 dari A Systematic Literature Review on Applying CRISP-DM Process Model. Sumbu mendatar menunjukkan jumlah studi yang menguraikan pendekatan tertentu."
+        }
+      ]
     },
     {
       "id": "m02",
@@ -7465,7 +8860,39 @@
         "end": 26
       },
       "source_fingerprint": null,
-      "learning_order": 4
+      "learning_order": 4,
+      "visuals": [
+        {
+          "id": "m02_v1",
+          "kind": "process",
+          "title": "Bagian 1.2 Ambiguity — ikuti alurnya",
+          "source_label": "Bagian 1.2 Ambiguity",
+          "page": 14,
+          "source_caption": "Cuplikan pengantar konsep ambiguitas bahasa; bukan diagram eksperimen.",
+          "asset": "scripts/assets/paper_visuals/m02_01.webp",
+          "asset_sha256": "f994dc542f1dd8189bcd0871670de790881f771d59c397f137d840ad176d28da",
+          "width": 1801,
+          "height": 751,
+          "source_crop": [
+            88.74,
+            220.18,
+            575.28,
+            422.93
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Perhatikan kata yang sama pada contoh kalimat dengan tafsir berbeda.",
+            "Bedakan makna kata, kelas kata, dan struktur kalimat sebagai sumber ambiguitas.",
+            "Model membutuhkan konteks; kecocokan kata saja belum menyelesaikan tafsir."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Cuplikan pengantar ini memberi contoh konsep. Tidak ada eksperimen embedding atau tabel hasil AES pada bagian yang diunggah."
+          },
+          "warning": "Cuplikan hanya berisi pengantar. Tidak ditambahkan hasil eksperimen dari bab yang tidak tersedia.",
+          "alt": "Bagian 1.2 Ambiguity dari Speech and Language Processing: An Introduction to Natural Language Processing, Computational Linguistics, and Speech Recognition. Perhatikan kata yang sama pada contoh kalimat dengan tafsir berbeda."
+        }
+      ]
     },
     {
       "id": "m03",
@@ -7807,7 +9234,69 @@
         "end": 41
       },
       "source_fingerprint": null,
-      "learning_order": 5
+      "learning_order": 5,
+      "visuals": [
+        {
+          "id": "m03_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 29,
+          "source_caption": "Figure 1: The Transformer - model architecture.",
+          "asset": "scripts/assets/paper_visuals/m03_01.webp",
+          "asset_sha256": "d12c9e3cd31eef32e52ce40935147de2d1ca0cc4c39d70a3a22f473fd935248d",
+          "width": 729,
+          "height": 1113,
+          "source_crop": [
+            188.56,
+            64.0,
+            423.44,
+            422.7
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kiri adalah encoder, kanan adalah decoder dengan masked attention.",
+            "Panah dari encoder menuju attention decoder menyediakan informasi input.",
+            "Add & Norm serta feed-forward muncul berulang; N× menandai lapisan yang ditumpuk."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Attention membaca hubungan token. Mask pada decoder mencegah melihat token masa depan selama prediksi autoregresif."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari Attention Is All You Need. Kiri adalah encoder, kanan adalah decoder dengan masked attention."
+        },
+        {
+          "id": "m03_v2",
+          "kind": "findings",
+          "title": "Table 2 — baca hasilnya",
+          "source_label": "Table 2",
+          "page": 34,
+          "source_caption": "Table 2: The Transformer achieves better BLEU scores than previous state-of-the-art models on the English-to-German and English-to-French newstest2014 tests at a fraction of the training cost.",
+          "asset": "scripts/assets/paper_visuals/m03_02.webp",
+          "asset_sha256": "a24814d7f1c1ead2576d8c60875e5c16f889fbb887de93aa20b52f832aac4078",
+          "width": 1632,
+          "height": 732,
+          "source_crop": [
+            102.0,
+            64.0,
+            510.0,
+            247.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Bandingkan BLEU EN-DE dan EN-FR pada kolomnya masing-masing.",
+            "Training cost FLOPs adalah biaya komputasi, bukan waktu wall-clock universal.",
+            "Transformer base dan big adalah konfigurasi berbeda; jangan mencampur skor dan biaya keduanya."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Tabel EN-FR menulis 41,8, sedangkan sebagian narasi memberi 41,0. Ini benchmark terjemahan, bukan evaluasi scoring esai."
+          },
+          "warning": "",
+          "alt": "Table 2 dari Attention Is All You Need. Bandingkan BLEU EN-DE dan EN-FR pada kolomnya masing-masing."
+        }
+      ]
     },
     {
       "id": "m04",
@@ -8080,7 +9569,69 @@
         "end": 54
       },
       "source_fingerprint": null,
-      "learning_order": 7
+      "learning_order": 7,
+      "visuals": [
+        {
+          "id": "m04_v1",
+          "kind": "process",
+          "title": "Table 1 — ikuti alurnya",
+          "source_label": "Table 1",
+          "page": 45,
+          "source_caption": "Table 1: Comparison between static and dynamic masking for BERTBASE. We report F1 for SQuAD and accuracy for MNLI-m and SST-2. Reported results are",
+          "asset": "scripts/assets/paper_visuals/m04_01.webp",
+          "asset_sha256": "3dee1652dad822f4a4ca96adb0a9cad93fb87c73acb2d12d3e7561404ba399e6",
+          "width": 1017,
+          "height": 604,
+          "source_crop": [
+            308.81,
+            53.89,
+            562.87,
+            204.61
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris reference, static, dan dynamic menunjukkan konfigurasi masking yang dibandingkan.",
+            "Nilai SQuAD/MNLI/SST-2 punya definisi berbeda sesuai task.",
+            "Tujuan ablation ini memeriksa prosedur pretraining, bukan mengubah BERT menjadi arsitektur GRU."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Dynamic masking mengubah posisi token yang dimask antareksposur data. Pada tabel ini kenaikan tidak seragam untuk semua task."
+          },
+          "warning": "",
+          "alt": "Table 1 dari RoBERTa: A Robustly Optimized BERT Pretraining Approach. Baris reference, static, dan dynamic menunjukkan konfigurasi masking yang dibandingkan."
+        },
+        {
+          "id": "m04_v2",
+          "kind": "findings",
+          "title": "Table 4 — baca hasilnya",
+          "source_label": "Table 4",
+          "page": 48,
+          "source_caption": "Table 4: Development set results for RoBERTa as we pretrain over more data (16GB →160GB of text) and pretrain for longer (100K →300K →500K steps). Each row accumulates improvements from the rows above. RoBERTa matches the architecture and training objective of BERTLARGE. Results for BERTLARGE and XLNetLARGE are from Devlin et al. (2019) and Yang et",
+          "asset": "scripts/assets/paper_visuals/m04_02.webp",
+          "asset_sha256": "25d643082f11e9d895ebc8058e48b04856bc3323f3f580fb7b81868a0ac21cc7",
+          "width": 1801,
+          "height": 724,
+          "source_crop": [
+            39.27,
+            53.05,
+            561.68,
+            262.7
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baca sumber data, batch size, dan training steps sebelum skor.",
+            "Bandingkan +additional data dan +pretrain longer secara berurutan.",
+            "RoBERTa dan XLNet memakai anggaran/input berbeda, sehingga angka bukan perbandingan tanpa syarat."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "RoBERTa menunjukkan pentingnya cara pretraining. Keunggulan benchmark belum otomatis menjadi keunggulan model AES pada data lo."
+          },
+          "warning": "",
+          "alt": "Table 4 dari RoBERTa: A Robustly Optimized BERT Pretraining Approach. Baca sumber data, batch size, dan training steps sebelum skor."
+        }
+      ]
     },
     {
       "id": "m05",
@@ -8429,7 +9980,69 @@
         "end": 84
       },
       "source_fingerprint": null,
-      "learning_order": 9
+      "learning_order": 9,
+      "visuals": [
+        {
+          "id": "m05_v1",
+          "kind": "process",
+          "title": "Figure 2 — ikuti alurnya",
+          "source_label": "Figure 2",
+          "page": 74,
+          "source_caption": "Figure 2: Overall architecture of CEAES. CEAES simultaneously predicts scores and generates feedback. Both tasks are trained jointly with alternating reinforcement learning optimization. When optimizing feedback, we measure the similarity between ˆf and the rubric texts r corresponding to the golden score. We use the similarity as the reward to gui",
+          "asset": "scripts/assets/paper_visuals/m05_01.webp",
+          "asset_sha256": "2ecb51f080abc1313c27749249537db5961839b22de045fcd6215c952049f1f0",
+          "width": 1401,
+          "height": 968,
+          "source_crop": [
+            62.9,
+            62.85,
+            533.6,
+            387.7
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Dua jalur diagram mengoptimalkan feedback berdasarkan skor dan skor berdasarkan feedback.",
+            "Shared encoder menghubungkan model prediksi skor dan pembentuk feedback.",
+            "Reward berbeda menurut arah optimasi; panah tidak berarti model menerima nilai guru baru pada semua data."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "CEAES menghubungkan score dan feedback. Acuan sintetis serta model pemberi reward tetap membatasi kesimpulan."
+          },
+          "warning": "",
+          "alt": "Figure 2 dari CEAES: Bidirectional Reinforcement Learning Optimization for Consistent and Explainable Essay Assessment. Dua jalur diagram mengoptimalkan feedback berdasarkan skor dan skor berdasarkan feedback."
+        },
+        {
+          "id": "m05_v2",
+          "kind": "findings",
+          "title": "Table 1 — baca hasilnya",
+          "source_label": "Table 1",
+          "page": 77,
+          "source_caption": "Table 1: Scoring performance of models (measured by QWK). Underlining indicates top performance in score-only models; bolding denotes top performance in models with scoring and feedback.",
+          "asset": "scripts/assets/paper_visuals/m05_02.webp",
+          "asset_sha256": "3e2536c0bf4951550962212b34c3890ba7361d8f65c31af3ac2e874f1e47d62e",
+          "width": 1801,
+          "height": 1030,
+          "source_crop": [
+            43.46,
+            62.3,
+            561.94,
+            358.65
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kolom P1–P8 adalah prompt ASAP; AVG merangkum QWK antarprompt.",
+            "Pisahkan kelompok score-only models dari score-and-feedback models.",
+            "Bandingkan per prompt juga: AVG tertinggi tidak berarti menang di tiap kolom."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "CEAES AVG 0,821 versus NPCR 0,817 adalah laporan pada protokol prompt-specific. Itu belum membuktikan cross-prompt performance atau manfaat belajar siswa."
+          },
+          "warning": "",
+          "alt": "Table 1 dari CEAES: Bidirectional Reinforcement Learning Optimization for Consistent and Explainable Essay Assessment. Kolom P1–P8 adalah prompt ASAP; AVG merangkum QWK antarprompt."
+        }
+      ]
     },
     {
       "id": "m06",
@@ -8695,7 +10308,69 @@
         "end": 94
       },
       "source_fingerprint": null,
-      "learning_order": 6
+      "learning_order": 6,
+      "visuals": [
+        {
+          "id": "m06_v1",
+          "kind": "findings",
+          "title": "Figure 1 — baca hasilnya",
+          "source_label": "Figure 1",
+          "page": 88,
+          "source_caption": "Figure 1: Robustness of metrics under varying dataset sizes, measured by Kendall’s τ between system rankings using all data and subsets of dif- ferent sizes.",
+          "asset": "scripts/assets/paper_visuals/m06_01.webp",
+          "asset_sha256": "e23a4373e4126680037612d99b378b599049f69736e869a788e89576f9fc8d40",
+          "width": 1018,
+          "height": 1173,
+          "source_crop": [
+            308.35,
+            37.04,
+            562.54,
+            330.02
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Sumbu mendatar menunjukkan jumlah esai; sumbu tegak adalah Kendall tau antara dua ranking sistem.",
+            "Legenda memisahkan QWK, Pearson, error, accuracy, dan AC2.",
+            "Pada Figure 3, warna/kurva juga menyatakan jumlah kategori; bandingkan pada ukuran sampel yang sama."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Tau yang tinggi berarti ranking sistem lebih stabil terhadap perubahan setting. Itu berbeda dari QWK atau akurasi scoring yang tinggi."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari Quadratic Weighted Kappa is Not Enough for Evaluating Automated Essay Scoring Models. Sumbu mendatar menunjukkan jumlah esai; sumbu tegak adalah Kendall tau antara dua ranking sistem."
+        },
+        {
+          "id": "m06_v2",
+          "kind": "findings",
+          "title": "Figure 3 — baca hasilnya",
+          "source_label": "Figure 3",
+          "page": 90,
+          "source_caption": "Figure 3: Effect of the interaction between dataset size and number of categories on metric robustness. Kendall’s τ is computed between system rankings based on subsets of varying size (x-axis) and the full dataset ranking. Each curve corresponds to a different number of categories.",
+          "asset": "scripts/assets/paper_visuals/m06_02.webp",
+          "asset_sha256": "c9b82c0bcc50066bebbe475526b467ff9323dbfe1dc7ad2633489b487cf531cb",
+          "width": 1801,
+          "height": 1348,
+          "source_crop": [
+            39.29,
+            49.67,
+            562.54,
+            441.15
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Panel a memakai ASAP; panel b memakai ELLIPSE.",
+            "Sumbu x jumlah esai, sumbu y Kendall tau, dan tiap kurva menyatakan jumlah kategori.",
+            "Bandingkan efek ukuran data dan kategori secara bersamaan untuk tiap metrik."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Tau yang tinggi berarti ranking sistem lebih stabil terhadap perubahan setting. Itu berbeda dari QWK atau akurasi scoring yang tinggi."
+          },
+          "warning": "",
+          "alt": "Figure 3 dari Quadratic Weighted Kappa is Not Enough for Evaluating Automated Essay Scoring Models. Panel a memakai ASAP; panel b memakai ELLIPSE."
+        }
+      ]
     },
     {
       "id": "m07",
@@ -9086,7 +10761,69 @@
         "end": 329
       },
       "source_fingerprint": null,
-      "learning_order": 12
+      "learning_order": 12,
+      "visuals": [
+        {
+          "id": "m07_v1",
+          "kind": "process",
+          "title": "Figure 7.1 — ikuti alurnya",
+          "source_label": "Figure 7.1",
+          "page": 230,
+          "source_caption": "Figure 7.1: Overview of the methodology for model retraining using counterfactuals and feedback generation through counterfactual explanations and Large Lan- guage Model (LLM)",
+          "asset": "scripts/assets/paper_visuals/m07_01.webp",
+          "asset_sha256": "308aba7be4b02aec02193db5b2d4b709678650fceff0f1f3392232ea64c1394d",
+          "width": 1116,
+          "height": 935,
+          "source_crop": [
+            83.9,
+            204.72,
+            443.64,
+            506.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Bagian atas membentuk counterfactual training data sebelum retraining.",
+            "Bagian bawah mencari perubahan fitur lalu menyusun feedback dan explanations.",
+            "Pisahkan hasil model retraining dari antarmuka feedback untuk pengguna."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Cuplikan metode berasal dari Bab 7 tesis, sedangkan matriks metrik pendamping berasal dari Bab 5. Keduanya bukan satu eksperimen yang sama."
+          },
+          "warning": "",
+          "alt": "Figure 7.1 dari Rethinking Automated Essay Scoring: Agreement, Fairness, and Feedback. Bagian atas membentuk counterfactual training data sebelum retraining."
+        },
+        {
+          "id": "m07_v2",
+          "kind": "findings",
+          "title": "Figure 5.3 — baca hasilnya",
+          "source_label": "Figure 5.3",
+          "page": 191,
+          "source_caption": "Figure 5.3: Agreement tables with size of 4x4 from ASAP dataset Prompt 4. First table was the original agreement table between the score predictions of Gradient Boosting and the score labels from human raters. In the next tables, the diagonal values were manipulated to increase the prevalence to examine its",
+          "asset": "scripts/assets/paper_visuals/m07_02.webp",
+          "asset_sha256": "65718a8669684d0ac3078dde1e096b23b988565d24eae4f92d035a372a72a0a4",
+          "width": 1116,
+          "height": 1588,
+          "source_crop": [
+            55.0,
+            115.87,
+            414.7,
+            627.8
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Sel matriks menghitung agreement dua pemberi skor pada kategori 1–4.",
+            "Perubahan antar matriks menunjukkan pengaruh prevalensi/posisi agreement terhadap QWK.",
+            "Diagonal yang besar perlu dibaca bersama marginal dan distribusi kategori."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "QWK peka pada distribusi agreement. Tesis membahas agreement, fairness, dan feedback dalam bab serta rancangan berbeda."
+          },
+          "warning": "",
+          "alt": "Figure 5.3 dari Rethinking Automated Essay Scoring: Agreement, Fairness, and Feedback. Sel matriks menghitung agreement dua pemberi skor pada kategori 1–4."
+        }
+      ]
     },
     {
       "id": "m08",
@@ -9345,7 +11082,69 @@
         "end": 365
       },
       "source_fingerprint": null,
-      "learning_order": 1
+      "learning_order": 1,
+      "visuals": [
+        {
+          "id": "m08_v1",
+          "kind": "process",
+          "title": "Figure 1.2.1 — ikuti alurnya",
+          "source_label": "Figure 1.2.1",
+          "page": 353,
+          "source_caption": "Figure 1.2.1: Phases of an Inter-Rater Reliability Study",
+          "asset": "scripts/assets/paper_visuals/m08_01.webp",
+          "asset_sha256": "3f329d2a17037c74516c89761c9f26c1ccc694e9a1896c7a18f06e292ed209ee",
+          "width": 1025,
+          "height": 859,
+          "source_crop": [
+            81.44,
+            309.11,
+            411.76,
+            586.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Bagan fase dimulai dari populasi penilai dan populasi objek.",
+            "Definisi atribut dan koefisien mendahului experimental design.",
+            "Pengumpulan skor baru bermakna setelah desain penilai/objeknya jelas."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Pilih desain yang mendukung klaim populasi, bukan sekadar menghitung satu koefisien sesudah memberi skor."
+          },
+          "warning": "",
+          "alt": "Figure 1.2.1 dari Handbook of Inter-Rater Reliability: The Definitive Guide to Measuring the Extent of Agreement Among Raters. Bagan fase dimulai dari populasi penilai dan populasi objek."
+        },
+        {
+          "id": "m08_v2",
+          "kind": "process",
+          "title": "Figure 1.7.1 — ikuti alurnya",
+          "source_label": "Figure 1.7.1",
+          "page": 365,
+          "source_caption": "Figure 1.7.1 indicates that if you are dealing with ratio or interval ratings, then you can use one of the chance-corrected agreement coeﬃcients of chapters 2 or 3 only if these ratings are predetermined before the experiment is conducted. Otherwise, you will need the intraclass correlation coeﬃcients of chapters 7 to 10. The ratings are",
+          "asset": "scripts/assets/paper_visuals/m08_02.webp",
+          "asset_sha256": "d7fa3fb117cb26f66ad04241755a681758fd1e89df7c9b0021eb2e45041ad942",
+          "width": 1761,
+          "height": 1824,
+          "source_crop": [
+            32.76,
+            209.52,
+            472.75,
+            665.28
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Periksa nominal, ordinal, interval, atau ratio pada cabang awal.",
+            "Cabang predefined rating values membedakan asumsi penggunaan bobot tertentu.",
+            "Jangan memilih koefisien hanya karena ada label weighted; periksa desain dan populasi."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Bagan di Bab 1 menunjuk bab-bab lanjutan. Cuplikan buku tidak menyediakan seluruh pembahasan AC2 di bab lain."
+          },
+          "warning": "",
+          "alt": "Figure 1.7.1 dari Handbook of Inter-Rater Reliability: The Definitive Guide to Measuring the Extent of Agreement Among Raters. Periksa nominal, ordinal, interval, atau ratio pada cabang awal."
+        }
+      ]
     },
     {
       "id": "m09",
@@ -9673,7 +11472,69 @@
         "end": 430
       },
       "source_fingerprint": null,
-      "learning_order": 5
+      "learning_order": 5,
+      "visuals": [
+        {
+          "id": "m09_v1",
+          "kind": "process",
+          "title": "Table 1 — ikuti alurnya",
+          "source_label": "Table 1",
+          "page": 400,
+          "source_caption": "Table 1. Summary description of the seven inference methods considered in relation to the rejection criteria shown in (12) or the conﬁdence interval shown in (13).",
+          "asset": "scripts/assets/paper_visuals/m09_01.webp",
+          "asset_sha256": "0c2c662e51809fc5c6b099c29f597c3501ad10a533e2012fd0c4d1e6a0ffd8e9",
+          "width": 1801,
+          "height": 811,
+          "source_crop": [
+            74.38,
+            122.93,
+            570.01,
+            346.06
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Tabel merangkum bentuk statistik dan estimasi variance beberapa uji.",
+            "Perbedaan asumsi resampling menentukan kapan suatu bentuk uji relevan.",
+            "Jangan memakai fold sebagai pengamatan bebas tanpa memeriksa ketergantungan."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Koreksi variance mengakui bahwa split yang berbagi data membuat hasil evaluasi berkorelasi."
+          },
+          "warning": "",
+          "alt": "Table 1 dari Inference for the Generalization Error. Tabel merangkum bentuk statistik dan estimasi variance beberapa uji."
+        },
+        {
+          "id": "m09_v2",
+          "kind": "findings",
+          "title": "Figure 1 — baca hasilnya",
+          "source_label": "Figure 1",
+          "page": 411,
+          "source_caption": "Figure 1. Powers of the tests about H0: n",
+          "asset": "scripts/assets/paper_visuals/m09_02.webp",
+          "asset_sha256": "910ca7362f562292b734c0e132e817904ed26a26b7b3509ce49735d8b0f01e45",
+          "width": 1801,
+          "height": 1152,
+          "source_crop": [
+            48.2,
+            126.3,
+            561.68,
+            454.68
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Setiap panel menyatakan satu kondisi simulasi.",
+            "Sumbu mendatar mengubah parameter/null yang diuji; sumbu tegak adalah power.",
+            "Legenda membandingkan uji; pola di dekat null dibaca berbeda dari pola jauh dari null."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Uji yang tampak sangat sensitif dapat memiliki galat tipe I yang buruk. Temuan repeated-random-splits tidak boleh dianggap aturan universal semua k-fold."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari Inference for the Generalization Error. Setiap panel menyatakan satu kondisi simulasi."
+        }
+      ]
     },
     {
       "id": "m10",
@@ -10014,7 +11875,69 @@
         "end": 566
       },
       "source_fingerprint": null,
-      "learning_order": 1
+      "learning_order": 1,
+      "visuals": [
+        {
+          "id": "m10_v1",
+          "kind": "process",
+          "title": "Table 2 — ikuti alurnya",
+          "source_label": "Table 2",
+          "page": 556,
+          "source_caption": "Table 2 ",
+          "asset": "scripts/assets/paper_visuals/m10_01.webp",
+          "asset_sha256": "8a65e0f4e1f33ba1baafb04fc70c2fd5f99b06b4f701f191408c6f86e92822e1",
+          "width": 1801,
+          "height": 1103,
+          "source_crop": [
+            67.32,
+            79.2,
+            580.79,
+            393.62
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris memuat fitur grammar, usage, mechanics, dan fitur lainnya.",
+            "Kolom membedakan program/prompt; nilai adalah korelasi fitur dengan average human score.",
+            "Korelasi sebuah fitur tidak sama dengan bobot fitur pada model akhir."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "e-rater memakai fitur yang dapat dijelaskan. Tabel ini tidak menjadikan grammar satu-satunya penentu kualitas esai."
+          },
+          "warning": "",
+          "alt": "Table 2 dari Automated Essay Scoring With e-rater® v.2.0. Baris memuat fitur grammar, usage, mechanics, dan fitur lainnya."
+        },
+        {
+          "id": "m10_v2",
+          "kind": "findings",
+          "title": "Table 5 — baca hasilnya",
+          "source_label": "Table 5",
+          "page": 559,
+          "source_caption": "Table 5 ",
+          "asset": "scripts/assets/paper_visuals/m10_02.webp",
+          "asset_sha256": "37ca933f6b16b2e80d1e9fcc8e3eb474f90d7eb7f0132352231d8a909ac55cc0",
+          "width": 1801,
+          "height": 800,
+          "source_crop": [
+            68.54,
+            427.68,
+            575.28,
+            652.61
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris membedakan model generic/specific dan jenis esai.",
+            "Kolom mengubah essay-length weight, lalu melaporkan average kappa.",
+            "Kappa di sini mengikuti definisi laporan; jangan otomatis menyebut semua nilai sebagai QWK."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Model, fitur panjang, dan tugas penilaian memengaruhi agreement. Corrected correlation di laporan juga berbeda dari korelasi mentah."
+          },
+          "warning": "",
+          "alt": "Table 5 dari Automated Essay Scoring With e-rater® v.2.0. Baris membedakan model generic/specific dan jenis esai."
+        }
+      ]
     },
     {
       "id": "m11",
@@ -10342,7 +12265,69 @@
         "end": 1106
       },
       "source_fingerprint": null,
-      "learning_order": 2
+      "learning_order": 2,
+      "visuals": [
+        {
+          "id": "m11_v1",
+          "kind": "process",
+          "title": "Figure 2-2 — ikuti alurnya",
+          "source_label": "Figure 2-2",
+          "page": 662,
+          "source_caption": "Figure 2-2. A Machine Learning pipeline for real estate investments",
+          "asset": "scripts/assets/paper_visuals/m11_01.webp",
+          "asset_sha256": "975be55d6ed58e6720d320aa06edd137fb3a1621d4f298de79b292c01b69dcb6",
+          "width": 1506,
+          "height": 623,
+          "source_crop": [
+            64.0,
+            158.8,
+            440.5,
+            314.4
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Diagram memberi gambaran beberapa komponen pipeline harga rumah.",
+            "Perhatikan aliran data/output antar komponen sebelum menyebut keseluruhan satu model.",
+            "Pisahkan preprocessing, prediksi, dan penggunaan hasil dalam keputusan investasi."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Ilustrasi pada PDF gabungan beresolusi rendah; perbesaran tidak dapat mengembalikan detail yang hilang. Gunakan alur dan caption bersama penjelasan di bab."
+          },
+          "warning": "Ilustrasi asli pada PDF gabungan beresolusi rendah. Gambar tetap ditampilkan apa adanya; catatan menjelaskan konteksnya tanpa mengarang detail piksel.",
+          "alt": "Figure 2-2 dari Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems — Second Edition. Diagram memberi gambaran beberapa komponen pipeline harga rumah."
+        },
+        {
+          "id": "m11_v2",
+          "kind": "findings",
+          "title": "Figure 2-10 — baca hasilnya",
+          "source_label": "Figure 2-10",
+          "page": 680,
+          "source_caption": "Figure 2-10. Sampling bias comparison of stratified versus purely random sampling",
+          "asset": "scripts/assets/paper_visuals/m11_02.webp",
+          "asset_sha256": "ec78e5a2705b35d589fddd238bd8216e5da3455c74b9ae97765bae64b23ac5cc",
+          "width": 1506,
+          "height": 582,
+          "source_crop": [
+            64.0,
+            236.2,
+            440.5,
+            381.5
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris merupakan kategori income; kolom Overall menjadi pembanding distribusi.",
+            "Random dan Stratified adalah strategi sampling berbeda.",
+            "Kolom error menunjukkan seberapa jauh distribusi sampel dari keseluruhan."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Contoh stratified sampling ini dari data perumahan, bukan skor esai. Mempertahankan distribusi tetap harus disesuaikan dengan unit dan tujuan split penelitian."
+          },
+          "warning": "",
+          "alt": "Figure 2-10 dari Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems — Second Edition. Baris merupakan kategori income; kolom Overall menjadi pembanding distribusi."
+        }
+      ]
     },
     {
       "id": "m12",
@@ -10575,7 +12560,69 @@
         "end": 1144
       },
       "source_fingerprint": null,
-      "learning_order": 3
+      "learning_order": 3,
+      "visuals": [
+        {
+          "id": "m12_v1",
+          "kind": "process",
+          "title": "TABLE 1 — ikuti alurnya",
+          "source_label": "TABLE 1",
+          "page": 1137,
+          "source_caption": "TABLE 1 The Equine Gastric Ulcer Council (EGUC) 5-point ordinal grading system for grading squamous and glandular gastric disease",
+          "asset": "scripts/assets/paper_visuals/m12_01.webp",
+          "asset_sha256": "6a99636f23c1e2b6db82b87ca417db08924ca693b84a34cb58394359d26d4ca0",
+          "width": 992,
+          "height": 868,
+          "source_crop": [
+            302.0,
+            522.0,
+            550.0,
+            739.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Grade 0–4 membentuk kategori ordinal EGUC.",
+            "Kolom squamous dan glandular menjelaskan deskriptor berbeda untuk dua jenis mukosa.",
+            "Nomor grade adalah kategori tingkat, bukan ukuran kontinu dengan jarak klinis pasti sama."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Tabel mendefinisikan apa yang dinilai sebelum koefisien agreement dihitung. Studi ini di kedokteran hewan, bukan AES."
+          },
+          "warning": "",
+          "alt": "TABLE 1 dari Interobserver and intraobserver reliability for 2 grading systems for gastric ulcer syndrome in horses. Grade 0–4 membentuk kategori ordinal EGUC."
+        },
+        {
+          "id": "m12_v2",
+          "kind": "findings",
+          "title": "FIGURE 2 — baca hasilnya",
+          "source_label": "FIGURE 2",
+          "page": 1138,
+          "source_caption": "FIGURE 2 Results of Gwet's coefficient of agreement with ordinal weighting applied (AC2) for interobserver reliability of observers grading squamous and glandular gastric mucosa using the Equine Gastric Ulcer Council (EGUC) system on 3 occasions. The figure is presented as mean and 95% CI",
+          "asset": "scripts/assets/paper_visuals/m12_02.webp",
+          "asset_sha256": "91da283df49e7c1c5d5d3ab73085629e5122264b2480054314cce6d41d37f6ec",
+          "width": 779,
+          "height": 956,
+          "source_crop": [
+            298.0,
+            149.55,
+            548.79,
+            457.5
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Sumbu mendatar memuat phase/occasions; sumbu tegak adalah koefisien agreement.",
+            "Legenda membedakan dua mukosa, titik menunjukkan mean dan garis menunjukkan 95% CI.",
+            "Lebar interval membantu membaca ketidakpastian, bukan variasi skor tiap pasien secara langsung."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "AC2 pada EGUC tidak langsung sebanding dengan ICC pada VAS. Pelaporan bentuk ICC di bagian metode dan caption sumber juga tidak konsisten."
+          },
+          "warning": "",
+          "alt": "FIGURE 2 dari Interobserver and intraobserver reliability for 2 grading systems for gastric ulcer syndrome in horses. Sumbu mendatar memuat phase/occasions; sumbu tegak adalah koefisien agreement."
+        }
+      ]
     },
     {
       "id": "m13",
@@ -10798,7 +12845,69 @@
         "end": 2835
       },
       "source_fingerprint": null,
-      "learning_order": 1
+      "learning_order": 1,
+      "visuals": [
+        {
+          "id": "m13_v1",
+          "kind": "process",
+          "title": "CP Bahasa Indonesia Fase F, elemen 6.4 Menulis — ikuti alurnya",
+          "source_label": "CP Bahasa Indonesia Fase F, elemen 6.4 Menulis",
+          "page": 1243,
+          "source_caption": "Cuplikan capaian pembelajaran elemen Menulis pada Bahasa Indonesia umum, Fase F.",
+          "asset": "scripts/assets/paper_visuals/m13_01.webp",
+          "asset_sha256": "310cbf4de37e96d67e419123912d15e659fc624b0c45c99e5a0e02a9a7614b2a",
+          "width": 1801,
+          "height": 426,
+          "source_crop": [
+            91.8,
+            773.14,
+            574.67,
+            887.33
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Elemen yang ditampilkan adalah 6.4 Menulis dalam Bahasa Indonesia umum Fase F.",
+            "Perhatikan tuntutan logis, kritis, dan kreatif pada berbagai tipe teks.",
+            "Dua baris lanjutan menambahkan publikasi hasil karya; bagian Tingkat Lanjut sesudahnya tidak masuk cuplikan."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Capaian pembelajaran menyatakan kemampuan yang dituju. Ia perlu diterjemahkan menjadi tugas dan rubrik, bukan langsung dipakai sebagai angka output model."
+          },
+          "warning": "Ini cuplikan dokumen kebijakan, bukan diagram eksperimen atau tabel hasil model.",
+          "alt": "CP Bahasa Indonesia Fase F, elemen 6.4 Menulis dari Keputusan Kepala BSKAP Nomor 046/H/KR/2025 tentang Capaian Pembelajaran pada Pendidikan Anak Usia Dini, Jenjang Pendidikan Dasar, dan Jenjang Pendidikan Menengah. Elemen yang ditampilkan adalah 6.4 Menulis dalam Bahasa Indonesia umum Fase F."
+        },
+        {
+          "id": "m13_v2",
+          "kind": "process",
+          "title": "Lanjutan elemen Menulis — ikuti alurnya",
+          "source_label": "Lanjutan elemen Menulis",
+          "page": 1244,
+          "source_caption": "Dua baris lanjutan dari elemen 6.4 Menulis; berhenti sebelum Bahasa Indonesia Tingkat Lanjut.",
+          "asset": "scripts/assets/paper_visuals/m13_02.webp",
+          "asset_sha256": "25d158dbad43487b1785b7343d9cff501f03fd1fb475d01bf60e1c11ed28cd16",
+          "width": 974,
+          "height": 149,
+          "source_crop": [
+            250.92,
+            58.032,
+            575.28,
+            107.64
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baca dua baris ini sebagai lanjutan elemen 6.4 pada halaman sebelumnya.",
+            "Target menulis juga mencakup mempublikasikan hasil karya.",
+            "Judul Bahasa Indonesia Tingkat Lanjut sesudahnya sengaja berada di luar cuplikan."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Jangan mencampur capaian Bahasa Indonesia umum dengan mata pelajaran Tingkat Lanjut."
+          },
+          "warning": "Ini cuplikan dokumen kebijakan, bukan diagram eksperimen atau tabel hasil model.",
+          "alt": "Lanjutan elemen Menulis dari Keputusan Kepala BSKAP Nomor 046/H/KR/2025 tentang Capaian Pembelajaran pada Pendidikan Anak Usia Dini, Jenjang Pendidikan Dasar, dan Jenjang Pendidikan Menengah. Baca dua baris ini sebagai lanjutan elemen 6.4 pada halaman sebelumnya."
+        }
+      ]
     },
     {
       "id": "m14",
@@ -11124,7 +13233,69 @@
         "end": 2931
       },
       "source_fingerprint": null,
-      "learning_order": 6
+      "learning_order": 6,
+      "visuals": [
+        {
+          "id": "m14_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 2918,
+          "source_caption": "Figure 1: Overall pre-training and ﬁne-tuning procedures for BERT. Apart from output layers, the same architec- tures are used in both pre-training and ﬁne-tuning. The same pre-trained model parameters are used to initialize models for different down-stream tasks. During ﬁne-tuning, all parameters are ﬁne-tuned. [CLS] is a special symbol added in f",
+          "asset": "scripts/assets/paper_visuals/m14_01.webp",
+          "asset_sha256": "e16c9f4702ab00b29ae2bfbaa0e3682db5430c3f998703c2670e1131eb0a5b24",
+          "width": 1401,
+          "height": 765,
+          "source_crop": [
+            64.0,
+            54.81,
+            533.65,
+            311.1
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kotak kiri menjelaskan pretraining MLM dan NSP.",
+            "Kotak kanan memakai BERT yang telah dipretrain untuk fine-tuning task-specific.",
+            "Representasi dan prediction head disesuaikan dengan tugas, misalnya QA atau klasifikasi."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Memuat checkpoint BERT bukan berarti melakukan pretraining ulang. Fine-tuning task esai memiliki target dan head sendiri."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. Kotak kiri menjelaskan pretraining MLM dan NSP."
+        },
+        {
+          "id": "m14_v2",
+          "kind": "findings",
+          "title": "Table 5 — baca hasilnya",
+          "source_label": "Table 5",
+          "page": 2923,
+          "source_caption": "Table 5: Ablation over the pre-training tasks using the BERTBASE architecture. “No NSP” is trained without the next sentence prediction task. “LTR & No NSP” is trained as a left-to-right LM without the next sentence",
+          "asset": "scripts/assets/paper_visuals/m14_02.webp",
+          "asset_sha256": "5d2b2ea7cd1091e31ba7d87de7a8d2e0fe5362a460218e51a06d6b45153e1c65",
+          "width": 1065,
+          "height": 758,
+          "source_crop": [
+            37.5,
+            55.56,
+            303.59,
+            244.99
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baris No NSP dan LTR & No NSP mematikan/mengubah komponen untuk ablation.",
+            "Kolom memakai accuracy atau F1 sesuai task; baca label dalam tanda kurung.",
+            "Nilai BERTBASE dibandingkan dengan kondisi ablation pada kolom yang sama."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Perubahan pretraining dapat memengaruhi downstream task. Tabel ini tidak mengukur kualitas esai atau menjamin bobot checkpoint tertentu selalu unggul."
+          },
+          "warning": "",
+          "alt": "Table 5 dari BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. Baris No NSP dan LTR & No NSP mematikan/mengubah komponen untuk ablation."
+        }
+      ]
     },
     {
       "id": "m15",
@@ -11510,7 +13681,69 @@
         "end": 2970
       },
       "source_fingerprint": null,
-      "learning_order": 11
+      "learning_order": 11,
+      "visuals": [
+        {
+          "id": "m15_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 2962,
+          "source_caption": "Figure 1. Architecture of the proposed PaSTO-GNN framework for automatic essay scoring.",
+          "asset": "scripts/assets/paper_visuals/m15_01.webp",
+          "asset_sha256": "bc3cdd0502e3005ee912d1eaa0c3ce76a4c3a2151ce4ae029601358d2fe40658",
+          "width": 1801,
+          "height": 1184,
+          "source_crop": [
+            47.03,
+            74.11,
+            551.81,
+            405.9
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Ikuti tokenisasi kalimat menuju tiga jalur embedding: contextual, semantic, dan prompt.",
+            "Fusion diikuti pembentukan graph, message passing, BiGRU, dan attention pooling.",
+            "Ordinal prediction mengeluarkan skor; calibration adalah langkah tambahan sesudahnya."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Embedding dan graph membantu mewakili hubungan kalimat. Post-hoc calibration bukan bagian yang bebas dari pemilihan pada validation."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari PaSTO-GNN: prompt-aware spatio-temporal graph neural networks for automatic essay scoring. Ikuti tokenisasi kalimat menuju tiga jalur embedding: contextual, semantic, dan prompt."
+        },
+        {
+          "id": "m15_v2",
+          "kind": "findings",
+          "title": "TABLE 2 — baca hasilnya",
+          "source_label": "TABLE 2",
+          "page": 2965,
+          "source_caption": "TABLE 2 Overall validation performance on AES 2.0 using a prompt-stratiﬁed 80/20 split.",
+          "asset": "scripts/assets/paper_visuals/m15_02.webp",
+          "asset_sha256": "b2bd00c4991d6568e91882975462d125d99f0b162e9166de230e46b668773210",
+          "width": 798,
+          "height": 342,
+          "source_crop": [
+            296.8,
+            64.3,
+            554.13,
+            174.48
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Baca QWK, PCC, RMSE, dan Cal-QWK sebagai ukuran berbeda.",
+            "PaSTO-GNN raw adalah skor sebelum kalibrasi; Cal-QWK sesudah kalibrasi.",
+            "Semua angka berasal dari split validation 80/20 prompt-stratified yang tercetak pada caption."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Calibration dipilih dan dilaporkan pada validation yang sama. Kenaikan 0,8144 menjadi 0,8329 tidak boleh disebut hasil independent test atau cross-prompt."
+          },
+          "warning": "",
+          "alt": "TABLE 2 dari PaSTO-GNN: prompt-aware spatio-temporal graph neural networks for automatic essay scoring. Baca QWK, PCC, RMSE, dan Cal-QWK sebagai ukuran berbeda."
+        }
+      ]
     },
     {
       "id": "m16",
@@ -11812,7 +14045,69 @@
         "end": 3126
       },
       "source_fingerprint": null,
-      "learning_order": 4
+      "learning_order": 4,
+      "visuals": [
+        {
+          "id": "m16_v1",
+          "kind": "process",
+          "title": "Figure 1 — ikuti alurnya",
+          "source_label": "Figure 1",
+          "page": 3092,
+          "source_caption": "Figure 1. Simplified educational framework for selecting an agreement coefficient. The tree is not a general method-selection algorithm; the design features it does not encode are set out in Section 2.1.2.",
+          "asset": "scripts/assets/paper_visuals/m16_01.webp",
+          "asset_sha256": "576c8291f3f63585379f54f7fe4aaee35b1b0cb6d483a8138913b44f11376822",
+          "width": 1268,
+          "height": 1058,
+          "source_crop": [
+            158.4,
+            414.7,
+            567.3,
+            755.7
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Mulai dari pertanyaan yang ingin dijawab: agreement atau consistency.",
+            "Jenis skala dan jumlah penilai mempersempit koefisien yang relevan.",
+            "Bagan adalah kerangka edukatif, bukan resep pemilihan yang menggantikan semua asumsi."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Tujuan, desain, dan populasi mendahului koefisien. Perbandingan metode memerlukan interpretasi yang sama."
+          },
+          "warning": "",
+          "alt": "Figure 1 dari Statistical Methods for Assessing Diagnostic Agreement. Mulai dari pertanyaan yang ingin dijawab: agreement atau consistency."
+        },
+        {
+          "id": "m16_v2",
+          "kind": "process",
+          "title": "Table 3 — ikuti alurnya",
+          "source_label": "Table 3",
+          "page": 3110,
+          "source_caption": "Table 3. The six commonly used ICC forms in the McGraw–Wong nomenclature (primary) and the corresponding Shrout–Fleiss labels. MSR = mean square for rows (subjects), MSC = mean square for columns (raters), MSE = residual mean square, MSW = within-subject mean square in the one-way analysis, k = number of raters, n = number of subjects. In the McGra",
+          "asset": "scripts/assets/paper_visuals/m16_02.webp",
+          "asset_sha256": "f61b68952234a4eb0dcf8e523f7a92a81f247cf19c2eea22d4b552c654a9cda3",
+          "width": 1801,
+          "height": 1062,
+          "source_crop": [
+            35.0,
+            442.0,
+            566.0,
+            755.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "McGraw–Wong dan Shrout–Fleiss adalah dua sistem penamaan; baca pemetaannya.",
+            "Bedakan consistency dengan absolute agreement sebelum memilih baris.",
+            "Single rating dan mean of k ratings menargetkan reliabilitas yang berbeda."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Laporan ICC harus menyebut model, definisi, dan unit pengukuran. Angka ICC tanpa bentuknya mudah disalahartikan."
+          },
+          "warning": "",
+          "alt": "Table 3 dari Statistical Methods for Assessing Diagnostic Agreement. McGraw–Wong dan Shrout–Fleiss adalah dua sistem penamaan; baca pemetaannya."
+        }
+      ]
     },
     {
       "id": "m17",
@@ -12112,7 +14407,69 @@
         "end": 3131
       },
       "source_fingerprint": null,
-      "learning_order": 4
+      "learning_order": 4,
+      "visuals": [
+        {
+          "id": "m17_v1",
+          "kind": "process",
+          "title": "Table 1 — ikuti alurnya",
+          "source_label": "Table 1",
+          "page": 3128,
+          "source_caption": "Table 1: Typology of survey questions with the correspond- ing concepts and/or sub-concepts highlighted. Bold texts are questions and italic texts are response options.",
+          "asset": "scripts/assets/paper_visuals/m17_01.webp",
+          "asset_sha256": "3a65b11bf757853b1f520c5ddc5ff357777637848dcb2f801856636cbb0c5e25",
+          "width": 801,
+          "height": 554,
+          "source_crop": [
+            45.5,
+            76.6,
+            303.7,
+            254.85
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Standard questions memuat konsep secara langsung; qualified dan compound menambah konteks.",
+            "Pisahkan topic concept dari pilihan respons/subconcept yang dicetak dengan warna.",
+            "Harmonisation harus menemukan konstruk yang sama, bukan sekadar kata yang mirip."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Embedding dapat membantu pencarian pasangan pertanyaan. Validasi konsep tetap diperlukan karena similarity belum sama dengan ekuivalensi pengukuran."
+          },
+          "warning": "",
+          "alt": "Table 1 dari Are Information Retrieval Approaches Good at Harmonising Longitudinal Survey Questions in Social Science?. Standard questions memuat konsep secara langsung; qualified dan compound menambah konteks."
+        },
+        {
+          "id": "m17_v2",
+          "kind": "findings",
+          "title": "Table 2 — baca hasilnya",
+          "source_label": "Table 2",
+          "page": 3129,
+          "source_caption": "Table 2: Model performances evaluated by matching the top- level topic code of the query question and the most similar question (i.e. top-1) as returned per model. BM25 is the base- line. For DeBERTa and Qwen, mean, [CLS] and last indicates",
+          "asset": "scripts/assets/paper_visuals/m17_02.webp",
+          "asset_sha256": "d2ebbc6ecdbb22162cb0a1e0c0acbadced2d22da3e8df1ef7de76f0199d37d54",
+          "width": 1008,
+          "height": 1040,
+          "source_crop": [
+            48.0,
+            78.0,
+            300.0,
+            338.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Pisahkan End-to-End Ranking dari Re-Ranking.",
+            "Kolom precision/recall/F1/accuracy dievaluasi pada protokol task ini.",
+            "BGE-M3 dan BGE-reranker-M3 merupakan peran/model yang berbeda, walau namanya berkaitan."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "BGE-M3 accuracy 0,84 pada end-to-end ranking tidak menjadi skor esai. Keberhasilan top-level-topic matching juga belum membuktikan ekuivalensi semua pertanyaan."
+          },
+          "warning": "",
+          "alt": "Table 2 dari Are Information Retrieval Approaches Good at Harmonising Longitudinal Survey Questions in Social Science?. Pisahkan End-to-End Ranking dari Re-Ranking."
+        }
+      ]
     },
     {
       "id": "m18",
@@ -12422,7 +14779,69 @@
         "end": 3170
       },
       "source_fingerprint": null,
-      "learning_order": 2
+      "learning_order": 2,
+      "visuals": [
+        {
+          "id": "m18_v1",
+          "kind": "process",
+          "title": "Table 2 — ikuti alurnya",
+          "source_label": "Table 2",
+          "page": 3152,
+          "source_caption": "Table 2. Distribution of r raters by participant and response category",
+          "asset": "scripts/assets/paper_visuals/m18_01.webp",
+          "asset_sha256": "125706d23303d3633774210b83ad61070ab2798c0cfa5e7b96f56a5169cd1bc5",
+          "width": 1801,
+          "height": 530,
+          "source_crop": [
+            83.3,
+            526.25,
+            562.27,
+            666.86
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Setiap baris merupakan objek; r_ik menghitung berapa penilai memilih kategori k.",
+            "Total baris r adalah jumlah penilai, bukan rating rata-rata.",
+            "Struktur ini membantu mengubah banyak rating menjadi proporsi agreement yang didefinisikan paper."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Ini kerangka nominal AC1. Jangan menyalin rumus nominal untuk kasus ordinal berbobot tanpa definisi AC2 yang benar."
+          },
+          "warning": "",
+          "alt": "Table 2 dari Computing inter-rater reliability and its variance in the presence of high agreement. Setiap baris merupakan objek; r_ik menghitung berapa penilai memilih kategori k."
+        },
+        {
+          "id": "m18_v2",
+          "kind": "findings",
+          "title": "Table 3 — baca hasilnya",
+          "source_label": "Table 3",
+          "page": 3153,
+          "source_caption": "Table 3. Distribution of 125 participants by rater and response category",
+          "asset": "scripts/assets/paper_visuals/m18_02.webp",
+          "asset_sha256": "12891c9fb54b2b122740dfb68195d0bc66aa4599722e66adfe999ba9b9e34007",
+          "width": 1536,
+          "height": 420,
+          "source_crop": [
+            36.0,
+            675.0,
+            420.0,
+            780.0
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Matriks Table 3 mempunyai 125 peserta, dua penilai, dan dua kategori.",
+            "Diagonal 118 dan 0 memberi raw agreement 118/125 atau 94,4%.",
+            "Marginal yang sangat timpang menjelaskan mengapa chance-corrected coefficients dapat berbeda tajam."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Raw agreement tinggi belum membuat kappa selalu tinggi. AC1 dan kappa memakai model chance agreement berbeda; contoh ini bukan bukti AC2 kuadratik sudah divalidasi."
+          },
+          "warning": "",
+          "alt": "Table 3 dari Computing inter-rater reliability and its variance in the presence of high agreement. Matriks Table 3 mempunyai 125 peserta, dua penilai, dan dua kategori."
+        }
+      ]
     },
     {
       "id": "m19",
@@ -12593,7 +15012,9 @@
         "end": 3262
       },
       "source_fingerprint": null,
-      "learning_order": 8
+      "learning_order": 8,
+      "visuals": [],
+      "visuals_unavailable": "Cuplikan Deep Learning hanya berisi identitas, daftar isi, dan bibliografi. Bab metode/hasil serta gambar terkait tidak tersedia, sehingga tidak dibuat gambar seolah berasal dari sumber."
     },
     {
       "id": "m20",
@@ -12950,7 +15371,69 @@
         "end": 3926
       },
       "source_fingerprint": null,
-      "learning_order": 1
+      "learning_order": 1,
+      "visuals": [
+        {
+          "id": "m20_v1",
+          "kind": "process",
+          "title": "Figure 6.10 — ikuti alurnya",
+          "source_label": "Figure 6.10",
+          "page": 3420,
+          "source_caption": "Figure 6.10 Cosine similarity illustrated. sim(d1, d2) = cos θ.",
+          "asset": "scripts/assets/paper_visuals/m20_01.webp",
+          "asset_sha256": "2a6ae4d1a7d82d8d8c02f399f5994b9b4f70f9cbb6e5d012a08ed143fdaa1f0c",
+          "width": 841,
+          "height": 549,
+          "source_crop": [
+            158.7,
+            184.03,
+            429.4,
+            360.8
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Vektor query dan dokumen dinormalisasi agar panjangnya sebanding.",
+            "Sudut theta menggambarkan cosine similarity; sudut kecil berarti arah lebih mirip.",
+            "Sumbu berisi bobot term, bukan kualitas tulisan atau emosi."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Cosine membandingkan arah representasi bag-of-words. Ia tidak otomatis menangkap urutan kata atau kebenaran jawaban."
+          },
+          "warning": "",
+          "alt": "Figure 6.10 dari An Introduction to Information Retrieval. Vektor query dan dokumen dinormalisasi agar panjangnya sebanding."
+        },
+        {
+          "id": "m20_v2",
+          "kind": "findings",
+          "title": "Figure 8.2 — baca hasilnya",
+          "source_label": "Figure 8.2",
+          "page": 3457,
+          "source_caption": "Figure 8.2 Precision/recall graph.",
+          "asset": "scripts/assets/paper_visuals/m20_02.webp",
+          "asset_sha256": "48c7320f545ba40ac772c36275e2037a49876307ca98a4a2e19f1d5784a46a79",
+          "width": 1168,
+          "height": 820,
+          "source_crop": [
+            154.7,
+            164.12,
+            531.1,
+            428.2
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Sumbu recall melihat berapa relevan yang ditemukan; precision melihat mutu kandidat yang diambil.",
+            "Kurva berubah ketika lebih banyak hasil diambil/ranking cutoff digeser.",
+            "Bandingkan kondisi pada cutoff/recall yang jelas, bukan hanya luas area yang terlihat bagus."
+          ],
+          "sticky": {
+            "title": "Baca angkanya",
+            "text": "Menemukan lebih banyak dokumen dapat menurunkan precision. Contoh IR ini tidak boleh diubah menjadi persentase akurasi scoring esai."
+          },
+          "warning": "",
+          "alt": "Figure 8.2 dari An Introduction to Information Retrieval. Sumbu recall melihat berapa relevan yang ditemukan; precision melihat mutu kandidat yang diambil."
+        }
+      ]
     },
     {
       "id": "m21",
@@ -13299,7 +15782,69 @@
         "end": 4043
       },
       "source_fingerprint": null,
-      "learning_order": 3
+      "learning_order": 3,
+      "visuals": [
+        {
+          "id": "m21_v1",
+          "kind": "process",
+          "title": "Figure 2.1 — ikuti alurnya",
+          "source_label": "Figure 2.1",
+          "page": 3982,
+          "source_caption": "Figure 2.1 Agents interact with environments through sensors and actuators.",
+          "asset": "scripts/assets/paper_visuals/m21_01.webp",
+          "asset_sha256": "5382c1cd3fd9ee6091642d3a9b0226081ace575de9c7e5e59dac149a67885816",
+          "width": 1044,
+          "height": 648,
+          "source_crop": [
+            64.0,
+            61.04,
+            400.63,
+            269.8
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Environment memberi percepts melalui sensors.",
+            "Agent menentukan actions, lalu actuators mengubah environment.",
+            "Panah membentuk loop; tujuan dan ukuran keberhasilan perlu didefinisikan."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Agen rasional memilih tindakan berdasarkan tujuan dan informasi, bukan hanya merespons satu kata kunci."
+          },
+          "warning": "",
+          "alt": "Figure 2.1 dari Artificial Intelligence: A Modern Approach. Environment memberi percepts melalui sensors."
+        },
+        {
+          "id": "m21_v2",
+          "kind": "process",
+          "title": "Figure 2.11 — ikuti alurnya",
+          "source_label": "Figure 2.11",
+          "page": 3997,
+          "source_caption": "Figure 2.11 A model-based reﬂex agent.",
+          "asset": "scripts/assets/paper_visuals/m21_02.webp",
+          "asset_sha256": "cf004d351b1cd272ac573e90ca89a68f06b1d8cdd08cb260f8c98619fa30a51d",
+          "width": 1041,
+          "height": 651,
+          "source_crop": [
+            128.1,
+            61.23,
+            463.82,
+            270.8
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Kotak State menyimpan informasi tentang dunia yang belum tentu terlihat langsung.",
+            "How the world evolves dan What my actions do membantu memperbarui state.",
+            "Aturan menentukan tindakan dari state, berbeda dari simple reflex yang hanya memakai percept saat ini."
+          ],
+          "sticky": {
+            "title": "Pegang alurnya",
+            "text": "Memori/state adalah bagian konsep agen. Diagram ini bukan arsitektur encoder Transformer atau sistem retrieval dokumen."
+          },
+          "warning": "",
+          "alt": "Figure 2.11 dari Artificial Intelligence: A Modern Approach. Kotak State menyimpan informasi tentang dunia yang belum tentu terlihat langsung."
+        }
+      ]
     }
   ]
 }

@@ -28,7 +28,7 @@ def check(url):
         assert page.locator(".hero-mascot").evaluate("e=>getComputedStyle(e).animationName") == "none"
         outcomes.append("reduced-motion and 42-source inventory")
         ids = page.evaluate("PaperLibrary.data.papers.map(p=>p.id)")
-        tabs = ["identity", "core", "process", "formulas", "terms", "findings", "reading"]
+        tabs = ["identity", "core", "process", "formulas", "terms", "findings", "visuals", "reading"]
         panes = 0
         for width in (1440, 390):
             page.set_viewport_size({"width": width, "height": 1050 if width > 500 else 844})
@@ -45,7 +45,7 @@ def check(url):
                         assert page.locator(".katex-error").count() == 0, pid
                     panes += 1
             page.evaluate("PaperLibrary.closeReader()")
-        outcomes.append(f"{panes} reading panes: desktop/mobile, all 42 sources × 7 tabs")
+        outcomes.append(f"{panes} reading panes: desktop/mobile, all 42 sources × {len(tabs)} tabs")
         page.set_viewport_size({"width": 1440, "height": 1050})
         page.locator("[data-topic=embedding]").click()
         assert page.locator(".paper-card").count() == 9
@@ -93,6 +93,26 @@ def check(url):
         page.set_viewport_size({"width": 1440, "height": 1050})
         page.evaluate("PaperLibrary.resetFilters()")
         outcomes.append("desktop/mobile independent filter wheel scrolling, no scroll chaining, preserved last selection and immediate paper opening")
+        assert page.locator(".card-spider-perch").evaluate_all("nodes=>nodes.every(e=>getComputedStyle(e).position==='absolute')"), "Card mascot reserves empty content space"
+        assert len(set(page.locator(".card-spider-perch use").evaluate_all("nodes=>nodes.map(e=>e.getAttribute('href'))"))) >= 6
+        # Decode every original source visual and exercise the nested zoom reader.
+        source_visuals = 0
+        for pid in ids:
+            page.evaluate("id=>PaperLibrary.openPaper(id,'visuals')", pid)
+            page.locator(".paper-visual img").evaluate_all("imgs=>Promise.all(imgs.map(img=>img.decode()))")
+            assert page.locator(".paper-visual img").evaluate_all("imgs=>imgs.every(img=>img.naturalWidth>0 && img.naturalHeight>0)")
+            source_visuals += page.locator(".paper-visual").count()
+            if page.locator(".visual-image-button").count():
+                page.locator(".visual-image-button").first.click()
+                assert page.locator("#visualDialog").evaluate("e=>e.open")
+                page.locator("#visualZoomImage").evaluate("img=>img.decode()")
+                page.locator("[data-visual-fit=detail]").click()
+                assert page.locator("#visualZoomImage").evaluate("e=>e.getBoundingClientRect().width>=e.naturalWidth-1")
+                page.keyboard.press("Escape")
+                assert page.locator("#readerDialog").evaluate("e=>e.open")
+            page.evaluate("PaperLibrary.closeReader()")
+        assert source_visuals == 82
+        outcomes.append("82 cited source visuals decoded across 41 sources; sticky reading notes, nested zoom and original-size detail controls")
         page.locator("[data-compare=p14]").check()
         page.locator("[data-compare=p13]").check()
         page.locator("#openCompare").click()
@@ -126,6 +146,22 @@ def check(url):
         page.keyboard.press("Escape")
         outcomes.append("context glossary, keyboard tabs, nested dialogs, bounded scrolling and saved reading progress")
         page.emulate_media(reduced_motion="no-preference")
+        page.evaluate("PaperLibrary.closeReader(); PaperLibrary.resetFilters(); PaperLibrary.setMotion(false)")
+        page.locator("#subtopicList").evaluate("e=>e.scrollTop=0")
+        page.wait_for_timeout(80)
+        low = page.evaluate("PaperLibrary.getState().rescueLift")
+        page.locator("#subtopicList").evaluate("e=>e.scrollTop=e.scrollHeight")
+        page.wait_for_timeout(300)
+        high = page.evaluate("PaperLibrary.getState().rescueLift")
+        assert high < low - 90, "Gwen does not rise with list scroll"
+        page.evaluate("PaperLibrary.setMotion(true)")
+        page.locator("#subtopicList").evaluate("e=>e.scrollTop=0")
+        page.wait_for_timeout(100)
+        assert page.evaluate("PaperLibrary.getState().rescueLift") == high, "Paused rescue still moves with scroll"
+        page.evaluate("PaperLibrary.setMotion(false)")
+        page.wait_for_timeout(100)
+        assert page.evaluate("PaperLibrary.getState().rescueLift") > high
+        outcomes.append("Andrew–Gwen rescue follows filter scroll and freezes/resumes with global animation controls; six outside poses overlap card borders")
         page.evaluate("PaperLibrary.openPaper('p14','process'); PaperLibrary.setMotion(false)")
         assert page.locator("#readerContent .spider-friend").count() >= 5
         animations = page.locator(".spider-friend").evaluate_all("nodes=>nodes.map(e=>getComputedStyle(e).animationName)")

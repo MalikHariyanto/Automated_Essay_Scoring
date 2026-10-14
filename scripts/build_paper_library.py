@@ -33,6 +33,13 @@ def validate(data):
         assert p["terms"] and p["findings"] and p["reading_path"] and p["coverage"]["scope"], p["id"]
         assert p["process"] or p["id"] == "m19", "Missing available process"
         lo, hi = (p["source_page_range"][k] for k in ("start", "end"))
+        for visual in p.get("visuals", []):
+            assert lo <= visual["page"] <= hi, (p["id"], visual["page"])
+            assert visual["kind"] in ("process", "findings")
+            assert len(visual["read_steps"]) >= 3 and visual["sticky"]["text"]
+            asset = (ROOT / visual["asset"]).resolve()
+            assert asset.is_relative_to(ROOT / "scripts/assets/paper_visuals")
+            assert hashlib.sha256(asset.read_bytes()).hexdigest() == visual["asset_sha256"]
         for group, key in (("process", "page"), ("formulas", "page"), ("terms", "page"),
                            ("findings", "page"), ("model_roles", "evidence_page"),
                            ("reading_path", "pages"), ("sources", "pages")):
@@ -53,6 +60,10 @@ def build(output=OUTPUT):
     raw = DATA.read_text(encoding="utf-8")
     data = json.loads(raw)
     papers = validate(data)
+    for paper in papers:
+        for visual in paper.get("visuals", []):
+            content = (ROOT / visual["asset"]).read_bytes()
+            visual["image_data"] = "data:image/webp;base64," + base64.b64encode(content).decode("ascii")
     artwork = {}
     for variable, filename in (("comic-backdrop", "paper_splash.svg"),
                                ("hero-skyline", "paper_city.svg")):
@@ -66,6 +77,7 @@ def build(output=OUTPUT):
         "__NAVIGATION_CSS__": navigation_css,
         "__SPIDER_CSS__": (ROOT / "scripts/templates/paper_library_spider.css").read_text(encoding="utf-8"),
         "__SPIDER_SYMBOLS__": (ROOT / "scripts/assets/paper_spider_symbols.svg").read_text(encoding="utf-8"),
+        "__PAPER_VISUAL_CSS__": (ROOT / "scripts/templates/paper_library_visuals.css").read_text(encoding="utf-8"),
         "__PAPER_LIBRARY_DATA__": json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c"),
         "__KATEX_JS__": (ROOT / "scripts/vendor/paper_katex.js").read_text().replace("</script", "<\\/script"),
         "__KATEX_CSS__": (ROOT / "scripts/vendor/paper_katex.css").read_text(),
@@ -74,10 +86,11 @@ def build(output=OUTPUT):
     for marker, value in values.items():
         assert html.count(marker) == 1, f"Missing or repeated marker: {marker}"
         html = html.replace(marker, value)
-    assert not re.search(r"__(?:PAPER_LIBRARY_DATA|KATEX_JS|KATEX_CSS|FULL_COLOUR_CSS|NAVIGATION_CSS|SPIDER_CSS|SPIDER_SYMBOLS)__", html)
+    assert not re.search(r"__(?:PAPER_LIBRARY_DATA|KATEX_JS|KATEX_CSS|FULL_COLOUR_CSS|NAVIGATION_CSS|SPIDER_CSS|SPIDER_SYMBOLS|PAPER_VISUAL_CSS)__", html)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(html, encoding="utf-8")
     return {"sources": len(papers), "process_steps": sum(len(p["process"]) for p in papers),
+            "source_visuals": sum(len(p.get("visuals", [])) for p in papers),
             "term_contexts": sum(len(p["terms"]) for p in papers), "output": str(output.relative_to(ROOT)),
             "data_sha256": hashlib.sha256(raw.encode()).hexdigest(),
             "html_sha256": hashlib.sha256(html.encode()).hexdigest()}
