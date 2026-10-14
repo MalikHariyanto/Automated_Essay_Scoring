@@ -4,6 +4,7 @@
 No uploaded document or PDF text is needed to rebuild this guide.
 """
 import argparse
+import base64
 import hashlib
 import json
 from pathlib import Path
@@ -52,7 +53,15 @@ def build(output=OUTPUT):
     raw = DATA.read_text(encoding="utf-8")
     data = json.loads(raw)
     papers = validate(data)
+    artwork = {}
+    for variable, filename in (("comic-backdrop", "paper_splash.svg"),
+                               ("hero-skyline", "paper_city.svg")):
+        svg = (ROOT / "scripts/assets" / filename).read_bytes()
+        artwork[variable] = "data:image/svg+xml;base64," + base64.b64encode(svg).decode("ascii")
+    colour_css = ":root{" + ";".join(f'--{key}:url("{value}")' for key, value in artwork.items()) + "}\n"
+    colour_css += (ROOT / "scripts/templates/paper_library_full_colour.css").read_text(encoding="utf-8")
     values = {
+        "__FULL_COLOUR_CSS__": colour_css,
         "__PAPER_LIBRARY_DATA__": json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c"),
         "__KATEX_JS__": (ROOT / "scripts/vendor/paper_katex.js").read_text().replace("</script", "<\\/script"),
         "__KATEX_CSS__": (ROOT / "scripts/vendor/paper_katex.css").read_text(),
@@ -61,7 +70,7 @@ def build(output=OUTPUT):
     for marker, value in values.items():
         assert html.count(marker) == 1, f"Missing or repeated marker: {marker}"
         html = html.replace(marker, value)
-    assert not re.search(r"__(?:PAPER_LIBRARY_DATA|KATEX_JS|KATEX_CSS)__", html)
+    assert not re.search(r"__(?:PAPER_LIBRARY_DATA|KATEX_JS|KATEX_CSS|FULL_COLOUR_CSS)__", html)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(html, encoding="utf-8")
     return {"sources": len(papers), "process_steps": sum(len(p["process"]) for p in papers),
