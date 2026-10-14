@@ -1,0 +1,51 @@
+{
+  "scope": "Local static hosting package only; Cloudflare deployment and email login not executed",
+  "passed": [
+    "Build preserves approved HTML except noindex metadata",
+    "Static package renders 42 uniform cards and paper reader on desktop/mobile",
+    "Original embedded process images decode",
+    "No external requests or JavaScript errors",
+    "Production and preview URLs disabled until Access is configured"
+  ],
+  "failed": [],
+  "skipped": [
+    "Live Cloudflare deployment",
+    "Anonymous, allowed-email and denied-email Access checks"
+  ],
+  "xfailed": [],
+  "command": "node scripts/prepare_paper_site.mjs; local Chromium package verification",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "exit_code": 0,
+  "node": "v24.19.0",
+  "python": "3.12.14",
+  "playwright": "1.62.0",
+  "chromium": "154.0.8037.57",
+  "manifest": {
+    "source": "docs/code belajar paper.html",
+    "source_sha256": "d4fb0fd8d20b4823a78ca72e158735ffa99a2a471ff0dd273c60de5c53766eac",
+    "index_sha256": "e0ad9a291b90ba1d945a6f1b30853f83c305d2b38a9d5c6e14adf2e77b8910ab",
+    "index_bytes": 8242320,
+    "source_preserved_except_noindex_meta": true,
+    "files": [
+      "index.html",
+      "_headers"
+    ],
+    "access": "Must be configured in Cloudflare Access before enabling a public URL."
+  },
+  "head_before_publication": "fdb2b76dc1a3191d7cf17cd938d884d04fb8e8a9",
+  "verified_at_utc": "2026-10-14T12:26:09.099971+00:00",
+  "wrangler_dry_run": {
+    "command": "npx wrangler@4 deploy --dry-run --config hosting/code-belajar-paper/wrangler.jsonc --outdir /workspace/Automated_Essay_Scoring/outputs/paper_site/dry-run",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "exit_code": 0,
+    "version": "4.151.0",
+    "static_directory": "/workspace/Automated_Essay_Scoring/outputs/paper_site/public",
+    "files_read": 2,
+    "deployment_executed": false
+  },
+  "files_sha256": {
+    "scripts/prepare_paper_site.mjs": "f3566e0cc31a7ddb5985eff378c2e4123380845712dd5ba571e6420a876e6ed7",
+    "hosting/code-belajar-paper/wrangler.jsonc": "f47b89485a631a97d39a358501694efa51a6a8e8c29c070a0bba9d2b05501659",
+    "docs/code belajar paper.html": "d4fb0fd8d20b4823a78ca72e158735ffa99a2a471ff0dd273c60de5c53766eac"
+  }
+}
