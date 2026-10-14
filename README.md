@@ -138,3 +138,7 @@ Baca [petunjuk dan batas latihan AI](docs/latihan_acuan_AI.md), termasuk arti se
 ## Buku HTML untuk membedah hasil Colab
 
 Unduh [belajar_colab_AI_interaktif.html](docs/belajar_colab_AI_interaktif.html) lewat **Download raw file** di GitHub, lalu buka di browser. Buku standalone memiliki tab per proses, bahasa Santai/Teknis, source code penting, hasil aktual latihan AI, dan simulator window/LR/empat metrik. [Petunjuk membuka dan membaca output pribadi](docs/cara_membuka_buku_Colab.md) menjelaskan cara memilih notebook lokal tanpa mempublikasikan data siswa. Tidak ada training tambahan atau perubahan split pada tugas buku ini.
+
+## Meja belajar paper
+
+[Benang Merah — HTML interaktif](docs/paper_library_interaktif.html) memetakan 42 sumber unik ke tujuh topik dan subtopik berdasarkan tugas model. Ruang baca memiliki scroll sendiri, identitas publikasi, proses input → tindakan → output dengan sticky note, rumus beserta arti simbol, kamus kontekstual, hasil dan batas bukti, serta rute membaca halaman sumber. Tema Spider-Man memakai ilustrasi SVG dan animasi yang dapat dijeda. [Preview beranda](docs/previews/paper_library/01_beranda_desktop.png) dan [panduan penggunaan](docs/cara_membaca_paper.md) tersedia untuk review. Buku/cuplikan, tesis, laporan, dan kebijakan diberi jenis serta batas cakupan; indeks tidak ditebak. PDF/ZIP asli tidak diterbitkan.

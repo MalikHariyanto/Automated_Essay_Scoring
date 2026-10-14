@@ -1,0 +1,71 @@
+{
+  "scope": "UI/browser verification only; not model training or research accuracy",
+  "passed": [
+    "reduced-motion and 42-source inventory",
+    "588 reading panes: desktop/mobile, all 42 sources × 7 tabs",
+    "topic, subtopic, BGE, source-type, text-search and empty-state filters",
+    "two-source comparison and Escape dismissal",
+    "context glossary, keyboard tabs, nested dialogs, bounded scrolling and saved reading progress",
+    "no browser exceptions, no external requests, offline equations",
+    "final identity labels distinguish journal index applicability; published matrix cells match audited source"
+  ],
+  "failed": [],
+  "skipped": [],
+  "xfailed": [],
+  "reading_panes_checked": 588,
+  "python": "3.12.14",
+  "playwright": "1.62.0",
+  "chromium": "154.0.8037.57",
+  "html_sha256": "9a2341645c760494aa105b1a0d9d745cd962ddab69e3555867498025cc1a6408",
+  "head_before_publication": "9ecc45fa973e572b0733cfaee14455f96f733c1b",
+  "command": "python scripts/check_paper_library.py",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "exit_code": 0,
+  "verified_at_utc": "2026-10-14T07:10:04.538392+00:00",
+  "schema_validation": {
+    "command": "python scripts/build_paper_library.py",
+    "exit_code": 0,
+    "unique_sources": 42,
+    "citation_page_bounds": "all process/formula/term/finding/model-role/reading-path/source citations checked against each PDF range",
+    "index_claims": "unverified or not applicable; no invented quartile"
+  },
+  "content_scope": {
+    "individual_sources": 21,
+    "additional_merged_sources": 21,
+    "merged_pdf_pages": 4051,
+    "process_steps": 257,
+    "term_contexts": 380,
+    "unique_glossary_terms": 353,
+    "raw_documents_published": false,
+    "numeric_source_audit": {
+      "paper_id": "p18",
+      "pdf_page": 7,
+      "matrix_total": 995,
+      "diagonal_total": 924,
+      "derived_accuracy_percent": 92.8643,
+      "kind": "recalculation of published aggregate matrix, not a new experiment"
+    }
+  },
+  "vendor": {
+    "version": "0.16.22",
+    "integrity": "sha512-XCHRdUw4lf3SKBaJe4EvgqIuWwkPSo9XoeO8GjQW94Bp7TWv9hNhzZjZ+OH9yf1UmLygb7DIT5GSFQiyt16zYg==",
+    "source": "https://registry.npmjs.org/katex"
+  },
+  "files_sha256": {
+    "docs/paper_library_data.json": "bb52899744cf7d72d78d4ee3a2a9cf8c6c9e9adacb158267e597b47ffc8709e4",
+    "docs/paper_library_interaktif.html": "9a2341645c760494aa105b1a0d9d745cd962ddab69e3555867498025cc1a6408",
+    "scripts/templates/paper_library.html": "97a5195ce65b77752de0c4ecfa4f44e8f1ed92151e13f6b60b6580a1bd3c80fc",
+    "scripts/build_paper_library.py": "0ccb2f85839d0e8dd7c5fd3a5c44e671c330ba3683e7e416ee4c0c008fda3790",
+    "scripts/check_paper_library.py": "44df043d74c18548e7d898f0891aee53e2b063cfcbd42fabe5dbeaf9f54ae36f",
+    "docs/previews/paper_library/01_beranda_desktop.png": "80ab3b5df87709a49aedcc32e7ad350d9603578e3e069a8a21212a5c67e9755d",
+    "docs/previews/paper_library/02_proses_bge.png": "f50af383fe8936bac744e02af0d9d9d8d3dbb0d5d226403066c279c6008048f3",
+    "docs/previews/paper_library/03_rumus_bge.png": "a4ee7cfc73304078cd88a810d03ceb4b1bdacb97aac0870971674a5076bf2e57",
+    "docs/previews/paper_library/04_beranda_mobile.png": "976a85924ddbe0fe58be2f71b02fa17d7fe163962043a80248079eec1fc97b6e",
+    "docs/previews/paper_library/05_membaca_matriks.png": "2311fb121e37d02c749f099ceae0b7cfa0cea1aea1a3c77f56c7cb2d364a6ae6"
+  },
+  "final_targeted_check": {
+    "command": "Python Playwright: m19/p14 identity labels and p18 result table cells",
+    "exit_code": 0
+  },
+  "full_browser_check_html_sha256": "80c26f5843693b2d7d2752e15be31f7c8e256306a034f9dbbbd5a6e6b8de71fc"
+}
