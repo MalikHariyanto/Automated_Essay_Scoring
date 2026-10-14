@@ -714,9 +714,19 @@ dialog::backdrop { background: #030923e8; backdrop-filter: blur(5px); }
   }
 }
 </style>
-<style>/* Outer poses sit on the border; source cards keep their natural height. */
-.paper-grid { align-items: start; row-gap: 90px; padding-top: 40px; }
-.paper-card { overflow: visible; }
+<style>/* Equal catalogue cards keep their actions aligned; outer poses overlap the border. */
+.paper-grid { align-items: stretch; row-gap: 90px; padding-top: 40px; }
+.paper-card { overflow: visible; height: 500px; min-width: 0; }
+.card-head { flex: 0 0 60px; min-height: 0; padding: 10px 16px; }
+.card-content { min-height: 0; display: grid; grid-template-rows: 30px 90px 36px minmax(0,1fr) 51px; gap: 10px; padding: 18px 20px; }
+.card-topic, .paper-card h3, .paper-card .byline, .paper-card .why { margin: 0; min-width: 0; align-self: start; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+.card-topic { line-height: 15px; -webkit-line-clamp: 2; }
+.paper-card h3 { line-height: 30px; -webkit-line-clamp: 3; }
+.paper-card .byline { line-height: 18px; -webkit-line-clamp: 2; }
+.paper-card .why { font-size: 13px; line-height: 24px; -webkit-line-clamp: 3; }
+.card-tags { align-content: start; overflow: hidden; }
+.card-tags span { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 15px; }
+.card-bottom { flex: 0 0 64px; min-height: 0; }
 .card-head { border-radius: 2px 2px 0 0; }
 .card-bottom { border-radius: 0 0 10px 3px; }
 .card-spider-perch { position: absolute; top: -80px; right: -9px; left: auto; width: 98px; height: 90px; margin: 0; display: block; overflow: visible; z-index: 4; pointer-events: none; }
@@ -785,8 +795,13 @@ dialog::backdrop { background: #030923e8; backdrop-filter: blur(5px); }
   .subtopic-panel h3, .subtopic-scroll-hint { max-width: calc(100% - 96px); }
   .subtopic-list { margin-top: 72px; }
 }
+@media(min-width:621px) and (max-width:850px) {
+  .filter-row { grid-template-columns: minmax(0,1fr) 160px; }
+  .bge-filter { grid-column: 1 / -1; justify-self: start; }
+}
 @media(max-width:620px) {
   .paper-grid { row-gap: 75px; padding-top: 32px; }
+  .card-content { padding: 17px; }
   .card-spider-perch { width: 76px; height: 73px; top: -65px; right: 0; }
   .card-spider-perch.at-left { left: 0; }
   .card-spider-perch .spider-friend { width: 76px; height: 96px; }
@@ -962,7 +977,7 @@ function setMotion(paused){prefs.paused=Boolean(paused);document.body.classList.
 function filterBase(p,withoutSub=false){if(filter.topic!=='all'&&p.topic!==filter.topic)return false;if(!withoutSub&&filter.subtopic!=='all'&&p.subtopic!==filter.subtopic)return false;if(filter.source==='done'&&!prefs.done.includes(p.id))return false;if(['paper','other'].includes(filter.source)&&sourceType(p)!==filter.source)return false;if(filter.bge&&!isBge(p))return false;const hay=[p.title,arr(p.authors).join(' '),p.year,p.venue,p.subtopic,arr(p.tags).join(' '),...arr(p.model_roles).map(m=>m.model+' '+m.role),...arr(p.terms).map(t=>t.term)].join(' ').toLocaleLowerCase();return !filter.query||hay.includes(filter.query.toLocaleLowerCase())}
 function renderTopics(){$('topicTabs').innerHTML=[{id:'all',name:'Semua topik'},...topics].map(t=>`<button class="topic-button" data-topic="${esc(t.id)}" aria-pressed="${t.id===filter.topic}">${esc(t.name)}<span class="topic-count">${t.id==='all'?papers.length:papers.filter(p=>p.topic===t.id).length}</span></button>`).join('');$('topicDescription').textContent=topics.find(t=>t.id===filter.topic)?.description||'Nama seperti BGE bisa muncul dalam banyak pipeline. Lihat peran model, input, dan output di tiap paper sebelum menyimpulkan fungsinya.'}
 function renderSubtopics(){const available=papers.filter(p=>filterBase(p,true)),subs=[...new Set(available.map(p=>p.subtopic||'Lainnya'))];$('subtopicList').innerHTML=`<button class="subtopic-button" data-subtopic="all" aria-pressed="${filter.subtopic==='all'}">Semua kegunaan <span>${available.length}</span></button>`+subs.map(s=>`<button class="subtopic-button" data-subtopic="${esc(s)}" aria-pressed="${s===filter.subtopic}">${esc(s)} <span>${available.filter(p=>(p.subtopic||'Lainnya')===s).length}</span></button>`).join('')}
-function card(p,index=0){const outerPose=['leap','swing','wall','shoot','perch','dive'][Math.floor(index/3)%6];const done=prefs.done.includes(p.id),selected=compareIds.has(p.id);return `<article class="paper-card">${index%3===0?`<div class="card-spider-perch ${index%2?'at-left':'at-right'}" aria-hidden="true">${spiderFriend(outerPose,index%2?'left':'right')}</div>`:''}<div class="card-head"><span class="paper-code">${esc(p.id.toUpperCase())} · ${esc(p.year||'Tahun belum teridentifikasi')}</span><span class="badge ${sourceType(p)==='other'?'yellow':''}">${esc(sourceCategory(p))}</span></div><div class="card-content"><div class="card-topic">${esc(topicName(p.topic))} / ${esc(p.subtopic||'')}</div><h3>${esc(p.title)}</h3><div class="byline">${esc(arr(p.authors).slice(0,3).join(', '))}${arr(p.authors).length>3?' dkk.':''}</div><p class="why">${esc(p.why_read||arr(p.summary)[0]||p.research_question||'')}</p><div class="card-tags">${arr(p.tags).slice(0,4).map(t=>`<span>${esc(t)}</span>`).join('')}</div></div><div class="card-bottom"><button class="open-paper" data-open="${esc(p.id)}">${done?'Baca lagi':'Buka catatan'} <span aria-hidden="true">→</span></button><div>${done?'<span class="read-check">✓ Dibaca &nbsp;</span>':''}<label class="compare-check"><input type="checkbox" data-compare="${esc(p.id)}" ${selected?'checked':''} aria-label="Bandingkan ${esc(p.title)}"> Bandingkan</label></div></div></article>`}
+function card(p,index=0){const outerPose=['leap','swing','wall','shoot','perch','dive'][Math.floor(index/3)%6];const done=prefs.done.includes(p.id),selected=compareIds.has(p.id);return `<article class="paper-card">${index%3===0?`<div class="card-spider-perch ${index%2?'at-left':'at-right'}" aria-hidden="true">${spiderFriend(outerPose,index%2?'left':'right')}</div>`:''}<div class="card-head"><span class="paper-code">${esc(p.id.toUpperCase())} · ${esc(p.year||'Tahun belum teridentifikasi')}</span><span class="badge ${sourceType(p)==='other'?'yellow':''}">${esc(sourceCategory(p))}</span></div><div class="card-content"><div class="card-topic">${esc(topicName(p.topic))} / ${esc(p.subtopic||'')}</div><h3 title="${esc(p.title)}">${esc(p.title)}</h3><div class="byline">${esc(arr(p.authors).slice(0,3).join(', '))}${arr(p.authors).length>3?' dkk.':''}</div><p class="why">${esc(p.why_read||arr(p.summary)[0]||p.research_question||'')}</p><div class="card-tags">${arr(p.tags).slice(0,4).map(t=>`<span>${esc(t)}</span>`).join('')}</div></div><div class="card-bottom"><button class="open-paper" data-open="${esc(p.id)}">${done?'Baca lagi':'Buka catatan'} <span aria-hidden="true">→</span></button><div>${done?'<span class="read-check">✓ Dibaca &nbsp;</span>':''}<label class="compare-check"><input type="checkbox" data-compare="${esc(p.id)}" ${selected?'checked':''} aria-label="Bandingkan ${esc(p.title)}"> Bandingkan</label></div></div></article>`}
 function renderCards(){const matched=papers.filter(p=>filterBase(p));$('resultsCount').textContent=`${matched.length} dari ${papers.length} sumber${filter.bge?' · penggunaan BGE':''}`;$('resetFilters').hidden=filter.topic==='all'&&filter.subtopic==='all'&&!filter.query&&filter.source==='all'&&!filter.bge;$('paperGrid').innerHTML=matched.length?matched.map(card).join(''):'<div class="no-results"><h3>Benangnya belum ketemu.</h3><p class="small muted">Coba kata lain atau longgarkan filter topik dan jenis sumber.</p><button class="btn secondary" data-reset>Reset filter</button></div>'}
 function renderFilters(){renderTopics();renderSubtopics();renderCards();$('bgeFilter').setAttribute('aria-pressed',String(filter.bge))}
 function selectTopic(id){filter.topic=id;filter.subtopic='all';renderFilters()}

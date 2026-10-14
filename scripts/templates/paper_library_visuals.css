@@ -1,6 +1,16 @@
-/* Outer poses sit on the border; source cards keep their natural height. */
-.paper-grid { align-items: start; row-gap: 90px; padding-top: 40px; }
-.paper-card { overflow: visible; }
+/* Equal catalogue cards keep their actions aligned; outer poses overlap the border. */
+.paper-grid { align-items: stretch; row-gap: 90px; padding-top: 40px; }
+.paper-card { overflow: visible; height: 500px; min-width: 0; }
+.card-head { flex: 0 0 60px; min-height: 0; padding: 10px 16px; }
+.card-content { min-height: 0; display: grid; grid-template-rows: 30px 90px 36px minmax(0,1fr) 51px; gap: 10px; padding: 18px 20px; }
+.card-topic, .paper-card h3, .paper-card .byline, .paper-card .why { margin: 0; min-width: 0; align-self: start; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+.card-topic { line-height: 15px; -webkit-line-clamp: 2; }
+.paper-card h3 { line-height: 30px; -webkit-line-clamp: 3; }
+.paper-card .byline { line-height: 18px; -webkit-line-clamp: 2; }
+.paper-card .why { font-size: 13px; line-height: 24px; -webkit-line-clamp: 3; }
+.card-tags { align-content: start; overflow: hidden; }
+.card-tags span { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 15px; }
+.card-bottom { flex: 0 0 64px; min-height: 0; }
 .card-head { border-radius: 2px 2px 0 0; }
 .card-bottom { border-radius: 0 0 10px 3px; }
 .card-spider-perch { position: absolute; top: -80px; right: -9px; left: auto; width: 98px; height: 90px; margin: 0; display: block; overflow: visible; z-index: 4; pointer-events: none; }
@@ -69,8 +79,13 @@
   .subtopic-panel h3, .subtopic-scroll-hint { max-width: calc(100% - 96px); }
   .subtopic-list { margin-top: 72px; }
 }
+@media(min-width:621px) and (max-width:850px) {
+  .filter-row { grid-template-columns: minmax(0,1fr) 160px; }
+  .bge-filter { grid-column: 1 / -1; justify-self: start; }
+}
 @media(max-width:620px) {
   .paper-grid { row-gap: 75px; padding-top: 32px; }
+  .card-content { padding: 17px; }
   .card-spider-perch { width: 76px; height: 73px; top: -65px; right: 0; }
   .card-spider-perch.at-left { left: 0; }
   .card-spider-perch .spider-friend { width: 76px; height: 96px; }

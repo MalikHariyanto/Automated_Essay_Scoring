@@ -1,0 +1,117 @@
+{
+  "scope": "Catalogue UI/browser verification only; not AES model accuracy",
+  "passed": [
+    "Equal widths, heights and action offsets across all 42 cards at nine viewport widths",
+    "No content or horizontal overflow; full titles available in hover text and paper reader",
+    "Card dimensions preserved by single-result search, source filters and read markers",
+    "Border-overlap Spider-Man decorations remain absolute and reserve no card row",
+    "Desktop/mobile previews exported from actual Chromium UI; no browser errors or external requests"
+  ],
+  "failed": [],
+  "skipped": [],
+  "xfailed": [],
+  "command": "python outputs/paper_cards/check_layout.py",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "exit_code": 0,
+  "measurements": [
+    {
+      "viewport_width": 1920,
+      "cards_checked": 42,
+      "card_width": 491.5,
+      "card_height": 500,
+      "action_offset": 433,
+      "all_equal": true,
+      "content_overflow": false
+    },
+    {
+      "viewport_width": 1440,
+      "cards_checked": 42,
+      "card_width": 491.5,
+      "card_height": 500,
+      "action_offset": 433,
+      "all_equal": true,
+      "content_overflow": false
+    },
+    {
+      "viewport_width": 1100,
+      "cards_checked": 42,
+      "card_width": 409.5,
+      "card_height": 500,
+      "action_offset": 433,
+      "all_equal": true,
+      "content_overflow": false
+    },
+    {
+      "viewport_width": 851,
+      "cards_checked": 42,
+      "card_width": 285,
+      "card_height": 500,
+      "action_offset": 433,
+      "all_equal": true,
+      "content_overflow": false
+    },
+    {
+      "viewport_width": 850,
+      "cards_checked": 42,
+      "card_width": 392,
+      "card_height": 500,
+      "action_offset": 433,
+      "all_equal": true,
+      "content_overflow": false
+    },
+    {
+      "viewport_width": 621,
+      "cards_checked": 42,
+      "card_width": 277.5,
+      "card_height": 500,
+      "action_offset": 433,
+      "all_equal": true,
+      "content_overflow": false
+    },
+    {
+      "viewport_width": 620,
+      "cards_checked": 42,
+      "card_width": 588,
+      "card_height": 500,
+      "action_offset": 434,
+      "all_equal": true,
+      "content_overflow": false
+    },
+    {
+      "viewport_width": 390,
+      "cards_checked": 42,
+      "card_width": 358,
+      "card_height": 500,
+      "action_offset": 434,
+      "all_equal": true,
+      "content_overflow": false
+    },
+    {
+      "viewport_width": 320,
+      "cards_checked": 42,
+      "card_width": 288,
+      "card_height": 500,
+      "action_offset": 434,
+      "all_equal": true,
+      "content_overflow": false
+    }
+  ],
+  "verified_at_utc": "2026-10-14T09:39:00.724784+00:00",
+  "python": "3.12.14",
+  "playwright": "1.62.0",
+  "chromium": "154.0.8037.57",
+  "html_sha256": "d4fb0fd8d20b4823a78ca72e158735ffa99a2a471ff0dd273c60de5c53766eac",
+  "head_before_publication": "611ac08b74f96fb28a3644c0b6042157300f1589",
+  "build_command": "python scripts/build_paper_library.py",
+  "preview_files": [
+    "docs/previews/paper_library/13_kartu_seragam_desktop.png",
+    "docs/previews/paper_library/14_kartu_seragam_mobile.png"
+  ],
+  "files_sha256": {
+    "docs/paper_library_interaktif.html": "d4fb0fd8d20b4823a78ca72e158735ffa99a2a471ff0dd273c60de5c53766eac",
+    "scripts/templates/paper_library.html": "db3f1db037eef296b15e9d132eb09874bf3a065fa9e4c87daaa45a85e131ac21",
+    "scripts/templates/paper_library_visuals.css": "55ab10856f46b8d0067d03ec352c03205bb60126ae5fe16bf5ac201bb6636111",
+    "docs/previews/paper_library/13_kartu_seragam_desktop.png": "be8725aa3d0f513b28d7826fd7e66c1e07cdab56eec44355e0ab03b76b1ca6b7",
+    "docs/previews/paper_library/14_kartu_seragam_mobile.png": "e34a68911e599b4c53f7cf785cbc03f7f99aabc78a8b119868f441366429cb0b"
+  }
+}
