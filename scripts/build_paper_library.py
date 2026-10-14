@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "docs/paper_library_data.json"
 TEMPLATE = ROOT / "scripts/templates/paper_library.html"
 OUTPUT = ROOT / "docs/paper_library_interaktif.html"
+NAMED_OUTPUT = ROOT / "docs/code belajar paper.html"
 
 
 def validate(data):
@@ -89,6 +90,8 @@ def build(output=OUTPUT):
     assert not re.search(r"__(?:PAPER_LIBRARY_DATA|KATEX_JS|KATEX_CSS|FULL_COLOUR_CSS|NAVIGATION_CSS|SPIDER_CSS|SPIDER_SYMBOLS|PAPER_VISUAL_CSS)__", html)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(html, encoding="utf-8")
+    if output.resolve() == OUTPUT:
+        NAMED_OUTPUT.write_text(html, encoding="utf-8")
     return {"sources": len(papers), "process_steps": sum(len(p["process"]) for p in papers),
             "source_visuals": sum(len(p.get("visuals", [])) for p in papers),
             "term_contexts": sum(len(p["terms"]) for p in papers), "output": str(output.relative_to(ROOT)),
