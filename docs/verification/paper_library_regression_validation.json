@@ -1,0 +1,245 @@
+{
+  "scope": "UI/browser verification only; not model training or research accuracy",
+  "passed": [
+    "reduced-motion and 42-source inventory",
+    "672 reading panes: desktop/mobile, all 42 sources × 8 tabs",
+    "topic, subtopic, BGE, source-type, text-search and empty-state filters",
+    "desktop/mobile independent filter wheel scrolling, no scroll chaining, preserved last selection and immediate paper opening",
+    "82 cited source visuals decoded across 41 sources; sticky reading notes, nested zoom and original-size detail controls",
+    "two-source comparison and Escape dismissal",
+    "context glossary, keyboard tabs, nested dialogs, bounded scrolling and saved reading progress",
+    "Andrew–Gwen rescue follows filter scroll and freezes/resumes with global animation controls; six outside poses overlap card borders",
+    "four distinct companion animations, multiple reader/notes poses, global pause/resume, static reduced-motion and noninteractive decorations",
+    "no browser exceptions, no external requests, offline equations"
+  ],
+  "failed": [],
+  "skipped": [],
+  "xfailed": [],
+  "reading_panes_checked": 672,
+  "python": "3.12.14",
+  "playwright": "1.62.0",
+  "chromium": "154.0.8037.57",
+  "html_sha256": "281d83f677c0ad0b9af1b25b9d6367b064974a7c2c4705013d156aa8bb73db85",
+  "head_before_publication": "f7863e58481b898ece993ed0cad55b086c2aa96f",
+  "command": "python scripts/check_paper_library.py --url http://127.0.0.1:8875/docs/code%20belajar%20paper.html --report outputs/regression_validation/browser_checks.json",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "exit_code": 0,
+  "build_command": "python scripts/build_paper_library.py",
+  "focused_checks": {
+    "scope": "Focused paper-content and UI checks; not research-model training",
+    "passed": [
+      "Search validasi regresi finds exactly P02, P04 and P08 without duplicate cards",
+      "Thirty focused panes across three sources, five tabs and desktop/mobile",
+      "Validation sticky notes and technical-term dialogs work with Escape",
+      "All catalogue cards retain equal height; no horizontal overflow",
+      "No browser errors or external requests"
+    ],
+    "failed": [],
+    "skipped": [],
+    "xfailed": [],
+    "panes": [
+      {
+        "paper": "p04",
+        "tab": "core",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p04",
+        "tab": "process",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p04",
+        "tab": "terms",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p04",
+        "tab": "findings",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p04",
+        "tab": "reading",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p08",
+        "tab": "core",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p08",
+        "tab": "process",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p08",
+        "tab": "terms",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p08",
+        "tab": "findings",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p08",
+        "tab": "reading",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p02",
+        "tab": "core",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p02",
+        "tab": "process",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p02",
+        "tab": "terms",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p02",
+        "tab": "findings",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p02",
+        "tab": "reading",
+        "viewport_width": 1440
+      },
+      {
+        "paper": "p04",
+        "tab": "core",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p04",
+        "tab": "process",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p04",
+        "tab": "terms",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p04",
+        "tab": "findings",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p04",
+        "tab": "reading",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p08",
+        "tab": "core",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p08",
+        "tab": "process",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p08",
+        "tab": "terms",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p08",
+        "tab": "findings",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p08",
+        "tab": "reading",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p02",
+        "tab": "core",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p02",
+        "tab": "process",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p02",
+        "tab": "terms",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p02",
+        "tab": "findings",
+        "viewport_width": 390
+      },
+      {
+        "paper": "p02",
+        "tab": "reading",
+        "viewport_width": 390
+      }
+    ],
+    "command": "python outputs/regression_validation/check_focus.py",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "exit_code": 0,
+    "python": "3.12.14",
+    "playwright": "1.62.0",
+    "chromium": "154.0.8037.57",
+    "html_sha256": "281d83f677c0ad0b9af1b25b9d6367b064974a7c2c4705013d156aa8bb73db85",
+    "data_sha256": "66d65073f173ab4c579424d2f38dcb4a1f3bba63b845ef8e257741ca41277d32",
+    "head_before_publication": "f7863e58481b898ece993ed0cad55b086c2aa96f",
+    "verified_at_utc": "2026-10-14T14:32:15.549177+00:00"
+  },
+  "preservation": {
+    "only_changed_papers": [
+      "p02",
+      "p04",
+      "p08"
+    ],
+    "unrelated_papers_unchanged": 39,
+    "collection_and_topics_unchanged": true,
+    "HTML_outside_data_block_identical": true,
+    "all_82_original_visual_assets_and_values_unchanged": true,
+    "theme_and_templates_unchanged": true,
+    "publication_metadata_and_index_status_unchanged": true,
+    "duplicates_added": false
+  },
+  "content_additions": {
+    "validation_focus_steps": 6,
+    "technical_term_contexts_added": 54,
+    "reported_methods_vs_teaching_notes_distinguished": true,
+    "paper_index_verification": "Unverified; original identity labels preserved",
+    "source_pages": {
+      "p02": [
+        6
+      ],
+      "p04": [
+        3,
+        5,
+        6
+      ],
+      "p08": [
+        4,
+        5
+      ]
+    }
+  },
+  "files_sha256": {
+    "docs/code belajar paper.html": "281d83f677c0ad0b9af1b25b9d6367b064974a7c2c4705013d156aa8bb73db85",
+    "docs/paper_library_interaktif.html": "281d83f677c0ad0b9af1b25b9d6367b064974a7c2c4705013d156aa8bb73db85",
+    "docs/paper_library_data.json": "66d65073f173ab4c579424d2f38dcb4a1f3bba63b845ef8e257741ca41277d32",
+    "docs/previews/paper_library/15_validasi_regresi_p04.png": "dcd9124f0aba2d2308da22eae92348feed28721bfe32ff19b9dd166cf1a2e098",
+    "docs/previews/paper_library/16_kfold_regresi_p02.png": "b0d1d78ce04d59e1b227026703c2ede139776e7ac9a18603f02ab18713b75b35",
+    "docs/previews/paper_library/17_frozen_validasi_p08_mobile.png": "1930e3f662eda0d5c17d542cb44fb91bde4f19c7f35d5157ca01f8f03d2e4abb"
+  }
+}

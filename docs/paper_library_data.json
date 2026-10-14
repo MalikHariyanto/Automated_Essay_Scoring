@@ -478,7 +478,8 @@
         "Random Forest",
         "fitur linguistik",
         "ASAP",
-        "QWK"
+        "QWK",
+        "validasi regresi"
       ],
       "model_roles": [
         {
@@ -509,11 +510,28 @@
       "why_read": "Untuk memahami bahwa memakai LLM dalam AES tidak selalu berarti LLM langsung menjadi penilai. Di sini GPT memasok representasi teks, sedangkan model terawasi mempelajari hubungan fitur dengan skor manusia.",
       "research_question": "Apakah kombinasi fitur linguistik, kompleksitas teks, dan embedding kontekstual GPT lebih cocok dengan nilai manusia dibanding pendekatan yang mengandalkan satu kelompok fitur? (PDF hlm. 1, 3, 6)",
       "summary": [
+        "FOKUS VALIDASI REGRESI — PDF hlm. 6 menyebut Random Forest Regression dan K-fold k = 10. Ini contoh evaluasi berbasis fold: proses validasi dapat dilakukan tanpa satu validation set ketiga yang tetap. Paper tidak menyatakan bahwa semua regresi bebas dari kebutuhan validasi, tidak merinci nested cross-validation, dan tidak cukup rinci untuk memastikan hubungan K-fold dengan pembagian pada Tabel 1. Pisahkan laporan penulis ini dari penjelasan pendamping tentang pemilihan model.",
         "Paper ini menggabungkan dua cara membaca esai: indikator yang mudah dihitung, seperti keragaman kosakata dan kepadatan pronomina, serta representasi makna dari GPT. Gabungannya menjadi vektor fitur untuk prediktor Random Forest. Jadi, nilai akhir dipelajari dari contoh esai yang sudah dinilai manusia, bukan diperoleh dengan sekadar meminta GPT menjadi dosen. (PDF hlm. 3–6)",
         "Evaluasi menggunakan kelompok esai dari kompetisi ASAP, dengan jenis dan rentang nilai yang berbeda. Model hybrid memperoleh rata-rata QWK 0,83, sementara pembanding DP 0,81, SC 0,58, dan GPT-3 0,71 pada Tabel 4. Perbedaan antarjenis esai tetap penting: sistem ini tidak unggul di setiap kelompok. (PDF hlm. 6–7)",
         "Pelajaran utamanya adalah melacak peran setiap komponen. Embedding memberi informasi kontekstual; fitur manual menambahkan indikator struktur dan bahasa; Random Forest memetakan keduanya ke skor. Paper belum membuktikan bahwa kombinasi yang sama otomatis cocok untuk ujian berbahasa Indonesia atau bisa memeriksa kebenaran semua fakta. (PDF hlm. 6–8)"
       ],
       "process": [
+        {
+          "title": "Fokus validasi · baca K-fold sebagai prosedur evaluasi",
+          "input": "Fitur esai dan skor manusia; metode pada PDF hlm. 6 menyebut Random Forest Regression dan Classifier.",
+          "action": "Catat laporan penulis: pembagian training/testing menggunakan K-fold k = 10. Penjelasan konsep: setiap putaran menyisihkan satu fold dan melatih kandidat pada fold lainnya. Data yang disisihkan tidak menjadi data training kandidat pada putaran itu. Paper tidak memberi rincian lengkap penyusunan fold terhadap Tabel 1.",
+          "output": "Peta evaluasi regresi berbasis fold, dengan rincian replikasi yang masih perlu dikonfirmasi.",
+          "note": "Sticky note — Validasi adalah proses pemeriksaan, bukan harus satu kotak ketiga permanen. K-fold menyediakan pemeriksaan pada bagian yang disisihkan per putaran. Angka k = 10 adalah jumlah fold, bukan jumlah esai atau jumlah epoch.",
+          "page": 6
+        },
+        {
+          "title": "Fokus validasi · bedakan memilih pengaturan dan melaporkan hasil",
+          "input": "Calon konfigurasi prediktor skor; jumlah pohon dan kedalaman pohon adalah contoh Hyperparameter Random Forest.",
+          "action": "Penjelasan pendamping: jika konfigurasi dibandingkan dan dipilih, gunakan Data validasi atau cross-validation di dalam data training. Simpan Data testing akhir untuk mengukur pilihan yang sudah selesai. Nested cross-validation adalah salah satu rancangan ketika tuning dan evaluasi perlu dipisah melalui fold. Paper ini tidak melaporkan bahwa rancangan nested tersebut dipakai.",
+          "output": "Keputusan kapan memerlukan validasi pemilihan dan kapan data hanya dipakai untuk evaluasi akhir.",
+          "note": "Sticky note — Regresi tidak otomatis mewajibkan rasio train–validation–test tertentu. Jika semua konfigurasi ditetapkan sebelumnya dan hasil test hanya dilaporkan, train–test dapat menjadi rancangan evaluasi. Jika test mengarahkan perubahan model, ia sudah ikut menjadi data pemilihan; hasilnya bukan lagi evaluasi akhir yang independen. Ini penjelasan metodologi, bukan prosedur tambahan yang diklaim dari paper.",
+          "page": 6
+        },
         {
           "title": "1. Mulai dari esai dan skor manusia",
           "input": "Esai ASAP dari delapan kelompok tugas dan skor manusia dengan rentang berbeda.",
@@ -657,6 +675,108 @@
           "meaning": "Jawaban yang harus merujuk pada bahan atau sumber yang sudah diberikan.",
           "context": "Kelompok 3–6 berbeda dari esai bebas sehingga tantangan penilaiannya juga berbeda.",
           "page": 6
+        },
+        {
+          "term": "Regresi",
+          "meaning": "Tugas mempelajari hubungan input dengan target berupa angka. Dalam penilaian esai, model memprediksi skor; keluaran bisa berupa angka desimal walaupun skor acuan memakai kategori ordinal. Regresi adalah jenis tugas, sedangkan split data adalah rancangan pengujiannya.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Data training",
+          "meaning": "Bagian data untuk mempelajari parameter dari contoh input dan skor acuan. Pada neural network, bobot diperbarui melalui gradien; pada Random Forest, pohon mempelajari aturan pemisahan. Melihat keberhasilan pada contoh yang sama belum menunjukkan kemampuan pada jawaban baru.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Data validasi",
+          "meaning": "Bagian data yang digunakan untuk memeriksa dan memilih keputusan pengembangan model, misalnya konfigurasi atau epoch. Skor acuannya dipakai menilai kandidat, bukan menjadi contoh untuk memperbarui bobot pada langkah training kandidat itu. Bentuknya dapat berupa set tetap atau fold yang bergiliran disisihkan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Data testing",
+          "meaning": "Bagian data untuk menilai hasil setelah keputusan pengembangan ditetapkan. Jika hasil testing dipakai memilih model, mengubah konfigurasi, atau mengulang eksperimen sampai angkanya bagus, data itu sudah ikut menjadi bahan pemilihan model dan tidak lagi memberikan evaluasi akhir yang independen.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Parameter",
+          "meaning": "Nilai internal yang dipelajari model dari data training. Contohnya bobot dan bias pada neural network atau aturan pemisahan pada pohon. Parameter berbeda dari pengaturan seperti learning rate dan jumlah epoch yang dipilih dalam rancangan eksperimen.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Hyperparameter",
+          "meaning": "Pengaturan model atau proses latihan yang ditentukan sebelum satu kandidat dilatih. Contohnya jumlah pohon atau kedalaman pohon untuk Random Forest; jumlah neuron, dropout, learning rate, dan jumlah epoch untuk neural network. Cara menentukan pengaturan ini menentukan apakah data validasi dibutuhkan untuk pemilihan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Hyperparameter tuning",
+          "meaning": "Proses membandingkan beberapa pengaturan untuk memilih kandidat yang lebih sesuai. Penilaian kandidat memakai data validasi atau cross-validation di bagian training. Data testing akhir sebaiknya disimpan sampai keputusan selesai, supaya hasilnya tidak ikut mengarahkan pilihan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Cross-validation",
+          "meaning": "Validasi dengan pembagian data yang bergiliran, bukan hanya satu pembagian tetap. Pada K-fold, model dilatih ulang untuk setiap putaran dengan satu fold disisihkan untuk evaluasi. Hasil antarputaran dapat dirangkum; tujuan evaluasi dan tujuan memilih konfigurasi tetap perlu dibedakan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "K-fold",
+          "meaning": "Bentuk cross-validation yang membagi data menjadi k kelompok. Ilustrasi konsep untuk k = 10: ada sepuluh putaran; setiap putaran memakai sembilan fold untuk latihan dan satu fold yang tidak masuk latihan putaran itu. Ini contoh cara kerja, bukan rekonstruksi jumlah contoh aktual sebuah paper.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Fold",
+          "meaning": "Satu kelompok data di dalam pembagian cross-validation. Fold yang disisihkan berbeda tiap putaran. Bukan sepuluh kali menguji model yang sama: pada prosedur K-fold biasa, model untuk setiap putaran dilatih kembali menggunakan bagian training putaran tersebut.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Holdout",
+          "meaning": "Bagian data yang sengaja disisihkan dari proses tertentu. Holdout validasi membantu memilih konfigurasi; holdout testing membantu menilai keputusan akhir. Kata holdout saja belum menjelaskan fungsi data: catat apakah hasilnya digunakan untuk pemilihan atau hanya pelaporan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Overfitting",
+          "meaning": "Keadaan ketika model sangat cocok pada data latihan tetapi hasil pada data baru lebih buruk. Selisih performa training dan validasi dapat menjadi petunjuk, tetapi satu grafik atau split kecil belum cukup untuk memastikan penyebabnya. Validasi membantu mendeteksi masalah ini, bukan menjamin masalah hilang.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Data leakage",
+          "meaning": "Kebocoran informasi dari bagian evaluasi ke pengembangan model. Contohnya memakai hasil test untuk memilih epoch atau menaruh jawaban yang sama/nyaris sama pada train dan test. Split yang tertulis berbeda belum menjamin tidak ada kebocoran; unit pembagian dan tahapan preprocessing juga perlu diperiksa.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Generalisasi",
+          "meaning": "Kemampuan bekerja pada data di luar contoh latihan. Nyatakan data baru yang dimaksud: jawaban baru pada soal lama, siswa baru, soal baru, atau domain baru. Hasil bagus untuk salah satunya tidak otomatis membuktikan semua jenis kemampuan tersebut.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Pemilihan model",
+          "meaning": "Keputusan memilih kandidat berdasarkan data, misalnya memilih arsitektur, konfigurasi, atau versi setelah epoch tertentu. Bila hasil evaluasi dipakai untuk keputusan itu, data tersebut berfungsi sebagai validasi pemilihan. Untuk pelaporan akhir yang independen, diperlukan evaluasi yang tidak dipakai memilih kandidat.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 6. Paper melaporkan Random Forest Regression/Classifier dan K-fold k = 10. Definisi ini membantu memahami perannya; tidak menyatakan bahwa paper melaporkan semua prosedur tuning atau pembagian test akhir yang dijelaskan di sini.",
+          "page": 6
+        },
+        {
+          "term": "Random Forest Regression",
+          "meaning": "Prediktor angka yang menggabungkan banyak pohon keputusan. Pohon-pohon belajar aturan dari contoh training, lalu keluaran numeriknya digabung untuk prediksi. Berbeda dari Random Forest Classifier yang memprediksi kelas; paper menyebut kedua implementasi tersebut.",
+          "context": "Di bagian Predicting an essay’s score, PDF hlm. 6. Jangan menganggap metode regression dan classifier memiliki keluaran yang selalu identik.",
+          "page": 6
+        },
+        {
+          "term": "Nested cross-validation",
+          "meaning": "Cross-validation dengan dua tingkat: fold di bagian dalam untuk memilih konfigurasi, fold di bagian luar untuk mengevaluasi prosedur pemilihan itu. Pemilihan tidak boleh melihat skor pada fold luar yang sedang disisihkan.",
+          "context": "Penjelasan pendamping untuk memahami tuning dan evaluasi. Paper P02 menyebut K-fold k = 10, tetapi tidak melaporkan nested cross-validation. Jumlah fold harus mengikuti ukuran dan kelompok independen dalam data.",
+          "page": 6
         }
       ],
       "findings": [
@@ -679,6 +799,11 @@
           "claim": "Fine-tuning GPT-3 merupakan eksperimen tambahan yang perlu dibaca terpisah.",
           "evidence": "Tabel 5 melaporkan QWK 0,83, EA 0,84, AA 1,0 pada eksperimen GPT-3 fine-tuned dengan skor dinormalisasi; konteks ini berbeda dari tabel model hybrid utama.",
           "page": 7
+        },
+        {
+          "claim": "Protokol regresi yang dilaporkan memakai K-fold k = 10, bukan bukti aturan universal tentang validation set.",
+          "evidence": "PDF hlm. 6 menyebut pembagian training/testing melalui K-fold dan implementasi Random Forest Regression/Classifier. Penjelasan ini mendukung adanya prosedur evaluasi berbasis fold. Uraian tidak cukup untuk menyatakan bahwa tuning, test akhir terpisah, atau nested cross-validation sudah dilakukan.",
+          "page": 6
         }
       ],
       "limitations": [
@@ -692,6 +817,11 @@
         "does_not_prove": "Tidak membuktikan GPT langsung menilai esai dengan rubrik, tidak memberi skor yang benar hanya dari cosine similarity, dan tidak menjamin performa serupa pada semua bahasa atau soal."
       },
       "reading_path": [
+        {
+          "section": "Fokus utama: validasi pada Random Forest Regression",
+          "pages": "6",
+          "goal": "Baca Predicting an essay’s score; tandai K-fold k = 10. Pisahkan bukti yang dilaporkan dari rincian tuning atau test akhir yang belum dijelaskan."
+        },
         {
           "section": "Pertanyaan dan gagasan hybrid",
           "pages": "1, 3",
@@ -732,7 +862,8 @@
         }
       ],
       "evidence_notes": [
-        "Rumus fitur yang tata letaknya rusak pada ekstraksi teks tidak disalin. Pernyataan umum paper tentang kemampuan GPT/BERT dibaca sebagai argumen penulis, bukan jaminan teknis universal."
+        "Rumus fitur yang tata letaknya rusak pada ekstraksi teks tidak disalin. Pernyataan umum paper tentang kemampuan GPT/BERT dibaca sebagai argumen penulis, bukan jaminan teknis universal.",
+        "Fokus validasi regresi: laporan K-fold k = 10 berada pada PDF hlm. 6. Tabel 1 juga mencantumkan ukuran training/testing; hubungan rincinya dengan fold tidak dijelaskan lengkap. Definisi tuning/nested cross-validation dalam catatan adalah bekal metodologi, bukan metode yang ditambahkan ke eksperimen penulis."
       ],
       "source_kind": "individual",
       "source_page_range": {
@@ -771,7 +902,7 @@
           ],
           "sticky": {
             "title": "Pegang alurnya",
-            "text": "Nama GPT pada kotak tidak berarti ChatGPT otomatis menilai dengan prompt. Diagram menulis linear classifier, sementara metode paper membahas Random Forest; label diagram perlu dibaca bersama uraian metode."
+            "text": "Nama GPT pada kotak tidak berarti ChatGPT otomatis menilai dengan prompt. Diagram menulis linear classifier, sementara metode paper membahas Random Forest; label diagram perlu dibaca bersama uraian metode. Fokus validasi: diagram ini menjelaskan jalur fitur; uraian K-fold k = 10 terdapat pada teks PDF hlm. 6. Diagram fitur tidak membuktikan rincian pembagian train/validasi/test."
           },
           "warning": "",
           "alt": "Fig. 1 dari An LLM-based hybrid approach for enhanced automated essay scoring. Pisahkan training phase di kiri dan test phase di kanan."
@@ -1143,7 +1274,8 @@
         "TF-IDF",
         "regresi",
         "MAE",
-        "RMSE"
+        "RMSE",
+        "validasi regresi"
       ],
       "model_roles": [
         {
@@ -1174,11 +1306,28 @@
       "why_read": "Titik awal yang dekat dengan ujian mahasiswa Indonesia: penilaian didasarkan pada jawaban mahasiswa dan kunci, lalu dibandingkan dengan nilai dosen. Paper memisahkan baseline berbasis kata dengan model Transformer yang dilatih khusus.",
       "research_question": "Pada jawaban teori Information Retrieval berbahasa Indonesia, apakah IndoBERT yang di-fine-tune menghasilkan prediksi lebih dekat ke skor dosen dibanding TF-IDF + cosine dan TF-IDF + regresi? (PDF hlm. 1, 3–6)",
       "summary": [
+        "FOKUS VALIDASI REGRESI — Paper melaporkan Data training, Data validasi, dan Data testing dengan 80:10:10 pada PDF hlm. 3/5, lalu menjelaskan pemilihan epoch IndoBERT melalui loss training dan validasi pada hlm. 6. Pada fold pertama penulis memilih epoch 16. Data validasi berperan dalam keputusan pengembangan; Tabel 2 melaporkan error pada Data testing. Angka 80:10:10 dan epoch 16 adalah kondisi paper ini, bukan aturan wajib untuk seluruh regresi.",
         "Dataset berasal dari UAS Information Retrieval di Politeknik Statistika STIS: 532 jawaban, tujuh soal, dan 76 mahasiswa. Setiap contoh memuat jawaban, kunci, serta skor dosen. Semua soal bernilai maksimal 10, sedangkan label pelatihan dinormalisasi menjadi 0–1. Jawaban yang melibatkan rumus atau perhitungan tidak termasuk cakupan penelitian. (PDF hlm. 3, 5)",
         "Dua baseline memakai TF-IDF: satu menghitung cosine similarity, satu lagi mempelajari regresi skor. Metode utama melakukan fine-tuning IndoBERT pada gabungan teks jawaban dan kunci. IndoBERT tidak sekadar membuat dua vektor lalu memakai cosine sebagai skor akhir; paper menyesuaikan model untuk keluaran numerik. (PDF hlm. 4–6)",
         "Pada tabel evaluasi data testing, IndoBERT memiliki MAE 0,1285 dan RMSE 0,2001, lebih kecil daripada kedua baseline. Angka ini dibaca pada konteks skor yang dinormalisasi 0–1; jangan dibaca sebagai selisih 0,1285 poin pada skala ujian 0–10. Hasil mendukung pendekatan ini pada data yang diteliti, belum membuktikan kemampuan lintas mata kuliah atau soal baru. (PDF hlm. 5–6)"
       ],
       "process": [
+        {
+          "title": "Fokus validasi · pisahkan belajar, memilih, dan menilai",
+          "input": "Jawaban–kunci dan skor dosen; pembagian 80:10:10 dilaporkan pada bagian Pembagian Dataset.",
+          "action": "Baca fungsi tiap bagian: Data training digunakan untuk mempelajari Parameter; Data validasi membantu Hyperparameter tuning dan Pemilihan model; Data testing dipakai membandingkan prediksi akhir dengan skor dosen. Paper juga menyebut 5-fold, tetapi tidak menguraikan lengkap bagaimana fold digabung dengan split tetap tersebut.",
+          "output": "Tiga fungsi data yang berbeda untuk prediksi skor numerik; rincian fold masih perlu dikonfirmasi saat replikasi.",
+          "note": "Sticky note — Memilih model dan menilai model adalah dua keputusan berbeda. Test yang terus dilihat untuk memilih pengaturan tidak lagi menjadi pemeriksaan akhir yang independen. Rasio 80:10:10 adalah rancangan penulis, bukan kewajiban matematika karena modelnya regresi.",
+          "page": "3–6"
+        },
+        {
+          "title": "Fokus validasi · pemilihan epoch melalui validation loss",
+          "input": "Kandidat IndoBERT dari epoch 1 sampai 20; epoch adalah satu putaran atas bagian data latihan dalam satu fold.",
+          "action": "Ikuti PDF hlm. 6: penulis membandingkan loss pada training dan validation untuk menentukan epoch terbaik di setiap fold. Gambar 4 serta narasinya memilih epoch 16 untuk fold pertama. Memilih epoch dilakukan setelah menilai kandidat; Parameter kandidat dipelajari pada training, bukan diperbarui dari validasi.",
+          "output": "Model pada epoch yang dipilih untuk fold tersebut, lalu evaluasi error pada testing.",
+          "note": "Sticky note — Training loss rendah saja belum cukup untuk memilih kandidat yang bagus pada jawaban baru. Validation loss membantu memilih epoch. Paper ini melaporkan pemilihan epoch; jangan mengubahnya menjadi klaim bahwa algoritme Early stopping dengan patience tertentu digunakan, atau bahwa epoch 16 berlaku pada semua fold dan semua dataset.",
+          "page": 6
+        },
         {
           "title": "1. Bangun contoh penilaian lengkap",
           "input": "Lembar jawaban teori, kunci jawaban, dan nilai dosen.",
@@ -1339,8 +1488,8 @@
         },
         {
           "term": "Validation loss",
-          "meaning": "Kesalahan pada data validasi yang digunakan untuk memilih pengaturan latihan.",
-          "context": "Paper memilih epoch terbaik setiap fold dengan membandingkan loss.",
+          "meaning": "Kesalahan pada data validasi yang digunakan untuk memilih pengaturan latihan. Penjelasan tambahan: Ukuran kesalahan kandidat pada data validasi menggunakan fungsi loss yang dipilih. Ia dipakai memeriksa hasil di luar data yang memperbarui bobot kandidat tersebut. Jangan menyamakan validation loss dengan semua metrik testing, atau memilih model berdasarkan training loss saja.",
+          "context": "Paper memilih epoch terbaik setiap fold dengan membandingkan loss. PDF hlm. 6 membandingkan loss train/validation untuk memilih epoch IndoBERT. Angka MAE/RMSE Tabel 2 adalah laporan testing; fungsinya perlu dibedakan.",
           "page": 6
         },
         {
@@ -1357,8 +1506,110 @@
         },
         {
           "term": "Cross-validation",
-          "meaning": "Evaluasi berulang dengan bagian data bergantian menjadi data validasi/evaluasi.",
-          "context": "Paper menyebut 5-fold untuk pelatihan dan pemilihan epoch.",
+          "meaning": "Evaluasi berulang dengan bagian data bergantian menjadi data validasi/evaluasi. Penjelasan tambahan: Validasi dengan pembagian data yang bergiliran, bukan hanya satu pembagian tetap. Pada K-fold, model dilatih ulang untuk setiap putaran dengan satu fold disisihkan untuk evaluasi. Hasil antarputaran dapat dirangkum; tujuan evaluasi dan tujuan memilih konfigurasi tetap perlu dibedakan.",
+          "context": "Paper menyebut 5-fold untuk pelatihan dan pemilihan epoch. Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Regresi",
+          "meaning": "Tugas mempelajari hubungan input dengan target berupa angka. Dalam penilaian esai, model memprediksi skor; keluaran bisa berupa angka desimal walaupun skor acuan memakai kategori ordinal. Regresi adalah jenis tugas, sedangkan split data adalah rancangan pengujiannya.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Data training",
+          "meaning": "Bagian data untuk mempelajari parameter dari contoh input dan skor acuan. Pada neural network, bobot diperbarui melalui gradien; pada Random Forest, pohon mempelajari aturan pemisahan. Melihat keberhasilan pada contoh yang sama belum menunjukkan kemampuan pada jawaban baru.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Data validasi",
+          "meaning": "Bagian data yang digunakan untuk memeriksa dan memilih keputusan pengembangan model, misalnya konfigurasi atau epoch. Skor acuannya dipakai menilai kandidat, bukan menjadi contoh untuk memperbarui bobot pada langkah training kandidat itu. Bentuknya dapat berupa set tetap atau fold yang bergiliran disisihkan.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Data testing",
+          "meaning": "Bagian data untuk menilai hasil setelah keputusan pengembangan ditetapkan. Jika hasil testing dipakai memilih model, mengubah konfigurasi, atau mengulang eksperimen sampai angkanya bagus, data itu sudah ikut menjadi bahan pemilihan model dan tidak lagi memberikan evaluasi akhir yang independen.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Parameter",
+          "meaning": "Nilai internal yang dipelajari model dari data training. Contohnya bobot dan bias pada neural network atau aturan pemisahan pada pohon. Parameter berbeda dari pengaturan seperti learning rate dan jumlah epoch yang dipilih dalam rancangan eksperimen.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Hyperparameter",
+          "meaning": "Pengaturan model atau proses latihan yang ditentukan sebelum satu kandidat dilatih. Contohnya jumlah pohon atau kedalaman pohon untuk Random Forest; jumlah neuron, dropout, learning rate, dan jumlah epoch untuk neural network. Cara menentukan pengaturan ini menentukan apakah data validasi dibutuhkan untuk pemilihan.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Hyperparameter tuning",
+          "meaning": "Proses membandingkan beberapa pengaturan untuk memilih kandidat yang lebih sesuai. Penilaian kandidat memakai data validasi atau cross-validation di bagian training. Data testing akhir sebaiknya disimpan sampai keputusan selesai, supaya hasilnya tidak ikut mengarahkan pilihan.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "K-fold",
+          "meaning": "Bentuk cross-validation yang membagi data menjadi k kelompok. Ilustrasi konsep untuk k = 10: ada sepuluh putaran; setiap putaran memakai sembilan fold untuk latihan dan satu fold yang tidak masuk latihan putaran itu. Ini contoh cara kerja, bukan rekonstruksi jumlah contoh aktual sebuah paper.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Fold",
+          "meaning": "Satu kelompok data di dalam pembagian cross-validation. Fold yang disisihkan berbeda tiap putaran. Bukan sepuluh kali menguji model yang sama: pada prosedur K-fold biasa, model untuk setiap putaran dilatih kembali menggunakan bagian training putaran tersebut.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Holdout",
+          "meaning": "Bagian data yang sengaja disisihkan dari proses tertentu. Holdout validasi membantu memilih konfigurasi; holdout testing membantu menilai keputusan akhir. Kata holdout saja belum menjelaskan fungsi data: catat apakah hasilnya digunakan untuk pemilihan atau hanya pelaporan.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Overfitting",
+          "meaning": "Keadaan ketika model sangat cocok pada data latihan tetapi hasil pada data baru lebih buruk. Selisih performa training dan validasi dapat menjadi petunjuk, tetapi satu grafik atau split kecil belum cukup untuk memastikan penyebabnya. Validasi membantu mendeteksi masalah ini, bukan menjamin masalah hilang.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Data leakage",
+          "meaning": "Kebocoran informasi dari bagian evaluasi ke pengembangan model. Contohnya memakai hasil test untuk memilih epoch atau menaruh jawaban yang sama/nyaris sama pada train dan test. Split yang tertulis berbeda belum menjamin tidak ada kebocoran; unit pembagian dan tahapan preprocessing juga perlu diperiksa.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Generalisasi",
+          "meaning": "Kemampuan bekerja pada data di luar contoh latihan. Nyatakan data baru yang dimaksud: jawaban baru pada soal lama, siswa baru, soal baru, atau domain baru. Hasil bagus untuk salah satunya tidak otomatis membuktikan semua jenis kemampuan tersebut.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Pemilihan model",
+          "meaning": "Keputusan memilih kandidat berdasarkan data, misalnya memilih arsitektur, konfigurasi, atau versi setelah epoch tertentu. Bila hasil evaluasi dipakai untuk keputusan itu, data tersebut berfungsi sebagai validasi pemilihan. Untuk pelaporan akhir yang independen, diperlukan evaluasi yang tidak dipakai memilih kandidat.",
+          "context": "Bekal pendamping untuk membaca split pada PDF hlm. 3 dan pemilihan epoch pada hlm. 6. Paper menyebut 80:10:10 dan 5-fold; detail hubungan kedua pembagian tidak sepenuhnya dijelaskan. Jangan menyusun detail tambahan seolah dilaporkan penulis.",
+          "page": 6
+        },
+        {
+          "term": "Epoch",
+          "meaning": "Satu putaran pemrosesan seluruh contoh training dalam satu latihan/fold. Saat epoch bertambah, bobot dapat terus berubah. Jumlah epoch adalah keputusan latihan; membandingkan hasil beberapa epoch menggunakan validasi termasuk pemilihan model.",
+          "context": "PDF hlm. 6 melaporkan pemeriksaan epoch 1–20 dan pemilihan epoch 16 pada fold pertama. Angka itu tidak digeneralisasi untuk fold lainnya.",
+          "page": 6
+        },
+        {
+          "term": "Early stopping",
+          "meaning": "Aturan menghentikan latihan ketika performa validasi tidak lagi membaik menurut kriteria tertentu. Patience adalah jumlah pemeriksaan yang ditoleransi tanpa perbaikan. Ini salah satu penggunaan validasi pada neural network, bukan syarat semua regresi.",
+          "context": "Bekal pendamping: P04 membahas pemilihan epoch, tetapi tidak melaporkan aturan patience otomatis. Jangan menyatakan algoritme Early stopping tertentu sebagai prosedur penulis.",
+          "page": 6
+        },
+        {
+          "term": "Checkpoint",
+          "meaning": "Salinan keadaan model pada tahap tertentu, sehingga versi kandidat dapat digunakan kembali. Dalam pembahasan epoch, ini membantu membayangkan model dari tahap latihan yang dipilih.",
+          "context": "Penjelasan pendamping untuk membaca pemilihan epoch; paper tidak merinci format file atau mekanisme penyimpanan checkpoint.",
           "page": 6
         }
       ],
@@ -1382,6 +1633,11 @@
           "claim": "Cakupan jawaban sudah dibatasi sejak pembentukan data.",
           "evidence": "532 contoh berasal dari tujuh soal dan 76 mahasiswa; jawaban hanya berupa teks teori tanpa rumus/hitungan. Karena itu hasil tidak dapat langsung dianggap berlaku untuk penilaian perhitungan matematis.",
           "page": 3
+        },
+        {
+          "claim": "Validasi memiliki fungsi nyata dalam pemilihan epoch untuk prediksi skor.",
+          "evidence": "PDF hlm. 6 menyebut pembandingan loss train dan validation pada epoch 1–20 dan epoch 16 untuk fold pertama. Tabel 2 kemudian menampilkan MAE/RMSE pada testing. Bukti ini menunjukkan peran validasi dalam protokol penulis; tidak menetapkan bahwa tiga set atau rasio 80:10:10 wajib untuk setiap regresi.",
+          "page": 6
         }
       ],
       "limitations": [
@@ -1396,6 +1652,11 @@
         "does_not_prove": "Tidak membuktikan cosine similarity selalu sama dengan kualitas jawaban; tidak menilai esai matematika; tidak menjamin hasil pada soal, rubrik, atau mata kuliah baru."
       },
       "reading_path": [
+        {
+          "section": "Fokus utama: dari split data sampai pemilihan epoch",
+          "pages": "3, 6",
+          "goal": "Mulai di Pembagian Dataset, lanjut ke Gambar 4 dan narasi epoch 1–20. Bedakan pemilihan epoch melalui validasi dengan hasil testing pada Tabel 2."
+        },
         {
           "section": "Abstrak dan cakupan",
           "pages": "1, 3",
@@ -1436,7 +1697,8 @@
         }
       ],
       "evidence_notes": [
-        "Identitas awal mencantumkan nomor keputusan akreditasi tahun 2019. Itu tidak dipakai untuk menebak SINTA/Scopus/quartile saat ini. Rumus cosine ditulis dalam bentuk vektor umum untuk menghindari ambiguitas notasi dua dimensi pada cetakan."
+        "Identitas awal mencantumkan nomor keputusan akreditasi tahun 2019. Itu tidak dipakai untuk menebak SINTA/Scopus/quartile saat ini. Rumus cosine ditulis dalam bentuk vektor umum untuk menghindari ambiguitas notasi dua dimensi pada cetakan.",
+        "Fokus validasi: pemilihan epoch melalui loss dan penggunaan Data testing adalah dua fungsi berbeda dalam narasi paper. Hubungan split tetap 80:10:10 dengan 5-fold tetap memiliki rincian yang terbatas; catatan tidak mengarang pembagian fold atau aturan early stopping."
       ],
       "source_kind": "individual",
       "source_page_range": {
@@ -1475,7 +1737,7 @@
           ],
           "sticky": {
             "title": "Pegang alurnya",
-            "text": "Kemiripan jawaban dan kunci perlu dilatih/dipetakan pada skala yang tepat. Diagram ini juga membandingkan TF–IDF dengan IndoBERT."
+            "text": "Kemiripan jawaban dan kunci perlu dilatih/dipetakan pada skala yang tepat. Diagram ini juga membandingkan TF–IDF dengan IndoBERT. Fokus validasi: pembagian dataset dijelaskan sebagai 80:10:10 pada teks PDF hlm. 3; proses memilih epoch lewat loss training/validation dijelaskan pada hlm. 6. Ikuti dua fungsi itu sebelum membaca hasil testing."
           },
           "warning": "",
           "alt": "Gambar 2 dari Automated Essay Scoring Menggunakan Semantic Textual Similarity Berbasis Transformer untuk Penilaian Ujian Esai. Ikuti dataset menuju training, validation, dan testing yang terpisah."
@@ -1505,7 +1767,7 @@
           ],
           "sticky": {
             "title": "Baca angkanya",
-            "text": "Ini hasil dataset dan split paper tersebut. Angka kecil tidak menjamin hasil yang sama pada prompt atau bahasa/domain lain."
+            "text": "Ini hasil dataset dan split paper tersebut. Angka kecil tidak menjamin hasil yang sama pada prompt atau bahasa/domain lain. Fokus validasi: judul tabel menyebut Data Testing. Narasi pada halaman yang sama memilih epoch melalui train/validation; tabel testing digunakan untuk laporan hasil, bukan untuk mengubah pilihan epoch setelah melihat error."
           },
           "warning": "",
           "alt": "Tabel 2 dari Automated Essay Scoring Menggunakan Semantic Textual Similarity Berbasis Transformer untuk Penilaian Ujian Esai. Baris menyatakan metode; kolom menyatakan MAE atau RMSE."
@@ -2580,7 +2842,8 @@
         "sentence tokenization",
         "mean pooling",
         "RMSE",
-        "Pearson"
+        "Pearson",
+        "validasi regresi"
       ],
       "model_roles": [
         {
@@ -2618,11 +2881,28 @@
       "why_read": "Untuk menguji asumsi yang terasa masuk akal: apakah memecah jawaban menjadi kalimat pasti memperbaiki representasi dan nilai? Paper ini menunjukkan mengapa preprocessing perlu diuji, bukan dipercaya hanya karena terdengar logis.",
       "research_question": "Apakah memecah jawaban Indonesia menjadi kalimat lalu merata-ratakan embedding memberikan skor lebih baik daripada membuat embedding dari teks jawaban utuh? (PDF hlm. 2–4)",
       "summary": [
+        "FOKUS VALIDASI REGRESI — PDF hlm. 4 membagi data menjadi 70% training, 15% validation, dan 15% testing. SBERT tidak di-fine-tune, tetapi MaLSTM pembuat skor tetap dilatih. Karena model penilai masih dikembangkan, encoder yang frozen tidak menghapus fungsi Data validasi. Penulis membatasi pengujian pada jawaban mahasiswa baru untuk pertanyaan yang sudah terwakili; hasilnya belum menjadi bukti untuk soal yang sama sekali baru.",
         "Penelitian memakai jawaban dan referensi dari 40 pertanyaan dalam empat topik, dengan skor tiga penilai manusia. Setelah preprocessing, 2.157 contoh dipakai. Dua jalur dibandingkan: embedding teks utuh, serta pemecahan kalimat lalu perataan embedding. Encoder SBERT tetap pretrained; model yang dilatih untuk skor adalah Siamese Manhattan LSTM. (PDF hlm. 3–5)",
         "MaLSTM mengolah dua representasi, satu dari kunci dan satu dari jawaban mahasiswa, menggunakan cabang berbobot bersama. Jarak Manhattan antara hasil kedua cabang diubah menjadi kemiripan 0–1, kemudian dikalikan nilai maksimal 100. Jalur cosine langsung digunakan sebagai pembanding. (PDF hlm. 5)",
         "Hasil terbaik justru diperoleh dari teks utuh dengan distiluse-base-multilingual-cased-v2: RMSE 10,65 dan Pearson 0,92. Jalur pecah-kalimat mendapat RMSE 11,26 dan Pearson 0,91. Ini tidak berarti pemecahan kalimat selalu buruk; variasi bentuk jawaban dan cara memotong kalimat dapat memengaruhi hasil. (PDF hlm. 5–7)"
       ],
       "process": [
+        {
+          "title": "Fokus validasi · encoder tetap, model skor tetap belajar",
+          "input": "Pasangan embedding SBERT dan skor manusia; Data training 70%, Data validasi 15%, Data testing 15%.",
+          "action": "Baca PDF hlm. 4–5: SBERT digunakan sebagai encoder pretrained, sedangkan MaLSTM belajar membandingkan referensi dan jawaban untuk menghasilkan skor. Training/validation digunakan dalam pengembangan model, testing disisihkan untuk evaluasi. Penulis melaporkan 25 epoch, tetapi tidak merinci aturan pemilihan epoch terbaik melalui validasi.",
+          "output": "Prediktor skor yang dilatih di atas representasi pretrained, dengan validation dan testing tetap memiliki peran.",
+          "note": "Sticky note — Frozen encoder tidak berarti seluruh sistem berhenti belajar. Kaitannya dengan S2 proyek lo adalah konsep: BGE dibekukan, tetapi MLP penilai dilatih sehingga pemilihan konfigurasinya bisa membutuhkan validasi. Model paper ini adalah SBERT + MaLSTM, bukan BGE + MLP; penjelasan kaitan tersebut adalah catatan pendamping.",
+          "page": "4–5"
+        },
+        {
+          "title": "Fokus validasi · jelaskan data baru yang benar-benar diuji",
+          "input": "Jawaban dari 40 pertanyaan; stratified sampling dipakai saat pembagian data.",
+          "action": "Baca PDF hlm. 4: stratifikasi menjaga setiap pertanyaan muncul pada training, validation, dan testing. Tujuannya menilai jawaban mahasiswa yang belum dilihat, bukan pertanyaan baru. Penjelasan pendamping: jika tujuan penelitian berbeda, unit split perlu dirancang sesuai tujuan, misalnya menurut siswa atau soal; stratifikasi soal tidak otomatis membuktikan pemisahan siswa atau duplikasi.",
+          "output": "Kesimpulan dengan batas jelas: kemampuan pada jawaban baru untuk kumpulan pertanyaan yang tetap terwakili.",
+          "note": "Sticky note — Memiliki kotak validation dan test belum otomatis menjamin generalisasi ke semua situasi. Tanyakan apa yang benar-benar baru bagi model: jawaban, siswa, soal, atau domain. Paper secara eksplisit menguji unseen student answers dan tidak menguji unseen questions.",
+          "page": 4
+        },
         {
           "title": "1. Satukan pasangan jawaban dengan penilaian manusia",
           "input": "40 referensi jawaban, 2.162 jawaban mahasiswa, dan tiga nilai manusia per jawaban.",
@@ -2802,6 +3082,126 @@
           "meaning": "Batas panjang input yang didukung encoder.",
           "context": "Enam encoder di Tabel 1 memiliki batas berbeda; salah satu alasan pemecahan teks diuji.",
           "page": 4
+        },
+        {
+          "term": "Regresi",
+          "meaning": "Tugas mempelajari hubungan input dengan target berupa angka. Dalam penilaian esai, model memprediksi skor; keluaran bisa berupa angka desimal walaupun skor acuan memakai kategori ordinal. Regresi adalah jenis tugas, sedangkan split data adalah rancangan pengujiannya.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Data training",
+          "meaning": "Bagian data untuk mempelajari parameter dari contoh input dan skor acuan. Pada neural network, bobot diperbarui melalui gradien; pada Random Forest, pohon mempelajari aturan pemisahan. Melihat keberhasilan pada contoh yang sama belum menunjukkan kemampuan pada jawaban baru.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Data validasi",
+          "meaning": "Bagian data yang digunakan untuk memeriksa dan memilih keputusan pengembangan model, misalnya konfigurasi atau epoch. Skor acuannya dipakai menilai kandidat, bukan menjadi contoh untuk memperbarui bobot pada langkah training kandidat itu. Bentuknya dapat berupa set tetap atau fold yang bergiliran disisihkan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Data testing",
+          "meaning": "Bagian data untuk menilai hasil setelah keputusan pengembangan ditetapkan. Jika hasil testing dipakai memilih model, mengubah konfigurasi, atau mengulang eksperimen sampai angkanya bagus, data itu sudah ikut menjadi bahan pemilihan model dan tidak lagi memberikan evaluasi akhir yang independen.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Parameter",
+          "meaning": "Nilai internal yang dipelajari model dari data training. Contohnya bobot dan bias pada neural network atau aturan pemisahan pada pohon. Parameter berbeda dari pengaturan seperti learning rate dan jumlah epoch yang dipilih dalam rancangan eksperimen.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Hyperparameter",
+          "meaning": "Pengaturan model atau proses latihan yang ditentukan sebelum satu kandidat dilatih. Contohnya jumlah pohon atau kedalaman pohon untuk Random Forest; jumlah neuron, dropout, learning rate, dan jumlah epoch untuk neural network. Cara menentukan pengaturan ini menentukan apakah data validasi dibutuhkan untuk pemilihan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Hyperparameter tuning",
+          "meaning": "Proses membandingkan beberapa pengaturan untuk memilih kandidat yang lebih sesuai. Penilaian kandidat memakai data validasi atau cross-validation di bagian training. Data testing akhir sebaiknya disimpan sampai keputusan selesai, supaya hasilnya tidak ikut mengarahkan pilihan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Cross-validation",
+          "meaning": "Validasi dengan pembagian data yang bergiliran, bukan hanya satu pembagian tetap. Pada K-fold, model dilatih ulang untuk setiap putaran dengan satu fold disisihkan untuk evaluasi. Hasil antarputaran dapat dirangkum; tujuan evaluasi dan tujuan memilih konfigurasi tetap perlu dibedakan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "K-fold",
+          "meaning": "Bentuk cross-validation yang membagi data menjadi k kelompok. Ilustrasi konsep untuk k = 10: ada sepuluh putaran; setiap putaran memakai sembilan fold untuk latihan dan satu fold yang tidak masuk latihan putaran itu. Ini contoh cara kerja, bukan rekonstruksi jumlah contoh aktual sebuah paper.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Fold",
+          "meaning": "Satu kelompok data di dalam pembagian cross-validation. Fold yang disisihkan berbeda tiap putaran. Bukan sepuluh kali menguji model yang sama: pada prosedur K-fold biasa, model untuk setiap putaran dilatih kembali menggunakan bagian training putaran tersebut.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Holdout",
+          "meaning": "Bagian data yang sengaja disisihkan dari proses tertentu. Holdout validasi membantu memilih konfigurasi; holdout testing membantu menilai keputusan akhir. Kata holdout saja belum menjelaskan fungsi data: catat apakah hasilnya digunakan untuk pemilihan atau hanya pelaporan.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Overfitting",
+          "meaning": "Keadaan ketika model sangat cocok pada data latihan tetapi hasil pada data baru lebih buruk. Selisih performa training dan validasi dapat menjadi petunjuk, tetapi satu grafik atau split kecil belum cukup untuk memastikan penyebabnya. Validasi membantu mendeteksi masalah ini, bukan menjamin masalah hilang.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Data leakage",
+          "meaning": "Kebocoran informasi dari bagian evaluasi ke pengembangan model. Contohnya memakai hasil test untuk memilih epoch atau menaruh jawaban yang sama/nyaris sama pada train dan test. Split yang tertulis berbeda belum menjamin tidak ada kebocoran; unit pembagian dan tahapan preprocessing juga perlu diperiksa.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Generalisasi",
+          "meaning": "Kemampuan bekerja pada data di luar contoh latihan. Nyatakan data baru yang dimaksud: jawaban baru pada soal lama, siswa baru, soal baru, atau domain baru. Hasil bagus untuk salah satunya tidak otomatis membuktikan semua jenis kemampuan tersebut.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Pemilihan model",
+          "meaning": "Keputusan memilih kandidat berdasarkan data, misalnya memilih arsitektur, konfigurasi, atau versi setelah epoch tertentu. Bila hasil evaluasi dipakai untuk keputusan itu, data tersebut berfungsi sebagai validasi pemilihan. Untuk pelaporan akhir yang independen, diperlukan evaluasi yang tidak dipakai memilih kandidat.",
+          "context": "Bekal pendamping untuk membaca PDF hlm. 4–5. Paper memakai 70% training, 15% validasi, 15% testing dan SBERT pretrained + MaLSTM. Definisi tuning atau kebocoran adalah penjelasan metodologi pendamping, bukan klaim bahwa penulis melaporkan algoritme tersebut secara rinci.",
+          "page": 4
+        },
+        {
+          "term": "Frozen encoder",
+          "meaning": "Model pembentuk representasi yang bobotnya tidak diperbarui pada latihan tugas berikutnya. Keluaran vektornya masih dapat menjadi input untuk model penilai yang dilatih. Membekukan encoder mengurangi bagian yang belajar, tetapi tidak menentukan sendiri kebutuhan validasi seluruh sistem.",
+          "context": "Paper menggunakan SBERT pretrained tanpa fine-tuning, lalu melatih MaLSTM. Kaitannya dengan BGE frozen + MLP S2 adalah penjelasan konsep, bukan kesamaan model eksperimen.",
+          "page": 5
+        },
+        {
+          "term": "MLP",
+          "meaning": "Multi-Layer Perceptron: jaringan beberapa lapisan yang mempelajari pemetaan input angka menjadi keluaran. Jumlah neuron, dropout, dan learning rate adalah contoh pengaturan yang dapat dipilih menggunakan validasi.",
+          "context": "Istilah pendamping untuk menghubungkan konsep encoder frozen dengan S2 proyek lo. P08 menggunakan MaLSTM, bukan MLP dan bukan BGE-M3.",
+          "page": 5
+        },
+        {
+          "term": "Stratifikasi",
+          "meaning": "Cara membagi data sambil menjaga keterwakilan kategori tertentu pada tiap bagian. Kategori yang dijaga harus disebutkan, karena menjaga proporsi soal berbeda dari memisahkan seluruh jawaban satu siswa atau kelompok duplikat.",
+          "context": "PDF hlm. 4 menjaga keterwakilan setiap pertanyaan pada training, validation, dan testing.",
+          "page": 4
+        },
+        {
+          "term": "Unseen questions",
+          "meaning": "Pertanyaan yang tidak pernah menjadi contoh pada latihan. Evaluasi pada soal seperti ini menguji tujuan yang berbeda dari menilai jawaban baru pada pertanyaan yang sudah muncul.",
+          "context": "PDF hlm. 4 menyatakan tidak ada unseen questions dalam rancangan ini; fokusnya unseen student answers.",
+          "page": 4
+        },
+        {
+          "term": "Epoch",
+          "meaning": "Satu putaran atas contoh training. Banyaknya epoch mengatur durasi latihan; jika dipilih dari beberapa kandidat berdasarkan performa, data pemeriksaannya berperan dalam pemilihan.",
+          "context": "PDF hlm. 5 melaporkan 25 epoch. Paper tidak merinci algoritme early stopping atau bahwa angka ini dipilih sebagai minimum validation loss.",
+          "page": 5
         }
       ],
       "findings": [
@@ -2824,6 +3224,11 @@
           "claim": "Jawaban benar yang lebih panjang dapat tetap diberi skor jauh lebih rendah.",
           "evidence": "Analisis satu contoh testing: rata-rata skor manusia 91, sedangkan MaLSTM menghasilkan 60,09 untuk teks utuh dan 61,45 untuk averaging. Penulis mengaitkan kasus itu dengan penjelasan mahasiswa yang jauh lebih panjang dari referensi; ini analisis kasus, bukan aturan sebab-akibat untuk seluruh data.",
           "page": 6
+        },
+        {
+          "claim": "Representasi pretrained tetap dipadukan dengan validation dan testing pada model penilai.",
+          "evidence": "PDF hlm. 4 melaporkan split 70/15/15 serta penggunaan training/validation dalam pengembangan dan testing untuk evaluasi. SBERT tidak di-fine-tune, sementara MaLSTM dilatih pada skor manusia. Semua pertanyaan terwakili, sehingga hasil menguji jawaban baru pada soal yang sama-sama dikenal.",
+          "page": "4–5"
         }
       ],
       "limitations": [
@@ -2838,6 +3243,11 @@
         "does_not_prove": "Tidak membuktikan pemecahan kalimat selalu buruk, tidak menguji fine-tuning SBERT, dan tidak menunjukkan kemampuan memberi nilai pada pertanyaan yang sama sekali baru."
       },
       "reading_path": [
+        {
+          "section": "Fokus utama: validation tetap ada walau encoder pretrained",
+          "pages": "4–5",
+          "goal": "Baca §3.4 Data split, lalu bedakan bagian SBERT dan MaLSTM. Tandai 70/15/15, keterwakilan soal, dan batas generalisasi pada jawaban baru."
+        },
         {
           "section": "Tujuan pemecahan kalimat",
           "pages": "1–2",
@@ -2878,7 +3288,8 @@
         }
       ],
       "evidence_notes": [
-        "Abstrak menyebut 0,61% untuk perubahan RMSE, tetapi tabel menunjukkan 11,26 − 10,65 = 0,61 poin. Panduan memakai angka tabel dan satuan yang jelas agar pembaca tidak menganggapnya persentase relatif."
+        "Abstrak menyebut 0,61% untuk perubahan RMSE, tetapi tabel menunjukkan 11,26 − 10,65 = 0,61 poin. Panduan memakai angka tabel dan satuan yang jelas agar pembaca tidak menganggapnya persentase relatif.",
+        "Fokus validasi: split 70/15/15 dan tujuan unseen student answers dinyatakan pada PDF hlm. 4. Kebutuhan validasi saat memilih konfigurasi BGE frozen + MLP adalah hubungan konseptual ke proyek, bukan metode P08. Uraian paper tidak mendukung klaim adanya early stopping atau pemilihan epoch minimum validation loss yang rinci."
       ],
       "source_kind": "individual",
       "source_page_range": {
@@ -2917,7 +3328,7 @@
           ],
           "sticky": {
             "title": "Pegang alurnya",
-            "text": "SBERT digunakan sebagai pembentuk embedding; bagian yang dilatih di alur ini adalah MaLSTM. Jangan menyebut semuanya satu model yang di-fine-tune."
+            "text": "SBERT digunakan sebagai pembentuk embedding; bagian yang dilatih di alur ini adalah MaLSTM. Jangan menyebut semuanya satu model yang di-fine-tune. Fokus validasi: Figure 1 memisahkan training, validation, dan testing setelah representasi. Teks §3.4 menetapkan 70/15/15 serta soal yang tetap terwakili; encoder pretrained tetap dipakai bersama model penilai yang belajar."
           },
           "warning": "",
           "alt": "Figure 1 dari Evaluating the Impact of Sentence Tokenization on Indonesian Automated Essay Scoring Using Pretrained Sentence Embeddings. Jawaban referensi dan jawaban siswa masuk ke jalur SBERT masing-masing."
