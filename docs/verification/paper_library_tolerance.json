@@ -1,0 +1,119 @@
+{
+  "scope": "Offline teaching HTML only; no changes to AES training/evaluation, research labels, or production metrics.",
+  "source_commit_before_change": "65b58bf7ab3df37e5f34efd153248229b2a90e88",
+  "manifest_sha256": "929cff159a62206818e41b320280e86b35e9267fb30ef89fafec68c3d6520ff1",
+  "content_evidence": [
+    {
+      "source_id": "p02",
+      "authors": [
+        "John Atkinson",
+        "Diego Palma"
+      ],
+      "year": 2025,
+      "type": "journal article",
+      "title": "An LLM-based hybrid approach for enhanced automated essay scoring",
+      "venue": "Scientific Reports 15:14551",
+      "doi": "10.1038/s41598-025-87862-3",
+      "pages": "PDF 6 definitions; PDF 7 Table 3",
+      "exact_tolerance_points": 0,
+      "adjacent_tolerance_points": 1,
+      "index_verification": "Unverified: official index access blocked with 403; do not assert Scopus/SINTA verification."
+    },
+    {
+      "source_id": "m07",
+      "authors": [
+        "Afrizal Doewes"
+      ],
+      "year": 2026,
+      "type": "doctoral thesis, not a journal article",
+      "title": "Rethinking Automated Essay Scoring: Agreement, Fairness, and Feedback",
+      "institution": "Eindhoven University of Technology",
+      "pages": "Merged PDF 144–145, 205–206, 215; separate PDF 50–51, 111–112, 121",
+      "adjacent_tolerance_points": 3,
+      "observed_score_range": [
+        2,
+        24
+      ],
+      "justification_reported": "Wider observed scale; authors cite RMSE around 2.7–3.4. Not a universal tolerance formula.",
+      "index_verification": "Not applicable to thesis; cannot satisfy Scopus/SINTA journal criterion."
+    }
+  ],
+  "research_limit": "One explicit recent journal article and one contextual thesis were read. No verified indexed multi-paper survey or universal tolerance minimum/maximum is claimed. Publisher/search/index network requests were blocked; uploaded PDF content was read locally.",
+  "browser_checks": {
+    "scope": "UI/browser verification only; not model training or research accuracy",
+    "passed": [
+      "reduced-motion and 42-source inventory",
+      "672 reading panes: desktop/mobile, all 42 sources × 8 tabs",
+      "topic, subtopic, BGE, source-type, text-search and empty-state filters",
+      "desktop/mobile independent filter wheel scrolling, no scroll chaining, preserved last selection and immediate paper opening",
+      "84 cited source visuals decoded across 41 sources; sticky reading notes, nested zoom and original-size detail controls",
+      "two-source comparison and Escape dismissal",
+      "context glossary, keyboard tabs, nested dialogs, bounded scrolling and saved reading progress",
+      "Andrew–Gwen rescue follows filter scroll and freezes/resumes with global animation controls; six outside poses overlap card borders",
+      "four distinct companion animations, multiple reader/notes poses, global pause/resume, static reduced-motion and noninteractive decorations",
+      "no browser exceptions, no external requests, offline equations"
+    ],
+    "failed": [],
+    "skipped": [],
+    "xfailed": [],
+    "reading_panes_checked": 672,
+    "python": "3.12.14",
+    "playwright": "1.62.0",
+    "chromium": "154.0.8037.57",
+    "html_sha256": "2be7da39c17a0d656f3602406cc6af262754791b981a206daebf712ef3bdefa7",
+    "head_before_publication": "65b58bf7ab3df37e5f34efd153248229b2a90e88",
+    "command": "python scripts/check_paper_library.py",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "exit_code": 0
+  },
+  "focused_checks": {
+    "scope": "Tolerance teaching content and browser checks, no research evaluation",
+    "command": "python outputs/tolerance_research/check_focus.py",
+    "cwd": "/workspace/Automated_Essay_Scoring",
+    "exit_code": 0,
+    "changed_sources": [
+      "p02",
+      "m07"
+    ],
+    "unchanged_sources": 40,
+    "theme_and_runtime_unchanged": true,
+    "card_height_px": 500,
+    "new_source_visuals": 2,
+    "corrected_existing_crop": "P02 Table 4: QWK table rather than overlapping Table 5",
+    "focus_search": "tolerance AES",
+    "search_results": 2,
+    "new_mobile_equations_rendered": 2,
+    "total_formula_cards": 4,
+    "glossary_popup_checked": true,
+    "new_table_zoom_checked": true,
+    "synthetic_example": "EA 2/5=40%; AA ±1 4/5=80%; illustrative only, not research data",
+    "zip_members": [
+      "code belajar paper.html"
+    ],
+    "zip_matches_current_html": true,
+    "html_sha256": "2be7da39c17a0d656f3602406cc6af262754791b981a206daebf712ef3bdefa7",
+    "zip_sha256": "2283dc5977e5af3226546a6b9cf3fc6bbe394c7eeb7ef63b8c1f6fd9f89b36fe",
+    "chromium": "154.0.8037.57",
+    "passed": [
+      "42 sources and 84 figures",
+      "Only P02/M07 learning notes changed",
+      "Theme/JS/CSS identical to previous version",
+      "Equal 500px cards",
+      "Search, technical term popup, formulas and table zoom on mobile",
+      "ZIP contains exactly latest offline HTML"
+    ],
+    "failed": [],
+    "skipped": [],
+    "xfailed": []
+  },
+  "actual_browser_command": "python scripts/check_paper_library.py --url http://127.0.0.1:8876/docs/code%20belajar%20paper.html --report outputs/tolerance_research/browser_checks.json",
+  "download": {
+    "path": "docs/downloads/code_belajar_paper_terbaru.zip",
+    "members": [
+      "code belajar paper.html"
+    ],
+    "sha256": "2283dc5977e5af3226546a6b9cf3fc6bbe394c7eeb7ef63b8c1f6fd9f89b36fe",
+    "html_sha256": "2be7da39c17a0d656f3602406cc6af262754791b981a206daebf712ef3bdefa7"
+  },
+  "publication_status": "Prepared locally. GitHub branch SHA and raw file hashes must be independently checked after push."
+}

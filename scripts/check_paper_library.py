@@ -99,7 +99,10 @@ def check(url):
         source_visuals = 0
         for pid in ids:
             page.evaluate("id=>PaperLibrary.openPaper(id,'visuals')", pid)
-            page.locator(".paper-visual img").evaluate_all("imgs=>Promise.all(imgs.map(img=>img.decode()))")
+            # Load each lazy image as a reader would, including visuals far below the fold.
+            for img in page.locator(".paper-visual img").all():
+                img.scroll_into_view_if_needed()
+                img.evaluate("img=>img.decode()")
             assert page.locator(".paper-visual img").evaluate_all("imgs=>imgs.every(img=>img.naturalWidth>0 && img.naturalHeight>0)")
             source_visuals += page.locator(".paper-visual").count()
             if page.locator(".visual-image-button").count():
@@ -111,8 +114,8 @@ def check(url):
                 page.keyboard.press("Escape")
                 assert page.locator("#readerDialog").evaluate("e=>e.open")
             page.evaluate("PaperLibrary.closeReader()")
-        assert source_visuals == 82
-        outcomes.append("82 cited source visuals decoded across 41 sources; sticky reading notes, nested zoom and original-size detail controls")
+        assert source_visuals == 84
+        outcomes.append("84 cited source visuals decoded across 41 sources; sticky reading notes, nested zoom and original-size detail controls")
         page.locator("[data-compare=p14]").check()
         page.locator("[data-compare=p13]").check()
         page.locator("#openCompare").click()

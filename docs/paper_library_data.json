@@ -48,7 +48,7 @@
       "Identitas mengikuti PDF yang dibaca. Status indeks belum diverifikasi dari pengindeks resmi; DOI dan jurnal tidak otomatis membuktikan Scopus, SINTA, atau kuartil."
     ],
     "methodology": "Ringkasan dan alur belajar diparafrasakan dari dokumen unggahan, dengan penanda halaman PDF. Buku panjang dan cuplikan dibaca pada bagian relevan yang disebutkan dalam cakupan. Tidak ada eksperimen model baru yang dijalankan untuk panduan ini.",
-    "visual_count": 82
+    "visual_count": 84
   },
   "papers": [
     {
@@ -479,7 +479,11 @@
         "fitur linguistik",
         "ASAP",
         "QWK",
-        "validasi regresi"
+        "validasi regresi",
+        "tolerance AES",
+        "adjacent agreement",
+        "batas selisih",
+        "within-one"
       ],
       "model_roles": [
         {
@@ -510,12 +514,57 @@
       "why_read": "Untuk memahami bahwa memakai LLM dalam AES tidak selalu berarti LLM langsung menjadi penilai. Di sini GPT memasok representasi teks, sedangkan model terawasi mempelajari hubungan fitur dengan skor manusia.",
       "research_question": "Apakah kombinasi fitur linguistik, kompleksitas teks, dan embedding kontekstual GPT lebih cocok dengan nilai manusia dibanding pendekatan yang mengandalkan satu kelompok fitur? (PDF hlm. 1, 3, 6)",
       "summary": [
+        "FOKUS TOLERANCE — Seberapa jauh skor prediksi masih dianggap dekat dengan acuan? Atkinson & Palma (2025), Scientific Reports, mendefinisikan Exact Agreement sebagai skor yang sama persis dan Adjacent Agreement sebagai selisih maksimal satu poin (PDF hlm. 6). Dengan notasi belajar τ (dibaca tau), EA memakai τ = 0 dan AA memakai τ = 1. Ini batas pada selisih dua skor setelah prediksi tersedia; skor model tidak diubah agar lolos.",
+        "JAWABAN ANGKA — Dalam artikel jurnal ini, batas AA yang terverifikasi adalah ±1 poin. Batas nol adalah exact agreement, bukan adjacent agreement yang lebih longgar. Pembanding M07, tesis Doewes (2026), memakai Acc±3 untuk rentang skor empiris 2–24 dan menjelaskan alasannya dengan rentang skala serta RMSE sekitar 2,7–3,4 (PDF gabungan hlm. 205–206, 215). Jadi contoh yang dibaca mencakup 0, 1, dan 3, tetapi tidak membuktikan bahwa 3 adalah batas maksimum AES atau bahwa semua angka tersebut berasal dari jurnal terindeks. Sumber ini bukan survei yang menghitung seberapa sering setiap batas dipakai.",
+        "CARA MENENTUKAN — Artikel ini memakai definisi AA ±1; ia tidak memberikan rumus untuk mencari tolerance terbaik. Sebagai rancangan pendamping, mulai dari rubrik: apakah satu tingkat perbedaan masih diterima penilai, dan apa akibatnya bagi keputusan nilai? Nyatakan satuannya, bentuk skor yang dibandingkan, serta alasan pemilihan batas. Jika perlu memeriksa pola selisih, gunakan penilai manusia dan data pengembangan atau prediksi out-of-fold di training; tetapkan kriteria sebelum test akhir. Ini saran metodologi pendamping, bukan prosedur tambahan yang diklaim dilakukan penulis.",
+        "UNTUK AES LO — Keempat target isi, organisasi, kebahasaan, dan mekanik berada pada skala 1–5. ±1 berarti membolehkan beda satu tingkat pada masing-masing target; belum tentu layak untuk semua dimensi atau keputusan. Gunakan EA dan AA ±1 sebagai pembanding literatur bila sesuai tujuan, lalu jelaskan persetujuan berbasis rubrik. Jangan menyalin ±3 dari skala 2–24: pada acuan 3 di skala 1–5, batas ±3 menerima semua prediksi yang berada di 1–5. Penjelasan ini tidak menambah metrik ke pipeline penelitian dan tidak menghasilkan angka penelitian baru.",
+        "BATAS BUKTI — PDF artikel 2025 sudah dibaca, tetapi status Scopus jurnal ini belum diverifikasi melalui sumber pengindeks resmi pada sesi ini karena akses jaringan ditolak. Pencarian juga belum menghasilkan artikel tambahan dengan bukti indeks Scopus/SINTA dan batas tolerance yang bisa diperiksa. Tesis M07 tetap diberi label tesis, bukan pengganti artikel jurnal Scopus atau SINTA.",
         "FOKUS VALIDASI REGRESI — PDF hlm. 6 menyebut Random Forest Regression dan K-fold k = 10. Ini contoh evaluasi berbasis fold: proses validasi dapat dilakukan tanpa satu validation set ketiga yang tetap. Paper tidak menyatakan bahwa semua regresi bebas dari kebutuhan validasi, tidak merinci nested cross-validation, dan tidak cukup rinci untuk memastikan hubungan K-fold dengan pembagian pada Tabel 1. Pisahkan laporan penulis ini dari penjelasan pendamping tentang pemilihan model.",
         "Paper ini menggabungkan dua cara membaca esai: indikator yang mudah dihitung, seperti keragaman kosakata dan kepadatan pronomina, serta representasi makna dari GPT. Gabungannya menjadi vektor fitur untuk prediktor Random Forest. Jadi, nilai akhir dipelajari dari contoh esai yang sudah dinilai manusia, bukan diperoleh dengan sekadar meminta GPT menjadi dosen. (PDF hlm. 3–6)",
         "Evaluasi menggunakan kelompok esai dari kompetisi ASAP, dengan jenis dan rentang nilai yang berbeda. Model hybrid memperoleh rata-rata QWK 0,83, sementara pembanding DP 0,81, SC 0,58, dan GPT-3 0,71 pada Tabel 4. Perbedaan antarjenis esai tetap penting: sistem ini tidak unggul di setiap kelompok. (PDF hlm. 6–7)",
         "Pelajaran utamanya adalah melacak peran setiap komponen. Embedding memberi informasi kontekstual; fitur manual menambahkan indikator struktur dan bahasa; Random Forest memetakan keduanya ke skor. Paper belum membuktikan bahwa kombinasi yang sama otomatis cocok untuk ujian berbahasa Indonesia atau bisa memeriksa kebenaran semua fakta. (PDF hlm. 6–8)"
       ],
       "process": [
+        {
+          "title": "Tolerance A · pasangkan output model dengan skor acuan",
+          "input": "Skor prediksi yang sudah keluar dan skor acuan untuk esai serta target yang sama.",
+          "action": "Pada artikel, pasangan itu adalah grade sistem dan penilai manusia. Untuk studi lo, pasangkan skor isi dengan acuan isi, organisasi dengan organisasi, kebahasaan dengan kebahasaan, dan mekanik dengan mekanik. Ini penerapan konsep pada empat target repo, bukan setting analitik yang diklaim dari artikel. Tanpa skor acuan, satu prediksi esai baru belum dapat dinyatakan berada dalam tolerance.",
+          "output": "Pasangan nilai yang sah untuk dibandingkan, terpisah per target.",
+          "note": "Sticky note — Tolerance dihitung setelah prediksi. Ia bukan parameter yang melatih RoBERTa/BGE, bukan learning rate, dan bukan perintah untuk memperbaiki output. Tetap simpan skor asli model.",
+          "page": 6
+        },
+        {
+          "title": "Tolerance B · hitung besar selisih, lalu terapkan batas",
+          "input": "Pasangan prediksi dan acuan; satuan keduanya sama, misalnya poin pada skala 1–5.",
+          "action": "Penjelasan hitung dari definisi paper: ambil nilai absolut prediksi dikurangi acuan. Dengan τ = 1, selisih 0 dan 1 diterima; selisih lebih dari 1 tidak diterima. Batasnya inklusif: tepat sama dengan τ masih lolos. Prediksi yang terlalu tinggi dan terlalu rendah dinilai dengan ukuran selisih yang sama.",
+          "output": "Penanda lolos atau tidak lolos untuk setiap pasangan; belum berupa persentase keseluruhan.",
+          "note": "Sticky note — Contoh belajar sintetis: acuan 3, prediksi 4 → selisih 1 → lolos AA ±1. Acuan 3, prediksi 5 → selisih 2 → tidak lolos. Prediksi 4 tetap 4; jangan digeser menjadi 3. Angka ini ilustrasi, bukan data siswa atau hasil model penelitian.",
+          "page": 6
+        },
+        {
+          "title": "Tolerance C · bedakan batas tolerance dan hasil agreement",
+          "input": "Penanda lolos dari seluruh pasangan evaluasi yang sah pada satu target.",
+          "action": "Hitung jumlah yang lolos, bagi dengan jumlah pasangan, lalu kalikan 100 bila ingin persen. Contoh belajar sintetis: acuan [1,2,3,4,5] dan prediksi [1,3,2,4,3] memberi selisih [0,1,1,0,2]. EA: 2 dari 5 = 40%; AA ±1: 4 dari 5 = 80%. Ini demonstrasi definisi, bukan run penelitian.",
+          "output": "Dua informasi yang dilaporkan bersama: batas τ = 1 poin dan hasil AA = 80% pada contoh sintetis.",
+          "note": "Sticky note — Angka 80% bukan nilai tolerance. τ menjawab seberapa jauh masih diterima; AA menjawab berapa banyak yang memenuhi batas itu. Tabel 3 artikel melaporkan rata-rata AA 0,96 untuk hybrid, bukan tolerance 0,96 poin dan bukan 96% skor tepat sama.",
+          "page": 7
+        },
+        {
+          "title": "Tolerance D · tentukan bentuk skor sebelum membandingkan",
+          "input": "Prediksi regresi dapat berupa pecahan; acuan rubrik dapat berupa kategori bilangan bulat.",
+          "action": "Nyatakan apakah selisih dihitung dari prediksi mentah atau grade hasil aturan konversi yang telah ditetapkan. Contoh belajar sintetis: acuan 3 dan prediksi mentah 4,01 memiliki selisih 1,01 sehingga tidak lolos batas 1. Jika protokol lain membulatkan 4,01 menjadi 4, hasilnya lolos; itu evaluasi dengan kebijakan berbeda dan wajib dijelaskan. Artikel belum menjabarkan kebijakan pembulatan/konversi cukup rinci untuk disimpulkan otomatis.",
+          "output": "Definisi evaluasi yang dapat diulang, tanpa diam-diam membulatkan atau melakukan clipping pada output.",
+          "note": "Sticky note — Bilangan pecahan tidak boleh disamakan dengan kategori bulat tanpa aturan. Jangan mengubah skor mentah hanya agar AA terlihat lebih tinggi; RMSE/Pearson dan metrik penelitian tetap mengikuti kontrak proyek.",
+          "page": 6
+        },
+        {
+          "title": "Tolerance E · tetapkan alasan sebelum test akhir",
+          "input": "Rubrik, rentang skor, konsekuensi beda satu tingkat, dan bila tersedia penilaian independen dari manusia.",
+          "action": "Panduan pendamping: pilih batas yang dapat dipertanggungjawabkan secara pendidikan. ±1 adalah pembanding eksplisit dari artikel ini, bukan izin otomatis. Bila perlu menganalisis pola selisih model, pakai data pengembangan atau prediksi out-of-fold yang dibuat saat tiap esai tidak dipakai melatih model pada fold itu. Kunci batas serta aturan konversi sebelum test akhir, dan pakai kebijakan yang sama saat membandingkan S1, S2, dan S3.",
+          "output": "Kriteria yang ditetapkan sebelumnya, disertai alasan dan pembacaan per target.",
+          "note": "Sticky note — Menaikkan τ selalu dapat menaikkan jumlah yang diterima tanpa memperbaiki model. Jangan memilih tolerance dari test akhir hanya untuk mengejar persen tertinggi. Data validasi dapat membantu mempelajari pola error; rubrik/penilai tetap diperlukan untuk memaknai error yang layak diterima.",
+          "page": 6
+        },
         {
           "title": "Fokus validasi · baca K-fold sebagai prosedur evaluasi",
           "input": "Fitur esai dan skor manusia; metode pada PDF hlm. 6 menyebut Random Forest Regression dan Classifier.",
@@ -583,6 +632,60 @@
       ],
       "formulas": [
         {
+          "label": "Belajar tolerance · besar selisih tiap prediksi",
+          "expression": "e_i = |ŷ_i − y_i|",
+          "latex": "e_i = |\\hat{y}_i-y_i|",
+          "variables": [
+            {
+              "symbol": "i",
+              "meaning": "Nomor pasangan evaluasi pada satu target; bukan identitas siswa."
+            },
+            {
+              "symbol": "ŷ_i",
+              "meaning": "Skor model yang dipakai dalam perbandingan, dengan aturan konversi yang dinyatakan."
+            },
+            {
+              "symbol": "y_i",
+              "meaning": "Skor acuan untuk esai dan target yang sama."
+            },
+            {
+              "symbol": "e_i",
+              "meaning": "Besar selisih dalam poin; tanda minus di dalam nilai absolut tidak menjadi selisih negatif."
+            }
+          ],
+          "explanation": "Rumus belajar yang diturunkan dari definisi EA/AA pada PDF hlm. 6; bukan nomor persamaan asli artikel. Contoh sintetis: |2 − 3| = 1 dan |4 − 3| = 1. Besar selisih sama walaupun arah kesalahannya berbeda.",
+          "page": 6
+        },
+        {
+          "label": "Belajar tolerance · hitung yang masuk batas",
+          "expression": "A(τ) = 100/N × Σᵢ 𝟙(|ŷ_i − y_i| ≤ τ)",
+          "latex": "A(\\tau)=\\frac{100}{N}\\sum_{i=1}^{N}\\mathbf{1}\\!\\left(|\\hat{y}_i-y_i|\\leq\\tau\\right)",
+          "variables": [
+            {
+              "symbol": "τ",
+              "meaning": "Tau: batas selisih nonnegatif dalam poin. τ=0 untuk exact; τ=1 untuk adjacent pada artikel ini."
+            },
+            {
+              "symbol": "N",
+              "meaning": "Jumlah pasangan prediksi–acuan yang sah pada satu target, bukan jumlah yang sudah lolos."
+            },
+            {
+              "symbol": "𝟙(kondisi)",
+              "meaning": "Fungsi indikator: bernilai 1 jika kondisi terpenuhi dan 0 jika tidak."
+            },
+            {
+              "symbol": "Σ",
+              "meaning": "Jumlahkan penanda lolos untuk semua pasangan."
+            },
+            {
+              "symbol": "A(τ)",
+              "meaning": "Persentase pasangan yang memenuhi batas. Tanpa faktor 100, hasilnya proporsi antara 0 dan 1."
+            }
+          ],
+          "explanation": "Rumus belajar dari definisi proporsi EA/AA di PDF hlm. 6, bukan persamaan bernomor dari penulis. τ=0 menerima hanya selisih nol; τ=1 juga menerima selisih sampai satu poin. Contoh sintetis 4 pasangan lolos dari 5 menghasilkan 80% pada τ=1. Lebih besar τ membuat kriteria lebih longgar; itu tidak mengubah prediksi model.",
+          "page": 6
+        },
+        {
           "label": "Kepadatan pronomina",
           "expression": "Pronoun density = PN / Nwords",
           "variables": [
@@ -616,6 +719,66 @@
         }
       ],
       "terms": [
+        {
+          "term": "Tolerance",
+          "meaning": "Batas selisih skor yang masih diterima pada evaluasi; dalam catatan ini ditulis τ (tau).",
+          "context": "Diterapkan sesudah prediksi tersedia. Berbeda dari toleransi optimizer atau early stopping. Pada artikel, AA menerima selisih maksimal satu poin.",
+          "page": 6
+        },
+        {
+          "term": "τ (tau)",
+          "meaning": "Lambang untuk batas tolerance, diukur dalam poin pada skala skor yang disebutkan.",
+          "context": "Nilainya ditentukan sebelum menghitung banyak prediksi yang lolos. τ=1 poin bukan 1 persen. Notasi ini dipakai sebagai alat belajar, bukan lambang asli artikel.",
+          "page": 6
+        },
+        {
+          "term": "Selisih absolut",
+          "meaning": "Besar jarak antara dua angka tanpa membedakan arah terlalu tinggi atau rendah.",
+          "context": "|4−3| dan |2−3| sama-sama 1. Jika τ=1, keduanya lolos batas. Ini penjabaran definisi AA pada paper.",
+          "page": 6
+        },
+        {
+          "term": "Poin skor",
+          "meaning": "Satuan perubahan pada skala penilaian yang dipakai.",
+          "context": "Satu poin pada 1–5 adalah satu tingkat kategori; makna praktisnya tidak otomatis sama dengan satu poin pada 0–60. Paper melaporkan beberapa rentang pada Tabel 1.",
+          "page": 6
+        },
+        {
+          "term": "Proporsi agreement",
+          "meaning": "Jumlah pasangan yang memenuhi kriteria dibagi semua pasangan evaluasi yang sah.",
+          "context": "0,96 setara 96% pasangan memenuhi batas, bukan batas tolerance 0,96 dan bukan bukti 96% benar secara mutlak.",
+          "page": 7
+        },
+        {
+          "term": "Prediksi mentah",
+          "meaning": "Keluaran numerik asli model sebelum pembulatan atau konversi kategori.",
+          "context": "Pada regresi dapat berupa pecahan atau keluar rentang. Artikel tidak merinci kebijakan konversi grade cukup lengkap; jangan mengarang aturan pembulatan sebagai metode paper.",
+          "page": 6
+        },
+        {
+          "term": "Pembulatan",
+          "meaning": "Mengubah angka pecahan ke nilai menurut aturan yang dinyatakan, misalnya ke bilangan bulat terdekat.",
+          "context": "Kebijakan ini dapat mengubah kelolosan tolerance. Contoh 4,01 vs acuan 3 gagal pada raw ±1, tetapi lolos jika dibulatkan menjadi 4; ini ilustrasi pendamping, bukan aturan artikel.",
+          "page": 6
+        },
+        {
+          "term": "Clipping",
+          "meaning": "Membatasi angka yang melewati ujung skala ke nilai minimum atau maksimum.",
+          "context": "Berbeda dari menghitung tolerance. Catatan ini tidak melakukan clipping pada output proyek; kebijakan evaluasi harus dinyatakan terpisah.",
+          "page": 6
+        },
+        {
+          "term": "Fungsi indikator",
+          "meaning": "Penanda bernilai 1 ketika syarat benar dan 0 ketika tidak.",
+          "context": "Dalam rumus belajar, syaratnya |prediksi−acuan| ≤ τ. Jumlah penanda 1 adalah banyak pasangan yang lolos.",
+          "page": 6
+        },
+        {
+          "term": "Out-of-fold",
+          "meaning": "Prediksi untuk suatu esai dari model yang dilatih tanpa memakai esai tersebut pada fold itu.",
+          "context": "Penjelasan pendamping terkait evaluasi K-fold. Dapat membantu membaca pola error di data training/pengembangan; bukan alasan mengubah kriteria sesudah melihat test akhir.",
+          "page": 6
+        },
         {
           "term": "Hybrid model",
           "meaning": "Model yang menggabungkan beberapa jenis informasi atau metode.",
@@ -653,15 +816,15 @@
           "page": 6
         },
         {
-          "term": "Exact Agreement (EA)",
-          "meaning": "Proporsi prediksi yang sama persis dengan nilai manusia.",
-          "context": "Sangat dipengaruhi rentang nilai; cocok dibaca bersama ukuran lain.",
+          "term": "Exact Agreement",
+          "meaning": "Proporsi grade sistem yang sama persis dengan grade acuan manusia.",
+          "context": "Setara batas selisih τ=0 pada nilai yang dibandingkan. Ini lebih ketat daripada AA; bentuk grade/prediksi dan aturan konversinya harus jelas. Definisi pada PDF hlm. 6, hasil pada Tabel 2.",
           "page": 6
         },
         {
-          "term": "Adjacent Agreement (AA)",
-          "meaning": "Proporsi prediksi yang berbeda paling jauh satu tingkat nilai dari manusia.",
-          "context": "Lebih toleran daripada EA, tetapi angka tinggi pada skala kecil belum cukup membuktikan kualitas.",
+          "term": "Adjacent Agreement",
+          "meaning": "Proporsi grade sistem yang berbeda paling banyak satu poin dari grade manusia pada artikel ini.",
+          "context": "Setara |prediksi−acuan| ≤ 1. Termasuk selisih nol dan tepat satu; arah lebih tinggi/rendah sama-sama dihitung. Tabel 3 melaporkan proporsi, bukan nilai batas tolerance.",
           "page": 6
         },
         {
@@ -781,6 +944,26 @@
       ],
       "findings": [
         {
+          "claim": "Batas yang dipakai: EA = selisih nol; AA = selisih maksimal satu poin, termasuk tepat pada batas.",
+          "evidence": "Definisi eksplisit bagian Assessing the hybrid AES model, PDF hlm. 6. Artikel tidak melaporkan pencarian otomatis nilai tolerance minimum/maksimum atau alasan memilih ±1 dari berbagai calon batas.",
+          "page": 6
+        },
+        {
+          "claim": "Table 3: hybrid dan DP sama-sama memiliki rata-rata AA 0,96 pada batas ±1.",
+          "evidence": "Baris Our model pada kelompok 7 = 0,82 dan 8 = 0,86; kolom Avg. = 0,96. Batas tetap satu poin sementara proporsi kelolosan berbeda perkelompok. Ini bukan EA 96%, bukan tolerance 0,96, dan tidak menunjukkan hybrid unggul AA di setiap perbandingan.",
+          "page": 7
+        },
+        {
+          "claim": "Paper sendiri memperingatkan AA saja tidak cukup karena banyak rentang skor kecil.",
+          "evidence": "PDF hlm. 6 mengaitkan perlunya QWK dengan rentang skor yang kecil. Dengan kriteria longgar, banyak pasangan dapat lolos walaupun tidak sama persis. Baca AA bersama ukuran lain dan skala; jangan menyimpulkan model sempurna hanya dari AA mendekati 1.",
+          "page": 6
+        },
+        {
+          "claim": "Tidak ada batas atas tolerance universal yang dapat disimpulkan dari artikel ini.",
+          "evidence": "Artikel memverifikasi AA ±1. Contoh ±3 berasal dari tesis M07 untuk skala empiris 2–24, bukan tambahan hasil jurnal ini. Menyebut 0–3 sebagai rentang baku AES atau rentang jurnal Scopus akan melampaui bukti yang tersedia.",
+          "page": 6
+        },
+        {
           "claim": "Hybrid memiliki rata-rata QWK tertinggi pada pembanding utama yang ditampilkan.",
           "evidence": "Tabel 4, kelompok ASAP 1, 2a, 2b, 3–8: hybrid 0,83; DP 0,81; SC 0,58; GPT-3 0,71. Ini angka kesepakatan pada konteks evaluasi tersebut, bukan persentase semua jawaban benar.",
           "page": 7
@@ -807,6 +990,9 @@
         }
       ],
       "limitations": [
+        "Definisi AA jelas ±1 poin, tetapi kebijakan mengubah keluaran regresi ke grade serta alasan optimalitas batas ±1 belum dijelaskan lengkap. Tidak ada rumus baku min–max tolerance yang dapat diambil dari artikel ini.",
+        "Makna diterima hanya berarti memenuhi batas evaluasi yang dinyatakan; tidak menjamin skor adil, rubrik dipahami, atau keputusan pendidikan layak. Skala dan kesepakatan penilai perlu dibahas.",
+        "Status Scopus/SINTA belum diverifikasi dari pengindeks resmi. Akses penerbit, indeks, dan layanan pencarian eksternal ditolak 403 pada sesi ini; jangan menganggap label jurnal sebagai bukti indeks yang sudah diperiksa.",
         "Hasil berasal dari dataset ASAP dan rentang skor yang bervariasi; tidak ada eksperimen bahasa Indonesia pada evaluasi yang ditampilkan. Transfer ke ujian lokal perlu diuji lagi. (PDF hlm. 6)",
         "Klaim unggul secara umum perlu dibaca bersama tabel perkelompok karena model tidak mengalahkan semua pembanding pada setiap kelompok. (PDF hlm. 7)",
         "Paper mengusulkan penambahan basis pengetahuan dan inferensi kebenaran klausa sebagai penelitian lanjutan; kesesuaian skor belum membuktikan kemampuan memverifikasi seluruh fakta. (PDF hlm. 8)",
@@ -817,6 +1003,11 @@
         "does_not_prove": "Tidak membuktikan GPT langsung menilai esai dengan rubrik, tidak memberi skor yang benar hanya dari cosine similarity, dan tidak menjamin performa serupa pada semua bahasa atau soal."
       },
       "reading_path": [
+        {
+          "section": "Fokus tolerance: definisi, rentang skor, dan hasil AA",
+          "pages": "6–7",
+          "goal": "Baca definisi EA/AA di hlm. 6, rentang Tabel 1, lalu Table 3 di hlm. 7. Pisahkan τ=1 poin dari proporsi kelolosan; bandingkan dengan tesis M07 yang memakai ±3 pada skala berbeda."
+        },
         {
           "section": "Fokus utama: validasi pada Random Forest Regression",
           "pages": "6",
@@ -863,7 +1054,10 @@
       ],
       "evidence_notes": [
         "Rumus fitur yang tata letaknya rusak pada ekstraksi teks tidak disalin. Pernyataan umum paper tentang kemampuan GPT/BERT dibaca sebagai argumen penulis, bukan jaminan teknis universal.",
-        "Fokus validasi regresi: laporan K-fold k = 10 berada pada PDF hlm. 6. Tabel 1 juga mencantumkan ukuran training/testing; hubungan rincinya dengan fold tidak dijelaskan lengkap. Definisi tuning/nested cross-validation dalam catatan adalah bekal metodologi, bukan metode yang ditambahkan ke eksperimen penulis."
+        "Fokus validasi regresi: laporan K-fold k = 10 berada pada PDF hlm. 6. Tabel 1 juga mencantumkan ukuran training/testing; hubungan rincinya dengan fold tidak dijelaskan lengkap. Definisi tuning/nested cross-validation dalam catatan adalah bekal metodologi, bukan metode yang ditambahkan ke eksperimen penulis.",
+        "Tambahan tolerance memparafrase definisi EA/AA pada PDF hlm. 6 serta membaca Table 3 hlm. 7. Notasi τ, rumus hitung, contoh angka sintetis, dan panduan empat trait 1–5 adalah penjelasan pendamping yang diberi label; bukan data atau prosedur baru dari penulis.",
+        "Pencarian istilah pada koleksi PDF menemukan satu artikel jurnal 2025 dengan definisi eksplisit dan satu tesis 2026 sebagai pembanding utama. Sumber lama 2005 berada di luar lima tahun terakhir. Belum tersedia survei lintas jurnal terindeks untuk menyimpulkan frekuensi atau nilai minimum/maksimum universal.",
+        "Permintaan Scopus/SINTA belum dapat dipenuhi pada tingkat verifikasi indeks: permintaan ke sumber resmi ditolak jaringan (403). Identitas dan isi PDF dapat dibaca lokal; kedua jenis bukti ini dibedakan."
       ],
       "source_kind": "individual",
       "source_page_range": {
@@ -915,27 +1109,57 @@
           "page": 7,
           "source_caption": "Table 4.  QWK for different AES approaches.",
           "asset": "scripts/assets/paper_visuals/p02_02.webp",
-          "asset_sha256": "108ac00eb106070026ad7ed28ac80bf9432a561b1137dd2ed710919ed9753ac2",
-          "width": 552,
-          "height": 254,
+          "asset_sha256": "c99a0f20a2aa6ca0efac026059f5d68dec97a304ed2d6312003355b1336c30aa",
+          "width": 776,
+          "height": 285,
           "source_crop": [
-            147.9,
-            218.5,
-            325.8,
-            300.15
+            150,
+            156,
+            385,
+            242
           ],
           "origin": "original_pdf_excerpt",
           "read_steps": [
-            "Tabel ini berisi QWK, EA, dan AA, tiga ukuran yang berbeda.",
-            "Baca QWK 0,83 pada kolomnya; angka 1,0 pada AA bukan QWK sempurna.",
-            "Perbandingan dengan sistem lain berada pada tabel lain, jadi tabel kecil ini tidak menunjukkan semua baseline."
+            "Ini Table 4 berisi QWK, bukan tabel EA/AA. Kolom 1, 2a, 2b sampai 8 adalah kelompok tugas, lalu Avg. untuk rata-rata yang dilaporkan.",
+            "Baris Our model memiliki rata-rata QWK 0,83; DP 0,81; SC 0,58; GPT-3 0,71. QWK 0,83 bukan akurasi 83% dan bukan batas tolerance.",
+            "Untuk menghitung prediksi yang masuk batas satu poin, baca Table 3 AA. Table 5 memuat eksperimen fine-tuned GPT-3 yang berbeda; jangan mencampur nilainya dengan hybrid utama."
           ],
           "sticky": {
             "title": "Baca angkanya",
             "text": "Skala dan definisi metrik menentukan arti angka. Ketiga kolom tidak bisa dipertukarkan atau otomatis disebut persentase akurasi."
           },
           "warning": "",
-          "alt": "Table 4 dari An LLM-based hybrid approach for enhanced automated essay scoring. Tabel ini berisi QWK, EA, dan AA, tiga ukuran yang berbeda."
+          "alt": "Table 4 asli Atkinson dan Palma 2025: perbandingan QWK antarpendekatan AES, dengan rata-rata hybrid 0,83."
+        },
+        {
+          "id": "p02_v3",
+          "kind": "findings",
+          "title": "Table 3 — batas ±1 dan persentase yang lolos",
+          "source_label": "Table 3",
+          "page": 7,
+          "source_caption": "Table 3. AA for different AES approaches.",
+          "asset": "scripts/assets/paper_visuals/p02_03.webp",
+          "asset_sha256": "0e4b57dfc34d82cf6480708d1d3b04e1ad2dc08182a752c5dcd2b99b7f26b19d",
+          "width": 763,
+          "height": 281,
+          "source_crop": [
+            150,
+            47,
+            381,
+            132
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Batas semua sel pada tabel ini sama: AA menerima selisih maksimal 1 poin menurut definisi hlm. 6. Judul kolom 1, 2a, 2b, dan seterusnya adalah kelompok tugas; bukan daftar nilai tolerance.",
+            "Baris Our model memiliki Avg. 0,96: rata-rata proporsi kelolosan yang dilaporkan adalah 96%. Pada kelompok 7 nilainya 0,82 dan 8 sebesar 0,86; jangan menyebut seluruh kelompok 96%.",
+            "Baris DP juga Avg. 0,96. Baca sel per kelompok dan metrik lain: AA yang sama tidak berarti prediksi identik atau QWK yang sama. Table 4 memuat QWK; Table 5 adalah eksperimen fine-tuning terpisah."
+          ],
+          "sticky": {
+            "title": "τ = batas; AA = hasil hitung",
+            "text": "±1 adalah seberapa jauh selisih masih diterima. 0,96 adalah proporsi yang memenuhi batas. Skor tidak digeser agar lolos. Tabel asli Atkinson & Palma, Scientific Reports (2025), DOI 10.1038/s41598-025-87862-3."
+          },
+          "warning": "Status indeks Scopus belum diverifikasi pada sesi ini. Paper tidak merinci kebijakan konversi keluaran regresi ke grade secara lengkap.",
+          "alt": "Table 3 asli artikel Atkinson dan Palma 2025: adjacent agreement dengan batas satu poin; Our model dan DP sama-sama rata-rata 0,96."
         }
       ]
     },
@@ -10815,7 +11039,11 @@
         "individual fairness",
         "counterfactual",
         "feedback",
-        "ASAP"
+        "ASAP",
+        "tolerance AES",
+        "adjacent agreement",
+        "batas selisih",
+        "within-one"
       ],
       "model_roles": [
         {
@@ -10860,11 +11088,39 @@
       "why_read": "Sebagai penghubung antara membaca tabel skor dan menilai apakah AES layak dipakai. Tesis menjelaskan pertanyaan yang sering tertinggal: apakah model menolak esai di luar topik, apakah esai serupa diperlakukan konsisten, dan apakah komentar mempunyai nilai belajar.",
       "research_question": "Bagaimana AES dinilai secara lebih lengkap melalui agreement, validitas input, fairness individual, serta feedback counterfactual yang dapat dijelaskan?",
       "summary": [
+        "FOKUS TOLERANCE — Ini tesis doktor Afrizal Doewes (2026), bukan artikel jurnal. Background mendefinisikan Adjacent Accuracy sebagai selisih maksimal satu poin (PDF gabungan hlm. 144–145). Bab 6 secara eksplisit memakai Acc±3: prediksi diterima bila selisih dari acuan paling banyak 3 poin pada rentang empiris 2–24 (hlm. 205–206). Contoh ini membantu memahami mengapa batas bisa berbeda, tetapi tidak memenuhi syarat artikel jurnal Scopus/SINTA.",
+        "ALASAN MEMILIH ±3 — Hlm. 205 membedakan rentang teoretis skor gabungan 0–30 dari skor yang benar-benar diamati 2–24. Hlm. 206 menjelaskan bahwa ±1 dinilai terlalu sempit untuk setting itu dan pilihan k=3 didukung RMSE yang dilaporkan sekitar 2,7–3,4 pada Table 6.2. Ini alasan khusus studi, bukan formula τ=RMSE, bukan rentang tolerance 2,7–3,4, dan bukan bukti bahwa beda 3 poin selalu layak secara pendidikan.",
+        "CARA MEMBACA HASIL — Kolom Acc±3 pada Table 6.2 memiliki batas tetap 3 poin; isi sel adalah persentase pasangan yang lolos. LASER + Gradient Boosting memberi Acc±3 = 80,82%, sedangkan SBERT + Gradient Boosting = 75,46% (global hlm. 215). Perbedaan persentase berasal dari pasangan skor yang memenuhi batas, bukan karena tiap model memakai tolerance berbeda. Angka ini berasal dari eksperimen tesis, bukan model S1/S2/S3 pengguna.",
+        "UNTUK MEMILIH BATAS SENDIRI — Penjelasan pendamping: mulai dari skala, deskriptor rubrik, dan keputusan yang timbul jika skor berbeda; diskusikan penerimaan error dengan penilai. Pola selisih penilai independen atau prediksi out-of-fold di training dapat memberi konteks empiris. Bila membandingkan beberapa calon batas, sebutkan sebagai analisis sensitivitas dan tentukan batas utama sebelum test akhir. RMSE dapat memberi konteks besar error, tetapi tidak sendirian menentukan error yang seharusnya diterima.",
         "Ini tesis dengan beberapa studi yang berhubungan, bukan satu model dengan satu tabel hasil. Bab 4 menunjukkan agreement tinggi pada test biasa belum menjamin model menangani off-topic atau gibberish. Bab 5 menguji bagaimana QWK dipengaruhi skala skor, cara menggabungkan skor manusia, dan distribusi kategori. Keduanya mendorong evaluasi yang lebih luas dari mengejar satu angka.",
         "Bab 6 menilai individual fairness: esai yang serupa seharusnya mendapat skor yang serupa. Kemiripan didefinisikan melalui representasi teks dan cosine distance, lalu diperiksa terhadap fitur interpretable, parafrasa, dan selisih output. Hasil perlu dibaca relatif terhadap ruang similarity masing-masing; persentase fairness antarembedding tidak bisa diperingkat mentah seolah menggunakan penggaris yang sama.",
         "Bab 7 mengembangkan feedback counterfactual: buat candidate perubahan, ukur apakah predicted score berubah, lalu cari sedikit perubahan yang cukup membantu. Ada retraining menggunakan esai yang diperbaiki atau dirusak serta label sintetis. Survei 138 mahasiswa pada screenshot memberi bukti persepsi clarity/usefulness, sementara dampak belajar jangka panjang dan kesesuaian perubahan skor dengan rater manusia belum dibuktikan."
       ],
       "process": [
+        {
+          "title": "Tolerance A · baca skala yang betul sebelum menyalin batas",
+          "input": "Bab 6 menggunakan skor resolved Prompt 7; skor gabungan teoretis dan rentang teramati dibedakan.",
+          "action": "Catat rentang teoretis 0–30 dan rentang empiris 2–24 pada bab ini. Penulis memilih ±3 untuk rentang empiris tersebut. Jangan menyamakan skor gabungan dari dua rater di tesis dengan empat trait 1–5 di repo pengguna, dan jangan memakai deskripsi rentang dari bab lain sebagai pengganti setting Bab 6.",
+          "output": "Konteks yang lengkap untuk membandingkan nilai tolerance antarsumber.",
+          "note": "Sticky note — Angka tolerance selalu butuh satuan dan skala. ±3 di 2–24 tidak otomatis wajar untuk 1–5. Jika prediksi dan acuan sama-sama dibatasi 1–5, jarak maksimum matematisnya 4; itu bukan batas error yang dianjurkan, dan tidak berlaku bagi raw regresi yang dapat keluar rentang.",
+          "page": 205
+        },
+        {
+          "title": "Tolerance B · pahami alasan penulis, bukan cari aturan otomatis",
+          "input": "Kriteria within-one dari background dan hasil RMSE beberapa model pada Bab 6.",
+          "action": "Penulis menyatakan ±1 bisa terlalu sempit pada skala lebar, lalu menggunakan k=3 dengan dukungan RMSE sekitar 2,7–3,4 yang disebut di hlm. 206. Baca sebagai justifikasi yang dilaporkan untuk setting tersebut. RMSE merangkum besar error; ia tidak menetapkan secara otomatis berapa error yang boleh diterima menurut rubrik.",
+          "output": "Alasan pemilihan ±3 yang dapat dilacak, dengan batas generalisasi yang jelas.",
+          "note": "Sticky note — Jangan membaca 2,7–3,4 sebagai tolerance minimum/maksimum. Itu kisaran RMSE yang disebut penulis. Tolerance yang diterapkan pada kolom tabel tetap k=3. Untuk studi sendiri, kriteria pendidikan perlu ditetapkan sebelum test akhir; jangan mengejar angka agreement tertinggi.",
+          "page": "205–206"
+        },
+        {
+          "title": "Tolerance C · hitung kelolosan pada batas yang sama",
+          "input": "Prediksi dan skor acuan dari evaluasi regresi pada Bab 6.",
+          "action": "Penjabaran definisi: hitung |prediksi−acuan|, tandai yang ≤3, lalu bagi jumlah lolos dengan jumlah pasangan evaluasi. Table 6.2 melaporkan hasil Acc±3 untuk Random Forest, Gradient Boosting, dan Ridge dengan berbagai representasi. Jangan mengubah skor menjadi mendekati acuan; cukup periksa batasnya.",
+          "output": "Persentase prediksi yang berada dalam ±3 poin, dibaca bersama QWK, Pearson, dan RMSE.",
+          "note": "Sticky note — LASER + Gradient Boosting: 80,82% adalah hasil Acc±3, bukan tolerance 80,82. Tesis tidak memberi semua pasangan individual di tabel ini, sehingga catatan tidak mengklaim menghitung ulang persentase tersebut dari data mentah.",
+          "page": 215
+        },
         {
           "title": "Tetapkan tugas dan label untuk setiap studi",
           "input": "ASAP essays, rubrik, skor dua rater, dan prompt.",
@@ -10923,6 +11179,35 @@
         }
       ],
       "formulas": [
+        {
+          "label": "Belajar tolerance · arti kolom Acc±3",
+          "expression": "Acc±3 = 100/N × Σᵢ 𝟙(|ŷ_i − y_i| ≤ 3)",
+          "latex": "\\mathrm{Acc}_{\\pm3}=\\frac{100}{N}\\sum_{i=1}^{N}\\mathbf{1}\\!\\left(|\\hat{y}_i-y_i|\\leq3\\right)",
+          "variables": [
+            {
+              "symbol": "ŷ_i, y_i",
+              "meaning": "Skor prediksi yang dibandingkan dan skor acuan pada pasangan yang sama."
+            },
+            {
+              "symbol": "3",
+              "meaning": "Batas selisih dalam poin pada setting Bab 6; bukan tiga persen."
+            },
+            {
+              "symbol": "N",
+              "meaning": "Jumlah pasangan evaluasi yang sah."
+            },
+            {
+              "symbol": "𝟙 dan Σ",
+              "meaning": "Tandai 1 bila lolos, 0 bila tidak, lalu jumlahkan."
+            },
+            {
+              "symbol": "Acc±3",
+              "meaning": "Persentase pasangan yang selisihnya paling banyak 3."
+            }
+          ],
+          "explanation": "Rumus belajar yang menyatakan definisi adjacent accuracy dari global hlm. 144–145 dengan batas Bab 6 pada 205–206; bukan persamaan bernomor yang disalin dari tesis. Table 6.2 (global 215) melaporkan hasilnya. Notasi k pada Acc±k adalah batas error, berbeda dari k pada k-fold CV yang berarti jumlah lipatan data.",
+          "page": 215
+        },
         {
           "label": "Cohen's kappa tanpa bobot (Pers. 2.3)",
           "expression": "κ = (Po − Pe)/(1 − Pe)",
@@ -10994,6 +11279,54 @@
       ],
       "terms": [
         {
+          "term": "Adjacent Accuracy",
+          "meaning": "Proporsi atau persentase prediksi yang selisihnya dari acuan tidak melebihi batas yang disebut.",
+          "context": "Background memakai within-one (±1), sedangkan Bab 6 memperluasnya menjadi Acc±3. Nama AA juga digunakan untuk Adjacent Agreement pada P02; selalu periksa definisi batasnya.",
+          "page": "144–145"
+        },
+        {
+          "term": "Acc±3",
+          "meaning": "Persentase prediksi yang berada paling jauh tiga poin dari acuan pada Bab 6.",
+          "context": "Table 6.2 menulis 80,82% untuk LASER + Gradient Boosting. Tolerance-nya 3 poin; 80,82% adalah hasil jumlah yang lolos.",
+          "page": 215
+        },
+        {
+          "term": "Acc±k",
+          "meaning": "Notasi adjacent accuracy dengan batas selisih k poin yang dinyatakan.",
+          "context": "k=3 di Bab 6 tidak sama artinya dengan 5-fold: yang satu besar selisih, yang satu jumlah bagian data untuk CV.",
+          "page": 205
+        },
+        {
+          "term": "Rentang empiris",
+          "meaning": "Nilai terkecil sampai terbesar yang benar-benar muncul pada data yang dianalisis.",
+          "context": "Bab 6 melaporkan skor teramati 2–24; berbeda dari semua skor yang mungkin menurut aturan penilaian, yaitu 0–30.",
+          "page": 205
+        },
+        {
+          "term": "Rentang teoretis",
+          "meaning": "Seluruh skor yang mungkin menurut aturan penilaian, meskipun ujungnya belum muncul pada sampel.",
+          "context": "Pada Bab 6 rentang teoretis skor gabungan adalah 0–30. Jangan mencampurkannya dengan rentang teramati atau trait 1–5 pengguna.",
+          "page": 205
+        },
+        {
+          "term": "Analisis sensitivitas batas",
+          "meaning": "Membaca bagaimana persentase kelolosan berubah ketika batas selisih yang dinyatakan diubah.",
+          "context": "Panduan metodologi pendamping, bukan eksperimen baru yang diklaim dari tesis. Kenaikan kelolosan karena batas lebih longgar tidak berarti model berubah atau makin tepat.",
+          "page": "205–206"
+        },
+        {
+          "term": "RMSE",
+          "meaning": "Akar rata-rata kuadrat selisih prediksi dan acuan; satuannya sama dengan poin skor.",
+          "context": "Penulis memakai kisaran RMSE sekitar 2,7–3,4 sebagai dukungan pemilihan ±3 pada setting ini. Itu bukan aturan universal τ=RMSE dan bukan berarti setiap error berada dalam kisaran tersebut.",
+          "page": 206
+        },
+        {
+          "term": "Tolerance",
+          "meaning": "Batas selisih yang masih dihitung memenuhi kriteria agreement setelah prediksi keluar.",
+          "context": "Di tesis ini within-one berarti ±1; Bab 6 menyatakan perluasan ±3 dengan konteks skala dan RMSE. Tesis tidak memberikan batas atas baku untuk semua AES.",
+          "page": "205–206"
+        },
+        {
           "term": "Agreement",
           "meaning": "Seberapa sesuai nilai dari dua pemberi skor.",
           "context": "Kesepakatan model-manusia pada test biasa belum menjamin validitas semua input.",
@@ -11056,6 +11389,21 @@
       ],
       "findings": [
         {
+          "claim": "Batas ±3 benar-benar diterapkan pada Bab 6; bukan hanya disebut dalam tinjauan.",
+          "evidence": "Global hlm. 205–206 menyatakan Acc±3 dan alasan pilihan k=3. Table 6.2 pada hlm. 215 memiliki kolom Acc±3; contoh LASER + Gradient Boosting = 80,82% dan SBERT + Gradient Boosting = 75,46%.",
+          "page": "205–215"
+        },
+        {
+          "claim": "Tesis memberikan contoh alasan berbasis rentang skor dan perilaku RMSE, bukan rumus tolerance optimal.",
+          "evidence": "Global hlm. 205–206 menyebut rentang empiris 2–24, keberatan terhadap ±1 yang terlalu sempit pada setting itu, dan kisaran RMSE sekitar 2,7–3,4. Ini justifikasi penulis; tidak membuktikan 3 poin layak bagi setiap keputusan pendidikan.",
+          "page": "205–206"
+        },
+        {
+          "claim": "Rentang contoh lintas dua sumber tidak boleh dijadikan klaim min–max universal atau jurnal terindeks.",
+          "evidence": "P02 adalah artikel jurnal 2025 dengan EA nol dan AA ±1. M07 adalah tesis 2026 dengan within-one dan penerapan ±3 pada skala berbeda. Identitas serta status indeksnya tidak dapat dipertukarkan.",
+          "page": "144–145"
+        },
+        {
           "claim": "Bab 4: model Prompt 6 memiliki QWK sekitar 0.7985 pada esai biasa, tetapi hanya 5.8% off-topic essay dinilai zero dalam uji yang ditetapkan.",
           "evidence": "Table 4.1 dan 4.4. Setelah memasukkan 350 off-topic examples, accuracy off-topic mencapai 97% dan QWK sekitar 0.787. Angka menunjukkan trade-off pada konfigurasi itu, bukan jaminan semua input luar distribusi tertangani.",
           "page": 171
@@ -11082,6 +11430,9 @@
         }
       ],
       "limitations": [
+        "Sumber ini tesis doktor universitas, bukan artikel jurnal Scopus/SINTA. Hasil ±3 boleh dibahas sebagai pembanding metodologi dengan label yang jelas, tetapi tidak memenuhi syarat jurnal terindeks yang diminta.",
+        "Pemilihan k=3 dijelaskan memakai rentang serta RMSE hasil eksperimen; ini bukan ambang universal atau ambang pendidikan yang telah divalidasi untuk empat trait 1–5. Tidak ada rumus otomatis tolerance minimum/maksimum.",
+        "Tabel hasil tidak menampilkan semua pasangan prediksi–acuan ataupun rincian konversi skor yang cukup untuk menghitung ulang Acc±3 secara independen dari tabel saja.",
         "Halaman 258–259: studi berpusat pada ASAP dan subset prompt; konteks budaya, bahasa, genre, dan input nonstandar belum beragam cukup untuk generalisasi luas.",
         "Halaman 258–260: individual fairness memakai machine-derived similarity tanpa validasi kesesuaian dengan judgment guru/mahasiswa; fairness kelompok demografi tidak diuji dalam analisis ini.",
         "Halaman 232–233 dan 251: label counterfactual memakai asumsi pengaruh linear/setara tiap edit; belum divalidasi sebagai skor revised essay dari manusia.",
@@ -11093,6 +11444,11 @@
         "does_not_prove": "Bukan bukti satu model memenuhi seluruh aspek agreement/fairness/feedback secara universal. Tidak membuktikan fairness demografi atau peningkatan hasil belajar nyata, dan angka lintas bab tidak berasal dari eksperimen identik."
       },
       "reading_path": [
+        {
+          "section": "Fokus tolerance: within-one, pilihan ±3, dan tabel hasil",
+          "pages": "144–145, 205–206, 215",
+          "goal": "Ikuti definisi dasar, alasan k=3, lalu kolom Acc±3 pada Table 6.2. Semua nomor merujuk PDF gabungan; lokal tesis 50–51, 111–112, dan 121."
+        },
         {
           "section": "Summary dan daftar publikasi",
           "pages": "101–106",
@@ -11165,7 +11521,10 @@
         "Bab 4 ringkasan mengatakan augmentation tidak menurunkan overall performance, tetapi tabel menunjukkan penurunan QWK pada beberapa prompt. Ringkasan hasil memakai angka aktual dan menyebut trade-off.",
         "Ada ketidakselarasan deskripsi empirical Prompt 7 range: global 168 menyebut 2–12, global 205 menyebut 2–24; Bab 7 juga melaporkan mean berbeda dari deskripsi terdahulu. Rentang dan subset harus dicocokkan dengan data sebelum replikasi; jangan menyatukan seluruh statistik sebagai satu setting.",
         "Fairness percentage hanya comparable dengan definisi distance/normalisasi yang sesuai; global 215 secara eksplisit melarang perbandingan mentah lintas text representation.",
-        "URL saat ini menuju portal publikasi universitas; DOI/tautan record spesifik belum diverifikasi dari sumber resmi."
+        "URL saat ini menuju portal publikasi universitas; DOI/tautan record spesifik belum diverifikasi dari sumber resmi.",
+        "Tambahan tolerance membaca global 144–145 (within-one), 205–206 (skala dan justifikasi k=3), 215 (Table 6.2). PDF tesis terpisah memakai halaman berkas 50–51, 111–112, 121; halaman global = halaman berkas terpisah +94. Halaman cetak berbeda lagi.",
+        "Rumus Acc±3 adalah penjabaran untuk belajar. Tidak menjalankan ulang eksperimen tesis dan tidak mengubah label, output model, atau metrik pipeline AES pengguna.",
+        "Rentang RMSE sekitar 2,7–3,4 dilaporkan dalam prosa penulis pada global 206; nilai rinci pada Table 6.2 termasuk 3,419. Jangan mengubah kisaran perkiraan itu menjadi batas tolerance 2,7 sampai 3,4."
       ],
       "source_page_range": {
         "start": 95,
@@ -11233,6 +11592,36 @@
           },
           "warning": "",
           "alt": "Figure 5.3 dari Rethinking Automated Essay Scoring: Agreement, Fairness, and Feedback. Sel matriks menghitung agreement dua pemberi skor pada kategori 1–4."
+        },
+        {
+          "id": "m07_v3",
+          "kind": "findings",
+          "title": "Table 6.2 — baca Acc±3 bersama RMSE",
+          "source_label": "Table 6.2",
+          "page": 215,
+          "source_caption": "Table 6.2: Performance of regression models using different text features. Human–human agreement (QWK = 0.721) is used as the baseline for computing degradation.",
+          "asset": "scripts/assets/paper_visuals/m07_03.webp",
+          "asset_sha256": "cc6d5e0f134d1debb0e4b4121cc918d35b6e3ba4c9d671c84a9ae62890378df4",
+          "width": 1159,
+          "height": 575,
+          "source_crop": [
+            59,
+            120,
+            410,
+            294
+          ],
+          "origin": "original_pdf_excerpt",
+          "read_steps": [
+            "Features adalah representasi teks dan Model adalah prediktor regresi. Kolom Acc±3 memakai satu batas yang sama, yaitu selisih maksimal 3 poin. Rentang empiris setting ini 2–24 (global hlm. 205).",
+            "Pada LASER + Gradient Boosting, Acc±3 = 80,82% dan RMSE = 2,728. Angka 80,82 adalah persentase pasangan yang lolos, 3 adalah batasnya, dan 2,728 adalah ringkasan besar error; ketiganya punya makna berbeda.",
+            "Pada SBERT + Gradient Boosting, Acc±3 = 75,46%, QWK = 0,722, Pearson = 0,757, RMSE = 2,998. Baca beberapa kolom sekaligus; AA tinggi tidak otomatis berarti fairness terpenuhi. Analisis fairness berada pada tabel terpisah."
+          ],
+          "sticky": {
+            "title": "Kenapa batasnya 3?",
+            "text": "Penulis menyebut rentang skor lebar serta RMSE sekitar 2,7–3,4 (global 205–206). Ini alasan setting tesis, bukan aturan τ=RMSE. Sumber asli: Afrizal Doewes, tesis doktor TU/e (2026), Table 6.2, global PDF 215."
+          },
+          "warning": "Tesis, bukan artikel jurnal Scopus/SINTA. Jangan menyalin ±3 ke trait 1–5 tanpa alasan berbasis rubrik. Potongan tabel ini adalah sumber asli, bukan hasil model pengguna.",
+          "alt": "Table 6.2 asli tesis Doewes 2026: QWK, Pearson, Acc plus minus tiga, dan RMSE untuk kombinasi fitur dan model regresi."
         }
       ]
     },
