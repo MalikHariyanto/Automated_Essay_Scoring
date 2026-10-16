@@ -1,5 +1,7 @@
 # Bukti verifikasi notebook dataset guru 300
 
+**Perbaikan 17 Oktober 2026:** setup notebook03 kini mendukung Python3.13 selain3.12. [Bukti verifikasi perbaikan](verification_dataset300_python313.md). Laporan di bawah mencatat versi awal16 Oktober; hash notebook awal bukan hash versi perbaikan.
+
 Verifikasi 16 Oktober 2026, checkout `codex/aes-learning`, basis perubahan `1874e60ae01dbebc93162139920cd59854fce6b3`. Pengujian dilakukan dari root repo `/workspace/Automated_Essay_Scoring`. Bukti rinci dan hasil berisi data pribadi tetap di `outputs/teacher_dataset300/`, di luar publikasi.
 
 ## Yang benar-benar dijalankan

@@ -1,6 +1,6 @@
 # Colab terbaru: satu skor guru, tiga skenario
 
-Buka [03_AES_dataset_guru_300.ipynb di Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/03_AES_dataset_guru_300.ipynb). Upload `fix_dataset_300.xlsx` pada cell input, lalu jalankan berurutan. Gunakan runtime GPU dan Python 3.12. Jangan menerbitkan notebook yang sudah berisi teks/nilai siswa.
+Buka [03_AES_dataset_guru_300.ipynb di Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/03_AES_dataset_guru_300.ipynb). Upload `fix_dataset_300.xlsx` pada cell input, lalu jalankan berurutan. Gunakan runtime GPU; Python **3.12 dan 3.13** didukung dengan dependency yang dipilih otomatis. Jangan menerbitkan notebook yang sudah berisi teks/nilai siswa.
 
 Ini penyesuaian khusus permintaan dataset terbaru, dengan scope `teacher_single_score_dataset300`. Pipeline lama empat trait 1–5, notebook 01/02 dan HTML pembelajarannya tetap mempunyai cakupan semula. Kode baru tidak mengubah label/rubrik lama atau menyebut hasil latihan AI sebagai nilai guru.
 
@@ -98,6 +98,8 @@ outputs/dataset300_env/bin/python scripts/dataset300_step.py predict --config ou
 outputs/dataset300_env/bin/python scripts/dataset300_step.py vectors --config outputs/dataset300/notebook_config.json
 ```
 
-Konfigurasi efektif tercatat pada folder run. Setup menggunakan venv baru dengan akses site-packages runtime untuk mempertahankan torch GPU, lalu memasang versi NumPy/Pandas/Transformers worker yang dipatok. Tidak memakai environment CPU notebook lama. Python kernel tetap hanya menjalankan stdlib/IPython dan subprocess.
+Konfigurasi efektif tercatat pada folder run. Setup menggunakan venv baru dengan akses site-packages runtime untuk mempertahankan torch GPU, lalu memasang versi NumPy/Pandas/Transformers worker yang dipatok. Python3.12 memakai Transformers4.44.2, sedangkan Python3.13 memakai4.48.3 karena tokenizers versi lama tidak menyediakan wheel3.13. Kedua environment dipisahkan: `outputs/dataset300_env` dan `outputs/dataset300_env_py313`. Notebook membaca path worker hasil setup dari `outputs/dataset300_setup.json`; perintah CLI contoh di atas memakai path3.12, ganti dengan path3.13 bila itu runtime aktif. Tidak memakai environment CPU notebook lama. Python kernel tetap hanya menjalankan stdlib/IPython dan subprocess.
+
+Jika notebook lama berhenti pada `CalledProcessError` dan traceback menunjukkan `/usr/lib/python3.13`, buka ulang notebook terbaru dari link Colab di atas. Jalankan kembali dari cell pertama untuk mengambil source terbaru, lalu setup. Versi baru mendukung3.13 dan menyertakan rincian log jika instalasi gagal, sehingga penyebab tidak tertutup oleh traceback subprocess umum. Perubahan source di GitHub tidak otomatis mengganti cell pada tab lama yang sudah terbuka.
 
 Pengujian publik `tests/test_teacher_score.py` menggunakan workbook sintetis dan transformer kecil **berbobot acak** dengan bentuk output yang sesuai. Test memeriksa mapping, split, gradien/freeze, perhitungan metrik, save/reload, CV/refit/resume dan offset vektor; angka test bukan performa penelitian. Eksekusi notebook audit-only membaca Excel unggahan asli tanpa mengunduh checkpoint. Lihat [bukti verifikasi](verification_dataset300.md) untuk yang benar-benar dijalankan; hasil penelitian membutuhkan training checkpoint asli di runtime dengan akses Hugging Face.

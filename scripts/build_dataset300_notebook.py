@@ -21,7 +21,7 @@ def build():
 
     **Cakupan baru: satu skor guru.** Dataset menyediakan `rater`, bukan empat label isi/organisasi/kebahasaan/mekanik. Output tiap skenario `[N,1]`. Notebook lama empat dimensi tetap tersedia dan tidak diubah.
 
-    Pilih **Runtime → Change runtime type → GPU (T4 atau lebih besar), Python 3.12**. BGE-M3 membutuhkan unduhan besar dan RAM; 15 latihan CV + 3 refit dapat melewati satu sesi gratis. Hasil fold disimpan untuk melanjutkan konfigurasi yang sama. CPU bisa dipakai tetapi sangat lambat. Gunakan runtime baru untuk menghindari paket kernel lama.
+    Pilih **Runtime → Change runtime type → GPU (T4 atau lebih besar)**. Setup mendukung **Python 3.12 maupun 3.13** dan memilih dependency yang sesuai otomatis. BGE-M3 membutuhkan unduhan besar dan RAM; 15 latihan CV + 3 refit dapat melewati satu sesi gratis. Hasil fold disimpan untuk melanjutkan konfigurasi yang sama. CPU bisa dipakai tetapi sangat lambat. Gunakan runtime baru untuk menghindari paket kernel lama.
 
     File siswa, email, output terisi, dan checkpoint **tetap privat**. GitHub hanya menyimpan kode dan notebook kosong. Notebook ini akan menjalankan training sungguhan; angka penelitian baru muncul setelah proses itu selesai, bukan dari contoh simulasi.
     ''')
@@ -81,8 +81,18 @@ def build():
     code('''
     PYTHON = os.environ.get('AES300_PYTHON', '')
     if not PYTHON:
-        subprocess.run([sys.executable, str(ROOT/'scripts/setup_dataset300.py')], cwd=ROOT, check=True)
-        PYTHON = str(ROOT/'outputs/dataset300_env/bin/python')
+        setup_log = []
+        process = subprocess.Popen([sys.executable, str(ROOT/'scripts/setup_dataset300.py')],
+                                   cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        for line in process.stdout:
+            print(line, end='', flush=True)
+            setup_log.append(line)
+        if process.wait() != 0:
+            raise RuntimeError('Setup AES gagal. Rincian terakhir: '+''.join(setup_log[-15:]))
+        ready = json.loads((ROOT/'outputs/dataset300_setup.json').read_text())
+        if ready['runtime_version'] != list(sys.version_info[:2]) or not ready['imports_verified']:
+            raise RuntimeError('Metadata setup tidak cocok runtime aktif.')
+        PYTHON = ready['python']
     CHILD_ENV = {**os.environ, 'PYTHONPATH': str(ROOT/'src'),
                  'HF_HOME': str(ROOT/'outputs/cache/huggingface'),
                  'OMP_NUM_THREADS': '2', 'MKL_NUM_THREADS': '2', 'TOKENIZERS_PARALLELISM': 'false'}
@@ -372,7 +382,7 @@ def build():
         print('Audit selesai; belum ada hasil evaluasi penelitian untuk diunduh.')
     ''')
     notebook = {'cells': cells, 'metadata': {'kernelspec': {'display_name': 'Python 3', 'language': 'python', 'name': 'python3'},
-                 'language_info': {'name': 'python', 'version': '3.12'}, 'colab': {'name': '03_AES_dataset_guru_300.ipynb'}},
+                 'language_info': {'name': 'python'}, 'colab': {'name': '03_AES_dataset_guru_300.ipynb'}},
                 'nbformat': 4, 'nbformat_minor': 4}
     content = json.dumps(notebook, ensure_ascii=False, indent=1)+'\n'
     for folder in ('notebooks', 'aes-learning/notebooks'):
