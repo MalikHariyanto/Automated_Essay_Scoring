@@ -1,0 +1,74 @@
+{
+  "scope": "Exact upstream source archives on new independent branches; publication checks only, no model training/evaluation. User authorized copying both public repositories.",
+  "command": "Native git push/ls-remote; compare raw GitHub files with git show HEAD:path in upstream clone.",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "exit_code": 0,
+  "archives": [
+    {
+      "branch": "sources/asap-trait-scoring",
+      "url": "https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/sources/asap-trait-scoring",
+      "upstream": "https://github.com/robert1ridley/cross-prompt-trait-scoring",
+      "upstream_commit": "981ec606f039c5b3ee163b5b474e4329d9ebbd17",
+      "published_branch_sha": "981ec606f039c5b3ee163b5b474e4329d9ebbd17",
+      "tree_sha": "fb02e6d913767f0fb93a327b55ac78cfbd1c61f1",
+      "history_commit_count": 7,
+      "files_checked": [
+        {
+          "path": "README.md",
+          "bytes": 1781,
+          "sha256": "2e662dd81db00c2947150a09e55d1b483fc7f3447c62947673d63b45d6c81537",
+          "matches_upstream": true
+        },
+        {
+          "path": "arrange_data.py",
+          "bytes": 6092,
+          "sha256": "652f985812337bb3842f00490b3fad0c0215df091754284445dd59f6cbdbe932",
+          "matches_upstream": true
+        },
+        {
+          "path": "data/training_set_rel3.tsv",
+          "bytes": 16337165,
+          "sha256": "cf04127eaff3224ce4aab64654e62e5738d3d672c61bb998546dd1674c60d312",
+          "matches_upstream": true
+        }
+      ]
+    },
+    {
+      "branch": "sources/ellipse-corpus",
+      "url": "https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/sources/ellipse-corpus",
+      "upstream": "https://github.com/scrosseye/ELLIPSE-Corpus",
+      "upstream_commit": "dc3b8f0b3b4332fc9f64302c4ccfc4ed582f4b43",
+      "published_branch_sha": "dc3b8f0b3b4332fc9f64302c4ccfc4ed582f4b43",
+      "tree_sha": "432564a202bdf1cb438b15cbdacc7cfe36efa535",
+      "history_commit_count": 16,
+      "files_checked": [
+        {
+          "path": "README.md",
+          "bytes": 2666,
+          "sha256": "181fe4d9d6ebbce4a64de2a56f1a0afc9df19989e453dcf7f36db55614da0fed",
+          "matches_upstream": true
+        },
+        {
+          "path": "ELLIPSE_Final_github_train.csv",
+          "bytes": 9861486,
+          "sha256": "782344e99668a3ff508d7410c0eb6e36da70f3b28f81c96e367f1ca04924b06c",
+          "matches_upstream": true
+        },
+        {
+          "path": "ELL_Rubrics.docx",
+          "bytes": 17420,
+          "sha256": "0c0ac5dfa6ae89c9c99ffe483c13ea4a57e8152a1472797e1fe361c2c203efdc",
+          "matches_upstream": true
+        }
+      ]
+    }
+  ],
+  "passed": [
+    "Both new branch SHAs match upstream HEAD",
+    "Original complete reachable history preserved",
+    "Six raw GitHub files match original bytes"
+  ],
+  "failed": [],
+  "skipped": [],
+  "xfailed": []
+}
