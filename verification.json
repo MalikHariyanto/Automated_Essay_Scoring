@@ -1,0 +1,86 @@
+{
+  "scope": "Public external datasets converted to Excel at user request; no research training or active-data changes.",
+  "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python outputs/dataset_excel_publish/export_datasets_excel.py --asap outputs/dataset_search/cts_data_training_set_rel3.tsv --ellipse outputs/dataset_search/ELLIPSE_Final_github_train.csv --output outputs/dataset_excel_publish/files",
+  "cwd": "/workspace/Automated_Essay_Scoring",
+  "exit_code": 0,
+  "source_digests": {
+    "ASAP_TSV": "cf04127eaff3224ce4aab64654e62e5738d3d672c61bb998546dd1674c60d312",
+    "ELLIPSE_CSV": "782344e99668a3ff508d7410c0eb6e36da70f3b28f81c96e367f1ca04924b06c"
+  },
+  "workbooks": {
+    "ASAP_Train_dan_Prompt7.xlsx": {
+      "bytes": 5453559,
+      "sha256": "b5da716faae7bc6aede6127340e81827670545da7079ed07d0654297bae86f82",
+      "sheets_checked": {
+        "Prompt7_4dimensi": {
+          "data_rows": 1569,
+          "columns": 6,
+          "all_cells_match": true,
+          "source_text_not_interpreted_as_formulas": true
+        },
+        "Penilai_Prompt7": {
+          "data_rows": 1569,
+          "columns": 9,
+          "all_cells_match": true,
+          "source_text_not_interpreted_as_formulas": true
+        },
+        "ASAP_semua_asli": {
+          "data_rows": 12976,
+          "columns": 28,
+          "all_cells_match": true,
+          "source_text_not_interpreted_as_formulas": true
+        }
+      }
+    },
+    "ELLIPSE_Train.xlsx": {
+      "bytes": 3484047,
+      "sha256": "3289aa99480b77b8630c69e85fae8adc287954ab18afb1c017e08692e8cedca7",
+      "sheets_checked": {
+        "Skor_6dimensi": {
+          "data_rows": 3911,
+          "columns": 8,
+          "all_cells_match": true,
+          "source_text_not_interpreted_as_formulas": true
+        },
+        "Train_asli": {
+          "data_rows": 3911,
+          "columns": 26,
+          "all_cells_match": true,
+          "source_text_not_interpreted_as_formulas": true
+        }
+      }
+    }
+  },
+  "conversion": {
+    "asap_prompt7": "Two human rater scores summed per trait, per source arrange_data.py; 0–6 scale.",
+    "ellipse": "Original six human analytic scores preserved, including halves.",
+    "missing_labels_filled": false,
+    "original_texts_modified": false,
+    "scale_normalized": false
+  },
+  "passed": [
+    "All 12,976 ASAP source rows and all 3,911 ELLIPSE train rows preserved",
+    "Every exported data cell verified by independently reopening Excel with openpyxl",
+    "All 1,569 Prompt 7 four-trait sums and individual raters verified",
+    "No essay truncation, Excel formulas, macros or automatic text hyperlinks"
+  ],
+  "failed": [],
+  "skipped": [],
+  "xfailed": [],
+  "versions": {
+    "xlsxwriter": "3.2.9",
+    "openpyxl": "3.1.5"
+  },
+  "zip": {
+    "file": "dataset_excel.zip",
+    "bytes": 8637421,
+    "sha256": "514c24996f9dff1bc3dfd4ae791f4f156f29d9e030a83c0487c7a6dcd0786cf2",
+    "members": [
+      "ASAP_Train_dan_Prompt7.xlsx",
+      "ELLIPSE_Train.xlsx",
+      "README.md"
+    ],
+    "member_bytes_match": true
+  },
+  "initial_check_and_resolution": "Initial full-cell check found CR newlines serialized by writer in OOXML escaped string notation. Serialization changed to XML character references for cross-reader compatibility. Full-cell checks subsequently passed without changing source values."
+}
