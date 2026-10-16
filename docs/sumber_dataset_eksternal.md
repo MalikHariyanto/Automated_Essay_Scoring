@@ -14,6 +14,25 @@ tidak menambah repositori terpisah berstatus fork pada profil GitHub. Arsip tida
 otomatis mengikuti perubahan pembuat sumber. Kode penelitian AES tetap berada
 di branch `codex/aes-learning`.
 
+## Unduh versi Excel
+
+Konversi `.xlsx` tersedia pada branch
+[datasets/excel](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/datasets/excel):
+
+- [ASAP_Train_dan_Prompt7.xlsx](https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/datasets/excel/ASAP_Train_dan_Prompt7.xlsx): tab aktif `Prompt7_4dimensi`
+  memuat 1.569 esai dan empat skor 0–6; tab lain memuat kedua penilai serta
+  seluruh 12.976 baris sumber TSV.
+- [ELLIPSE_Train.xlsx](https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/datasets/excel/ELLIPSE_Train.xlsx): tab aktif `Skor_6dimensi`
+  memuat 3.911 esai dan enam skor 1–5, termasuk setengah poin; tab lain
+  memuat seluruh kolom sumber CSV.
+- [ZIP berisi kedua Excel](https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/datasets/excel/dataset_excel.zip).
+
+Tautan tersebut mengunduh file biner, bukan menampilkan TSV/CSV sebagai teks.
+Simpan dan buka dengan Excel atau LibreOffice. Semua sel data diperiksa dengan
+membuka kembali workbook dan mencocokkannya dengan sumber. Sumber asli dan
+riwayat kedua repo tetap utuh di branch arsip. Bukti unduhan tercatat pada
+[laporan verifikasi Excel](verification/dataset_excel_downloads.json).
+
 ## Pengolahan dimensi ASAP
 
 - Sumber asli: [robert1ridley/cross-prompt-trait-scoring](https://github.com/robert1ridley/cross-prompt-trait-scoring).

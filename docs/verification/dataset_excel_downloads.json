@@ -1,0 +1,48 @@
+{
+  "branch": "datasets/excel",
+  "local_sha": "69e38b3026f427b260f2e7132e32f23aa5e7133a",
+  "remote_sha": "69e38b3026f427b260f2e7132e32f23aa5e7133a",
+  "download_files": [
+    {
+      "file": "ASAP_Train_dan_Prompt7.xlsx",
+      "bytes": 5453559,
+      "sha256": "b5da716faae7bc6aede6127340e81827670545da7079ed07d0654297bae86f82",
+      "content_type": "application/octet-stream",
+      "url": "https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/datasets/excel/ASAP_Train_dan_Prompt7.xlsx",
+      "remote_bytes_match": true
+    },
+    {
+      "file": "ELLIPSE_Train.xlsx",
+      "bytes": 3484047,
+      "sha256": "3289aa99480b77b8630c69e85fae8adc287954ab18afb1c017e08692e8cedca7",
+      "content_type": "application/octet-stream",
+      "url": "https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/datasets/excel/ELLIPSE_Train.xlsx",
+      "remote_bytes_match": true
+    },
+    {
+      "file": "dataset_excel.zip",
+      "bytes": 8637421,
+      "sha256": "514c24996f9dff1bc3dfd4ae791f4f156f29d9e030a83c0487c7a6dcd0786cf2",
+      "content_type": "application/zip",
+      "url": "https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/datasets/excel/dataset_excel.zip",
+      "remote_bytes_match": true
+    },
+    {
+      "file": "README.md",
+      "bytes": 4271,
+      "sha256": "1b272fddd2ef5d03dd8ee096198299d29ab820d475d1d8ef0dfbbefae7c7317e",
+      "content_type": "text/plain; charset=utf-8",
+      "url": "https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/datasets/excel/README.md",
+      "remote_bytes_match": true
+    },
+    {
+      "file": "verification.json",
+      "bytes": 3357,
+      "sha256": "3470a3142694952d4e1b99dc44f4ebde88f70b9e694fc5c9bc7489b5b1921a61",
+      "content_type": "text/plain; charset=utf-8",
+      "url": "https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/datasets/excel/verification.json",
+      "remote_bytes_match": true
+    }
+  ],
+  "verified": true
+}
