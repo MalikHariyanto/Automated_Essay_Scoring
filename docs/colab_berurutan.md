@@ -1,5 +1,7 @@
 # Menjalankan notebook Colab dari atas
 
+Untuk permintaan terbaru memakai `fix_dataset_300.xlsx` dan notebook BGE-M3 unggahan, buka [notebook 03 dataset guru 300](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/03_AES_dataset_guru_300.ipynb), dengan [panduan khusus](dataset_guru_300.md). Notebook tersebut memakai satu skor guru 0–100, GPU yang tersedia, dan split kelompok + 5-fold CV. Instruksi berikut berlaku untuk notebook lama empat trait; jangan mencampur skala/label kedua workflow.
+
 Buka [notebook utama](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/01_belajar_alur_AES.ipynb). Salinan lama yang tersimpan di `aes-learning/notebooks/` telah disamakan; gunakan link utama untuk belajar berikutnya. Perubahan di GitHub tidak otomatis mengganti cell pada tab Colab yang sudah terbuka.
 
 1. Pilih **Runtime → Change runtime type → CPU**, dan **Runtime version 2026.07** (Python 3.12.13). Daftar versi berasal dari [repo resmi Colab](https://github.com/googlecolab/backend-info#colabs-past-runtime-versions).

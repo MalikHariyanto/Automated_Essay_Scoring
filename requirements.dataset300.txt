@@ -1,0 +1,11 @@
+# Torch dipertahankan dari runtime Colab supaya CUDA tidak diganti wheel CPU.
+# Tanpa torch, setup memasang torch 2.6.0 CPU sebelum file ini.
+numpy==2.2.6
+pandas==2.2.3
+scipy==1.15.3
+scikit-learn==1.6.1
+transformers==4.44.2
+openpyxl==3.1.5
+pytest==8.3.5
+nbformat==5.10.4
+nbclient==0.10.2
