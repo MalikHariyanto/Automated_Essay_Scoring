@@ -147,15 +147,25 @@ def build():
             return
         keys = list(dict.fromkeys(k for row in rows for k in row))
         render = lambda x: html.escape(json.dumps(x, ensure_ascii=False) if isinstance(x,(list,dict)) else str(x))
-        content = '<table><thead><tr>'+''.join('<th>'+render(k)+'</th>' for k in keys)+'</tr></thead><tbody>'
-        content += ''.join('<tr>'+''.join('<td>'+render(row.get(k,''))+'</td>' for k in keys)+'</tr>' for row in rows)
-        display(HTML('<div style="overflow:auto;max-height:480px">'+content+'</tbody></table></div>'))
+        th = 'background:#172035!important;color:#ffffff!important;padding:10px;text-align:left;border:1px solid #64748b;white-space:nowrap'
+        td = 'background:#f8fafc!important;color:#172035!important;padding:10px;text-align:left;border:1px solid #cbd5e1;vertical-align:top'
+        content = '<table style="border-collapse:collapse;font:14px/1.6 sans-serif"><thead><tr>'+''.join('<th style="'+th+'">'+render(k)+'</th>' for k in keys)+'</tr></thead><tbody>'
+        content += ''.join('<tr>'+''.join('<td style="'+td+'">'+render(row.get(k,''))+'</td>' for k in keys)+'</tr>' for row in rows)
+        display(HTML('<div style="overflow:auto;max-height:480px;background:#f8fafc!important;color:#172035!important;border:1px solid #cbd5e1;border-radius:8px">'+content+'</tbody></table></div>'))
+
+    def readable_text(text, code=False):
+        background, foreground = ('#101827','#e5edf9') if code else ('#f8fafc','#172035')
+        style = ('background:'+background+'!important;color:'+foreground+'!important;'
+                 'padding:16px;border:1px solid #64748b;border-radius:8px;'
+                 'white-space:pre-wrap;overflow-wrap:anywhere;max-height:480px;overflow:auto;'
+                 'font:14px/1.7 monospace;text-align:left')
+        display(HTML('<pre style="'+style+'">'+html.escape(text)+'</pre>'))
 
     def show_code(relative, start, stop=None):
         source = (ROOT/relative).read_text()
         begin = source.index(start)
         end = source.index(stop, begin+len(start)) if stop else len(source)
-        display(Code(source[begin:end], language='python'))
+        readable_text(source[begin:end], code=True)
     print('File privat tersedia; SHA256:', hashlib.sha256(DATA_PATH.read_bytes()).hexdigest())
     ''')
     md('''
@@ -172,7 +182,8 @@ def build():
     audit = load_result('dataset_audit.json')
     table([audit])
     preview = load_result('preview.json')
-    display(HTML('<h4>Satu jawaban held-out · hanya di runtime privat</h4><pre style="white-space:pre-wrap;max-height:280px;overflow:auto">'+html.escape(preview['text'])+'</pre>'))
+    print('Satu jawaban held-out · hanya di runtime privat')
+    readable_text(preview['text'])
     print('Skor guru contoh:', preview['teacher_score'], '| Tidak digunakan untuk memilih epoch/model.')
     ''')
     md('''
@@ -349,7 +360,7 @@ def build():
                    "    with np.load(folder/(model+'_vectors.npz'), allow_pickle=False) as data:",
                    "        print(model, data['word_contextual'].shape)",
                    "        print(data['word_contextual'][0])  # seluruh koordinat kata pertama"]
-        display(Code('\n'.join(snippet), language='python'))
+        readable_text('\n'.join(snippet), code=True)
         archive = OUTPUT/'hasil_vektor_privat.zip'
         with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as target:
             for file in (RUN_FOLDER/'vectors'/VECTOR_SOURCE).iterdir():
