@@ -54,7 +54,8 @@ def saved_outputs(tmp_path):
     for index,scenario in enumerate(['S1','S2','S3']):
         predictions=np.array([81.125+index,88.375-index])
         save(f'11_{scenario}_test',{'Prediksi_test':pd.DataFrame({'row_id':ids,'skor_guru':[80,90],
-            'prediksi_mentah':predictions,'selisih_mentah':predictions-np.array([80,90])})})
+            'prediksi_mentah':predictions,'kategori_QWK_AC2':np.floor(predictions+.5),
+            'selisih_mentah':predictions-np.array([80,90])})})
         evaluations.append({'Skenario':scenario,'QWK':.7+index/100,'AC2':.8,'RMSE':2.125+index,
                             'Pearson':.9,'out_of_range_fraction':.1,'undefined_reasons':{}})
         for fold in range(1,6):
@@ -93,6 +94,10 @@ def test_five_reports_copy_numbers_and_combine_folds(saved_outputs,tmp_path):
     pairs=pd.read_excel(folder/'04_Prediksi_dan_Evaluasi.xlsx',sheet_name='Nilai Guru dan Prediksi')
     assert pairs['Prediksi S1'].tolist()==[81.125,88.375]
     assert pairs['Selisih S1'].tolist()==[1.125,-1.625]
+    assert pairs['Nilai Guru'].tolist()==[80,90]
+    assert pairs['Pembulatan S1'].tolist()==[81,88]
+    assert pairs['Pembulatan S2'].tolist()==[82,87]
+    assert pairs['Pembulatan S3'].tolist()==[83,86]
     history=pd.read_excel(folder/'05_Riwayat_Pelatihan.xlsx',sheet_name='RoBERTa (S1)')
     assert len(history)==11 and set(history.Tahap)=={'Validasi silang','Latihan final'}
     words=pd.read_excel(folder/'03_Vektor_Kata_dan_Kalimat.xlsx',sheet_name='Kata RoBERTa Sebelum')

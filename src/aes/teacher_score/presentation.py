@@ -30,6 +30,7 @@ LABELS = {'row_id':'ID Jawaban','word':'Kata','covered':'Tercakup','word_index':
           'rows':'Jumlah Jawaban','file':'File Hasil','stage':'Isi File','status':'Keadaan',
           'sheets_and_shapes':'Tabel yang Tersimpan','epoch':'Epoch',
           'train_mse_scaled':'Loss Latih (MSE)','target_loss':'Nilai untuk Menghitung Loss',
+          'best_epoch_so_far':'Epoch Terbaik Sejauh Ini','epochs_without_improvement':'Epoch Tanpa Perbaikan',
           'selisih_mentah':'Selisih Prediksi − Guru','berubah':'Teks Dibersihkan?',
           'token_index':'Urutan Token','start':'Awal Teks','end':'Akhir Teks',
           'token_indices':'Urutan Potongan Token','token_ids':'ID Potongan Token',
@@ -205,13 +206,15 @@ def answer_vectors_report(source):
               ('06_bge_frozen.xlsx','Vektor_jawaban_1024','BGE-M3'),
               ('14_S1_fitur_setelah_training.xlsx','roberta','RoBERTa S1 Setelah Latihan'),
               ('14_S3_fitur_setelah_training.xlsx','roberta','RoBERTa S3 Setelah Latihan'),
+              ('14_S3_fitur_setelah_training.xlsx','roberta_layernorm','RoBERTa S3 Setelah LayerNorm'),
               ('14_S3_fitur_setelah_training.xlsx','concat','Fusion S3')]
     sheets={'Panduan':guide('Satu baris adalah vektor satu jawaban. Semua komponen angka disimpan.',[
         ['Komponen 1, 2, ...','Satu komponen adalah satu angka dalam vektor; tidak mempunyai arti tetap seperti isi atau tata bahasa.'],
         ['Nama kolom lama','Komponen 1 adalah v_0000 pada file lama. Hanya namanya berubah, angkanya tetap.'],
         ['RoBERTa','768 angka per jawaban. Bandingkan ID Jawaban yang sama sebelum dan sesudah latihan.'],
         ['BGE-M3','1024 angka per jawaban. Bobot encoder tetap, sehingga tidak perlu disalin berulang untuk S2 dan S3.'],
-        ['Fusion S3','Gabungan 768 angka RoBERTa dan 256 angka hasil proyeksi BGE. Hasilnya 1024 komponen.'],
+        ['Fusion S3','Gabungan 768 angka RoBERTa setelah LayerNorm tambahan dan 256 angka hasil proyeksi BGE. Hasilnya 1024 komponen.'],
+        ['LayerNorm tambahan','Sheet RoBERTa S3 Setelah Latihan menyimpan vektor asli; sheet Setelah LayerNorm menyimpan vektor yang masuk concat. Pada hasil versi lama, sheet tambahan ini belum ada.'],
         ['Batas perbandingan','Jangan menghitung cosine langsung antarruang RoBERTa dan BGE. Vektor bukan skor siswa.']])}
     for file,raw,title in mappings:
         if source.has(file,raw):sheets[title]=source.copy(file,raw)
@@ -276,6 +279,7 @@ def evaluation_report(source):
         ['S1, S2, S3','S1 = RoBERTa; S2 = BGE-M3; S3 = fusion keduanya.'],
         ['Data uji','Angka test untuk laporan akhir. Pemilihan model/epoch memakai validasi silang, bukan tuning dari test.'],
         ['Skor mentah','Disimpan persis dari hasil sumber. Tampilan empat desimal tidak mengubah angka yang tersimpan.'],
+        ['Pembulatan','Prediksi dibatasi ke 0–100, lalu dipilih integer terdekat. Tepat .5 ke bawah. Ini salinan untuk QWK/AC2; RMSE dan Pearson tetap memakai prediksi mentah.'],
         ['Ringkasan Validasi','Rata-rata ± SD antar-fold; bukan interval kepercayaan. Nilai mentah tiap-fold ada di Hasil Tiap Fold.']])}
     if source.has(file,'TEST_final'):
         def final_rows():
@@ -306,16 +310,20 @@ def evaluation_report(source):
             item=predicted.setdefault(row['row_id'],{'teacher':row['skor_guru']})
             if item['teacher']!=row['skor_guru']:raise ValueError('Nilai guru antarfile test berbeda.')
             item[scenario]=row['prediksi_mentah']
+            item['pembulatan_'+scenario]=row.get('kategori_QWK_AC2')
             item['selisih_'+scenario]=row.get('selisih_mentah',row.get('selisih'))
     if predicted:
         def per_answer():
             for identifier,row in predicted.items():
                 yield [friendly_value('row_id',identifier),row['teacher'],*[row.get(s) for s in ('S1','S2','S3')],
+                       *[row.get('pembulatan_'+s) for s in ('S1','S2','S3')],
                        *[row.get('selisih_'+s) for s in ('S1','S2','S3')]]
-        sheets['Nilai Guru dan Prediksi']=Table(['ID Jawaban','Nilai Guru','Prediksi S1','Prediksi S2','Prediksi S3','Selisih S1','Selisih S2','Selisih S3'],per_answer())
+        sheets['Nilai Guru dan Prediksi']=Table(['ID Jawaban','Nilai Guru','Prediksi S1','Prediksi S2','Prediksi S3',
+                                                 'Pembulatan S1','Pembulatan S2','Pembulatan S3',
+                                                 'Selisih S1','Selisih S2','Selisih S3'],per_answer())
     if source.has('13_prediksi_satu_jawaban.xlsx','Tiga_skenario'):
         sheets['Prediksi Satu Jawaban']=source.copy('13_prediksi_satu_jawaban.xlsx','Tiga_skenario',
-                           ['Skenario','prediksi_mentah','kategori_salinan','di_luar_rentang'])
+                           ['Skenario','skor_guru','prediksi_mentah','kategori_salinan','di_luar_rentang'])
         sheets['Jawaban Contoh']=source.copy('13_prediksi_satu_jawaban.xlsx','Input_privat')
         sheets['Jawaban Contoh'].headers=['Jawaban Siswa']
     if len(sheets)==1:return None
@@ -333,6 +341,7 @@ def training_report(source):
         ['Latihan final','Latihan ulang memakai seluruh development dengan jumlah epoch yang dipilih dari CV.'],
         ['Loss Training (MSE)','Target dinormalisasi saat loss dihitung. Angka ini berbeda satuan dari RMSE dalam poin skor.'],
         ['Epoch','Satu putaran seluruh data latih pada fold/tahap itu.']])}
+    summaries=[]
     for scenario,label in [('S1','RoBERTa (S1)'),('S2','BGE-M3 (S2)'),('S3','Fusion (S3)')]:
         files=sorted(f for f in source.files if re.fullmatch(f'09_{scenario}_fold_\\d+\\.xlsx',f))
         final=f'10_{scenario}_refit.xlsx'
@@ -345,11 +354,22 @@ def training_report(source):
                     yield ['Validasi silang' if match else 'Latihan final',int(match[1]) if match else None,
                            row.get('epoch'),row.get('train_mse_scaled'),row.get('RMSE'),row.get('Pearson'),row.get('QWK'),row.get('AC2')]
         sheets[label]=Table(['Tahap','Fold','Epoch','Loss Training (MSE)','RMSE Validasi (poin)','Pearson Validasi','QWK Validasi','Gwet AC2 Validasi'],history())
+        for file in files:
+            match=re.search(r'_fold_(\d+)',file)
+            if match and source.has(file,'Ringkasan_latihan'):
+                for row in source.records(file,'Ringkasan_latihan'):
+                    summaries.append([scenario,int(match[1]),row.get('Epoch Maksimal'),row.get('Epoch Dijalankan'),
+                                      row.get('Epoch Terpilih'),row.get('Berhenti Lebih Awal?'),
+                                      row.get('Batas Tanpa Perbaikan'),row.get('Alasan Selesai')])
     if len(sheets)==1:return None
+    if summaries:
+        sheets['Ringkasan Lima Fold']=Table(['Skenario','Fold','Epoch Maksimal','Epoch Dijalankan','Epoch Terpilih',
+                                              'Berhenti Lebih Awal?','Batas Tanpa Perbaikan','Alasan Selesai'],summaries)
     if source.has('08_arsitektur.xlsx','Spesifikasi'):
         sheets['Model yang Dibandingkan']=source.copy('08_arsitektur.xlsx','Spesifikasi')
     settings={'epochs':'Maksimum epoch per fold','folds':'Jumlah fold','effective_batch':'Batch efektif',
               'micro_batch':'Micro batch','encoder_lr':'Learning rate encoder','head_lr':'Learning rate head',
+              'projection_lr':'Learning rate proyeksi BGE','early_stopping_patience':'Batas epoch tanpa perbaikan',
               'score_min':'Skor minimum','score_max':'Skor maksimum','roberta_max_length':'Batas token RoBERTa',
               'bge_max_length':'Batas token BGE-M3'}
     if source.has('01_konfigurasi.xlsx','Parameter'):

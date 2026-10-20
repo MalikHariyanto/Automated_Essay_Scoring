@@ -119,12 +119,20 @@ def prediction_frame(bundle, indices, prediction, cfg):
 
 def export_training_event(kind, scenario, result, bundle, cfg, journal):
     if kind == 'cv_fold':
+        training = result['training']
         history = []
         for entry in result['training']['history']:
             history.append({**{k: v for k, v in entry.items() if k != 'validation'},
                             **entry.get('validation', {})})
         predictions = prediction_frame(bundle, result['validation_indices'], np.asarray(result['prediction']), cfg)
         journal.save(f'09_{scenario}_fold_{result["fold"]}', {'Riwayat_epoch': pd.DataFrame(history),
+                                                           'Ringkasan_latihan': pd.DataFrame([{
+                                                               'Epoch Maksimal': training.get('max_epochs'),
+                                                               'Epoch Dijalankan': training['epochs_completed'],
+                                                               'Epoch Terpilih': training['best_epoch'],
+                                                               'Berhenti Lebih Awal?': training.get('early_stopped', False),
+                                                               'Batas Tanpa Perbaikan': training.get('early_stopping_patience'),
+                                                               'Alasan Selesai': training.get('stop_reason', '')}]),
                                                            'Prediksi_validation': predictions,
                                                            'Metrik_validation': pd.DataFrame([result['metrics']])},
                      'CV development; bukan final test', scenario=scenario,
@@ -142,6 +150,32 @@ def export_training_event(kind, scenario, result, bundle, cfg, journal):
         journal.save(f'11_{scenario}_test', {'Prediksi_test': expanded,
                                            'Metrik_test': pd.DataFrame([result['metrics']])},
                      'Final test satu skor guru', scenario=scenario)
+
+
+def test_score_comparison(report, bundle, cfg, output):
+    """Bandingkan skor pada jawaban uji yang sama; baca prediksi tersimpan, tanpa forward ulang."""
+    lookup = {row['row_id']: i for i, row in enumerate(bundle.rows)}
+    combined = None
+    for scenario in ('S1', 'S2', 'S3'):
+        path = Path(output)/scenario/'test_predictions.csv'
+        if digest(path) != report['prediction_files'][scenario]:
+            raise ValueError('Prediksi tersimpan berubah sebelum tabel perbandingan dibuat.')
+        frame = pd.read_csv(path).set_index('row_id')
+        if frame.index.has_duplicates:
+            raise ValueError('ID jawaban uji duplikat.')
+        if combined is None:
+            combined = frame[['skor_guru']].copy()
+        if set(frame.index) != set(combined.index):
+            raise ValueError('Jawaban uji antar skenario tidak sama.')
+        frame = frame.loc[combined.index]
+        actual_teacher = bundle.y[[lookup[identifier] for identifier in frame.index]]
+        if not np.array_equal(frame['skor_guru'].to_numpy(), actual_teacher):
+            raise ValueError('Nilai guru pada prediksi tidak cocok dengan dataset.')
+        raw = frame['prediksi_mentah'].to_numpy()
+        combined[f'Prediksi {scenario}'] = raw
+        # Salinan kategori: clip 0–100, lalu integer terdekat; tepat .5 ke bawah.
+        combined[f'Pembulatan {scenario}'] = ordinal_copy(raw, cfg)
+    return combined.reset_index()
 
 
 def export_completed_training(report, bundle, cfg, output, journal):
@@ -164,6 +198,7 @@ def export_completed_training(report, bundle, cfg, output, journal):
     summary.columns = [f'{metric}_{stat}' for metric,stat in summary.columns]
     journal.save('12_evaluasi_tiga_skenario', {'CV_semua_fold': cv, 'CV_mean_SD_n': summary.reset_index(),
                                              'TEST_final': pd.DataFrame(report['rows']),
+                                             'Guru_prediksi_pembulatan': test_score_comparison(report, bundle, cfg, output),
                                              'Epoch_refit': pd.DataFrame([report['selected_epochs']])},
                  'Empat metrik QWK/AC2/RMSE/Pearson; CV dan test terpisah',
                  test_evaluations_per_scenario=report['test_evaluations_per_scenario'])

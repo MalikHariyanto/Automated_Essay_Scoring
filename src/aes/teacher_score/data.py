@@ -18,8 +18,9 @@ DEFAULTS = {
     # Rentang dinyatakan notebook unggahan, bukan diambil dari min/max test.
     'score_min': 0, 'score_max': 100,
     'test_fraction': .2, 'folds': 5, 'seed': 42, 'split_seed': 2026, 'split_candidates': 128,
-    'epochs': 5, 'effective_batch': 8, 'micro_batch': 1,
-    'encoder_lr': 2e-5, 'head_lr': 1e-3, 'weight_decay': .01,
+    # Batas dan aturan berhenti sama untuk S1, S2, dan S3; bukan wajib 25 epoch.
+    'epochs': 25, 'early_stopping_patience': 5, 'effective_batch': 8, 'micro_batch': 1,
+    'encoder_lr': 1e-5, 'projection_lr': 1e-4, 'head_lr': 1e-4, 'weight_decay': .01,
     'warmup_ratio': .1, 'gradient_clip': 1., 'dropout': .1,
     'roberta_max_length': 512, 'roberta_overlap': 128,
     'bge_max_length': 1024, 'bge_batch': 4, 'device': 'auto',
@@ -53,13 +54,16 @@ def config(values):
         raise ValueError('Split/folds tidak sah')
     if result['epochs'] < 1 or not 1 <= result['micro_batch'] <= result['effective_batch']:
         raise ValueError('Epoch/batch tidak sah')
+    if type(result['early_stopping_patience']) is not int or result['early_stopping_patience'] < 1:
+        raise ValueError('early_stopping_patience harus bilangan bulat positif.')
     if result['vector_source'] not in ('pretrained', 'S1', 'S3'):
         raise ValueError('vector_source harus pretrained, S1, atau S3')
     if result['device'] not in ('auto', 'cpu', 'cuda'):
         raise ValueError('device harus auto, cpu, atau cuda')
     if not 0 <= result['warmup_ratio'] < 1:
         raise ValueError('warmup_ratio tidak sah')
-    if any(result[k] <= 0 for k in ('encoder_lr', 'head_lr', 'gradient_clip', 'bge_batch')):
+    if any(not math.isfinite(result[k]) or result[k] <= 0
+           for k in ('encoder_lr', 'projection_lr', 'head_lr', 'gradient_clip', 'bge_batch')):
         raise ValueError('Learning rate, gradient clip, dan batch BGE harus positif.')
     if not 0 <= result['dropout'] < 1 or result['weight_decay'] < 0:
         raise ValueError('Dropout/weight decay tidak sah.')

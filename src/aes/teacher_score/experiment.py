@@ -33,15 +33,27 @@ def make_model(scenario, cfg):
                             dropout=cfg['dropout'])
 
 
+def optimizer_groups(model, cfg):
+    # Tiap parameter hanya masuk satu kelompok; encoder BGE frozen berada di luar model ini.
+    buckets = {'roberta': [], 'projection': [], 'head': []}
+    for name, parameter in model.named_parameters():
+        if not parameter.requires_grad:
+            continue
+        group = 'roberta' if name.startswith('roberta.') else 'projection' if name.startswith('projection.') else 'head'
+        buckets[group].append(parameter)
+    rates = {'roberta': cfg['encoder_lr'], 'projection': cfg['projection_lr'], 'head': cfg['head_lr']}
+    # LayerNorm tambahan RoBERTa baru dibuat, sehingga ikut kelompok head yang baru belajar.
+    return [{'name': name, 'params': params, 'lr': rates[name]}
+            for name, params in buckets.items() if params]
+
+
 def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):
     seed_everything(seed)
     device = device_name(cfg)
     model = make_model(scenario, cfg).to(device)
     engine = Engine(model, bundle.texts, bge, cfg, device)
-    enc = [p for name, p in model.named_parameters() if name.startswith('roberta.') and p.requires_grad]
-    head = [p for name, p in model.named_parameters() if not name.startswith('roberta.') and p.requires_grad]
-    groups = ([{'params': enc, 'lr': cfg['encoder_lr']}] if enc else [])+[
-        {'params': head, 'lr': cfg['head_lr']}]
+    groups = optimizer_groups(model, cfg)
+    learning_rates = {group['name']: group['lr'] for group in groups}
     optimizer = torch.optim.AdamW(groups, weight_decay=cfg['weight_decay'])
     generator = torch.Generator().manual_seed(seed)
     loader = DataLoader([int(i) for i in training], batch_size=cfg['effective_batch'],
@@ -58,6 +70,8 @@ def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):
         if parameter.requires_grad and group not in selected_parameters:
             selected_parameters[group] = (name, parameter.detach().reshape(-1)[:32].cpu().clone())
     best_state, best_epoch, best_rmse = None, 0, float('inf')
+    patience = cfg['early_stopping_patience']
+    without_improvement, early_stopped = 0, False
     history, active_steps, optimizer_steps, skipped_steps = [], 0, 0, 0
     for epoch in range(1, epochs+1):
         model.train()
@@ -100,12 +114,24 @@ def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):
             if row['validation']['RMSE'] < best_rmse:
                 best_rmse, best_epoch = row['validation']['RMSE'], epoch
                 best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
-            message = f" | RMSE validasi: {row['validation']['RMSE']:.4f} poin"
+                without_improvement = 0
+            else:
+                without_improvement += 1
+            row.update(best_epoch_so_far=best_epoch, epochs_without_improvement=without_improvement)
+            message = (f" | RMSE validasi: {row['validation']['RMSE']:.4f} poin"
+                       f" | terbaik: epoch {best_epoch}, {best_rmse:.4f} poin"
+                       f" | tanpa perbaikan: {without_improvement}/{patience}")
         else:
             best_epoch = epoch
             message = ' | pelatihan final; data uji belum dibuka'
         history.append(row)
         print(f'{scenario} · epoch {epoch}/{epochs} · loss latih (MSE, target 0–1): {row["train_mse_scaled"]:.6f}'+message, flush=True)
+        # Hanya fold validasi yang boleh menghentikan latihan; data uji tidak dibaca.
+        if validation is not None and without_improvement >= patience and epoch < epochs:
+            early_stopped = True
+            print(f'{scenario}: early stopping setelah {epoch} epoch; RMSE validasi tidak membaik selama {patience} epoch. '
+                  f'Bobot epoch {best_epoch} dipulihkan.', flush=True)
+            break
     if active_steps == 0:
         raise RuntimeError('Tidak ada pembaruan dengan LR aktif.')
     named = dict(model.named_parameters())
@@ -115,6 +141,12 @@ def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):
         model.load_state_dict(best_state)
     model.eval()
     info = {'scenario': scenario, 'best_epoch': best_epoch, 'epochs_completed': len(history),
+            'max_epochs': epochs, 'early_stopping_patience': patience if validation is not None else None,
+            'early_stopped': early_stopped, 'optimizer_learning_rates': learning_rates,
+            'best_validation_rmse': best_rmse if validation is not None else None,
+            'stop_reason': ('RMSE validasi tidak membaik selama batas kesabaran' if early_stopped else
+                            'Batas maksimum epoch tercapai' if validation is not None else
+                            'Jumlah epoch final yang dipilih dari CV selesai'),
             'history': history, 'optimizer_steps': optimizer_steps, 'active_lr_steps': active_steps, 'amp_skipped_steps': skipped_steps,
             'parameter_samples_changed': changed, 'BGE_encoder_trained': False,
             'selection': 'minimum validation RMSE in original score units' if validation is not None else 'fixed refit epochs selected from CV'}
@@ -181,6 +213,8 @@ def train_all(bundle, manifest, bge, cfg, output, observer=None):
                 del engine, model
                 release()
             completed.append(result)
+            print(f'{scenario} fold {fold["fold"]} selesai: dipilih epoch {result["training"]["best_epoch"]}; '
+                  f'RMSE validasi {result["metrics"]["RMSE"]:.4f} poin.', flush=True)
             if observer is not None:
                 observer('cv_fold', scenario, result)
             cv_rows.append({'Skenario': scenario, 'Fold': fold['fold'],
@@ -192,6 +226,8 @@ def train_all(bundle, manifest, bge, cfg, output, observer=None):
                  'method': 'ceil median best validation-RMSE epoch across development folds',
                  'all_scenarios_locked_before_final_test': True, 'split_sha256': manifest['split_sha256']}
     dump(output/'selection_locked.json', selection)
+    print('Validasi silang semua skenario selesai. Berikutnya pelatihan model final pada seluruh data latih; '
+          'ini tahap baru, bukan mengulang fold. Data uji tetap disimpan.', flush=True)
     # Seluruh refit selesai sebelum membaca prediksi/skor test untuk pelaporan.
     lock = output/'refit_locked.json'
     if lock.exists():
@@ -202,6 +238,8 @@ def train_all(bundle, manifest, bge, cfg, output, observer=None):
     else:
         checksums = {}
         for scenario in SCENARIOS:
+            print(f'{scenario}: pelatihan final pada {len(manifest["development"])} jawaban, '
+                  f'{selected_epochs[scenario]} epoch pilihan CV. Early stopping tidak diterapkan di tahap final.', flush=True)
             model, engine, info = fit(scenario, manifest['development'], None, bundle, bge, cfg,
                                       selected_epochs[scenario], cfg['seed'])
             path = output/scenario/'final.pt'

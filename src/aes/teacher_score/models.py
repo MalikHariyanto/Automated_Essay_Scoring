@@ -90,6 +90,8 @@ class SingleScoreModel(nn.Module):
         elif scenario == 'S2':
             self.head = nn.Sequential(nn.Linear(1024, 256), nn.GELU(), nn.Dropout(dropout), nn.Linear(256, 1))
         else:
+            # LayerNorm tambahan pada vektor jawaban RoBERTa, khusus cabang fusion.
+            self.roberta_norm = nn.LayerNorm(768)
             self.projection = nn.Sequential(nn.Linear(1024, 256), nn.LayerNorm(256))
             self.head = nn.Linear(1024, 1)
 
@@ -110,8 +112,10 @@ class SingleScoreModel(nn.Module):
             if bge is None or bge.shape != (n_essays, 1024):
                 raise ValueError('BGE memerlukan [N,1024]')
             features['bge'] = bge
+            # Simpan vektor asli dan hasil normalisasi agar setiap tahap bisa diperiksa.
+            features['roberta_layernorm'] = self.roberta_norm(essay)
             features['projection'] = self.projection(bge)
-            features['concat'] = torch.cat([essay, features['projection']], dim=1)
+            features['concat'] = torch.cat([features['roberta_layernorm'], features['projection']], dim=1)
             prediction = self.head(self.dropout(features['concat']))
         if prediction.ndim != 2 or prediction.shape[1] != 1:
             raise ValueError('Dataset satu skor membutuhkan output [N,1].')

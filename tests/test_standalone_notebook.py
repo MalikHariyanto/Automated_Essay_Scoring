@@ -68,9 +68,9 @@ def tokenizer(*args,**kwargs):return TechnicalTokenizer()
 '''
     for cell in notebook.cells:
         if cell.cell_type!='code':continue
-        if 'EPOCHS,FOLDS=5,5' in cell.source:
-            cell.source=cell.source.replace('EPOCHS,FOLDS=5,5','EPOCHS,FOLDS=1,5').replace('expected_rows=300','expected_rows=24')
-            cell.source=cell.source.replace("lesson_version='inline_excel_v1'","lesson_version='TECHNICAL_FIXTURE_ONLY'")
+        if 'EPOCHS,FOLDS=25,5' in cell.source:
+            cell.source=cell.source.replace('EPOCHS,FOLDS=25,5','EPOCHS,FOLDS=1,5').replace('expected_rows=300','expected_rows=24')
+            cell.source=cell.source.replace("lesson_version='candidate_a_layernorm_25_v1'","lesson_version='TECHNICAL_FIXTURE_ONLY'")
         if "journal.save('01_konfigurasi'" in cell.source:
             cell.source=cell.source.replace("journal.save('01_konfigurasi'","journal.metadata['evidence_scope']='TECHNICAL RANDOM TRANSFORMER FIXTURE ONLY; NOT STUDENT RESULTS'\njournal.save('01_konfigurasi'")
         if 'def encoder(cfg, role):' in cell.source:
@@ -103,9 +103,16 @@ def tokenizer(*args,**kwargs):return TechnicalTokenizer()
     pointer=json.loads((workspace/'outputs/dataset300_download.json').read_text())
     assert pointer['excel_count']==5
     report=json.loads((Path(pointer['run_folder'])/'final_report.json').read_text())
+    settings=json.loads((Path(pointer['run_folder'])/'effective_config.json').read_text())
+    assert settings['epochs']==1 and settings['lesson_version']=='TECHNICAL_FIXTURE_ONLY'
+    assert settings['encoder_lr']==1e-5 and settings['projection_lr']==settings['head_lr']==1e-4
     assert [r['Skenario'] for r in report['rows']]==['S1','S2','S3']
     assert len(report['cv'])==15
     assert report['test_evaluations_per_scenario']==1
+    comparison_views=[out.data.get('text/html','') for cell in notebook.cells for out in cell.get('outputs',[])
+                      if out.output_type=='display_data' and 'Nilai guru, prediksi mentah, dan pembulatan pada data uji' in out.data.get('text/html','')]
+    assert len(comparison_views)==1
+    assert 'Nilai Guru' in comparison_views[0] and 'Pembulatan S3' in comparison_views[0]
     assert not list(workspace.rglob('*.py'))
     assert not (workspace/'src').exists() and not (workspace/'docs').exists() and not (workspace/'.git').exists()
     proof={'scope':'TECHNICAL FIXTURE ONLY; NOT STUDENT SCORES','code_cells_executed':sum(c.cell_type=='code' and c.execution_count is not None for c in notebook.cells),

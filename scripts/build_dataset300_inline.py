@@ -57,7 +57,8 @@ COMMENTS = {
     'self.head = nn.Sequential(': 'S2: MLP belajar memberi skor di atas fitur BGE yang tetap.',
     'self.projection = nn.Sequential(': 'S3: padatkan 1024 angka BGE menjadi 256 angka sebelum digabung.',
     "features['projection'] =": 'Proyeksi BGE ikut belajar, walaupun bobot encoder BGE tetap frozen.',
-    "features['concat'] = torch.cat(": 'Sambung 768 angka RoBERTa dan 256 angka proyeksi BGE menjadi vektor fusion 1024 angka.',
+    "features['roberta_layernorm'] =": 'Normalisasi tambahan pada 768 komponen RoBERTa sebelum fusion; vektor asli tetap disimpan.',
+    "features['concat'] = torch.cat(": 'Sambung 768 angka RoBERTa setelah LayerNorm dan 256 angka proyeksi BGE menjadi vektor fusion 1024 angka.',
     'cls = self.roberta(': 'Baca token pada setiap window, lalu ambil vektor token pertama (CLS) sebagai ringkasannya.',
     'essay = mean_by_essay(': 'Rata-ratakan vektor CLS semua window milik jawaban yang sama.',
     'prediction = self.head(': 'Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.',
@@ -98,6 +99,7 @@ FUNCTION_NOTES = {
     'SingleScoreModel':'Menyusun encoder dan lapisan prediksi untuk S1, S2, atau S3; ketiganya menghasilkan satu skor per jawaban.',
     'Engine':'Menghubungkan teks, tokenizer, dan model. Saat prediksi, hasil dikembalikan ke skala nilai guru.',
     'make_model':'Membuat model baru agar bobot hasil fold sebelumnya tidak terbawa ke fold berikutnya.',
+    'optimizer_groups':'Memisahkan parameter RoBERTa pretrained, proyeksi BGE, dan head agar learning rate setiap bagian jelas.',
     'bge_features':'Menghitung vektor BGE-M3 sekali karena encodernya frozen; vektor dipakai bersama oleh S2 dan S3.',
     'roberta_pretrained_vectors':'Menyimpan vektor RoBERTa sebelum latihan sebagai pembanding untuk hasil sesudah fine-tuning.',
     'token_vectors':'Mengambil vektor lookup awal dan vektor setelah membaca konteks, berikut posisi token di teks.',
@@ -108,6 +110,7 @@ FUNCTION_NOTES = {
     'train_all':'Menjalankan lima fold tiap skenario, latihan final, lalu evaluasi data uji setelah pilihan model dikunci.',
     'score_answer':'Membaca satu jawaban dengan ketiga model final untuk menghasilkan prediksi; tidak melatih model lagi.',
     'export_final_features':'Menyimpan vektor model yang sudah dilatih agar dapat dibandingkan dengan vektor sebelum latihan.',
+    'test_score_comparison':'Membaca prediksi test tersimpan, menyamakan ID jawaban, lalu menampilkan nilai guru, prediksi mentah dan pembulatannya.',
 }
 
 
@@ -232,7 +235,7 @@ def build():
 
     **S1** RoBERTa Indonesia fine-tuned. **S2** BGE-M3 frozen+MLP. **S3** fusion RoBERTa fine-tuned dan BGE frozen. Ini mempertahankan rancangan sebelumnya; notebook BGE unggahan sendiri memperbarui seluruh BGE. Dataset hanya mempunyai satu `rater`, jadi setiap model menghasilkan **satu skor**, bukan empat label rubrik yang tidak ada.
 
-    Gunakan GPU Colab, Python3.12/3.13. Jalankan berurutan. Default5epoch/fold,5fold,15CVfit+3refit; proses bisa melewati sesi gratis. **Tiap tahap penghitungan menyimpan Excel** dengan `Info`/provenance dan seluruh koordinat per kolom. Preview notebook hanya cuplikan. Seluruh jawaban: embedding per jawaban; satu jawaban contoh: vektor token/kata/kalimat lengkap. Definisi fungsi menyiapkan proses, bukan menghasilkan skor dengan sendirinya.
+    Gunakan GPU Colab, Python 3.12/3.13. Jalankan berurutan. **Batas maksimal sama: 25 epoch per fold untuk S1/S2/S3**, dengan early stopping setelah lima epoch berturut-turut tanpa penurunan RMSE validasi. Bobot dengan RMSE validasi terkecil selalu dipakai. Ada 5 fold, 15 pelatihan CV dan 3 pelatihan final; proses bisa melewati sesi gratis. **Tiap tahap penghitungan menyimpan Excel** dengan `Info`/provenance dan seluruh koordinat per kolom. Preview notebook hanya cuplikan. Seluruh jawaban: embedding per jawaban; satu jawaban contoh: vektor token/kata/kalimat lengkap. Definisi fungsi menyiapkan proses, bukan menghasilkan skor dengan sendirinya.
 
     **Notebook mandiri:** semua kode pendukung ada di cell. Tidak ada clone/pull GitHub atau import modul proyek. Koneksi internet tetap dipakai saat memasang pustaka dan mengambil bobot pretrained dari Hugging Face.
 
@@ -368,7 +371,7 @@ def build():
 
     Impor pustaka yang diperlukan, lalu tentukan checkpoint, epoch, dan batch. Fungsi pendukung untuk membaca data, menampilkan tabel, dan membuat Excel juga didefinisikan di cell notebook ini. Rujukan tetap menjadi catatan Markdown, tidak dibaca oleh program.
 
-    Default lima epoch per fold mengikuti rancangan sebelumnya. Konfigurasi aktual dicatat setelah dataset selesai diperiksa.
+    Batas 25 epoch dan kesabaran lima epoch berlaku sama untuk ketiga skenario. Learning rate kandidat A memakai 0,00001 pada encoder RoBERTa dan 0,0001 pada proyeksi/head. Konfigurasi aktual dicatat setelah dataset selesai diperiksa.
     ''')
     code('''
     import os, sys, json, math, hashlib, random, warnings, re, itertools, unicodedata, zipfile, subprocess, gc, logging, html
@@ -413,8 +416,13 @@ def build():
     BGE_REVISION=DEFAULTS['bge']['revision']
 
     # Ubah parameter DI SINI sebelum latihan; jangan memilihnya dari hasil data uji.
-    # Epoch = satu putaran data latih. Lima fold = lima pembagian latihan/validasi di data development.
-    EPOCHS,FOLDS=5,5
+    # Batas maksimal sama untuk tiga skenario; setiap fold memulai model baru.
+    EPOCHS,FOLDS=25,5
+    # Berhenti jika RMSE validasi tidak turun selama lima epoch berturut-turut.
+    EARLY_STOPPING_PATIENCE=5
+    # Kandidat A: encoder pretrained berubah perlahan; proyeksi dan head baru belajar lebih cepat.
+    ENCODER_LR=1e-5
+    PROJECTION_LR=HEAD_LR=1e-4
     # Proses satu jawaban per microbatch, lalu akumulasikan gradien hingga batch efektif delapan jawaban.
     MICRO_BATCH,EFFECTIVE_BATCH=1,8
     NEW_ANSWER=''  # Kosong: satu jawaban held-out untuk contoh scoring/vektor.
@@ -423,9 +431,11 @@ def build():
     cfg=config(dict(dataset=os.environ['AES300_DATASET'],output=str(ROOT/'outputs/dataset300_inline'),
                     sheet='Sheet1',expected_rows=300,score_min=0,score_max=100,
                     epochs=EPOCHS,folds=FOLDS,micro_batch=MICRO_BATCH,effective_batch=EFFECTIVE_BATCH,
+                    early_stopping_patience=EARLY_STOPPING_PATIENCE,
+                    encoder_lr=ENCODER_LR,projection_lr=PROJECTION_LR,head_lr=HEAD_LR,
                     roberta={'checkpoint':ROBERTA_CHECKPOINT,'revision':ROBERTA_REVISION},
                     bge={'checkpoint':BGE_CHECKPOINT,'revision':BGE_REVISION},
-                    device='auto',new_answer=NEW_ANSWER,vector_source='pretrained',lesson_version='inline_excel_v1',
+                    device='auto',new_answer=NEW_ANSWER,vector_source='pretrained',lesson_version='candidate_a_layernorm_25_v1',
                     runtime_versions={p:version(p) for p in ('torch','transformers','numpy')}))
     print('Perangkat perhitungan:', 'GPU (CUDA)' if torch.cuda.is_available() else 'CPU')
     ''')
@@ -548,7 +558,7 @@ if RUN_WORD_VECTORS:
     md('''
     ## 10 · Model S1/S2/S3 dan cara menghasilkan skor
 
-    **S1** memakai 768 angka RoBERTa untuk menghasilkan satu skor. **S2** memakai 1024 angka BGE-M3, lalu MLP, yaitu jaringan kecil untuk mempelajari pemetaan vektor menjadi skor. **S3** menyambung 768 angka RoBERTa dengan 256 angka hasil proyeksi BGE-M3, sehingga vektor gabungannya berisi 1024 angka.
+    **S1** memakai 768 angka RoBERTa untuk menghasilkan satu skor. **S2** memakai 1024 angka BGE-M3, lalu MLP, yaitu jaringan kecil untuk mempelajari pemetaan vektor menjadi skor. **S3** memberi LayerNorm tambahan pada vektor RoBERTa, memadatkan BGE menjadi 256 angka dengan proyeksi dan LayerNorm, menyambung kedua cabang, lalu menghasilkan satu skor. LayerNorm adalah operasi umum, bukan khusus BGE; tambahan ini hanya dipasang sebelum fusion S3. Vektor RoBERTa asli dan setelah LayerNorm sama-sama disimpan.
 
     **Encoder** adalah bagian yang membaca teks dan menghasilkan vektor. **Head**, atau lapisan prediksi, mengubah vektor menjadi skor. Fine-tuned berarti bobot encoder ikut diperbarui saat latihan; frozen berarti bobot encoder tetap. Fungsi `forward` di cell benar-benar dipakai saat pelatihan. Lapisan prediksi yang baru dibuat belum menghasilkan skor yang layak digunakan.
 
@@ -560,7 +570,7 @@ if RUN_WORD_VECTORS:
     specifications=pd.DataFrame([
         {'scenario':'S1','encoder':'RoBERTa: bobot ikut dilatih','vector':768,'head':'Linear: 768 angka → 1 skor','output':1},
         {'scenario':'S2','encoder':'BGE-M3: bobot tetap','vector':1024,'head':'MLP: 1024 → 256 → 1 skor','output':1},
-        {'scenario':'S3','encoder':'RoBERTa ikut dilatih; BGE-M3 tetap','vector':1024,'head':'Gabungan RoBERTa 768 + proyeksi BGE 256 → 1 skor','output':1}])
+        {'scenario':'S3','encoder':'RoBERTa ikut dilatih; BGE-M3 tetap','vector':1024,'head':'RoBERTa 768 → LayerNorm; BGE → proyeksi 256 + LayerNorm; concat 1024 → 1 skor','output':1}])
     journal.save('08_arsitektur',{'Spesifikasi':specifications},'Spesifikasi model, bukan prediksi',status='DESIGN / CONFIGURATION')
     show(specifications,'Arsitektur dan bagian yang belajar')
     ''')
@@ -569,22 +579,28 @@ if RUN_WORD_VECTORS:
 
     RMSE/Pearson memakai prediksi mentah0–100. QWK/AC2 kuadratik memakai salinan clip0–100 lalu integerterdekat(tie.5kebawah),101kategori dipertahankan. Undefined=kosong+alasan. AC2 sensitif kategoridan bisa tinggi saat QWK buruk; baca bersama metriklain(m06). Rumus AC2 juga diverifikasi dengan sourceirrCAC; bab rumus tidak tersedia dalam cuplikan bukum08.
 
-    `fit` di bawah adalah fungsi latihan sebenarnya. RoBERTaLR2e−5; head/proyeksi1e−3; AdamW,MSE,warmup10%,clipgrad1. Microbatch1 diakumulasi menjadi efektif8. Target0–1 hanya untukloss, RMSE tetap poinasli. **Output sesudahtraining:**riwayatepoch/loss/metrik/epochpilihan→Excel tiapfold/refit.
+    `fit` di bawah adalah fungsi latihan sebenarnya. **Learning rate kandidat A:** RoBERTa 0,00001 (`1e-5`), head dan proyeksi 0,0001 (`1e-4`). LayerNorm tambahan yang baru dibuat ikut kelompok head. Encoder BGE frozen sehingga tidak diperbarui. AdamW memakai MSE, warmup 10%, clip gradien 1; scheduler menurunkan learning rate setelah warmup. Microbatch 1 diakumulasi menjadi efektif 8. Target 0–1 hanya untuk loss, RMSE tetap poin asli. **Output sesudah training:** riwayat epoch, loss, metrik, epoch pilihan dan alasan berhenti → Excel tiap fold/refit.
+
+    **Early stopping:** maksimal 25 epoch untuk semua skenario. Setiap RMSE validasi turun, bobot disimpan dan hitungan tanpa perbaikan kembali nol. Setelah lima epoch berturut-turut tidak membaik, fold dihentikan dan bobot terbaik dipulihkan. Ini tidak menggunakan data testing dan tidak menjamin fusion akan selalu menang.
 
     Saat berjalan, **epoch** berarti satu putaran data latih. **Loss latih (MSE, target 0–1)** adalah kesalahan yang diperkecil saat model belajar, dengan nilai guru dibagi 100. **RMSE validasi** sudah dalam poin skor asli 0–100. Keduanya memakai skala berbeda, sehingga angkanya tidak dibandingkan langsung.
     ''')
     defs('src/aes/metrics.py',['gwet_ac2'],'Agreement kuadratik Gwet, bukan sekadar korelasi.')
     defs('src/aes/teacher_score/models.py',['metrics'],'Empat metrik tanpa menimpa prediksi mentah.')
-    defs('src/aes/teacher_score/experiment.py',['fit'],'backward menghitung gradien; optimizer.step memperbarui parameter.')
+    defs('src/aes/teacher_score/experiment.py',['optimizer_groups','fit'],'backward menghitung gradien; optimizer.step memperbarui parameter; validasi memilih bobot terbaik.')
     md('''
     ## 12 · TrainingS1→S2→S3, refit, finaltest
 
     CV development memilih epoch minimumRMSE. Refit memakai ceil median epoch5fold. Semua konfigurasi/refit selesai sebelumtest, tanpa earlystopping/tuning ditest. p08 juga membedakan fungsi validation dantesting; bentuk5fold ini keputusan proyek, bukan menyalin split70/15/15paper. Fold yang berbagi data tidak independen(m09).
 
+    Sesudah CV S3 selesai, alur kembali ke S1 untuk **pelatihan model final**, lalu S2 dan S3. Model dibuat ulang dari pretrained dan dilatih pada seluruh 80% data latih. Jumlah epoch mengikuti median pilihan CV (dibulatkan ke atas), bukan wajib 25. Tidak ada early stopping pada tahap final karena tidak ada fold validasi terpisah. Setelah semua model final terkunci, barulah 20% testing dievaluasi.
+
+    Versi ini mendapat folder hasil baru berdasarkan kode dan pengaturan; hasil lama tidak ditimpa atau dipakai sebagai hasil training revisi. Karena hasil testing versi lama sudah dilihat, pemilihan pengaturan selanjutnya tetap memakai CV; hasil testing lanjutan bukan bukti konfirmasi yang sepenuhnya belum pernah disentuh dalam pengembangan.
+
     **Output:**`09_S1_fold_1.xlsx` sampai`09_S3_fold_5.xlsx`(riwayat setiapepoch,prediksi/metrikvalidation), `10_S1_refit.xlsx`dst., `11_S1_test.xlsx`dst., `12_evaluasi_tiga_skenario.xlsx`. Tiapfold selesai langsung disimpan. Resume hasil cocok sumber/config/code memakai test tersimpan.
     ''')
     defs('src/aes/teacher_score/experiment.py',['save_model','load_model','train_all'],'CV semua skenario, refitsemua, lalu finaltest dengan checkpoint terkunci.')
-    code(source('src/aes/teacher_score/lesson.py',['ordinal_copy','prediction_frame','export_training_event','export_completed_training'])+'''
+    code(source('src/aes/teacher_score/lesson.py',['ordinal_copy','prediction_frame','export_training_event','test_score_comparison','export_completed_training'])+'''
 
 if RUN_TRAINING:
     if not RUN_MODELS:raise RuntimeError('Aktifkan RUN_MODELS sebelumtraining.')
@@ -595,6 +611,11 @@ if RUN_TRAINING:
     show(pd.DataFrame(report['cv']),'Hasil validasi silang (lima fold)',rows=15)
     final_table=pd.DataFrame(report['rows'])[['Skenario','RMSE','Pearson','QWK','AC2']]
     show(final_table,'Perbandingan model pada data uji',rows=3)
+    print('Perbandingan skor: nilai guru asli, prediksi mentah skala 0–100, dan salinan yang dibulatkan. '
+          'RMSE/Pearson memakai prediksi mentah; QWK/AC2 memakai salinan kategori. Tepat .5 dibulatkan ke bawah.')
+    # Semua jawaban uji memakai nilai guru asli; tidak menjalankan prediksi ulang.
+    comparison=test_score_comparison(report,bundle,cfg,output)
+    show(comparison,'Nilai guru, prediksi mentah, dan pembulatan pada data uji',rows=len(comparison),columns=8)
 else:
     print('Pelatihan belum dijalankan. Prediksi dan evaluasi belum tersedia.')
 ''')
@@ -607,10 +628,15 @@ else:
 
 if RUN_TRAINING:
     prediction_rows=score_answer(trace_text,cfg,output)
+    # Contoh dari data uji mempunyai nilai guru. Jawaban baru belum mempunyai nilai guru.
+    for row in prediction_rows:
+        row['skor_guru']=None if cfg.get('new_answer','').strip() else float(bundle.y[trace_index])
+    if cfg.get('new_answer','').strip():
+        print('Jawaban baru: nilai guru belum tersedia, sehingga kolom Nilai Guru kosong.')
     journal.save('13_prediksi_satu_jawaban',{'Input_privat':pd.DataFrame([{'text':trace_text}]),
                                            'Tiga_skenario':pd.DataFrame(prediction_rows)},'Prediksi checkpointfinal; bukan trainingulang')
-    show(pd.DataFrame(prediction_rows)[['Skenario','prediksi_mentah','kategori_salinan','di_luar_rentang']],
-         'Prediksi skor satu jawaban (skala 0–100)',columns=4)
+    show(pd.DataFrame(prediction_rows)[['Skenario','skor_guru','prediksi_mentah','kategori_salinan','di_luar_rentang']],
+         'Nilai guru dan prediksi satu jawaban (skala 0–100)',columns=5)
 ''')
     md('''
     ## 14 · Fitur SESUDAHtraining dan outputfusion → Excel

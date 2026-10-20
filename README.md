@@ -4,6 +4,8 @@
 
 **Colab utama sekarang mandiri:** tidak melakukan clone/pull GitHub atau mengimpor modul proyek. Kode setup, pembacaan data, model, tampilan hasil, dan ekspor Excel tersedia langsung di cell dengan komentar `#`; rujukan menjadi catatan Markdown. Internet dipakai untuk instalasi pustaka dan bobot pretrained Hugging Face. **Cell terakhir langsung menyusun dan mengunduh lima Excel yang sudah rapi**: data/tokenisasi, vektor jawaban, vektor kata/kalimat, prediksi/evaluasi, dan riwayat pelatihan. Paketnya bernama `Hasil_AES_Ringkas.zip`. [Bukti notebook mandiri](docs/verification_dataset300_standalone.md) membedakan pengujian teknis dari training penelitian siswa.
 
+**Revisi training kandidat A:** learning rate RoBERTa `1e-5`, proyeksi/head `1e-4`; semua skenario maksimal 25 epoch per fold dan early stopping setelah lima epoch tanpa penurunan RMSE validasi. S3 menambahkan LayerNorm pada vektor RoBERTa sebelum concat. Colab dan Excel menampilkan nilai guru, prediksi mentah, dan pembulatan pada jawaban test yang sama. [Metode dan keluaran](docs/dataset_guru_300.md).
+
 Setup memeriksa versi yang tersedia sebelum memasang pustaka, dengan ringkasan status dan rincian log yang bisa dibuka. Nama checkpoint dan fungsi-fungsi penting dijelaskan lewat komentar langsung pada kode. [Bukti uji setup dan catatan kode](docs/verification_dataset300_setup_readable.md).
 
 Automated Essay Scoring (AES) mencoba memprediksi skor tulisan dari teks. Proyek Python ini memisahkan empat aspek (**trait**) dengan urutan **isi, organisasi, kebahasaan, mekanik**, masing-masing kategori 1–5. Tujuannya membantu memahami alur model sekaligus menyiapkan pipeline yang bisa menerima skor guru nanti.

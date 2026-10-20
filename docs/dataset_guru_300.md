@@ -1,6 +1,6 @@
 # Hasil AES yang ringkas dan mudah dibaca
 
-Keluaran akhir sekarang disatukan menjadi **lima Excel**. Proses S1/S2/S3, pembagian data, training, prediksi dan rumus metrik tetap sama. Perubahan ini mengatur cara menampilkan dan mengemas hasil.
+Keluaran akhir disatukan menjadi **lima Excel**. Revisi training terbaru memakai learning rate kandidat A, batas maksimal 25 epoch yang sama untuk semua skenario, early stopping dari validasi, dan LayerNorm tambahan sebelum fusion S3. Pembagian data dan rumus metrik dipertahankan.
 
 ## Notebook mandiri
 
@@ -23,10 +23,10 @@ Daftar file dan isinya ditampilkan sebelum unduhan; nama anggota ZIP diperiksa a
 | File | Isi yang perlu dibaca |
 | --- | --- |
 | **01_Data_dan_Tokenisasi.xlsx** | Jawaban siswa dan nilai guru, pembagian data/fold, token RoBERTa dan BGE-M3. Padding tidak ditampilkan; special token tetap ada. |
-| **02_Vektor_Jawaban.xlsx** | Seluruh komponen vektor tiap jawaban: RoBERTa sebelum/sesudah latihan, BGE-M3 dan fusion. |
+| **02_Vektor_Jawaban.xlsx** | Seluruh komponen vektor tiap jawaban: RoBERTa sebelum/sesudah latihan, hasil LayerNorm tambahan S3, BGE-M3 dan fusion. |
 | **03_Vektor_Kata_dan_Kalimat.xlsx** | Satu jawaban contoh, vektor kata/kalimat, lookup sebelum konteks dan perbandingan kata berulang. BGE frozen ditampilkan sekali. |
-| **04_Prediksi_dan_Evaluasi.xlsx** | Mulai dari **Perbandingan Model**, lalu **Nilai Guru dan Prediksi**. Ada hasil tiap fold, ringkasan validasi dan prediksi satu jawaban. |
-| **05_Riwayat_Pelatihan.xlsx** | Semua fold/epoch digabung menjadi satu sheet per model, beserta pengaturan dan rancangan model. Rujukan paper ada di Markdown notebook. |
+| **04_Prediksi_dan_Evaluasi.xlsx** | Mulai dari **Perbandingan Model**, lalu **Nilai Guru dan Prediksi**: nilai guru, prediksi mentah, pembulatan, dan selisih S1/S2/S3 pada jawaban uji yang sama. Ada hasil tiap fold, ringkasan validasi dan prediksi satu jawaban. |
+| **05_Riwayat_Pelatihan.xlsx** | Semua fold/epoch digabung menjadi satu sheet per model, ringkasan epoch maksimal/dijalankan/terpilih dan alasan berhenti, pengaturan serta rancangan model. Rujukan paper ada di Markdown notebook. |
 
 Setiap workbook diawali sheet **Panduan**. Nama kolom menjadi `ID Jawaban`, `Kata`, `Nilai Guru`, `Prediksi S1`, `RMSE (poin)`, dan `Komponen 1`, dst. `Komponen 1` adalah `v_0000` versi lama; hanya namanya berubah. J001 berarti jawaban baris pertama dan menjadi penghubung antarfile, bukan fitur model.
 
@@ -59,6 +59,8 @@ Sebelum konteks berarti vektor dari tabel embedding model; setelah konteks berar
 
 Di tahap training, pesan menunjukkan skenario, epoch, loss latih, serta RMSE validasi. Loss MSE memakai target 0–1, sedangkan RMSE memakai poin skor asli 0–100; keduanya tidak dibandingkan langsung. Angka layar dibulatkan untuk dibaca; nilai lengkap tetap ada di Excel.
 
+Tabel **Nilai guru, prediksi mentah, dan pembulatan pada data uji** menampilkan seluruh jawaban test dalam box yang bisa digulir. Kolom guru berasal dari dataset asli; kolom prediksi dibaca dari hasil test tersimpan, tanpa menjalankan model ulang. Pembulatan memakai salinan yang dibatasi ke 0–100 lalu integer terdekat, dengan tepat .5 ke bawah, sama seperti QWK/AC2. RMSE dan Pearson tetap memakai prediksi mentah. Pada contoh jawaban baru, nilai guru kosong karena belum tersedia; nilai guru tidak dikarang dari prediksi.
+
 Notebook yang sudah terbuka di tab Colab tidak otomatis mengganti kode dan output lama. Buka notebook utama versi terbaru dari tautan di atas agar kode unduhnya ikut diperbarui.
 
 [Bukti pengujian tampilan Colab](verification_dataset300_colab_readable.md) mencakup eksekusi kedua notebook dan perbandingan angka dengan versi sebelumnya.
@@ -75,14 +77,20 @@ Catatan pendek pada fungsi dan baris penting mengikuti alur tokenisasi, window, 
 
 Tunjukkan file01untuk input/tokenisasi, file02–03untuk representasi, dan file04untuk hasil utama. File05adalah pendukung untuk menjelaskan proses latihan. Vektor bukan skor rubrik; komponennya tidak mempunyai arti tetap seperti “isi” atau “tata bahasa”.
 
-## Metode yang dipertahankan
+## Metode dan revisi training
 
-S1: RoBERTa Indonesia fine-tuned → mean CLS window768 → linear satu skor. S2: BGE-M3 frozen → dense CLS1024 + L2 → MLP1024→256→1. S3: RoBERTa768 + proyeksi BGE256 → concat1024 → linear satu skor. Tidak ada perubahan bobot, lapisan, optimizer atau cara model menghitung prediksi pada perapian laporan ini.
+S1: RoBERTa Indonesia fine-tuned → mean CLS window768 → linear satu skor. S2: BGE-M3 frozen → dense CLS1024 + L2 → MLP1024→256→1. S3: RoBERTa768 → LayerNorm tambahan; BGE1024 → proyeksi256 + LayerNorm; concat1024 → linear satu skor. LayerNorm tambahan hanya dipasang pada vektor keluaran RoBERTa di S3; vektor asli tetap disimpan untuk perbandingan sebelum/sesudah fine-tuning.
 
 Dataset unggahan300respons mempunyai satu skor `rater`, bukan empat label rubrik; setiap skenario menghasilkan satu nilai. Rentang0–100 mengikuti notebook BGE-M3 unggahan. Hanya `response_text` masuk encoder; soal, kunci, email dan nilai tidak menjadi fitur. File bertopik metodologi penelitian ini tidak membuktikan populasi SMAkelasXI.
 
 Email/duplikat tetap dikelompokkan. Pembagian yang telah dibuat adalah240development/60test, dengan5fold di development. Epoch dipilih dari RMSEvalidasi; refit memakai ceil median epoch pilihan. Semua refit selesai sebelum finaltest. Ekstraksi fitur seluruh jawaban dilakukan sesudah evaluasi final untuk inspeksi, bukan evaluasi penelitian baru.
 
-Default5epoch/fold, microbatch1/effectivebatch8, AdamW, LRencoder2e−5/head1e−3, warmup10%, clipgrad1 tetap sama. RoBERTa memakai window512 termasuk2special, overlap128. BGE batas eksperimen1024 termasuk special. Loss memakai target0–1; RMSE/Pearson memakai skor mentah0–100. QWK/AC2 memakai salinan clip/nearestinteger dengan tie.5 ke bawah dan seluruh101kategori. Undefined tetap kosong dengan alasan.
+Learning rate kandidat A berlaku konsisten: encoder RoBERTa `1e-5`, proyeksi BGE `1e-4`, dan head `1e-4`. LayerNorm tambahan baru ikut kelompok head. Encoder BGE tetap frozen. AdamW, microbatch1/effectivebatch8, warmup10%, dan clipgrad1 dipertahankan. Scheduler mengikuti batas epoch masing-masing pelatihan, menaikkan learning rate pada warmup lalu menurunkannya.
+
+Semua skenario memakai maksimal **25 epoch per fold** dan patience **5 epoch berturut-turut** tanpa RMSE validasi yang lebih rendah. Nilai sama tidak dianggap perbaikan. Bobot pada epoch terbaik dipulihkan, termasuk jika pelatihan mencapai batas maksimal. Refit menggunakan ceil median epoch terbaik dari lima fold dan tidak memakai early stopping atau data test untuk menentukan kapan berhenti. Jumlah epoch aktual tiap model boleh berbeda meskipun batas dan aturannya sama.
+
+RoBERTa memakai window512 termasuk2special, overlap128. BGE batas eksperimen1024 termasuk special. Loss memakai target0–1; RMSE/Pearson memakai skor mentah0–100. QWK/AC2 memakai salinan clip/nearestinteger dengan tie.5 ke bawah dan seluruh101kategori. Undefined tetap kosong dengan alasan.
+
+Kode dan konfigurasi baru membuat folder run baru; hasil lama tidak ditimpa atau dianggap hasil versi revisi. Buka ulang notebook terbaru dan jalankan berurutan, sebaiknya di sesi runtime baru agar definisi lama tidak tertinggal. Hasil testing versi lama sudah dilihat: gunakan CV untuk memilih konfigurasi berikutnya, dan jelaskan bahwa pengujian pada test yang sama setelah pengembangan lanjutan bukan konfirmasi yang sepenuhnya belum pernah disentuh. Revisi ini tidak menjamin S3 mengalahkan S2. [Bukti uji revisi training](verification_dataset300_candidate_a.md) membedakan pengujian kode dari hasil penelitian.
 
 Rujukan tetap berasal dari koleksi pengguna, antara lain RoBERTa, M3-Embedding, AES hybrid dan evaluasi, dan sudah ditulis di Markdown notebook. Program tidak membaca file daftar pustaka untuk menghitung skor. Paper-paper tersebut tidak diklaim memakai arsitektur proyek yang identik. Bukti pengujian keluaran baru ada di [laporan verifikasi](verification_dataset300_readable.md).

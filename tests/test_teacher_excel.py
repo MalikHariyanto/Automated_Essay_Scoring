@@ -57,24 +57,43 @@ def test_export_excel_complete_pipeline(dataset,encoders,tmp_path,monkeypatch):
     lesson.export_completed_training(report,bundle,cfg,tmp_path,journal)
     lesson.export_final_features(bundle,bge,cfg,tmp_path,journal)
     result=vectors.vector_lab('alpha technical alpha. Another sentence.',cfg,tmp_path)
-    lesson.export_word_sentence_vectors(result,journal,'07_words')
+    lesson.export_word_sentence_vectors(result,journal,'07_vektor_kata_kalimat_pretrained')
     for role,dimension in [('roberta',768),('bge',1024)]:
-        path=journal.folder/'07_words.xlsx'
+        path=journal.folder/'07_vektor_kata_kalimat_pretrained.xlsx'
         word=pd.read_excel(path,sheet_name=role+'_word_contextual')
         with np.load(result[role]['npz'],allow_pickle=False) as full:
             np.testing.assert_allclose(word.filter(regex='^v_').to_numpy(),full['word_contextual'],atol=1e-6)
         assert len(word.filter(regex='^v_').columns)==dimension
     fusion=pd.read_excel(journal.folder/'14_S3_fitur_setelah_training.xlsx',sheet_name='concat')
     roberta=pd.read_excel(journal.folder/'14_S3_fitur_setelah_training.xlsx',sheet_name='roberta')
+    normalized=pd.read_excel(journal.folder/'14_S3_fitur_setelah_training.xlsx',sheet_name='roberta_layernorm')
     projection=pd.read_excel(journal.folder/'14_S3_fitur_setelah_training.xlsx',sheet_name='projection')
     np.testing.assert_allclose(fusion.filter(regex='^v_').to_numpy(),np.concatenate([
-        roberta.filter(regex='^v_').to_numpy(),projection.filter(regex='^v_').to_numpy()],axis=1))
+        normalized.filter(regex='^v_').to_numpy(),projection.filter(regex='^v_').to_numpy()],axis=1))
+    assert not np.allclose(roberta.filter(regex='^v_').to_numpy(),normalized.filter(regex='^v_').to_numpy())
     final=pd.read_excel(journal.folder/'12_evaluasi_tiga_skenario.xlsx',sheet_name='TEST_final')
     assert list(final.Skenario)==['S1','S2','S3']
+    comparison=pd.read_excel(journal.folder/'12_evaluasi_tiga_skenario.xlsx',sheet_name='Guru_prediksi_pembulatan')
+    assert len(comparison)==manifest['test_rows']
+    assert list(comparison.columns)==['row_id','skor_guru','Prediksi S1','Pembulatan S1',
+                                      'Prediksi S2','Pembulatan S2','Prediksi S3','Pembulatan S3']
     test=pd.read_excel(journal.folder/'11_S1_test.xlsx',sheet_name='Prediksi_test')
     assert len(test)==manifest['test_rows'] and 'kategori_QWK_AC2' in test.columns
     history=pd.read_excel(journal.folder/'09_S1_fold_1.xlsx',sheet_name='Riwayat_epoch')
     assert {'train_mse_scaled','QWK','AC2','RMSE','Pearson'}<=set(history.columns)
+    from aes.teacher_score.presentation import build_reports
+    result=build_reports(journal.folder,tmp_path/'readable',verbose=False)
+    assert len(result['files'])==5
+    report_vectors=pd.read_excel(tmp_path/'readable/02_Vektor_Jawaban.xlsx',sheet_name='RoBERTa S3 Setelah LayerNorm')
+    np.testing.assert_allclose(report_vectors.iloc[:,1:].to_numpy(),normalized.filter(regex='^v_').to_numpy())
+    summary=pd.read_excel(tmp_path/'readable/05_Riwayat_Pelatihan.xlsx',sheet_name='Ringkasan Lima Fold')
+    assert len(summary)==15 and set(summary['Epoch Maksimal'])=={1}
+    assert set(summary['Epoch Dijalankan'])=={1} and set(summary['Epoch Terpilih'])=={1}
+    readable=pd.read_excel(tmp_path/'readable/04_Prediksi_dan_Evaluasi.xlsx',sheet_name='Nilai Guru dan Prediksi')
+    assert readable['Nilai Guru'].tolist()==comparison['skor_guru'].tolist()
+    for s in ('S1','S2','S3'):
+        np.testing.assert_allclose(readable[f'Prediksi {s}'],comparison[f'Prediksi {s}'])
+        assert readable[f'Pembulatan {s}'].tolist()==comparison[f'Pembulatan {s}'].tolist()
     records=pd.read_excel(journal.folder/'00_indeks_output.xlsx',sheet_name='Daftar_file')
     assert len(records)==len(journal.records)
 
