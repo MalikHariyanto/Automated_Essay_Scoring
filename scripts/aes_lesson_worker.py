@@ -19,14 +19,13 @@ def main():
         # Preview ringkas saja; exporter Excel tetap menyimpan seluruh koordinat.
         import pandas as pd
         frame = frame if isinstance(frame, pd.DataFrame) else pd.DataFrame(frame)
-        view = frame.iloc[:rows, :columns].copy()
-        from aes.teacher_score.presentation import friendly_header, friendly_value
-        for name in view.columns:
-            view[name] = view[name].map(lambda value: friendly_value(name,value))
-        view.columns = [friendly_header(name) for name in view.columns]
-        view = view.map(lambda value: value.item() if hasattr(value, 'item') else value)
-        safe = json.loads(view.to_json(orient='split', force_ascii=False, default_handler=str))
-        event('table', title=title, columns=safe['columns'], rows=safe['data'], shape=list(frame.shape))
+        from aes.teacher_score.display import preview_table, render_table
+        view = preview_table(frame.columns,frame.head(rows).to_dict('records'),title,
+                             row_count=len(frame),max_rows=rows,max_columns=columns)
+        # Pandas encode NaN/missing values safely without changing source numbers.
+        safe = json.loads(pd.DataFrame(view['rows']).to_json(orient='values', force_ascii=False, default_handler=str))
+        view['rows']=safe
+        event('table', **view,html=render_table(view))
     namespace = {'__name__': '__aes_notebook__', 'ROOT': root, 'show': show}
     event('ready', python=sys.version.split()[0])
     for line in sys.stdin:

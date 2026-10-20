@@ -100,12 +100,12 @@ def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):
             if row['validation']['RMSE'] < best_rmse:
                 best_rmse, best_epoch = row['validation']['RMSE'], epoch
                 best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
-            message = f" | validation RMSE {row['validation']['RMSE']:.4f} poin"
+            message = f" | RMSE validasi: {row['validation']['RMSE']:.4f} poin"
         else:
             best_epoch = epoch
-            message = ' | refit; test belum dibuka'
+            message = ' | pelatihan final; data uji belum dibuka'
         history.append(row)
-        print(f'{scenario} epoch {epoch}/{epochs}: MSE train skala loss {row["train_mse_scaled"]:.6f}'+message, flush=True)
+        print(f'{scenario} · epoch {epoch}/{epochs} · loss latih (MSE, target 0–1): {row["train_mse_scaled"]:.6f}'+message, flush=True)
     if active_steps == 0:
         raise RuntimeError('Tidak ada pembaruan dengan LR aktif.')
     named = dict(model.named_parameters())
@@ -155,7 +155,7 @@ def train_all(bundle, manifest, bge, cfg, output, observer=None):
                 raise ValueError('Checkpoint hasil lama berubah.')
             if digest(output/scenario/'test_predictions.csv') != report['prediction_files'][scenario]:
                 raise ValueError('Prediksi test tersimpan berubah.')
-        print('Memakai hasil selesai yang cocok sumber/config/code dan hash; tidak melatih atau mengevaluasi test ulang.', flush=True)
+        print('Memakai hasil tersimpan yang cocok dengan data, pengaturan, dan versi kode. Pelatihan serta evaluasi data uji tidak diulang.', flush=True)
         return {**report, 'reused_completed_run': True}
     cv_rows, selected_epochs, cv_folds = [], {}, {}
     for scenario in SCENARIOS:
@@ -168,9 +168,9 @@ def train_all(bundle, manifest, bge, cfg, output, observer=None):
                 result = json.loads(file.read_text())
                 if result['split_sha256'] != manifest['split_sha256'] or result['fold'] != fold['fold']:
                     raise ValueError('Cache fold memakai split berbeda.')
-                print(f'{scenario}: memakai CV fold {fold["fold"]} yang sudah selesai.', flush=True)
+                print(f'{scenario}: memakai hasil validasi silang fold {fold["fold"]} yang sudah selesai.', flush=True)
             else:
-                print(f'{scenario}: CV fold {fold["fold"]}/{cfg["folds"]}; test tidak digunakan.', flush=True)
+                print(f'{scenario}: validasi silang, fold {fold["fold"]} dari {cfg["folds"]}. Data uji disimpan untuk evaluasi akhir.', flush=True)
                 model, engine, info = fit(scenario, fold['train'], fold['validation'], bundle, bge, cfg,
                                           cfg['epochs'], cfg['seed']+fold['fold'])
                 prediction = engine.predict(fold['validation'])

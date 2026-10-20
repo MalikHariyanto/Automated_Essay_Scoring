@@ -3,6 +3,7 @@ import hashlib
 import logging
 from pathlib import Path
 import zipfile
+import copy
 
 import numpy as np
 import pandas as pd
@@ -12,6 +13,7 @@ from openpyxl import load_workbook
 from aes.teacher_score.excel import write_excel,vector_frame
 from aes.teacher_score.models import ExpectedPoolerNotice
 from aes.teacher_score.presentation import build_reports,repack_archive
+from aes.teacher_score.display import preview_table,render_table,saved_report_previews
 
 
 @pytest.fixture
@@ -122,3 +124,60 @@ def test_only_expected_pooler_notice_is_filtered():
     assert filter.filter(record(expected.replace("'pooler.dense.weight'","'encoder.layer.0.weight'")))
     assert filter.filter(record('Some weights of XLMRobertaModel were not initialized: pooler.dense.weight'))
     assert filter.filter(record('CUDA out of memory'))
+
+
+def test_screen_comparison_explains_positions_and_similarity_without_changing_source():
+    records=[{'word':'pangan','occurrence_indices':[2,10],'same_token_ids':True,
+              'initial_cosine':1.,'initial_max_abs_difference':0.,'contextual_cosine':.999999999,
+              'contextual_max_abs_difference':.05,'contextual_allclose_1e-6':False}]
+    original=copy.deepcopy(records)
+    table=preview_table(records[0],records,'Perbandingan kata')
+    row=dict(zip(table['columns'],table['rows'][0]))
+    assert row['Posisi Kata A']==3 and row['Posisi Kata B']==11
+    assert row['Vektor Sebelum Konteks Sama?']=='Ya'
+    assert row['Vektor Setelah Konteks Sama?']=='Tidak'
+    assert row['Kemiripan Setelah Konteks (Cosine)']==.999999999
+    assert records==original
+    html=render_table(table)
+    assert 'occurrence_indices' not in html and 'allclose' not in html
+    assert 'belum membuktikan' in html and 'bukan tolerance skor AES' in html
+    # Tidak mengarang perbandingan ketika informasi sumber hilang.
+    partial=preview_table(['word','occurrence_indices'],[{'word':'x','occurrence_indices':[0,1]}])
+    assert 'belum tersedia' in partial['rows'][0][-1]
+
+
+def test_screen_registry_and_empty_comparison_do_not_dump_internal_metadata():
+    record={'file':'01_konfigurasi.xlsx','stage':'Konfigurasi aktual; belum ada hasil training',
+            'status':'ACTUAL EXECUTION','sheets_and_shapes':{'Info':{'rows':7,'columns':2}}}
+    table=preview_table(record,[record])
+    assert table['columns']==['File Hasil','Isi File','Keadaan']
+    html=render_table(table)
+    assert 'sheets_and_shapes' not in html and 'ACTUAL EXECUTION' not in html
+    assert "&#x27;rows&#x27;" not in html
+    empty=preview_table(['word','occurrence_indices'],[])
+    assert 'bukan error' in render_table(empty) and 'Belum ada pasangan' in render_table(empty)
+
+
+def test_screen_escapes_student_text_and_keeps_numbers():
+    records=[{'row_id':'row_0001','word':'<script>private</script>','v_0000':.1234567890123,'v_0001':None}]
+    original=copy.deepcopy(records)
+    table=preview_table(records[0],records)
+    assert table['rows'][0][0]=='J001' and table['rows'][0][2]==.1234567890123
+    html=render_table(table)
+    assert '<script>' not in html and '&lt;script&gt;' in html and '—' in html
+    assert 'v_0000' not in html and 'Komponen 1' in html
+    assert records==original
+    percentage=preview_table(['out_of_range_fraction'],[{'out_of_range_fraction':.25}])
+    assert percentage['columns']==['Di Luar Rentang (%)'] and percentage['rows']==[[25.]]
+
+
+def test_old_results_can_be_read_in_colab_without_training(saved_outputs,tmp_path):
+    source,_,_=saved_outputs
+    result=build_reports(source,tmp_path/'readable')
+    tables=list(saved_report_previews(Path(result['archive']).parent))
+    assert len(tables)==5
+    evaluations=next(t for t in tables if t['title']=='Hasil evaluasi tiga model')
+    rmse=evaluations['columns'].index('RMSE (poin)')
+    assert [r[rmse] for r in evaluations['rows']]==[2.125,3.125,4.125]
+    repeats=next(t for t in tables if 'apakah vektornya' in t['title'])
+    assert repeats['notes'] and 'Vektor Setelah Konteks Sama?' in repeats['columns']

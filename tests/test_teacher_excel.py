@@ -96,6 +96,12 @@ def test_worker_state_actual_numeric_output_and_error(tmp_path):
         send('value+=1; show([{"answer":value}],"fixture")')
         out=event();assert out['kind']=='table' and out['rows']==[[8]]
         assert event()['kind']=='done'
+        send('show([{"word":"same","occurrence_indices":[0,2],"same_token_ids":True,"initial_max_abs_difference":0.,"contextual_allclose_1e-6":False,"contextual_cosine":.9}],"Kata berulang")')
+        out=event()
+        assert out['columns'][1:3]==['Posisi Kata A','Posisi Kata B']
+        assert out['rows'][0][1:3]==[1,3] and out['notes']
+        assert 'occurrence_indices' not in out['html'] and 'Setelah Konteks' in out['html']
+        assert event()['kind']=='done'
         send('1/0');assert 'ZeroDivisionError' in event()['traceback']
         send('assert value==8');assert event()['kind']=='done'
     finally:

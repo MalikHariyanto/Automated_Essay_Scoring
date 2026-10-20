@@ -140,8 +140,8 @@ def build():
         if branch != BRANCH or dirty:
             raise RuntimeError('Checkout mempunyai branch/perubahan lain; simpan dahulu atau pakai runtime baru.')
         subprocess.run(['git','pull','--ff-only','origin',BRANCH],cwd=ROOT,check=True)
-    print('Source:',subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip())
-    print('Python kernel:',sys.version.split()[0])
+    print('Versi kode:',subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()[:12])
+    print('Versi Python:',sys.version.split()[0])
     ''',False)
     md('''
     ## 2 · Instalasi dan pemilih Excel
@@ -177,14 +177,7 @@ def build():
         if DATASET_NAME not in uploaded:
             raise ValueError('Upload '+DATASET_NAME)
     def display_aes_table(event):
-        esc=lambda value:html.escape(str(value))
-        th='background:#172035!important;color:#fff!important;padding:9px;border:1px solid #64748b'
-        td='background:#f8fafc!important;color:#172035!important;padding:9px;border:1px solid #cbd5e1'
-        body='<table><thead><tr>'+''.join('<th style="'+th+'">'+esc(x)+'</th>' for x in event['columns'])+'</tr></thead><tbody>'
-        body+=''.join('<tr>'+''.join('<td style="'+td+'">'+esc(x)+'</td>' for x in row)+'</tr>' for row in event['rows'])
-        print(event['title'])
-        print('Cuplikan:',len(event['rows']),'dari',event['shape'][0],'baris. Data lengkap tersedia di Excel akhir.')
-        display(HTML('<div style="max-height:420px;overflow:auto;background:#f8fafc;color:#172035">'+body+'</tbody></table></div>'))
+        display(HTML(event['html']))
     if '_aes_process' in globals() and _aes_process.poll() is None:
         _aes_process.terminate()
     _aes_prefix='__AES_'+secrets.token_hex(12)+'__'
@@ -199,7 +192,7 @@ def build():
         if not line:
             raise RuntimeError('Worker gagal mulai; lihat log setup.')
         if line.startswith(_aes_prefix):
-            print('Worker siap:',json.loads(line[len(_aes_prefix):])['python']);break
+            print('Proses perhitungan siap. Python',json.loads(line[len(_aes_prefix):])['python']);break
         print(line,end='')
     def aes_cell(line,cell):
         if _aes_process.poll() is not None:
@@ -269,7 +262,7 @@ def build():
     references=json.loads((ROOT/'docs/aes_dataset300_references.json').read_text())
     journal.save('01_rujukan_paper',{'Rujukan':pd.DataFrame(references)},'Rujukan koleksi pengguna dan batas penerapan')
     show(pd.DataFrame(references)[['id','title','used_for']],'Rujukan proses')
-    print('Device:', 'cuda' if torch.cuda.is_available() else 'cpu')
+    print('Perangkat perhitungan:', 'GPU (CUDA)' if torch.cuda.is_available() else 'CPU')
     ''')
     md('''
     ## 4 · Baca Excel dan cleaning
@@ -287,7 +280,7 @@ def build():
     journal.save('02_dataset_dan_cleaning',{'Dataset_asli':df,'Audit':pd.DataFrame([bundle.summary]),
                                           'Sebelum_sesudah':cleaning},'Pembacaan/cleaning aktual; sumber utuh')
     show(cleaning[['row_id','teks_model','skor_guru']],'Contoh jawaban dan nilai guru')
-    print('Jumlah:',len(df),'| target:',bundle.summary['target_columns'],'| output model:1')
+    print(len(df),'jawaban tersedia. Setiap jawaban memiliki satu nilai guru; setiap model menghasilkan satu prediksi skor.')
     ''')
     md('''
     ## 5 · Split80/20 dan5-fold validasi
@@ -307,7 +300,8 @@ journal.save('03_split_dan_cv',{'Split_setiap_baris':split_rows,'Fold_setiap_bar
 show(split_rows.groupby('role').size().rename('rows').reset_index(),'Pembagian aktual')
 trace_index=manifest['test'][cfg['trace_position']]
 trace_text=cfg.get('new_answer','').strip() or bundle.rows[trace_index]['text']
-print('Contoh:',bundle.rows[trace_index]['row_id'],'| bukan untuk memilih epoch.')
+from aes.teacher_score.presentation import friendly_value
+print('Jawaban contoh:',friendly_value('row_id',bundle.rows[trace_index]['row_id']),'. Contoh ini dipakai untuk melihat token, vektor, dan prediksi setelah model dipilih.')
 ''')
     md('''
     ## 6 · Tokenizer dan window yang benar-benar dipakai
@@ -320,9 +314,9 @@ print('Contoh:',bundle.rows[trace_index]['row_id'],'| bukan untuk memilih epoch.
 
 if RUN_MODELS:
     token_roberta,token_bge=export_tokens(bundle,cfg,journal)
-    show(token_roberta,'Token RoBERTa');show(token_bge,'Token BGE')
+    show(token_roberta,'Token RoBERTa');show(token_bge,'Token BGE-M3')
 else:
-    print('AUDIT ONLY: belum tokenisasi encoder; tidak ada angka pengganti.')
+    print('Pemeriksaan data saja: tokenisasi dan model belum dijalankan.')
 ''')
     md('''
     ## 7 · RoBERTa pretrained → embedding Excel
@@ -333,7 +327,8 @@ else:
 
 if RUN_MODELS:
     roberta_before=roberta_pretrained_vectors(bundle,cfg,journal)
-    show(vector_frame(roberta_before,[r['row_id'] for r in bundle.rows]),'RoBERTa pretrained [N,768]')
+    print('RoBERTa: setiap jawaban diubah menjadi vektor berisi 768 angka, sebelum pelatihan dengan nilai guru.')
+    show(vector_frame(roberta_before,[r['row_id'] for r in bundle.rows]),'Vektor jawaban RoBERTa sebelum pelatihan')
 ''')
     md('''
     ## 8 · BGE-M3 frozen → embedding Excel
@@ -347,14 +342,17 @@ if RUN_MODELS:
     journal.save('06_bge_frozen',{'Vektor_jawaban_1024':vector_frame(bge.numpy(),[r['row_id'] for r in bundle.rows]),
                                 'Encoding':pd.DataFrame([json.loads((output/'bge_encoding.json').read_text())])},
                  'BGE dense frozen; semua koordinat',source=cfg['bge'],pooling='CLS then L2')
-    show(vector_frame(bge.numpy(),[r['row_id'] for r in bundle.rows]),'BGE frozen [N,1024]')
+    print('BGE-M3: setiap jawaban diubah menjadi vektor berisi 1024 angka. Bobot encoder tetap selama pelatihan.')
+    show(vector_frame(bge.numpy(),[r['row_id'] for r in bundle.rows]),'Vektor jawaban BGE-M3')
 ''')
     md('''
     ## 9 · Vektor token/kata/kalimat satu jawaban → Excel
 
-    Lookup awal dibanding hidden state kontekstual terakhir. Kata=mean subword beririsan span; overlap dirata-rata pertoken dahulu. Kalimat dibaca terpisah memakaiCLS. Kata BGE di luar batas ditandai tidaktercakup/NaN(sel kosong), bukan0. Segmentasi tanda baca sederhana bisa keliru pada singkatan.
+    Di tahap ini kita melihat satu jawaban contoh dengan kedua model. **Vektor sebelum konteks** berasal dari tabel embedding model. **Vektor setelah konteks** sudah dipengaruhi posisi dan kata di sekitarnya. Untuk satu kata yang terpecah menjadi beberapa token, vektornya dirata-ratakan dari potongan tersebut. Token yang terbaca di beberapa window dirata-ratakan dahulu.
 
-    **Output:**semua koordinat,metadata,ID/span,coverage,perbandingan kata berulang→`07_vektor_kata_kalimat_pretrained.xlsx`. ID sama pada checkpoint sama→lookup sama; konteks/posisi dapat mengubah vektor akhir. Bandingkan pengulangan di encoder yang sama; jangan cosine langsung ruang768 dengan1024.
+    Setiap baris tabel pertama adalah satu kata; hanya lima komponen vektor ditampilkan di layar. Seluruh angka tersedia di **03_Vektor_Kata_dan_Kalimat.xlsx**. Tabel berikutnya membandingkan dua kemunculan kata yang sama di model yang sama, dengan cara membaca di atas tabel.
+
+    Kalimat dibaca secara terpisah dan diwakili token CLS. Kata di luar batas input ditandai tidak tercakup; sel kosong tidak berarti vektor nol. Pemisahan kalimat memakai tanda baca sederhana sehingga bisa keliru pada singkatan. Jangan membandingkan cosine langsung antara ruang RoBERTa 768 angka dan BGE-M3 1024 angka.
     ''')
     code("WORD = re.compile(r\"\\b\\w+(?:[-’']\\w+)*\\b\", re.UNICODE)\n"+source('src/aes/teacher_score/vectors.py',['sentence_spans','token_vectors','word_vectors','cosine','compare_repetitions','vector_lab'])+'\n'+source('src/aes/teacher_score/lesson.py',['export_word_sentence_vectors'])+'''
 
@@ -362,18 +360,21 @@ if RUN_WORD_VECTORS:
     before_words=vector_lab(trace_text,{**cfg,'vector_source':'pretrained'},output)
     export_word_sentence_vectors(before_words,journal,'07_vektor_kata_kalimat_pretrained')
     for role in ('roberta','bge'):
-        preview=pd.DataFrame(before_words[role]['words'],columns=['word_index','word','covered','contextual_first5'])
-        preview=preview.rename(columns={'contextual_first5':'Lima Komponen Pertama'})
+        word_rows=before_words[role]['words']
+        preview=pd.DataFrame([{'word_index':w['word_index'],'word':w['word'],'covered':w['covered'],
+                              **{f'v_{i:04d}':w['contextual_first5'][i] if w['contextual_first5'] is not None else None for i in range(5)}} for w in word_rows])
         show(preview,('RoBERTa' if role=='roberta' else 'BGE-M3')+' — contoh vektor kata')
-        from aes.teacher_score.presentation import repeated_word_rows
+        from aes.teacher_score.presentation import repeated_word_rows, REPEATED_COLUMNS
         pairs=list(repeated_word_rows(before_words[role]['repeated_words'],role))
-        show(pd.DataFrame(pairs,columns=['Model','Kata','Posisi 1','Posisi 2','ID Sama','Vektor Awal Sama','Vektor Akhir Sama','Kemiripan Akhir','Apa Artinya']),
+        show(pd.DataFrame(pairs,columns=REPEATED_COLUMNS),
              'Perbandingan kata yang berulang',columns=9)
 ''')
     md('''
-    ## 10 · ModelS1/S2/S3 dan forward
+    ## 10 · Model S1/S2/S3 dan cara menghasilkan skor
 
-    S1:RoBERTa768→linear1. S2:BGE1024→MLP256→1. S3:RoBERTa768+BGE diproyeksikan256→concat1024→linear1. `forward` di cell benar-benar dipakai saattraining. Bobot head baru belum layak menjadi skor.
+    **S1** memakai 768 angka RoBERTa untuk menghasilkan satu skor. **S2** memakai 1024 angka BGE-M3, lalu MLP, yaitu jaringan kecil untuk mempelajari pemetaan vektor menjadi skor. **S3** menyambung 768 angka RoBERTa dengan 256 angka hasil proyeksi BGE-M3, sehingga vektor gabungannya berisi 1024 angka.
+
+    **Encoder** adalah bagian yang membaca teks dan menghasilkan vektor. **Head**, atau lapisan prediksi, mengubah vektor menjadi skor. Fine-tuned berarti bobot encoder ikut diperbarui saat latihan; frozen berarti bobot encoder tetap. Fungsi `forward` di cell benar-benar dipakai saat pelatihan. Lapisan prediksi yang baru dibuat belum menghasilkan skor yang layak digunakan.
 
     p10 mendukung konsep menggabungkan fitur, tetapi memakai RoBERTa+fiturmanual, bukan replikasi RoBERTa+BGE ini. BGE dalam unggahan fullyfine-tuned; di sini S2/S3frozen sesuai rancangan sebelumnya, head/proyeksi tetapbelajar. **Output spesifikasi:**`08_arsitektur.xlsx`, jelas diberi statusDESIGN, bukan angka hasilmodel.
     ''')
@@ -381,9 +382,9 @@ if RUN_WORD_VECTORS:
     defs('src/aes/teacher_score/experiment.py',['seed_everything','make_model'],'Model baru pada setiapfold/refit, bukan meneruskan bobot foldlain.')
     code('''
     specifications=pd.DataFrame([
-        {'scenario':'S1','encoder':'RoBERTa fine-tuned','vector':768,'head':'Linear768→1','output':1},
-        {'scenario':'S2','encoder':'BGE frozen','vector':1024,'head':'MLP1024→256→1','output':1},
-        {'scenario':'S3','encoder':'RoBERTa fine-tuned+BGE frozen','vector':'768+1024','head':'proyeksi256;concat1024→1','output':1}])
+        {'scenario':'S1','encoder':'RoBERTa: bobot ikut dilatih','vector':768,'head':'Linear: 768 angka → 1 skor','output':1},
+        {'scenario':'S2','encoder':'BGE-M3: bobot tetap','vector':1024,'head':'MLP: 1024 → 256 → 1 skor','output':1},
+        {'scenario':'S3','encoder':'RoBERTa ikut dilatih; BGE-M3 tetap','vector':1024,'head':'Gabungan RoBERTa 768 + proyeksi BGE 256 → 1 skor','output':1}])
     journal.save('08_arsitektur',{'Spesifikasi':specifications},'Spesifikasi model, bukan prediksi',status='DESIGN / CONFIGURATION')
     show(specifications,'Arsitektur dan bagian yang belajar')
     ''')
@@ -393,6 +394,8 @@ if RUN_WORD_VECTORS:
     RMSE/Pearson memakai prediksi mentah0–100. QWK/AC2 kuadratik memakai salinan clip0–100 lalu integerterdekat(tie.5kebawah),101kategori dipertahankan. Undefined=kosong+alasan. AC2 sensitif kategoridan bisa tinggi saat QWK buruk; baca bersama metriklain(m06). Rumus AC2 juga diverifikasi dengan sourceirrCAC; bab rumus tidak tersedia dalam cuplikan bukum08.
 
     `fit` di bawah adalah fungsi latihan sebenarnya. RoBERTaLR2e−5; head/proyeksi1e−3; AdamW,MSE,warmup10%,clipgrad1. Microbatch1 diakumulasi menjadi efektif8. Target0–1 hanya untukloss, RMSE tetap poinasli. **Output sesudahtraining:**riwayatepoch/loss/metrik/epochpilihan→Excel tiapfold/refit.
+
+    Saat berjalan, **epoch** berarti satu putaran data latih. **Loss latih (MSE, target 0–1)** adalah kesalahan yang diperkecil saat model belajar, dengan nilai guru dibagi 100. **RMSE validasi** sudah dalam poin skor asli 0–100. Keduanya memakai skala berbeda, sehingga angkanya tidak dibandingkan langsung.
     ''')
     defs('src/aes/metrics.py',['gwet_ac2'],'Agreement kuadratik Gwet, bukan sekadar korelasi.')
     defs('src/aes/teacher_score/models.py',['metrics'],'Empat metrik tanpa menimpa prediksi mentah.')
@@ -417,7 +420,7 @@ if RUN_TRAINING:
     final_table=pd.DataFrame(report['rows'])[['Skenario','RMSE','Pearson','QWK','AC2']]
     show(final_table,'Perbandingan model pada data uji',rows=3)
 else:
-    print('Training belumdijalankan. Tidak ada angka penelitian pengganti.')
+    print('Pelatihan belum dijalankan. Prediksi dan evaluasi belum tersedia.')
 ''')
     md('''
     ## 13 · Prediksi satu jawaban dengan3model final
@@ -430,7 +433,8 @@ if RUN_TRAINING:
     prediction_rows=score_answer(trace_text,cfg,output)
     journal.save('13_prediksi_satu_jawaban',{'Input_privat':pd.DataFrame([{'text':trace_text}]),
                                            'Tiga_skenario':pd.DataFrame(prediction_rows)},'Prediksi checkpointfinal; bukan trainingulang')
-    show(pd.DataFrame(prediction_rows),'Prediksi skor0–100 ketigaskenario',columns=6)
+    show(pd.DataFrame(prediction_rows)[['Skenario','prediksi_mentah','kategori_salinan','di_luar_rentang']],
+         'Prediksi skor satu jawaban (skala 0–100)',columns=4)
 ''')
     md('''
     ## 14 · Fitur SESUDAHtraining dan outputfusion → Excel
@@ -467,10 +471,11 @@ if RUN_TRAINING and RUN_FINAL_FEATURES:
     ''')
     code('''
     download=json.loads((ROOT/'outputs/dataset300_download.json').read_text())
-    print('Fileprivat:',download['archive'])
+    print('Paket unduhan:',Path(download['archive']).name)
     if IN_COLAB:
         from google.colab import files
         files.download(download['archive'])
+    else:print('Lokasi file:',download['archive'])
     ''',False)
     nb=dict(cells=cells,metadata={'kernelspec':{'display_name':'Python3','language':'python','name':'python3'},
              'language_info':{'name':'python'},'colab':{'name':'03_AES_dataset_guru_300.ipynb'}},nbformat=4,nbformat_minor=4)

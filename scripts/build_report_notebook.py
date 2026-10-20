@@ -15,7 +15,7 @@ def build():
 
     Upload **ZIP hasil lama yang berisi banyak Excel**. Notebook ini merangkumnya menjadi **lima file utama** dengan nama sheet dan kolom yang lebih jelas. Tidak memerlukan dataset, checkpoint atau GPU; **tidak melakukan training, prediksi, atau perhitungan metrik ulang**. Angka disalin dari hasil lama, bukan dibuat ulang.
 
-    Jika proses lama belum selesai, paket hanya memuat bagian yang sudah tersedia. Output berisi data/nilai pribadi; simpan privat. Jalankan tiga cell kode berurutan.
+    Hasilnya juga ditampilkan sebagai tabel yang bisa dibaca langsung di Colab, beserta cara membaca token, vektor, kata berulang, dan evaluasi. Jika proses lama belum selesai, hanya bagian yang sudah tersedia yang ditampilkan. Output berisi data/nilai pribadi; simpan privat. Jalankan tiga cell kode berurutan.
     ''')
     code('''
     import os,sys,subprocess,json,importlib.util
@@ -68,7 +68,9 @@ def build():
     print('Angka asli tetap sama. Hanya susunan file, nama tabel dan tampilannya yang dirapikan.')
     ''')
     md('''
-    ## Unduh hasil ringkas
+    ## Baca hasil di Colab dan unduh Excel
+
+    Cell berikut menampilkan cuplikan tabel dari hasil lama. Angka tidak dihitung ulang. Penjelasan berada di atas setiap tabel; data lengkap tetap ada di Excel.
 
     Lima file pada run lengkap:
 
@@ -86,6 +88,13 @@ def build():
     summary=json.loads((DESTINATION/'ringkasan.json').read_text())
     print('Paket siap:',len(summary['files']),'Excel.')
     for file in summary['files']:print('•',Path(file).name)
+    # Baca hasil tersimpan untuk ditampilkan, tanpa memuat model atau melatih ulang.
+    if str(ROOT/'src') not in sys.path:sys.path.insert(0,str(ROOT/'src'))
+    from aes.teacher_score.display import saved_report_previews,render_table
+    from IPython.display import display,HTML
+    for table in saved_report_previews(DESTINATION):
+        display(HTML(render_table(table)))
+        print('Data lengkap:',table['report'])
     if IN_COLAB:
         from google.colab import files
         files.download(summary['archive'])

@@ -26,7 +26,31 @@ LABELS = {'row_id':'ID Jawaban','word':'Kata','covered':'Tercakup','word_index':
           'response_text':'Jawaban Siswa','rater':'Nilai Guru','soal':'Soal',
           'sentence_index':'Urutan Kalimat','text':'Kalimat','fold':'Fold','scenario':'Skenario',
           'encoder':'Encoder','vector':'Panjang Vektor','head':'Lapisan Prediksi','output':'Jumlah Skor',
-          'used_for':'Digunakan untuk','id':'Kode','title':'Judul'}
+          'used_for':'Digunakan untuk','id':'Kode','title':'Judul',
+          'rows':'Jumlah Jawaban','file':'File Hasil','stage':'Isi File','status':'Keadaan',
+          'sheets_and_shapes':'Tabel yang Tersimpan','epoch':'Epoch',
+          'train_mse_scaled':'Loss Latih (MSE)','target_loss':'Nilai untuk Menghitung Loss',
+          'selisih_mentah':'Selisih Prediksi − Guru','berubah':'Teks Dibersihkan?',
+          'token_index':'Urutan Token','start':'Awal Teks','end':'Akhir Teks',
+          'token_indices':'Urutan Potongan Token','token_ids':'ID Potongan Token',
+          'covered_tokens':'Token yang Terbaca','total_tokens':'Jumlah Token',
+          'window_coverage':'Jumlah Bagian yang Membaca Token',
+          'occurrence_indices':'Posisi Kata yang Dibandingkan','same_token_ids':'ID Token Sama?',
+          'initial_cosine':'Kemiripan Sebelum Konteks (Cosine)',
+          'initial_max_abs_difference':'Selisih Terbesar Sebelum Konteks',
+          'contextual_cosine':'Kemiripan Setelah Konteks (Cosine)',
+          'contextual_max_abs_difference':'Selisih Terbesar Setelah Konteks',
+          'contextual_allclose_1e-6':'Vektor Setelah Konteks Sama?',
+          'undefined_reasons':'Alasan Metrik Tidak Tersedia','authors':'Penulis','year':'Tahun',
+          'url':'Tautan','limitation':'Batas Penerapan','library':'Pustaka','version':'Versi',
+          'name':'Pengaturan','value':'Nilai','field':'Keterangan','target':'Jenis Nilai',
+          'Posisi Kata 1':'Posisi Kata A','Posisi Kata 2':'Posisi Kata B',
+          'ID Token Sama':'ID Token Sama?','Vektor Awal Sama':'Vektor Sebelum Konteks Sama?',
+          'Vektor Akhir Sama':'Vektor Setelah Konteks Sama?',
+          'Kemiripan Vektor Akhir':'Kemiripan Setelah Konteks (Cosine)','Apa Artinya':'Penjelasan'}
+REPEATED_COLUMNS = ['Model','Kata','Posisi Kata A','Posisi Kata B','ID Token Sama?',
+                    'Vektor Sebelum Konteks Sama?','Vektor Setelah Konteks Sama?',
+                    'Kemiripan Setelah Konteks (Cosine)','Penjelasan']
 MODELS = {'S1':'RoBERTa','S2':'BGE-M3','S3':'Fusion RoBERTa + BGE-M3'}
 ROLES = {'development':'Data latih (termasuk validasi silang)','test':'Data uji',
          'train':'Latih','validation':'Validasi'}
@@ -34,7 +58,7 @@ ROLES = {'development':'Data latih (termasuk validasi silang)','test':'Data uji'
 
 def friendly_header(name):
     match = re.fullmatch(r'v_(\d+)', str(name))
-    return 'Komponen '+str(int(match[1])+1) if match else LABELS.get(name, name)
+    return 'Komponen '+str(int(match[1])+1) if match else LABELS.get(name, str(name).replace('_',' '))
 
 
 def friendly_value(name, value):
@@ -46,9 +70,14 @@ def friendly_value(name, value):
         return f'J{int(match[1]):03d}' if match else value
     if name == 'role':
         return ROLES.get(value,value)
+    if name == 'status':
+        return {'ACTUAL EXECUTION':'Dihasilkan saat kode dijalankan',
+                'DESIGN / CONFIGURATION':'Rancangan dan pengaturan model'}.get(value,value)
     if name == 'attention_mask' and value in (0,1):
         return 'Ya' if value else 'Tidak'
-    if name in ('word_index','sentence_index','position','window') and isinstance(value,(int,float)):
+    if name == 'out_of_range_fraction' and isinstance(value,(int,float)):
+        return value*100
+    if name in ('word_index','sentence_index','token_index','position','window') and isinstance(value,(int,float)):
         return value+1
     if isinstance(value,bool):
         return 'Ya' if value else 'Tidak'
@@ -198,11 +227,13 @@ def repeated_word_rows(records,model):
         initial=row.get('initial_max_abs_difference')
         same_initial=None if initial is None else abs(initial)<=1e-6
         same_context=row.get('contextual_allclose_1e-6')
-        if not same_ids:explanation='Ejaan sama, tetapi ID subword berbeda. Bandingkan vektor dengan memperhatikan tokenisasinya.'
+        if same_ids is False:explanation='Kata sama, tetapi potongan token berbeda. Perhatikan tokenisasinya sebelum membandingkan vektor.'
+        elif same_ids is None:explanation='Informasi kesamaan ID token belum tersedia.'
         elif same_context is None:explanation='Hasil perbandingan vektor akhir belum tersedia.'
         elif same_context:explanation='ID token sama; vektor akhir juga sama dalam toleransi numerik 0,000001.'
-        else:explanation='ID token sama, tetapi vektor akhir berbeda karena konteks dan posisi.'
-        yield [model,row.get('word'),positions[0]+1 if positions else None,positions[1]+1 if len(positions)>1 else None,
+        else:explanation='ID token sama, tetapi vektor setelah membaca konteks berbeda. Posisi dan kata di sekitarnya dapat memengaruhi vektor.'
+        label={'roberta':'RoBERTa','bge':'BGE-M3'}.get(model,model)
+        yield [label,row.get('word'),positions[0]+1 if positions else None,positions[1]+1 if len(positions)>1 else None,
                friendly_value('',same_ids),friendly_value('',same_initial),friendly_value('',same_context),
                row.get('contextual_cosine'),explanation]
 
@@ -235,8 +266,7 @@ def word_vectors_report(source):
         if source.has(base,role+'_word_initial'):
             sheets[label+' Sebelum Konteks']=vector_table(base,role+'_word_initial','word')
     if comparisons:
-        sheets['Kata Berulang']=Table(['Model','Kata','Posisi Kata 1','Posisi Kata 2','ID Token Sama',
-            'Vektor Awal Sama','Vektor Akhir Sama','Kemiripan Vektor Akhir','Apa Artinya'],comparisons)
+        sheets['Kata Berulang']=Table(REPEATED_COLUMNS,comparisons)
     return sheets if any(name.startswith('Kata ') for name in sheets) else None
 
 

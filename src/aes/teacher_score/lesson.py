@@ -62,7 +62,7 @@ def roberta_pretrained_vectors(bundle, cfg, journal):
             cls_vectors.append(cls.cpu().numpy())
             window_ids.extend(f'{bundle.rows[index]["row_id"]}_window_{j}' for j in range(len(cls)))
             if (index+1) % 25 == 0:
-                print(f'RoBERTa pretrained: {index+1}/{len(bundle.rows)} jawaban', flush=True)
+                print(f'RoBERTa sebelum pelatihan: vektor {index+1} dari {len(bundle.rows)} jawaban selesai.', flush=True)
     values = np.concatenate(vectors)
     ids = [row['row_id'] for row in bundle.rows]
     journal.save('05_roberta_pretrained', {'Vektor_jawaban_768': vector_frame(values, ids),
