@@ -1,7 +1,10 @@
 """Penyajian ulang fixture; angka penelitian tidak dibuat atau diubah di sini."""
 import hashlib
 import logging
+import json
 from pathlib import Path
+import sys
+from types import ModuleType,SimpleNamespace
 import zipfile
 import copy
 
@@ -181,3 +184,32 @@ def test_old_results_can_be_read_in_colab_without_training(saved_outputs,tmp_pat
     assert [r[rmse] for r in evaluations['rows']]==[2.125,3.125,4.125]
     repeats=next(t for t in tables if 'apakah vektornya' in t['title'])
     assert repeats['notes'] and 'Vektor Setelah Konteks Sama?' in repeats['columns']
+
+
+def test_main_notebook_final_cell_downloads_current_optimized_reports(saved_outputs,tmp_path,monkeypatch):
+    """Jalankan cell terakhir asli; hanya transport worker dan unduhan browser yang ditiru."""
+    source,_,_=saved_outputs
+    root=tmp_path/'runtime';(root/'outputs').mkdir(parents=True)
+    pointer=root/'outputs/dataset300_download.json'
+    pointer.write_text(json.dumps({'archive':'stale_unoptimized.zip'}))
+    before={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob('*.xlsx')}
+    worker={'journal':SimpleNamespace(folder=source),'output':root/'current_run','ROOT':root,'Path':Path,
+            'dump':lambda path,value:path.write_text(json.dumps(value))}
+    def aes_cell(line,cell):exec(compile(cell,'<main-export-worker>','exec'),worker)
+    downloads=[]
+    google=ModuleType('google');google.__path__=[]
+    colab=ModuleType('google.colab');colab.files=SimpleNamespace(download=downloads.append)
+    monkeypatch.setitem(sys.modules,'google',google)
+    monkeypatch.setitem(sys.modules,'google.colab',colab)
+    notebook=json.loads((Path(__file__).resolve().parents[1]/'notebooks/03_AES_dataset_guru_300.ipynb').read_text())
+    cell=notebook['cells'][-1]
+    kernel={'aes_cell':aes_cell,'ROOT':root,'Path':Path,'json':json,'IN_COLAB':True}
+    exec(compile(''.join(cell['source']),'<main-notebook-final-cell>','exec'),kernel)
+    current=json.loads(pointer.read_text())
+    assert downloads==[current['archive']] and current['excel_count']==5
+    assert Path(downloads[0]).parent==root/'current_run/hasil_ringkas'
+    with zipfile.ZipFile(downloads[0]) as archive:
+        assert sorted(archive.namelist())==sorted(current['files'])
+        assert set(archive.namelist())=={'01_Data_dan_Tokenisasi.xlsx','02_Vektor_Jawaban.xlsx',
+            '03_Vektor_Kata_dan_Kalimat.xlsx','04_Prediksi_dan_Evaluasi.xlsx','05_Riwayat_Pelatihan.xlsx'}
+    assert before=={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob('*.xlsx')}

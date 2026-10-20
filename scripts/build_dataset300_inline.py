@@ -66,7 +66,9 @@ def build():
 
             Vektor kata dan kalimat contoh tersedia pada **03_Vektor_Kata_dan_Kalimat.xlsx**. Angka lapisan internal seperti dropout atau aktivasi tidak perlu dilampirkan ke dosen; rincian itu tetap disimpan secara privat oleh program.'''
         elif '## 15 ·' in text:
-            text='''## 15 · Unduh lima file hasil utama
+            text='''## 15 · Unduh hasil Excel yang sudah rapi
+
+            Jalankan **satu cell terakhir di bawah**. Colab utama ini langsung menyusun hasil menjadi lima Excel dan mengunduh **Hasil_AES_Ringkas.zip**. Tidak perlu membuka notebook lain atau mengunggah hasil untuk dirapikan lagi.
 
             Paket akhir **Hasil_AES_Ringkas.zip** berisi:
             1. **Data dan Tokenisasi** — jawaban, nilai guru, pembagian data, serta token.
@@ -75,9 +77,9 @@ def build():
             4. **Prediksi dan Evaluasi** — buka sheet **Perbandingan Model** terlebih dahulu.
             5. **Riwayat Pelatihan** — fold dan epoch digabung per model.
 
-            Tiap file diawali sheet **Panduan**. Hasil yang belum dihitung tidak diisi angka pengganti. Paket parsial hanya memuat file yang datanya sudah tersedia.
+            Tiap file diawali sheet **Panduan**. Nama kolom sudah dirapikan; semua komponen vektor utama tetap lengkap. Rincian lapisan internal tidak masuk ZIP unduhan.
 
-            **Sudah punya ZIP versi lama?** Gunakan [notebook merapikan hasil](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/04_Rapikan_Hasil_AES.ipynb). Cukup upload ZIP lama, tanpa dataset, checkpoint, atau training ulang.'''
+            Jika proses baru selesai sebagian, paket hanya memuat tahap yang tersedia, tanpa hasil pengganti. Untuk mengunduh ulang di sesi yang sama, cukup jalankan cell terakhir ini; cell ini tidak melatih atau mengevaluasi model ulang.'''
         replacements={'01_konfigurasi.xlsx':'05_Riwayat_Pelatihan.xlsx','01_rujukan_paper.xlsx':'05_Riwayat_Pelatihan.xlsx',
             '02_dataset_dan_cleaning.xlsx':'01_Data_dan_Tokenisasi.xlsx','03_split_dan_cv.xlsx':'01_Data_dan_Tokenisasi.xlsx',
             '04_tokenisasi.xlsx':'01_Data_dan_Tokenisasi.xlsx','05_roberta_pretrained.xlsx':'02_Vektor_Jawaban.xlsx',
@@ -455,23 +457,40 @@ if RUN_TRAINING and RUN_FINAL_FEATURES:
             export_word_sentence_vectors(after_words,journal,f'15_{scenario}_vektor_kata_setelah_training')
 ''')
     md('''
-    ## 15 · Indeks output dan unduhExcel privat
-
-    `00_indeks_output.xlsx`mendaftar workbook/shape yang benar-benar selesai. Tidak ada angka dummy untuk tahap yang belumjalan. Semua koordinat vektor perkolom, sumber/revision/pooling/statusdi`Info`. Arsip hanyaExcel, bukanbobot/cache. Janganupload fileberisi teks/nilai ke repopublik. Download atau simpanfolderoutput keDriveprivat sebelumruntime dihapus.
+    ## 15 · Unduh hasil Excel yang sudah rapi
     ''')
     code('''
+    # Susun laporan dari hasil sesi ini. Tidak memanggil training atau evaluasi lagi.
+    aes_cell('', """
     from aes.teacher_score.presentation import build_reports
-    summary=build_reports(journal.folder,output/'hasil_ringkas')
-    dump(ROOT/'outputs/dataset300_download.json',{'archive':summary['archive'],'run_folder':str(output),'excel_count':len(summary['files'])})
-    print('Selesai. Paket unduhan berisi',len(summary['files']),'Excel utama.')
-    if any(Path(path).name.startswith('04_') for path in summary['files']):
-        print('Untuk melihat hasil akhir, buka 04_Prediksi_dan_Evaluasi.xlsx → Perbandingan Model.')
-    else:
-        print('Prediksi dan evaluasi belum tersedia. Paket ini hanya memuat tahap yang sudah selesai.')
-    ''')
-    code('''
+    summary=build_reports(journal.folder,output/'hasil_ringkas',verbose=False)
+    dump(ROOT/'outputs/dataset300_download.json',{
+        'archive':summary['archive'],'run_folder':str(output),
+        'excel_count':len(summary['files']),'files':[Path(p).name for p in summary['files']]})
+    """)
+
+    # Unduh paket yang baru dibuat, bukan ZIP rincian teknis atau hasil sesi lain.
+    import zipfile
     download=json.loads((ROOT/'outputs/dataset300_download.json').read_text())
-    print('Paket unduhan:',Path(download['archive']).name)
+    with zipfile.ZipFile(download['archive']) as package:
+        names=package.namelist()
+    if sorted(names)!=sorted(download['files']):
+        raise RuntimeError('Isi ZIP tidak cocok dengan daftar laporan. Unduhan dihentikan.')
+    print('Hasil siap diunduh:',Path(download['archive']).name)
+    print('Isi paket:',len(names),'file Excel yang sudah dirapikan:')
+    descriptions={
+        '01_Data_dan_Tokenisasi.xlsx':'Jawaban, nilai guru, pembagian data, dan token kedua model.',
+        '02_Vektor_Jawaban.xlsx':'Embedding jawaban RoBERTa, BGE-M3, dan fusion.',
+        '03_Vektor_Kata_dan_Kalimat.xlsx':'Vektor kata/kalimat dan perbandingan kata yang berulang.',
+        '04_Prediksi_dan_Evaluasi.xlsx':'Nilai guru, prediksi, RMSE, Pearson, QWK, dan Gwet AC2.',
+        '05_Riwayat_Pelatihan.xlsx':'Seluruh fold dan epoch digabung per model.'}
+    for name in names:
+        print('•',name)
+        print('  ',descriptions.get(name,''))
+    if len(names)<5:
+        print('Paket belum lengkap: hanya tahap yang sudah selesai yang disertakan.')
+    if '04_Prediksi_dan_Evaluasi.xlsx' in names:
+        print('Mulai membaca hasil akhir dari 04_Prediksi_dan_Evaluasi.xlsx → Perbandingan Model.')
     if IN_COLAB:
         from google.colab import files
         files.download(download['archive'])

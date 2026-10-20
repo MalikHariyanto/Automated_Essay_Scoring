@@ -361,7 +361,7 @@ def training_report(source):
     return sheets
 
 
-def build_reports(folder,destination):
+def build_reports(folder,destination,verbose=True):
     """Hanya membaca Excel lama; model/checkpoint/dataset asli tidak diperlukan."""
     source=SavedOutputs(folder);destination=Path(destination);destination.mkdir(parents=True,exist_ok=True)
     if not source.files:raise ValueError('Tidak ada Excel hasil lama di folder sumber.')
@@ -378,7 +378,7 @@ def build_reports(folder,destination):
             if scope:
                 sheets['Panduan'].rows=itertools.chain([['Cakupan Sumber',scope]],sheets['Panduan'].rows)
             path=write_report(destination/name,sheets);files.append(path)
-            print('Siap: '+name,flush=True)
+            if verbose:print('Siap: '+name,flush=True)
     if not files:raise ValueError('Workbook sumber belum memuat tahap yang dikenali.')
     archive=destination/'Hasil_AES_Ringkas.zip'
     with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as bundle:

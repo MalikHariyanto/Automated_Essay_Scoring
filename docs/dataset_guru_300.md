@@ -2,11 +2,13 @@
 
 Keluaran akhir sekarang disatukan menjadi **lima Excel**. Proses S1/S2/S3, pembagian data, training, prediksi dan rumus metrik tetap sama. Perubahan ini mengatur cara menampilkan dan mengemas hasil.
 
-## Sudah mempunyai ZIP hasil lama?
+## Unduh langsung dari Colab utama
 
-Buka [04_Rapikan_Hasil_AES di Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/04_Rapikan_Hasil_AES.ipynb). Jalankan tiga cell, upload ZIP lama, lalu baca tabelnya langsung di Colab dan unduh `Hasil_AES_Ringkas.zip`. Tidak perlu GPU, dataset, checkpoint atau training ulang. Jika folder hasil lama masih ada di runtime/Drive, isi `FOLDER_HASIL_LAMA` tanpa upload ZIP.
+Buka [Colab utama terbaru](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/03_AES_dataset_guru_300.ipynb) dan jalankan tahap-tahapnya berurutan. Pada bagian **15 · Unduh hasil Excel yang sudah rapi**, jalankan satu cell terakhir. Cell ini otomatis menyusun laporan dan mengunduh `Hasil_AES_Ringkas.zip` berisi lima Excel utama. Tidak perlu pindah notebook atau mengunggah ZIP untuk merapikannya.
 
-Notebook04 hanya membaca Excel yang sudah ada. Folder/ZIP sumber tidak diubah. File besar diproses langsung di Colab sehingga tidak perlu melewati batas transfer32MB chat. Untuk menjalankan eksperimen baru, gunakan [notebook03](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/03_AES_dataset_guru_300.ipynb); cell terakhirnya juga mengunduh paket lima laporan ini.
+Daftar file dan isinya ditampilkan sebelum unduhan; nama anggota ZIP diperiksa agar cocok dengan laporan yang baru dibuat dari sesi tersebut. Rincian teknis tidak ikut paket unduhan. Untuk mengunduh ulang pada sesi notebook yang sama, jalankan kembali cell terakhir saja; pengemasan tidak melatih atau mengevaluasi model ulang.
+
+[Bukti uji unduhan Colab utama](verification_dataset300_main_download.md) mencakup cell unduh asli, isi ZIP, dan kesamaan prediksi/metrik pada fixture teknis.
 
 ## Isi paket utama
 
@@ -43,7 +45,7 @@ Sebelum konteks berarti vektor dari tabel embedding model; setelah konteks berar
 
 Di tahap training, pesan menunjukkan skenario, epoch, loss latih, serta RMSE validasi. Loss MSE memakai target 0–1, sedangkan RMSE memakai poin skor asli 0–100; keduanya tidak dibandingkan langsung. Angka layar dibulatkan untuk dibaca; nilai lengkap tetap ada di Excel.
 
-Notebook yang sudah terbuka di tab Colab tidak otomatis mengganti kode dan output lama. Untuk memakai tampilan baru pada eksperimen berikutnya, buka notebook03 dari tautan GitHub terbaru. Untuk membaca hasil yang sudah selesai, gunakan notebook04 dengan ZIP lama; tidak perlu mengulang training.
+Notebook yang sudah terbuka di tab Colab tidak otomatis mengganti kode dan output lama. Buka notebook utama versi terbaru dari tautan di atas agar kode unduhnya ikut diperbarui.
 
 [Bukti pengujian tampilan Colab](verification_dataset300_colab_readable.md) mencakup eksekusi kedua notebook dan perbandingan angka dengan versi sebelumnya.
 
