@@ -8,24 +8,61 @@ import textwrap
 ROOT = Path(__file__).resolve().parents[1]
 
 COMMENTS = {
+    'spec = cfg[role]': 'Ambil nama checkpoint dan revision model yang dipilih: roberta atau bge.',
+    'result = AutoModel.from_pretrained(': 'Muat arsitektur dan bobot pretrained. Ini baru inisialisasi encoder, belum latihan memakai nilai guru.',
+    'expected = 768 if role': 'Periksa panjang vektor: RoBERTa 768 angka, BGE-M3 1024 angka.',
     'result.requires_grad_(': 'RoBERTa boleh belajar; bobot encoder BGE tidak diperbarui.',
+    'result = AutoTokenizer.from_pretrained(': 'Muat tokenizer dari checkpoint yang sama agar ID token cocok dengan kosakata model.',
+    'self.scenario, self.roberta =': 'Simpan skenario dan encoder RoBERTa. S2 memakai vektor BGE yang sudah dihitung, jadi tidak memuat RoBERTa.',
+    'roberta.requires_grad_(True)': 'Fine-tuning: bobot RoBERTa boleh berubah ketika optimizer menjalankan langkah latihan.',
     'ids = tokenizer.encode(': 'Tokenizer mengubah teks menjadi ID subword, bukan menghitung skor.',
+    'windows, mapping, _ = batch_windows(': 'Pecah jawaban panjang menjadi window; mapping menghubungkan setiap window dengan jawaban asalnya.',
     'self.head = nn.Linear(768, 1)': 'S1: 768 koordinat RoBERTa dipetakan ke satu prediksi kontinu.',
     'self.head = nn.Sequential(': 'S2: MLP belajar memberi skor di atas fitur BGE yang tetap.',
-    'self.projection = nn.Sequential(': 'S3: padatkan BGE1024 menjadi256 sebelum digabung.',
-    "features['concat'] = torch.cat(": 'Fusion menyambung RoBERTa768 dan proyeksiBGE256 menjadi1024.',
-    'cls = self.roberta(': 'Ambil hidden state token pertama(CLS) untuk setiapwindow.',
-    'essay = mean_by_essay(': 'Rata-rata CLS window menjadi satu vektor setiapjawaban.',
+    'self.projection = nn.Sequential(': 'S3: padatkan 1024 angka BGE menjadi 256 angka sebelum digabung.',
+    "features['projection'] =": 'Proyeksi BGE ikut belajar, walaupun bobot encoder BGE tetap frozen.',
+    "features['concat'] = torch.cat(": 'Sambung 768 angka RoBERTa dan 256 angka proyeksi BGE menjadi vektor fusion 1024 angka.',
+    'cls = self.roberta(': 'Baca token pada setiap window, lalu ambil vektor token pertama (CLS) sebagai ringkasannya.',
+    'essay = mean_by_essay(': 'Rata-ratakan vektor CLS semua window milik jawaban yang sama.',
+    'prediction = self.head(': 'Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.',
+    'model.eval()': 'Mode pembacaan: dropout dinonaktifkan agar ekstraksi vektor dan prediksi konsisten.',
+    'self.model.eval()': 'Mode prediksi: nonaktifkan dropout. Pembacaan di bawah memakai no_grad.',
+    'with torch.no_grad():': 'Tidak menghitung gradien untuk tahap pembacaan ini; bukan langkah latihan.',
+    'output_vectors.append(torch.nn.functional.normalize(': 'Normalkan panjang vektor BGE dengan L2; ini mengatur vektor, bukan menghitung skor siswa.',
+    'model = make_model(scenario, cfg).to(device)': 'Buat model baru untuk fold ini, lalu tempatkan di GPU atau CPU yang tersedia.',
+    'return SingleScoreModel(scenario, encoder(': 'S1/S3 memuat RoBERTa; S2 hanya membuat lapisan prediksi di atas vektor BGE frozen.',
     'enc = [p for name, p in model.named_parameters()': 'Pilih bobot encoder RoBERTa yang menerima gradien.',
     'head = [p for name, p in model.named_parameters()': 'Pilih bobot head/proyeksi; kecepatannya bisa berbeda dari encoder.',
     'optimizer = torch.optim.AdamW(': 'AdamW memperbarui kelompok parameter sesuai learning rate masing-masing.',
-    'targets = torch.as_tensor(': 'Normalisasi skor guru ke0–1 hanya untuk menghitung loss.',
+    'targets = torch.as_tensor(': 'Ubah nilai guru dari skala 0–100 menjadi 0–1 hanya untuk menghitung loss.',
+    'loss = torch.mean((prediction-targets)**2)': 'MSE mengukur selisih kuadrat antara prediksi dan target; optimizer berusaha memperkecilnya.',
     'scaler.scale(loss*': 'Hitung gradien dan bobot microbatch sesuai ukuran batch efektif aktual.',
     'scaler.step(optimizer)': 'Perbarui bobot; GradScaler bisa melewati langkah yang overflow pada AMP.',
-    "if row['validation']['RMSE'] < best_rmse:": 'Pilih epoch hanya dari validation fold, bukan dari finaltest.',
+    "if row['validation']['RMSE'] < best_rmse:": 'Simpan epoch dengan RMSE validasi terkecil; data uji akhir tidak ikut memilih epoch.',
+    "return scaled*(self.cfg['score_max']": 'Kembalikan prediksi ke skala nilai guru sebelum ditampilkan atau dihitung RMSE/Pearson.',
     'clipped = np.clip(': 'Buat SALINAN skor sah untuk agreement; prediksi mentah tetap utuh.',
     'qwk = cohen_kappa_score(': 'QWK memakai jarak kategori kuadratik, bukan vektor embedding.',
     "result['AC2'] = gwet_ac2(": 'AC2 memakai kategori yang sama dengan QWK dan koreksi peluang berbeda.',
+}
+
+FUNCTION_NOTES = {
+    'encoder':'Memuat encoder dari nama checkpoint dan revision pada cfg; hasilnya objek model pembaca teks.',
+    'tokenizer':'Memuat pemecah teks milik checkpoint yang sama. Hasil tokenisasi menjadi input encoder.',
+    'content_windows':'Membagi token isi yang panjang menjadi beberapa potongan; bagian yang bertumpang tindih menjaga konteks.',
+    'batch_windows':'Menambahkan token khusus dan padding, lalu mengembalikan tensor input beserta pemetaan ke jawaban asal.',
+    'SingleScoreModel':'Menyusun encoder dan lapisan prediksi untuk S1, S2, atau S3; ketiganya menghasilkan satu skor per jawaban.',
+    'Engine':'Menghubungkan teks, tokenizer, dan model. Saat prediksi, hasil dikembalikan ke skala nilai guru.',
+    'make_model':'Membuat model baru agar bobot hasil fold sebelumnya tidak terbawa ke fold berikutnya.',
+    'bge_features':'Menghitung vektor BGE-M3 sekali karena encodernya frozen; vektor dipakai bersama oleh S2 dan S3.',
+    'roberta_pretrained_vectors':'Menyimpan vektor RoBERTa sebelum latihan sebagai pembanding untuk hasil sesudah fine-tuning.',
+    'token_vectors':'Mengambil vektor lookup awal dan vektor setelah membaca konteks, berikut posisi token di teks.',
+    'word_vectors':'Merata-ratakan potongan subword yang membentuk satu kata agar perbandingan bisa dibaca per kata.',
+    'compare_repetitions':'Membandingkan dua kemunculan kata yang sama di model yang sama, sebelum dan sesudah konteks.',
+    'metrics':'Membandingkan nilai guru dan prediksi: RMSE/Pearson memakai skor mentah; QWK/AC2 memakai salinan kategori.',
+    'fit':'Melatih satu model pada satu pembagian data; RMSE validasi menentukan epoch yang disimpan.',
+    'train_all':'Menjalankan lima fold tiap skenario, latihan final, lalu evaluasi data uji setelah pilihan model dikunci.',
+    'score_answer':'Membaca satu jawaban dengan ketiga model final untuk menghasilkan prediksi; tidak melatih model lagi.',
+    'export_final_features':'Menyimpan vektor model yang sudah dilatih agar dapat dibandingkan dengan vektor sebelum latihan.',
 }
 
 
@@ -44,7 +81,8 @@ def source(path, names):
                     if line.lstrip().startswith(prefix):
                         annotated.append(line[:len(line)-len(line.lstrip())]+'# '+explanation)
                 annotated.append(line)
-            found.append('\n'.join(annotated))
+            note=FUNCTION_NOTES.get(node.name)
+            found.append(('# '+note+'\n' if note else '')+'\n'.join(annotated))
     if len(found) != len(names):
         raise ValueError('Definisi source hilang: '+str(names))
     return '\n\n\n'.join(found)
@@ -148,22 +186,50 @@ def build():
     md('''
     ## 2 · Instalasi dan pemilih Excel
 
-    Setup mempertahankan torch GPU runtime. Python worker numerik terpisah menghindari konflik NumPy kernel Colab. Awalan **`%%aes` menjalankan kode cell pada worker yang sama**, sehingga variabel bertahan antar-cell. Bukan perintah menampilkan kode. Upload sekali per runtime; bila file sudah ada tidak diminta lagi.
+    Setup memeriksa versi pustaka yang sudah tersedia. Versi yang cocok dipakai ulang; versi yang berbeda dipasang dalam lingkungan khusus AES tanpa mencoba menghapus pustaka bawaan. PyTorch runtime dipertahankan agar akses GPU yang tersedia tidak diganti wheel CPU. Pemeriksaan mencakup versi, dependensi pustaka yang dipakai AES, dan import; bukan klaim semua aplikasi bawaan Colab memakai versi yang sama.
+
+    Output utama berisi status singkat. **Rincian instalasi** bisa dibuka jika diperlukan. Jika pemeriksaan gagal, cell berhenti dengan alasan dan log, bukan menampilkan status siap. Python worker numerik terpisah menghindari NumPy lama yang sudah dimuat kernel.
+
+    Awalan **`%%aes` menjalankan kode cell pada worker yang sama**, sehingga variabel bertahan antar-cell. Upload Excel sekali per runtime; bila file sudah ada tidak diminta lagi.
     ''')
     code(r'''
     PYTHON = os.environ.get('AES300_PYTHON','')
-    if not PYTHON:
-        process = subprocess.Popen([sys.executable,str(ROOT/'scripts/setup_dataset300.py')],cwd=ROOT,
-                                   stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
-        log=[]
-        for line in process.stdout:
-            print(line,end='',flush=True);log.append(line)
-        if process.wait():
-            raise RuntimeError('Setup gagal: '+''.join(log[-15:]))
-        ready=json.loads((ROOT/'outputs/dataset300_setup.json').read_text())
-        if ready['runtime_version'] != list(sys.version_info[:2]) or not ready['imports_verified']:
-            raise RuntimeError('Metadata setup tidak cocok runtime aktif.')
-        PYTHON=ready['python']
+    setup_command=[sys.executable,str(ROOT/'scripts/setup_dataset300.py')]
+    if PYTHON:setup_command+=['--verify-python',PYTHON]
+    process = subprocess.Popen(setup_command,cwd=ROOT,
+                               stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+    log=[]
+    for line in process.stdout:
+        print(line,end='',flush=True);log.append(line)
+    def show_installation_log():
+        path=ROOT/'outputs/dataset300_setup.log'
+        contents=path.read_text() if path.is_file() else ''.join(log)
+        display(HTML('<details style="background:#f8fafc;color:#172035;padding:12px;border:1px solid #94a3b8">'
+                     '<summary>Rincian instalasi — buka jika diperlukan</summary>'
+                     '<pre style="max-height:320px;overflow:auto;white-space:pre-wrap;color:#172035">'
+                     +html.escape(contents)+'</pre></details>'))
+    if process.wait():
+        show_installation_log()
+        raise RuntimeError('Persiapan AES belum berhasil. '+''.join(log[-4:]))
+    ready=json.loads((ROOT/'outputs/dataset300_setup.json').read_text())
+    if ready['runtime_version'] != list(sys.version_info[:2]) or not ready['imports_verified']:
+        raise RuntimeError('Metadata setup tidak cocok runtime aktif.')
+    PYTHON=ready['python']
+    setup_rows=[
+        ('Status','Siap — versi, dependensi, dan import AES lulus pemeriksaan'),
+        ('Python',ready['python_version']),
+        ('PyTorch',ready['torch']),
+        ('Perangkat','GPU: '+ready['device'] if ready['cuda_available'] else 'CPU — GPU belum terdeteksi'),
+        ('Pustaka AES','Versi yang cocok dipakai ulang' if ready['packages_action']=='reused'
+                        else 'Versi khusus AES dipasang; pustaka bawaan tetap disimpan'),
+        ('Pustaka utama','NumPy '+ready['versions']['numpy']+'; Transformers '+ready['versions']['transformers']),
+        ('Model','Belum dimuat; tahap ini hanya menyiapkan lingkungan')]
+    status_html=''.join('<tr><th style="padding:9px;text-align:left;border:1px solid #94a3b8">'+html.escape(label)
+                        +'</th><td style="padding:9px;border:1px solid #94a3b8">'+html.escape(value)+'</td></tr>'
+                        for label,value in setup_rows)
+    display(HTML('<table style="background:#f8fafc!important;color:#172035!important;border-collapse:collapse">'
+                 +status_html+'</table>'))
+    show_installation_log()
     DATASET_NAME='fix_dataset_300.xlsx'
     PRIVATE_INPUT=ROOT/'data/dataset300';PRIVATE_INPUT.mkdir(parents=True,exist_ok=True)
     DATA_PATH=Path(os.environ.get('AES300_DATASET',str(PRIVATE_INPUT/DATASET_NAME))).resolve()
@@ -242,8 +308,17 @@ def build():
     from aes.teacher_score.excel import ExcelJournal, vector_frame
     SCENARIOS=('S1','S2','S3')
 
-    # Ubah parameter DI SINI sebelum latihan; jangan tuning dari hasil test.
+    # Nama checkpoint adalah alamat model pretrained di Hugging Face, bukan objek model yang sudah dimuat.
+    ROBERTA_CHECKPOINT='flax-community/indonesian-roberta-base'  # RoBERTa bahasa Indonesia untuk S1 dan S3.
+    BGE_CHECKPOINT='BAAI/bge-m3'  # BGE-M3 untuk menghasilkan embedding di S2 dan S3.
+    # Revision mengunci versi bobot/tokenizer agar eksperimen berikutnya memakai sumber yang sama.
+    ROBERTA_REVISION=DEFAULTS['roberta']['revision']
+    BGE_REVISION=DEFAULTS['bge']['revision']
+
+    # Ubah parameter DI SINI sebelum latihan; jangan memilihnya dari hasil data uji.
+    # Epoch = satu putaran data latih. Lima fold = lima pembagian latihan/validasi di data development.
     EPOCHS,FOLDS=5,5
+    # Proses satu jawaban per microbatch, lalu akumulasikan gradien hingga batch efektif delapan jawaban.
     MICRO_BATCH,EFFECTIVE_BATCH=1,8
     NEW_ANSWER=''  # Kosong: satu jawaban held-out untuk contoh scoring/vektor.
     AUDIT_ONLY=os.environ.get('AES300_AUDIT_ONLY')=='1'
@@ -251,6 +326,8 @@ def build():
     cfg=config(dict(dataset=os.environ['AES300_DATASET'],output=str(ROOT/'outputs/dataset300_inline'),
                     sheet='Sheet1',expected_rows=300,score_min=0,score_max=100,
                     epochs=EPOCHS,folds=FOLDS,micro_batch=MICRO_BATCH,effective_batch=EFFECTIVE_BATCH,
+                    roberta={'checkpoint':ROBERTA_CHECKPOINT,'revision':ROBERTA_REVISION},
+                    bge={'checkpoint':BGE_CHECKPOINT,'revision':BGE_REVISION},
                     device='auto',new_answer=NEW_ANSWER,vector_source='pretrained',lesson_version='inline_excel_v1',
                     runtime_versions={p:version(p) for p in ('torch','transformers','numpy')}))
     bundle=read_dataset(cfg)  # Periksa enam header, label, duplikat dan kelompok email.

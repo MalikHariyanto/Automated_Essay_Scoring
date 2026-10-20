@@ -30,6 +30,12 @@ Jika baru sebagian tahap selesai, paket hanya berisi laporan yang datanya tersed
 
 ## Membaca output Colab
 
+Pada tahap setup, program memeriksa versi pustaka dan dependensi yang benar-benar dipakai AES. Versi yang cocok dipakai ulang. Jika berbeda, versi kebutuhan AES dipasang dalam lingkungan khusus dengan pustaka bawaan tetap disimpan. Tidak ada langkah wajib untuk mengganti pip atau mencoba uninstall pustaka Colab. Torch yang sudah tersedia dipertahankan; kegagalan import torch tidak diam-diam diganti dengan versi CPU.
+
+Layar utama menampilkan tiga langkah persiapan dan tabel status berisi Python, PyTorch, perangkat, pustaka utama, serta status pemeriksaan. Log installer lengkap disimpan di `outputs/dataset300_setup.log` dan bisa dibuka melalui **Rincian instalasi**. Jika pemeriksaan versi/dependensi/import gagal, cell berhenti; status siap tidak dibuat. Pemeriksaan ini mencakup kebutuhan AES, bukan seluruh aplikasi bawaan Colab seperti Gradio atau Diffusers.
+
+Kode instalasi tetap diperlukan karena versi bawaan runtime dapat berubah. Yang dibuat tetap adalah versi pustaka untuk eksperimen AES, sehingga pergantian runtime tidak otomatis mengubah kebutuhan program. [Bukti uji setup](verification_dataset300_setup_readable.md) mencakup pip nyata dan pemeriksaan ulang tanpa instalasi.
+
 Tabel Colab memakai judul, kolom, dan catatan cara membaca dalam Bahasa Indonesia. Contohnya:
 
 | Nama internal lama | Yang ditampilkan |
@@ -48,6 +54,12 @@ Di tahap training, pesan menunjukkan skenario, epoch, loss latih, serta RMSE val
 Notebook yang sudah terbuka di tab Colab tidak otomatis mengganti kode dan output lama. Buka notebook utama versi terbaru dari tautan di atas agar kode unduhnya ikut diperbarui.
 
 [Bukti pengujian tampilan Colab](verification_dataset300_colab_readable.md) mencakup eksekusi kedua notebook dan perbandingan angka dengan versi sebelumnya.
+
+## Catatan langsung di kode
+
+Cell konfigurasi menampilkan `ROBERTA_CHECKPOINT='flax-community/indonesian-roberta-base'` dan `BGE_CHECKPOINT='BAAI/bge-m3'` dengan komentar `#`. Nama checkpoint menentukan sumber model; revision mengunci versinya. Penetapan nama belum memuat model. Pemanggilan `AutoModel.from_pretrained` dalam fungsi `encoder` baru memuat arsitektur dan bobotnya; `AutoTokenizer.from_pretrained` memuat tokenizer yang sesuai.
+
+Catatan pendek pada fungsi dan baris penting mengikuti alur tokenisasi, window, CLS, freeze/fine-tuning, proyeksi/fusion, loss, pemilihan epoch, prediksi, dan evaluasi. Komentar membedakan mode `eval()`, pembacaan `no_grad()`, dan pengaturan `requires_grad`, sehingga mode prediksi tidak disamakan dengan membekukan encoder. Catatan itu menjelaskan kode yang benar-benar dijalankan; tidak mengubah metode model.
 
 ## Cara menjelaskan alur ke dosen
 
