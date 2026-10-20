@@ -1,5 +1,6 @@
 """Penyajian ulang fixture; angka penelitian tidak dibuat atau diubah di sini."""
 import hashlib
+import ast
 import logging
 import json
 from pathlib import Path
@@ -202,6 +203,15 @@ def test_main_notebook_final_cell_downloads_current_optimized_reports(saved_outp
     monkeypatch.setitem(sys.modules,'google',google)
     monkeypatch.setitem(sys.modules,'google.colab',colab)
     notebook=json.loads((Path(__file__).resolve().parents[1]/'notebooks/03_AES_dataset_guru_300.ipynb').read_text())
+    # Muat definisi impor/tampilan/laporan dari notebook itu sendiri, tanpa import helper AES.
+    for entry in notebook['cells']:
+        if entry['cell_type']!='code':continue
+        body=''.join(entry['source']).removeprefix('%%aes\n')
+        nodes=ast.parse(body).body
+        names={node.name for node in nodes if isinstance(node,(ast.FunctionDef,ast.ClassDef))}
+        imports={alias.name for node in nodes if isinstance(node,ast.Import) for alias in node.names}
+        if {'numpy','torch','pandas'}<=imports or 'friendly_header' in names or 'Table' in names:
+            exec(compile(body,'<standalone-report-definitions>','exec'),worker)
     cell=notebook['cells'][-1]
     kernel={'aes_cell':aes_cell,'ROOT':root,'Path':Path,'json':json,'IN_COLAB':True}
     exec(compile(''.join(cell['source']),'<main-notebook-final-cell>','exec'),kernel)

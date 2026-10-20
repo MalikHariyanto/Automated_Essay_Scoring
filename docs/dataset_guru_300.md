@@ -2,6 +2,14 @@
 
 Keluaran akhir sekarang disatukan menjadi **lima Excel**. Proses S1/S2/S3, pembagian data, training, prediksi dan rumus metrik tetap sama. Perubahan ini mengatur cara menampilkan dan mengemas hasil.
 
+## Notebook mandiri
+
+Seluruh kode runtime ada di cell: persiapan pustaka, pemeriksaan data, tokenisasi, model, training, metrik, tampilan tabel, dan pembuat Excel. Notebook tidak melakukan clone/pull GitHub atau memanggil modul `aes` dari repo. Bagian pertama hanya menyiapkan ruang kerja. Rujukan paper menjadi Markdown dan tidak dibaca sebagai input program.
+
+Pustaka Python dan bobot pretrained Hugging Face tetap diperlukan. Dataset Excel disediakan secara privat. Folder default Colab adalah `/content/AES_300`; pada komputer lokal, hasil berada di `outputs/AES_300` dari folder tempat notebook dijalankan. Variabel `AES300_WORKSPACE` dapat menentukan folder lain. Identitas hasil mengikuti data, konfigurasi, dan fingerprint kode notebook, tanpa perintah Git atau pembacaan source repo.
+
+[Bukti pengujian mandiri](verification_dataset300_standalone.md) mencakup eksekusi dari folder terpisah, Git yang diblokir, import kode repo yang ditolak, serta perbandingan angka dengan versi sebelumnya. Builder di repo hanya digunakan saat menyiapkan notebook untuk publikasi; pengguna cukup menjalankan file ipynb.
+
 ## Unduh langsung dari Colab utama
 
 Buka [Colab utama terbaru](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/03_AES_dataset_guru_300.ipynb) dan jalankan tahap-tahapnya berurutan. Pada bagian **15 · Unduh hasil Excel yang sudah rapi**, jalankan satu cell terakhir. Cell ini otomatis menyusun laporan dan mengunduh `Hasil_AES_Ringkas.zip` berisi lima Excel utama. Tidak perlu pindah notebook atau mengunggah ZIP untuk merapikannya.
@@ -18,7 +26,7 @@ Daftar file dan isinya ditampilkan sebelum unduhan; nama anggota ZIP diperiksa a
 | **02_Vektor_Jawaban.xlsx** | Seluruh komponen vektor tiap jawaban: RoBERTa sebelum/sesudah latihan, BGE-M3 dan fusion. |
 | **03_Vektor_Kata_dan_Kalimat.xlsx** | Satu jawaban contoh, vektor kata/kalimat, lookup sebelum konteks dan perbandingan kata berulang. BGE frozen ditampilkan sekali. |
 | **04_Prediksi_dan_Evaluasi.xlsx** | Mulai dari **Perbandingan Model**, lalu **Nilai Guru dan Prediksi**. Ada hasil tiap fold, ringkasan validasi dan prediksi satu jawaban. |
-| **05_Riwayat_Pelatihan.xlsx** | Semua fold/epoch digabung menjadi satu sheet per model; pengaturan, rancangan model dan rujukan paper ikut dicatat. |
+| **05_Riwayat_Pelatihan.xlsx** | Semua fold/epoch digabung menjadi satu sheet per model, beserta pengaturan dan rancangan model. Rujukan paper ada di Markdown notebook. |
 
 Setiap workbook diawali sheet **Panduan**. Nama kolom menjadi `ID Jawaban`, `Kata`, `Nilai Guru`, `Prediksi S1`, `RMSE (poin)`, dan `Komponen 1`, dst. `Komponen 1` adalah `v_0000` versi lama; hanya namanya berubah. J001 berarti jawaban baris pertama dan menjadi penghubung antarfile, bukan fitur model.
 
@@ -77,4 +85,4 @@ Email/duplikat tetap dikelompokkan. Pembagian yang telah dibuat adalah240develop
 
 Default5epoch/fold, microbatch1/effectivebatch8, AdamW, LRencoder2e−5/head1e−3, warmup10%, clipgrad1 tetap sama. RoBERTa memakai window512 termasuk2special, overlap128. BGE batas eksperimen1024 termasuk special. Loss memakai target0–1; RMSE/Pearson memakai skor mentah0–100. QWK/AC2 memakai salinan clip/nearestinteger dengan tie.5 ke bawah dan seluruh101kategori. Undefined tetap kosong dengan alasan.
 
-Rujukan tetap berasal dari [koleksi pengguna](aes_dataset300_references.json), antara lain RoBERTa, M3-Embedding, AES hybrid dan evaluasi. Paper-paper tersebut tidak diklaim memakai arsitektur proyek yang identik. Bukti pengujian keluaran baru ada di [laporan verifikasi](verification_dataset300_readable.md).
+Rujukan tetap berasal dari koleksi pengguna, antara lain RoBERTa, M3-Embedding, AES hybrid dan evaluasi, dan sudah ditulis di Markdown notebook. Program tidak membaca file daftar pustaka untuk menghitung skor. Paper-paper tersebut tidak diklaim memakai arsitektur proyek yang identik. Bukti pengujian keluaran baru ada di [laporan verifikasi](verification_dataset300_readable.md).

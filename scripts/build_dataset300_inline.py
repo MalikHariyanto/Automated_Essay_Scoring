@@ -1,11 +1,47 @@
-"""Build03: actual code in cells, numeric output, complete private Excel exports."""
+"""Bangun notebook AES mandiri: seluruh kode runtime tersedia langsung di cell."""
 import ast
+import hashlib
 import json
 from pathlib import Path
 import re
 import textwrap
 
 ROOT = Path(__file__).resolve().parents[1]
+
+WORKER_SOURCE = r'''
+import json, sys, traceback, types
+from pathlib import Path
+
+prefix, workspace = sys.argv[1:3]
+module = types.ModuleType('__aes_notebook__')
+sys.modules[module.__name__] = module
+namespace = module.__dict__
+namespace['ROOT'] = Path(workspace)
+
+def event(kind, **values):
+    print(prefix+json.dumps({'kind':kind, **values},ensure_ascii=False,allow_nan=False),flush=True)
+
+def show(frame, title='', rows=8, columns=8):
+    # Fungsi tampilan diisi oleh cell notebook; tidak diimpor dari file proyek.
+    import pandas as pd
+    frame = frame if isinstance(frame,pd.DataFrame) else pd.DataFrame(frame)
+    view = namespace['preview_table'](frame.columns,frame.head(rows).to_dict('records'),title,
+                                    row_count=len(frame),max_rows=rows,max_columns=columns)
+    view['rows'] = json.loads(pd.DataFrame(view['rows']).to_json(orient='values',force_ascii=False,default_handler=str))
+    event('table',**view,html=namespace['render_table'](view))
+
+namespace['show'] = show
+event('ready',python=sys.version.split()[0])
+for line in sys.stdin:
+    try:
+        payload = json.loads(line)
+        if payload.get('command') == 'close':break
+        exec(compile(payload['code'],payload.get('filename','<aes-cell>'),'exec'),namespace)
+    except BaseException:
+        event('error',traceback=traceback.format_exc())
+    else:
+        event('done')
+'''.strip()
 
 COMMENTS = {
     'spec = cfg[role]': 'Ambil nama checkpoint dan revision model yang dipilih: roberta atau bge.',
@@ -46,6 +82,15 @@ COMMENTS = {
 }
 
 FUNCTION_NOTES = {
+    'main':'Memeriksa pustaka yang tersedia, menyiapkan versi yang diperlukan, lalu memvalidasi import sebelum melanjutkan.',
+    'active_requirements':'Pilih versi pustaka sesuai Python aktif agar aturan Python 3.12 dan 3.13 tidak tertukar.',
+    'config':'Gabungkan parameter pilihan dengan nilai bawaan, lalu periksa batas skor, batch, dan panjang input.',
+    'clean':'Rapikan Unicode dan karakter kontrol; ejaan, huruf besar, dan tanda baca jawaban tetap dipertahankan.',
+    'read_dataset':'Baca jawaban dan nilai guru, periksa kelengkapan, lalu kelompokkan email/duplikat untuk mencegah kebocoran data.',
+    'ExcelJournal':'Catat hasil setiap tahap secara privat; paket unduhan utamanya disusun menjadi lima Excel di akhir.',
+    'SavedOutputs':'Baca angka hasil yang sudah tersimpan untuk laporan; tidak memanggil model atau melatih ulang.',
+    'write_report':'Buat workbook dengan Panduan dan nama kolom yang jelas tanpa memotong komponen vektor.',
+    'build_reports':'Susun lima laporan utama dari hasil sesi yang sudah selesai; tidak menghitung prediksi atau metrik ulang.',
     'encoder':'Memuat encoder dari nama checkpoint dan revision pada cfg; hasilnya objek model pembaca teks.',
     'tokenizer':'Memuat pemecah teks milik checkpoint yang sama. Hasil tokenisasi menjadi input encoder.',
     'content_windows':'Membagi token isi yang panjang menjadi beberapa potongan; bagian yang bertumpang tindih menjaga konteks.',
@@ -75,7 +120,7 @@ def source(path, names):
             # Imports relatif diganti nama yang sudah didefinisikan di cell sebelumnya.
             annotated = []
             for line in block.splitlines():
-                if line.lstrip().startswith('from .'):
+                if line.lstrip().startswith(('from .','from aes.')):
                     continue
                 for prefix, explanation in COMMENTS.items():
                     if line.lstrip().startswith(prefix):
@@ -86,6 +131,39 @@ def source(path, names):
     if len(found) != len(names):
         raise ValueError('Definisi source hilang: '+str(names))
     return '\n\n\n'.join(found)
+
+
+def assignments(path,names):
+    """Salin konstanta publik sebagai kode terbaca, bukan modul tersembunyi."""
+    raw=(ROOT/path).read_text();blocks=[]
+    for node in ast.parse(raw).body:
+        if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id in names for t in node.targets):
+            blocks.append(ast.get_source_segment(raw,node))
+    if len(blocks)!=len(names):raise ValueError('Konstanta belum lengkap: '+str(names))
+    return '\n\n'.join(blocks)
+
+
+def references_markdown():
+    papers=json.loads((ROOT/'docs/aes_dataset300_references.json').read_text())
+    lines=['<details><summary>Rujukan metode — catatan bacaan, bukan input program</summary>','',
+           'Rujukan ini mendukung penjelasan metode. Notebook tidak mengunduh atau membaca daftar pustaka untuk menghitung skor.','']
+    for paper in papers:
+        lines.append(f"- **{paper['id']} · {paper['title']}** ({paper['year']}). {paper['authors']}. {paper['used_for']} [Sumber]({paper['url']}).")
+        lines.append('  Batas penerapan: '+paper['limitation'])
+    return '\n'.join(lines+['','</details>'])
+
+
+def standalone_run_folder():
+    tree=ast.parse((ROOT/'src/aes/teacher_score/data.py').read_text())
+    function=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='run_folder')
+    body=[]
+    for node in function.body:
+        name=node.targets[0].id if isinstance(node,ast.Assign) and isinstance(node.targets[0],ast.Name) else None
+        if name in ('package','code_files'):continue
+        if name=='code_hash':node.value=ast.Name(id='NOTEBOOK_CODE_SHA256',ctx=ast.Load())
+        body.append(node)
+    function.body=body
+    return '# Identitas hasil mengikuti data, konfigurasi, dan kode notebook ini.\n'+ast.unparse(ast.fix_missing_locations(function))
 
 
 def build():
@@ -156,33 +234,36 @@ def build():
 
     Gunakan GPU Colab, Python3.12/3.13. Jalankan berurutan. Default5epoch/fold,5fold,15CVfit+3refit; proses bisa melewati sesi gratis. **Tiap tahap penghitungan menyimpan Excel** dengan `Info`/provenance dan seluruh koordinat per kolom. Preview notebook hanya cuplikan. Seluruh jawaban: embedding per jawaban; satu jawaban contoh: vektor token/kata/kalimat lengkap. Definisi fungsi menyiapkan proses, bukan menghasilkan skor dengan sendirinya.
 
-    File dataset, Excel, checkpoint dan notebook terisi tetap privat. GitHub menyimpan source/notebook tanpa output.
+    **Notebook mandiri:** semua kode pendukung ada di cell. Tidak ada clone/pull GitHub atau import modul proyek. Koneksi internet tetap dipakai saat memasang pustaka dan mengambil bobot pretrained dari Hugging Face.
+
+    File dataset, Excel, checkpoint dan notebook terisi tetap privat. GitHub hanya tempat menyimpan salinan notebook.
     ''')
-    md('## 1 · Ambil source terbaru\nSource publik diambil; dataset tidak ditanam di GitHub.')
-    code('''
-    import os, sys, json, subprocess, html, secrets, atexit
+    md(references_markdown())
+    md('''
+    ## 1 · Siapkan ruang kerja
+
+    Cell ini menyiapkan folder kerja untuk dataset dan hasil. Daftar versi pustaka ditulis dari teks yang ada di cell; tidak mengambil kode atau daftar pustaka dari repo. Semua kode model dan pendukungnya tersedia di notebook ini.
+    ''')
+    code(textwrap.dedent('''
+    import os, sys, json, subprocess, html, secrets, atexit, argparse, hashlib, venv
     from pathlib import Path
     from IPython.display import display, HTML
-    REPO_URL = 'https://github.com/MalikHariyanto/Automated_Essay_Scoring.git'
-    BRANCH = 'codex/aes-learning'
+    try:
+        from packaging.requirements import Requirement
+    except ImportError:
+        from pip._vendor.packaging.requirements import Requirement
     IN_COLAB = 'google.colab' in sys.modules or Path('/content').is_dir()
-    ROOT = Path('/content/Automated_Essay_Scoring') if IN_COLAB else Path.cwd()
-    if not IN_COLAB:
-        while not (ROOT/'src/aes').is_dir() and ROOT != ROOT.parent:
-            ROOT = ROOT.parent
-    if not (ROOT/'.git').exists():
-        if ROOT.exists() and any(ROOT.iterdir()):
-            raise RuntimeError('Folder target berisi file lain; kode tidak ditimpa.')
-        subprocess.run(['git','clone','--branch',BRANCH,'--single-branch',REPO_URL,str(ROOT)],check=True)
-    elif IN_COLAB:
-        branch = subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
-        dirty = subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()
-        if branch != BRANCH or dirty:
-            raise RuntimeError('Checkout mempunyai branch/perubahan lain; simpan dahulu atau pakai runtime baru.')
-        subprocess.run(['git','pull','--ff-only','origin',BRANCH],cwd=ROOT,check=True)
-    print('Versi kode:',subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()[:12])
+    default_workspace='/content/AES_300' if IN_COLAB else str(Path.cwd()/'outputs/AES_300')
+    ROOT=Path(os.environ.get('AES300_WORKSPACE',default_workspace)).expanduser().absolute()
+    ROOT.mkdir(parents=True,exist_ok=True)
+    # Identitas kode notebook untuk membedakan hasil dari implementasi yang berbeda.
+    NOTEBOOK_CODE_SHA256='__NOTEBOOK_CODE_SHA256__'
+    print('Ruang kerja AES siap. Seluruh kode tersedia di notebook ini.')
     print('Versi Python:',sys.version.split()[0])
-    ''',False)
+    ''')+'\n# Hanya pustaka runtime yang diperlukan; alat pengujian tidak dipasang untuk menjalankan AES.\n'+
+         "REQUIREMENTS_TEXT=r'''\n"+'\n'.join(line for line in (ROOT/'requirements.dataset300.txt').read_text().splitlines()
+                                                if not line.startswith(('pytest','nbformat','nbclient')))+"\n'''"+
+         "\n(ROOT/'requirements.dataset300.txt').write_text(REQUIREMENTS_TEXT)\n",False)
     md('''
     ## 2 · Instalasi dan pemilih Excel
 
@@ -192,26 +273,26 @@ def build():
 
     Awalan **`%%aes` menjalankan kode cell pada worker yang sama**, sehingga variabel bertahan antar-cell. Upload Excel sekali per runtime; bila file sudah ada tidak diminta lagi.
     ''')
+    code('# Pemeriksaan dan pemasangan pustaka tersedia langsung di sini.\n'+
+         assignments('scripts/setup_dataset300.py',['INSPECT','IMPORTS'])+'\n\n'+
+         source('scripts/setup_dataset300.py',['environment_folder','active_requirements','SetupError','main'])
+            .replace('def main(argv=None):','def prepare_environment(argv=None):'),False)
+    code('# Penghubung proses Python: menjaga variabel antar-cell %%aes tanpa file pendukung proyek.\n'+
+         "WORKER_SOURCE=r'''\n"+WORKER_SOURCE+"\n'''\n",False)
     code(r'''
     PYTHON = os.environ.get('AES300_PYTHON','')
-    setup_command=[sys.executable,str(ROOT/'scripts/setup_dataset300.py')]
-    if PYTHON:setup_command+=['--verify-python',PYTHON]
-    process = subprocess.Popen(setup_command,cwd=ROOT,
-                               stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
-    log=[]
-    for line in process.stdout:
-        print(line,end='',flush=True);log.append(line)
     def show_installation_log():
         path=ROOT/'outputs/dataset300_setup.log'
-        contents=path.read_text() if path.is_file() else ''.join(log)
+        contents=path.read_text() if path.is_file() else 'Log belum tersedia.'
         display(HTML('<details style="background:#f8fafc;color:#172035;padding:12px;border:1px solid #94a3b8">'
                      '<summary>Rincian instalasi — buka jika diperlukan</summary>'
                      '<pre style="max-height:320px;overflow:auto;white-space:pre-wrap;color:#172035">'
                      +html.escape(contents)+'</pre></details>'))
-    if process.wait():
+    try:
+        ready=prepare_environment(['--verify-python',PYTHON] if PYTHON else [])
+    except Exception:
         show_installation_log()
-        raise RuntimeError('Persiapan AES belum berhasil. '+''.join(log[-4:]))
-    ready=json.loads((ROOT/'outputs/dataset300_setup.json').read_text())
+        raise
     if ready['runtime_version'] != list(sys.version_info[:2]) or not ready['imports_verified']:
         raise RuntimeError('Metadata setup tidak cocok runtime aktif.')
     PYTHON=ready['python']
@@ -249,10 +330,11 @@ def build():
     if '_aes_process' in globals() and _aes_process.poll() is None:
         _aes_process.terminate()
     _aes_prefix='__AES_'+secrets.token_hex(12)+'__'
-    child_env={**os.environ,'PYTHONPATH':str(ROOT/'src'),'HF_HOME':str(ROOT/'outputs/cache/huggingface'),
+    child_env={**os.environ,'HF_HOME':str(ROOT/'outputs/cache/huggingface'),
                'AES300_DATASET':str(DATA_PATH),'TOKENIZERS_PARALLELISM':'false',
                'OMP_NUM_THREADS':'2','MKL_NUM_THREADS':'2','PYTHONUNBUFFERED':'1'}
-    _aes_process=subprocess.Popen([PYTHON,str(ROOT/'scripts/aes_lesson_worker.py'),'--prefix',_aes_prefix],
+    child_env.pop('PYTHONPATH',None)
+    _aes_process=subprocess.Popen([PYTHON,'-u','-c',WORKER_SOURCE,_aes_prefix,str(ROOT)],
                                   cwd=ROOT,env=child_env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,
                                   stderr=subprocess.STDOUT,text=True,bufsize=1)
     while True:
@@ -284,11 +366,14 @@ def build():
     md('''
     ## 3 · Impor dan konfigurasi sebelum eksperimen
 
-    Sama seperti file unggahan: impor pustaka, pilih device, tentukan epoch/batch. Default5epoch/fold mengikuti rancangan sebelumnya, bukan20epoch file unggahan. **Output:**`01_konfigurasi.xlsx` dan `01_rujukan_paper.xlsx`. Rujukan dipilih dari koleksi pengguna; tahun/versi dan batas penerapan dicatat, bukan klaim semua paper memakai model identik.
+    Impor pustaka yang diperlukan, lalu tentukan checkpoint, epoch, dan batch. Fungsi pendukung untuk membaca data, menampilkan tabel, dan membuat Excel juga didefinisikan di cell notebook ini. Rujukan tetap menjadi catatan Markdown, tidak dibaca oleh program.
+
+    Default lima epoch per fold mengikuti rancangan sebelumnya. Konfigurasi aktual dicatat setelah dataset selesai diperiksa.
     ''')
     code('''
-    import os, sys, json, math, hashlib, random, warnings, re, itertools, unicodedata, zipfile, subprocess, gc, logging
+    import os, sys, json, math, hashlib, random, warnings, re, itertools, unicodedata, zipfile, subprocess, gc, logging, html
     from collections import Counter
+    from dataclasses import dataclass
     from pathlib import Path
     from importlib.metadata import version
     import numpy as np
@@ -301,12 +386,24 @@ def build():
     from scipy.stats import pearsonr
     from sklearn.metrics import cohen_kappa_score
     from sklearn.model_selection import GroupKFold, GroupShuffleSplit
-    from openpyxl import load_workbook
-    from aes.cleaning import clean
-    from aes.teacher_score import SCOPE
-    from aes.teacher_score.data import DEFAULTS, REQUIRED, Bundle, config, digest, dump, read_dataset, run_folder
-    from aes.teacher_score.excel import ExcelJournal, vector_frame
+    from openpyxl import Workbook, load_workbook
+    from openpyxl.cell import WriteOnlyCell
+    from openpyxl.styles import Alignment, Font, PatternFill
+    from openpyxl.utils import get_column_letter
     SCENARIOS=('S1','S2','S3')
+    NOTEBOOK_CODE_SHA256='__NOTEBOOK_CODE_SHA256__'
+    ''')
+    code('# Nilai bawaan dan fungsi konfigurasi, tersedia langsung di notebook.\n'+
+         assignments('src/aes/teacher_score/__init__.py',['SCOPE'])+'\n\n'+
+         assignments('src/aes/teacher_score/data.py',['DEFAULTS','REQUIRED'])+'\n\n'+
+         source('src/aes/teacher_score/data.py',['config']))
+    code('# Bantuan membaca tabel: penamaan kolom, angka, dan penjelasan kata berulang.\n'+
+         assignments('src/aes/teacher_score/presentation.py',['LABELS','REPEATED_COLUMNS','MODELS','ROLES'])+'\n\n'+
+         assignments('src/aes/teacher_score/display.py',['REPEATED_NOTES','METRIC_NOTES'])+'\n\n'+
+         'REPEATED_HEADERS=REPEATED_COLUMNS\n\n'+
+         source('src/aes/teacher_score/presentation.py',['friendly_header','friendly_value','repeated_word_rows'])+'\n\n'+
+         source('src/aes/teacher_score/display.py',['preview_table','cell_text','render_table']))
+    code('''
 
     # Nama checkpoint adalah alamat model pretrained di Hugging Face, bukan objek model yang sudah dimuat.
     ROBERTA_CHECKPOINT='flax-community/indonesian-roberta-base'  # RoBERTa bahasa Indonesia untuk S1 dan S3.
@@ -330,17 +427,6 @@ def build():
                     bge={'checkpoint':BGE_CHECKPOINT,'revision':BGE_REVISION},
                     device='auto',new_answer=NEW_ANSWER,vector_source='pretrained',lesson_version='inline_excel_v1',
                     runtime_versions={p:version(p) for p in ('torch','transformers','numpy')}))
-    bundle=read_dataset(cfg)  # Periksa enam header, label, duplikat dan kelompok email.
-    output=run_folder(cfg,bundle)
-    journal=ExcelJournal(output/'excel',{'scope':SCOPE,'dataset_sha256':bundle.source_sha256,
-                         'run_folder':str(output),'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-                         'privacy':'PRIVAT; bukan untuk repo publik'})
-    journal.save('01_konfigurasi',{'Parameter':pd.DataFrame([{'name':k,'value':v} for k,v in cfg.items()]),
-                                 'Versi':pd.DataFrame([{'library':p,'version':version(p)} for p in ('torch','transformers','numpy','pandas','scikit-learn','openpyxl')])},
-                 'Konfigurasi aktual; belum ada hasil training')
-    references=json.loads((ROOT/'docs/aes_dataset300_references.json').read_text())
-    journal.save('01_rujukan_paper',{'Rujukan':pd.DataFrame(references)},'Rujukan koleksi pengguna dan batas penerapan')
-    show(pd.DataFrame(references)[['id','title','used_for']],'Rujukan proses')
     print('Perangkat perhitungan:', 'GPU (CUDA)' if torch.cuda.is_available() else 'CPU')
     ''')
     md('''
@@ -350,7 +436,20 @@ def build():
 
     **Output:** dataset asli, audit, teks sebelum/sesudah dan target loss `(rater−0)/100`→`02_dataset_dan_cleaning.xlsx`. Rujukan m01 menempatkan pemahaman/persiapan data sebelum modeling.
     ''')
+    code('# Baca dan audit data tanpa mengubah file Excel asli.\n'+
+         source('src/aes/cleaning.py',['clean'])+'\n\n'+
+         source('src/aes/teacher_score/data.py',['digest','dump','Bundle','read_dataset'])+'\n\n'+standalone_run_folder())
+    code('# Catat hasil tahap demi tahap; laporan unduhan diringkas menjadi lima Excel di bagian terakhir.\n'+
+         source('src/aes/teacher_score/excel.py',['excel_value','write_excel','vector_frame','ExcelJournal']))
     code('''
+    bundle=read_dataset(cfg)  # Periksa enam header, label, duplikat dan kelompok email.
+    output=run_folder(cfg,bundle)
+    journal=ExcelJournal(output/'excel',{'scope':SCOPE,'dataset_sha256':bundle.source_sha256,
+                         'run_folder':str(output),'notebook_code_sha256':NOTEBOOK_CODE_SHA256,
+                         'privacy':'PRIVAT; bukan untuk repo publik'})
+    journal.save('01_konfigurasi',{'Parameter':pd.DataFrame([{'name':k,'value':v} for k,v in cfg.items()]),
+                                 'Versi':pd.DataFrame([{'library':p,'version':version(p)} for p in ('torch','transformers','numpy','pandas','scikit-learn','openpyxl')])},
+                 'Konfigurasi aktual; belum ada hasil training')
     df=pd.read_excel(cfg['dataset'],sheet_name=cfg['sheet'])
     df=df.loc[:,~df.columns.astype(str).str.startswith('Unnamed:')]
     cleaning=pd.DataFrame([{'row_id':r['row_id'],'teks_asli':r['raw_text'],'teks_model':r['text'],
@@ -379,7 +478,6 @@ journal.save('03_split_dan_cv',{'Split_setiap_baris':split_rows,'Fold_setiap_bar
 show(split_rows.groupby('role').size().rename('rows').reset_index(),'Pembagian aktual')
 trace_index=manifest['test'][cfg['trace_position']]
 trace_text=cfg.get('new_answer','').strip() or bundle.rows[trace_index]['text']
-from aes.teacher_score.presentation import friendly_value
 print('Jawaban contoh:',friendly_value('row_id',bundle.rows[trace_index]['row_id']),'. Contoh ini dipakai untuk melihat token, vektor, dan prediksi setelah model dipilih.')
 ''')
     md('''
@@ -443,7 +541,6 @@ if RUN_WORD_VECTORS:
         preview=pd.DataFrame([{'word_index':w['word_index'],'word':w['word'],'covered':w['covered'],
                               **{f'v_{i:04d}':w['contextual_first5'][i] if w['contextual_first5'] is not None else None for i in range(5)}} for w in word_rows])
         show(preview,('RoBERTa' if role=='roberta' else 'BGE-M3')+' — contoh vektor kata')
-        from aes.teacher_score.presentation import repeated_word_rows, REPEATED_COLUMNS
         pairs=list(repeated_word_rows(before_words[role]['repeated_words'],role))
         show(pd.DataFrame(pairs,columns=REPEATED_COLUMNS),
              'Perbandingan kata yang berulang',columns=9)
@@ -536,10 +633,17 @@ if RUN_TRAINING and RUN_FINAL_FEATURES:
     md('''
     ## 15 · Unduh hasil Excel yang sudah rapi
     ''')
+    report_code=source('src/aes/teacher_score/presentation.py',[
+        'Table','SavedOutputs','guide','write_report','data_report','answer_vectors_report',
+        'word_vectors_report','evaluation_report','training_report','build_reports'])
+    # Daftar pustaka sudah menjadi Markdown, bukan sumber runtime atau sheet hasil.
+    start=report_code.index("    if source.has('01_rujukan_paper.xlsx','Rujukan'):")
+    end=report_code.index('\n    return sheets',start)
+    report_code=report_code[:start]+report_code[end:]
+    code('# Susun lima laporan dengan nama kolom yang bisa dibaca dan seluruh komponen vektor utama.\n'+report_code)
     code('''
     # Susun laporan dari hasil sesi ini. Tidak memanggil training atau evaluasi lagi.
     aes_cell('', """
-    from aes.teacher_score.presentation import build_reports
     summary=build_reports(journal.folder,output/'hasil_ringkas',verbose=False)
     dump(ROOT/'outputs/dataset300_download.json',{
         'archive':summary['archive'],'run_folder':str(output),
@@ -573,8 +677,22 @@ if RUN_TRAINING and RUN_FINAL_FEATURES:
         files.download(download['archive'])
     else:print('Lokasi file:',download['archive'])
     ''',False)
+    # Hash dari kode yang dapat dieksekusi; penjelasan Markdown tidak mengubah identitas hasil.
+    normalized=[ast.dump(ast.parse(c['source'].removeprefix('%%aes\n')),include_attributes=False)
+                for c in cells if c['cell_type']=='code']
+    fingerprint=hashlib.sha256('\n'.join(normalized).encode()).hexdigest()
+    for cell in cells:
+        cell['source']=cell['source'].replace('__NOTEBOOK_CODE_SHA256__',fingerprint)
+        if cell['cell_type']=='code':
+            tree=ast.parse(cell['source'].removeprefix('%%aes\n'))
+            for node in ast.walk(tree):
+                if isinstance(node,ast.ImportFrom) and node.module and (node.module=='aes' or node.module.startswith('aes.')):
+                    raise ValueError('Notebook masih mengimpor kode proyek: '+node.module)
+            if '__file__' in cell['source'] or "['git'," in cell['source']:
+                raise ValueError('Notebook masih bergantung pada file kode atau Git.')
     nb=dict(cells=cells,metadata={'kernelspec':{'display_name':'Python3','language':'python','name':'python3'},
-             'language_info':{'name':'python'},'colab':{'name':'03_AES_dataset_guru_300.ipynb'}},nbformat=4,nbformat_minor=4)
+             'language_info':{'name':'python'},'colab':{'name':'03_AES_dataset_guru_300.ipynb'},
+             'aes_standalone':{'code_sha256':fingerprint,'repository_required':False}},nbformat=4,nbformat_minor=4)
     content=json.dumps(nb,ensure_ascii=False,indent=1)+'\n'
     for directory in ('notebooks','aes-learning/notebooks'):
         (ROOT/directory/'03_AES_dataset_guru_300.ipynb').write_text(content,encoding='utf-8')
