@@ -175,7 +175,13 @@ def vector_lab(text, cfg, output):
                 'npz': str(destination/f'{role}_vectors.npz')}
         dump(destination/f'{role}_metadata.json', item)
         results[role] = item
-        print(f'{role}: {len(words)} kata × {model.config.hidden_size}; {len(sentences)} kalimat; token tak tercakup={item["uncovered_tokens"]}', flush=True)
+        label = 'RoBERTa' if role == 'roberta' else 'BGE-M3'
+        if role == 'roberta':
+            label += ' sebelum latihan' if cfg['vector_source']=='pretrained' else f' {cfg["vector_source"]} setelah latihan'
+        if role == 'roberta' or cfg['vector_source']=='pretrained':
+            print(f'{label}: vektor untuk {len(words)} kata dan {len(sentences)} kalimat selesai. Setiap vektor berisi {model.config.hidden_size} angka.', flush=True)
+            if item['uncovered_tokens']:
+                print(f'Catatan: {item["uncovered_tokens"]} token melewati batas input dan tidak mendapat vektor.', flush=True)
         del model, slow, fast
         release()
     results['interpretation'] = 'Bandingkan kemunculan dalam encoder yang sama. RoBERTa 768 dan BGE 1024 mempunyai ruang koordinat berbeda: jangan menghitung cosine langsung antarmodel. Same token ID => lookup sama pada checkpoint yang sama; konteks/posisi dapat mengubah hidden state. Kata ejaan sama bisa mempunyai ID subword berbeda (spasi/case).'

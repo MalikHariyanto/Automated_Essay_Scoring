@@ -20,6 +20,10 @@ def main():
         import pandas as pd
         frame = frame if isinstance(frame, pd.DataFrame) else pd.DataFrame(frame)
         view = frame.iloc[:rows, :columns].copy()
+        from aes.teacher_score.presentation import friendly_header, friendly_value
+        for name in view.columns:
+            view[name] = view[name].map(lambda value: friendly_value(name,value))
+        view.columns = [friendly_header(name) for name in view.columns]
         view = view.map(lambda value: value.item() if hasattr(value, 'item') else value)
         safe = json.loads(view.to_json(orient='split', force_ascii=False, default_handler=str))
         event('table', title=title, columns=safe['columns'], rows=safe['data'], shape=list(frame.shape))

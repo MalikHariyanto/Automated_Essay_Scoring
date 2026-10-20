@@ -53,6 +53,39 @@ def source(path, names):
 def build():
     cells = []
     def md(text):
+        if '## 12 ·' in text:
+            text='''## 12 · Pelatihan dan evaluasi tiga skenario
+
+            Model dilatih dengan lima fold pada data development. Epoch terbaik dipilih dari RMSE validasi, kemudian ketiga model dilatih ulang pada development sebelum final test dibuka. Cara ini tetap sama seperti versi sebelumnya.
+
+            Riwayat seluruh fold digabung per model pada **05_Riwayat_Pelatihan.xlsx**. Prediksi dan empat metrik tersedia pada **04_Prediksi_dan_Evaluasi.xlsx**. File rincian per fold tetap disimpan oleh program, tetapi tidak dimasukkan ke paket utama.'''
+        elif '## 14 ·' in text:
+            text='''## 14 · Lihat vektor setelah model belajar
+
+            Tahap penghitungan tetap mengambil fitur model final setelah evaluasi. Untuk laporan utama, cukup gunakan vektor RoBERTa sebelum/sesudah latihan, BGE-M3, dan gabungan fusion pada **02_Vektor_Jawaban.xlsx**.
+
+            Vektor kata dan kalimat contoh tersedia pada **03_Vektor_Kata_dan_Kalimat.xlsx**. Angka lapisan internal seperti dropout atau aktivasi tidak perlu dilampirkan ke dosen; rincian itu tetap disimpan secara privat oleh program.'''
+        elif '## 15 ·' in text:
+            text='''## 15 · Unduh lima file hasil utama
+
+            Paket akhir **Hasil_AES_Ringkas.zip** berisi:
+            1. **Data dan Tokenisasi** — jawaban, nilai guru, pembagian data, serta token.
+            2. **Vektor Jawaban** — seluruh komponen vektor per jawaban, sebelum/sesudah latihan dan fusion.
+            3. **Vektor Kata dan Kalimat** — satu contoh jawaban dan perbandingan kata berulang.
+            4. **Prediksi dan Evaluasi** — buka sheet **Perbandingan Model** terlebih dahulu.
+            5. **Riwayat Pelatihan** — fold dan epoch digabung per model.
+
+            Tiap file diawali sheet **Panduan**. Hasil yang belum dihitung tidak diisi angka pengganti. Paket parsial hanya memuat file yang datanya sudah tersedia.
+
+            **Sudah punya ZIP versi lama?** Gunakan [notebook merapikan hasil](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/04_Rapikan_Hasil_AES.ipynb). Cukup upload ZIP lama, tanpa dataset, checkpoint, atau training ulang.'''
+        replacements={'01_konfigurasi.xlsx':'05_Riwayat_Pelatihan.xlsx','01_rujukan_paper.xlsx':'05_Riwayat_Pelatihan.xlsx',
+            '02_dataset_dan_cleaning.xlsx':'01_Data_dan_Tokenisasi.xlsx','03_split_dan_cv.xlsx':'01_Data_dan_Tokenisasi.xlsx',
+            '04_tokenisasi.xlsx':'01_Data_dan_Tokenisasi.xlsx','05_roberta_pretrained.xlsx':'02_Vektor_Jawaban.xlsx',
+            '06_bge_frozen.xlsx':'02_Vektor_Jawaban.xlsx','07_vektor_kata_kalimat_pretrained.xlsx':'03_Vektor_Kata_dan_Kalimat.xlsx',
+            '08_arsitektur.xlsx':'05_Riwayat_Pelatihan.xlsx','13_prediksi_satu_jawaban.xlsx':'04_Prediksi_dan_Evaluasi.xlsx'}
+        for old,new in replacements.items():text=text.replace(old,new)
+        text=text.replace('**Tiap tahap penghitungan menyimpan Excel** dengan `Info`/provenance dan seluruh koordinat per kolom.',
+                          '**Hasil akhir dirangkum dalam lima Excel** dengan nama sheet dan kolom yang mudah dibaca. Rincian setiap tahap tetap tersimpan secara privat.')
         text = re.sub(r'([A-Za-z]{3,})(\d)',r'\1 \2',text)
         text = re.sub(r'(\d)([A-Za-z]{3,})',r'\1 \2',text)
         for before,after in {'seluruhjawaban':'seluruh jawaban','tiapfold':'tiap fold','setiapfold':'setiap fold',
@@ -73,7 +106,7 @@ def build():
         cells.append(dict(cell_type='code',metadata={},execution_count=None,outputs=[],
                           source=('%%aes\n' if worker else '')+textwrap.dedent(text).strip()+'\n'))
     def defs(path,names,comment):
-        code('# '+comment+'\n'+source(path,names)+'\nprint("Definisi siap; training belum dijalankan.")')
+        code('# '+comment+'\n'+source(path,names))
     md('''
     # AES guru300 · RoBERTa, BGE-M3, fusion → prediksi dan evaluasi
 
@@ -149,7 +182,8 @@ def build():
         td='background:#f8fafc!important;color:#172035!important;padding:9px;border:1px solid #cbd5e1'
         body='<table><thead><tr>'+''.join('<th style="'+th+'">'+esc(x)+'</th>' for x in event['columns'])+'</tr></thead><tbody>'
         body+=''.join('<tr>'+''.join('<td style="'+td+'">'+esc(x)+'</td>' for x in row)+'</tr>' for row in event['rows'])
-        print(event['title'],'| shape lengkap:',event['shape'])
+        print(event['title'])
+        print('Cuplikan:',len(event['rows']),'dari',event['shape'][0],'baris. Data lengkap tersedia di Excel akhir.')
         display(HTML('<div style="max-height:420px;overflow:auto;background:#f8fafc;color:#172035">'+body+'</tbody></table></div>'))
     if '_aes_process' in globals() and _aes_process.poll() is None:
         _aes_process.terminate()
@@ -192,7 +226,7 @@ def build():
     Sama seperti file unggahan: impor pustaka, pilih device, tentukan epoch/batch. Default5epoch/fold mengikuti rancangan sebelumnya, bukan20epoch file unggahan. **Output:**`01_konfigurasi.xlsx` dan `01_rujukan_paper.xlsx`. Rujukan dipilih dari koleksi pengguna; tahun/versi dan batas penerapan dicatat, bukan klaim semua paper memakai model identik.
     ''')
     code('''
-    import os, sys, json, math, hashlib, random, warnings, re, itertools, unicodedata, zipfile, subprocess, gc
+    import os, sys, json, math, hashlib, random, warnings, re, itertools, unicodedata, zipfile, subprocess, gc, logging
     from collections import Counter
     from pathlib import Path
     from importlib.metadata import version
@@ -252,7 +286,7 @@ def build():
                            'target_loss':(r['score']-cfg['score_min'])/(cfg['score_max']-cfg['score_min'])} for r in bundle.rows])
     journal.save('02_dataset_dan_cleaning',{'Dataset_asli':df,'Audit':pd.DataFrame([bundle.summary]),
                                           'Sebelum_sesudah':cleaning},'Pembacaan/cleaning aktual; sumber utuh')
-    show(cleaning,'Input dan cleaning',columns=7)
+    show(cleaning[['row_id','teks_model','skor_guru']],'Contoh jawaban dan nilai guru')
     print('Jumlah:',len(df),'| target:',bundle.summary['target_columns'],'| output model:1')
     ''')
     md('''
@@ -281,7 +315,7 @@ print('Contoh:',bundle.rows[trace_index]['row_id'],'| bukan untuk memilih epoch.
     RoBERTa512=510isi+2special, overlap128, seluruh token akhir tercakup. BGE memakai tokenizer berbeda, batas eksperimen1024 termasukspecial; truncation dilaporkan. Dasar tokenizer/encoder: m04/p14; batas/overlap ini keputusan proyek. **Output:**token,ID,attentionmask,padding,window/coverage→`04_tokenisasi.xlsx`.
     ''')
     defs('src/aes/windows.py',['content_windows','batch_windows','mean_by_essay'],'Buat window, tambahkan special sekali, mean CLS secara differentiable.')
-    defs('src/aes/teacher_score/models.py',['device_name','release','encoder','tokenizer'],'Checkpoint terkunci; RoBERTa requires_grad=True, BGE frozen.')
+    defs('src/aes/teacher_score/models.py',['device_name','release','ExpectedPoolerNotice','encoder','tokenizer'],'Checkpoint terkunci; RoBERTa requires_grad=True, BGE frozen.')
     code(source('src/aes/teacher_score/lesson.py',['export_tokens'])+'''
 
 if RUN_MODELS:
@@ -328,8 +362,13 @@ if RUN_WORD_VECTORS:
     before_words=vector_lab(trace_text,{**cfg,'vector_source':'pretrained'},output)
     export_word_sentence_vectors(before_words,journal,'07_vektor_kata_kalimat_pretrained')
     for role in ('roberta','bge'):
-        show(pd.DataFrame(before_words[role]['words']),role+' kata; Excel menyimpan semua koordinat')
-        show(pd.DataFrame(before_words[role]['repeated_words']),role+' kata berulang')
+        preview=pd.DataFrame(before_words[role]['words'],columns=['word_index','word','covered','contextual_first5'])
+        preview=preview.rename(columns={'contextual_first5':'Lima Komponen Pertama'})
+        show(preview,('RoBERTa' if role=='roberta' else 'BGE-M3')+' — contoh vektor kata')
+        from aes.teacher_score.presentation import repeated_word_rows
+        pairs=list(repeated_word_rows(before_words[role]['repeated_words'],role))
+        show(pd.DataFrame(pairs,columns=['Model','Kata','Posisi 1','Posisi 2','ID Sama','Vektor Awal Sama','Vektor Akhir Sama','Kemiripan Akhir','Apa Artinya']),
+             'Perbandingan kata yang berulang',columns=9)
 ''')
     md('''
     ## 10 · ModelS1/S2/S3 dan forward
@@ -374,8 +413,9 @@ if RUN_TRAINING:
         export_training_event(kind,scenario,result,bundle,cfg,journal)
     report=train_all(bundle,manifest,bge,cfg,output,observer=on_training_stage)
     export_completed_training(report,bundle,cfg,output,journal)
-    show(pd.DataFrame(report['cv']),'CV development untukpemilihan',rows=15)
-    show(pd.DataFrame(report['rows']),'TEST akhir untukpelaporan',rows=3)
+    show(pd.DataFrame(report['cv']),'Hasil validasi silang (lima fold)',rows=15)
+    final_table=pd.DataFrame(report['rows'])[['Skenario','RMSE','Pearson','QWK','AC2']]
+    show(final_table,'Perbandingan model pada data uji',rows=3)
 else:
     print('Training belumdijalankan. Tidak ada angka penelitian pengganti.')
 ''')
@@ -402,7 +442,9 @@ if RUN_TRAINING:
     code(source('src/aes/teacher_score/lesson.py',['export_final_features'])+'''
 
 if RUN_TRAINING and RUN_FINAL_FEATURES:
+    print('Mengambil vektor jawaban dari ketiga model yang sudah dilatih...')
     export_final_features(bundle,bge,cfg,output,journal)
+    print('Vektor',len(bundle.rows),'jawaban siap disajikan dalam 02_Vektor_Jawaban.xlsx.')
     if RUN_WORD_VECTORS:
         for scenario in ('S1','S3'):
             after_words=vector_lab(trace_text,{**cfg,'vector_source':scenario},output)
@@ -414,13 +456,14 @@ if RUN_TRAINING and RUN_FINAL_FEATURES:
     `00_indeks_output.xlsx`mendaftar workbook/shape yang benar-benar selesai. Tidak ada angka dummy untuk tahap yang belumjalan. Semua koordinat vektor perkolom, sumber/revision/pooling/statusdi`Info`. Arsip hanyaExcel, bukanbobot/cache. Janganupload fileberisi teks/nilai ke repopublik. Download atau simpanfolderoutput keDriveprivat sebelumruntime dihapus.
     ''')
     code('''
-    excel_files=sorted(journal.folder.glob('*.xlsx'))
-    show(pd.DataFrame(journal.records.values()),'Indeks output aktual',rows=40,columns=4)
-    archive=output/'AES_300_semua_tahapan_Excel_PRIVAT.zip'
-    with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as target:
-        for path in excel_files:target.write(path,arcname=path.name)
-    dump(ROOT/'outputs/dataset300_download.json',{'archive':str(archive),'run_folder':str(output),'excel_count':len(excel_files)})
-    print('Arsipprivat:',archive,'| JumlahExcel:',len(excel_files))
+    from aes.teacher_score.presentation import build_reports
+    summary=build_reports(journal.folder,output/'hasil_ringkas')
+    dump(ROOT/'outputs/dataset300_download.json',{'archive':summary['archive'],'run_folder':str(output),'excel_count':len(summary['files'])})
+    print('Selesai. Paket unduhan berisi',len(summary['files']),'Excel utama.')
+    if any(Path(path).name.startswith('04_') for path in summary['files']):
+        print('Untuk melihat hasil akhir, buka 04_Prediksi_dan_Evaluasi.xlsx → Perbandingan Model.')
+    else:
+        print('Prediksi dan evaluasi belum tersedia. Paket ini hanya memuat tahap yang sudah selesai.')
     ''')
     code('''
     download=json.loads((ROOT/'outputs/dataset300_download.json').read_text())

@@ -2,6 +2,7 @@
 import gc
 import hashlib
 import json
+import logging
 from pathlib import Path
 import warnings
 
@@ -30,9 +31,33 @@ def release():
         torch.cuda.empty_cache()
 
 
+class ExpectedPoolerNotice(logging.Filter):
+    """Hanya saring pemberitahuan dua bobot pooler yang memang tidak dipakai."""
+    def filter(self, record):
+        import ast
+        import re
+        message = record.getMessage()
+        if not message.startswith('Some weights of the model checkpoint at ') or 'were not used when initializing' not in message:
+            return True
+        match = re.search(r"\['[^\n]+?\]", message)
+        if match is None:
+            return True
+        try:
+            keys = ast.literal_eval(match.group())
+        except (ValueError, SyntaxError):
+            return True
+        return set(keys) != {'pooler.dense.bias', 'pooler.dense.weight'}
+
+
 def encoder(cfg, role):
     spec = cfg[role]
-    result = AutoModel.from_pretrained(spec['checkpoint'], revision=spec['revision'], add_pooling_layer=False)
+    logger = logging.getLogger('transformers.modeling_utils')
+    notice = ExpectedPoolerNotice()
+    logger.addFilter(notice)
+    try:
+        result = AutoModel.from_pretrained(spec['checkpoint'], revision=spec['revision'], add_pooling_layer=False)
+    finally:
+        logger.removeFilter(notice)
     expected = 768 if role == 'roberta' else 1024
     if result.config.hidden_size != expected:
         raise ValueError(f'{role}: dimensi checkpoint tidak cocok dengan {expected}.')
@@ -183,7 +208,9 @@ def bge_features(bundle, cfg, output):
             batch = {k: v.to(device) for k, v in batch.items() if k in ('input_ids', 'attention_mask')}
             cls = model(**batch).last_hidden_state[:, 0, :].float()
             output_vectors.append(torch.nn.functional.normalize(cls, dim=1).cpu().numpy())
-            print(f'BGE frozen: {min(start+cfg["bge_batch"], len(bundle.rows))}/{len(bundle.rows)} jawaban', flush=True)
+            processed = min(start+cfg['bge_batch'], len(bundle.rows))
+            if processed == len(bundle.rows) or processed % 25 < cfg['bge_batch']:
+                print(f'BGE-M3: vektor {processed} dari {len(bundle.rows)} jawaban selesai.', flush=True)
     values = np.concatenate(output_vectors).astype(np.float32)
     if values.shape != (len(bundle.rows), 1024) or not np.isfinite(values).all() or not np.allclose(np.linalg.norm(values, axis=1), 1, atol=1e-4):
         raise RuntimeError('Encoder BGE menghasilkan fitur tidak sah; tidak disimpan.')

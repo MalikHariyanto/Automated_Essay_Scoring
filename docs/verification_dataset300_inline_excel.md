@@ -1,5 +1,7 @@
 # Verifikasi kode inline dan Excel tiap tahap
 
+**Pembaruan penyajian:** paket akhir kini lima laporan utama, bukan38workbook terpisah. Penghitungan model dipertahankan; lihat [verifikasi kesamaan angka dan konversi ZIP lama](verification_dataset300_readable.md). Laporan di bawah adalah bukti versi awal kode inline.
+
 20 Oktober 2026. Branch `codex/aes-learning`; basis perubahan `cb6e599ff6d6a03ace1ab547b17294b80b5664c8`. CWD verifikasi `/workspace/Automated_Essay_Scoring`. Notebook publik39cell,23codecell; source SHA256 `50431d9db5b65108a819ea45056da862b313a1dabac31e7f4c29a319c98061a7`, mirror byte-identik. Seluruh output publik dikosongkan.
 
 ## Pemeriksaan yang benar-benar selesai

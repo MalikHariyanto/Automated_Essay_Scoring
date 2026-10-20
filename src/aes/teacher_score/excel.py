@@ -84,10 +84,11 @@ def vector_frame(values, ids, prefix='v'):
 
 
 class ExcelJournal:
-    def __init__(self, folder, metadata):
+    def __init__(self, folder, metadata, verbose=False):
         self.folder = Path(folder)
         self.folder.mkdir(parents=True, exist_ok=True)
         self.metadata = metadata
+        self.verbose = verbose
         file = self.folder/'index.json'
         self.records = json.loads(file.read_text()) if file.exists() else {}
 
@@ -100,5 +101,6 @@ class ExcelJournal:
         (self.folder/'index.json').write_text(json.dumps(self.records, ensure_ascii=False, indent=2)+'\n')
         write_excel(self.folder/'00_indeks_output.xlsx', {'Daftar_file': pd.DataFrame(self.records.values())},
                     {**self.metadata, 'stage': 'Daftar keluaran aktual; hanya tahap yang selesai dicatat'})
-        print(f'Excel tersimpan: {path.name} | '+', '.join(f'{k} {v["rows"]}×{v["columns"]}' for k,v in counts.items()), flush=True)
+        if self.verbose:
+            print(f'Rincian tersimpan: {path.name}', flush=True)
         return path
