@@ -1,107 +1,73 @@
-# Colab terbaru: satu skor guru, tiga skenario
+# Colab guru300: kode inline dan Excel setiap tahap
 
-Buka [03_AES_dataset_guru_300.ipynb di Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/03_AES_dataset_guru_300.ipynb). Upload `fix_dataset_300.xlsx` pada cell input, lalu jalankan berurutan. Gunakan runtime GPU; Python **3.12 dan 3.13** didukung dengan dependency yang dipilih otomatis. Jangan menerbitkan notebook yang sudah berisi teks/nilai siswa.
+Buka [notebook03 di Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/03_AES_dataset_guru_300.ipynb), pilih GPU dan jalankan dari atas. Versi20 Oktober2026 mengikuti urutan file BGE-M3 unggahan dan mengganti cetakan `show_code(...)` dengan **kode yang benar-benar dieksekusi di cell**, disertai komentar `#` pada baris penting. Output berisi tabel/angka/status file, bukan source yang dicetak ulang.
 
-Ini penyesuaian khusus permintaan dataset terbaru, dengan scope `teacher_single_score_dataset300`. Pipeline lama empat trait 1–5, notebook 01/02 dan HTML pembelajarannya tetap mempunyai cakupan semula. Kode baru tidak mengubah label/rubrik lama atau menyebut hasil latihan AI sebagai nilai guru.
+## Cara menjalankan
 
-## Mengapa satu output, bukan empat rubrik?
+1. Simpan output penting dari tab lama secara privat; buka ulang link notebook terbaru. GitHub tidak otomatis mengubah cell tab Colab yang sudah terbuka.
+2. Cell awal mengambil source, menyiapkan dependency Python3.12/3.13 dan memilih `fix_dataset_300.xlsx` tab `Sheet1`. File yang sudah ada pada runtime yang sama dipakai kembali. Runtime baru memerlukan upload ulang.
+3. Jalankan cell `%%aes` berurutan. Awalan ini menjalankan kode cell pada **worker Python persisten yang sama**, bukan mencetak kode. Variabel/parameter tetap tersedia di cell berikutnya. Kernel hanya menangani pemilih file dan tampilan HTML, sehingga NumPy kernel lama tidak merusak import numerik worker.
+4. Baca preview setiap tahap. File Excel mencakup seluruh baris/koordinat, walaupun preview hanya menampilkan beberapa kolom. Cell yang hanya mendefinisikan fungsi belum menghitung skor; fungsi tersebut dipanggil pada tahap berikutnya.
+5. Setelah selesai, unduh `AES_300_semua_tahapan_Excel_PRIVAT.zip` dari cell terakhir. Indeks file ada di `00_indeks_output.xlsx`. Bobot/cache tidak dimasukkan ke ZIP Excel.
 
-File unggahan berisi 300 respons, 25 kelompok email, dan 12 pertanyaan. Kolom yang tersedia adalah `Email address`, `response_number`, `response_text`, `soal`, `jawaban_referensi`, dan satu kolom nilai `rater`. Skor teramati 65–99. Tidak ada empat nilai terpisah maupun deskriptor rubrik empat dimensi. Kolom kosong tanpa header tidak menjadi fitur.
+Jangan mengunggah Excel, arsip hasil, bobot atau notebook terisi ke repo publik. `/content` Colab hilang jika runtime dihapus; download hasil atau gunakan folder Drive privat untuk penyimpanan antarsesi. Setup yang dijalankan ulang akan menghentikan worker lama; setelah itu jalankan cell berikutnya dari awal.
 
-Secara pemrograman, head empat output bisa dibuat. Namun, satu nilai tidak menentukan empat komponen penilaian: nilai 80 bisa berasal dari berbagai kombinasi isi, organisasi, kebahasaan, dan mekanik. Menyalin 80 ke empat kolom atau membaginya rata tidak menghasilkan anotasi empat dimensi. Model seperti itu tidak dapat dievaluasi sebagai penilai empat rubrik guru.
+## Satu nilai guru, bukan empat rubrik
 
-Untuk studi empat dimensi, perlu rubrik dengan indikator/deskriptor dan empat label yang diberikan manusia pada setiap respons, idealnya disertai pemeriksaan kesepakatan antarpenilai. Sistem AI boleh membantu mengusulkan anotasi secara terpisah, tetapi usul tersebut bukan label guru. Workflow baru ini mempelajari satu skor guru yang memang tersedia, output `[N,1]`; tidak memaksakan empat label.
+Audit unggahan:300respons,25kelompok email,12pertanyaan, satu nilai `rater` teramati65–99. Empat label dimensi/deskriptor rubrik tidak tersedia. Head empat output mudah diprogram, tetapi satu angka guru tidak menentukan empat nilai terpisah. Workflow ini menghasilkan **satu skor** pada S1/S2/S3; tidak menyalin/membagi satu label menjadi empat.
 
-Isi pertanyaan membahas metodologi penelitian. File saja tidak membuktikan bahwa respondennya siswa SMA kelas XI atau bahwa tugasnya sama dengan rancangan esai penelitian sebelumnya. Kesesuaian populasi, tugas dan rubrik tetap perlu dipastikan sebelum menjadikan dataset ini bukti untuk klaim tersebut.
+Untuk penelitian empat dimensi, perlu indikator/deskriptor dan empat label manusia per jawaban. File ini membahas metodologi penelitian dan tidak membuktikan responden SMAkelasXI. Nama kolom `rater` diperlakukan sebagai skor sesuai notebook unggahan, bukan ID penilai. Rentang0–100 ditetapkan mengikuti notebook unggahan, tidak diambil dari min/max test.
 
-## Hubungan dengan notebook BGE-M3 unggahan
+Hanya `response_text` masuk model. `soal`, `jawaban_referensi`, email, nomorrespons dan skor tidak disisipkan sebagai fitur. Email digunakan sebagai kelompok pencegah kebocoran. Tiga set teks duplikat lintas email menghubungkan25email menjadi22kelompok terhubung. Kandidat split deterministik dipilih berdasarkan kedekatan jumlah baris ke80/20 saja, tanpa memakai nilai/hasil model. Pada file ini pembagian aktual240development dan60test, dengan17/5kelompok terhubung.
 
-Urutan kerja dipertahankan: pemasangan pustaka, pembacaan Excel, konfigurasi/dataset, model, optimizer/metrik, training, evaluasi dan scoring. Label dibagi rentang skor saat menghitung MSE seperti notebook unggahan, lalu prediksi dikembalikan ke satuan poin asli.
+## Alur dan output Excel
 
-Perubahan yang disengaja:
-
-- Tiga skenario lengkap menggantikan satu model BGE. S2 BGE dibuat frozen sesuai rancangan skenario yang sudah dibahas, bukan fully fine-tuned seperti notebook unggahan.
-- Maksimum default 5 epoch per fold, dapat diubah melalui `EPOCHS` sebelum eksperimen; notebook unggahan memakai 20 epoch. DataLoader mempunyai micro batch 1 dan effective batch 8 melalui akumulasi gradien.
-- Split acak per baris diganti holdout kelompok dan 5-fold CV development. Set yang dipakai memilih epoch tidak lagi sekaligus disebut final test.
-- Rentang kategori ditetapkan 0–100 mengikuti asumsi notebook unggahan. Tidak diturunkan dari min/max nilai test. Tidak ada deskriptor rubrik baru yang dikarang.
-- Tabel evaluasi menggunakan tepat QWK, Gwet AC2 kuadratik, RMSE dan Pearson. Diagnostic out-of-range ditampilkan terpisah, bukan metrik pemilihan tambahan.
-
-## Input, split, dan target eksperimen
-
-Hanya teks `response_text` masuk encoder. `soal`, `jawaban_referensi`, email, nomor respons dan nilai tidak disisipkan ke teks atau vektor input. Model ini mempelajari kualitas yang berkaitan dengan skor pada kumpulan pertanyaan yang ada; model tidak secara eksplisit membandingkan jawaban dengan kunci. Menguji generalisasi ke prompt baru memerlukan split/protokol berbeda.
-
-Ada tiga kelompok teks identik lintas email setelah normalisasi audit (casefold dan penyatuan whitespace). Agar tidak bocor, email yang mempunyai teks identik dihubungkan menjadi kelompok yang sama, menghasilkan 22 kelompok terhubung. Normalisasi audit ini tidak mengganti teks masukan encoder; cleaning masukan hanya NFC, kontrol karakter, dan normalisasi baris sesuai fungsi lama.
-
-Targetnya 80% baris development dan 20% test dengan kelompok utuh. `GroupShuffleSplit(test_size=0.2, random_state=2026, n_splits=128)` menghasilkan kandidat pembagian kelompok; dipilih kandidat pertama yang paling dekat target proporsi baris, **berdasarkan jumlah baris saja**, tanpa melihat label guru/hasil model. Alasannya, 20% kelompok belum tentu berisi 20% baris. Jika rasio tepat tidak tersedia, kelompok tetap tidak dipecah dan proporsi aktual dilaporkan. `GroupKFold(n_splits=5)` membagi development menjadi lima fold; setiap baris development menjadi validasi sekali, tanpa kelompok yang menyeberang train/validation. Kelompok dan duplikat tidak menyeberang final test. Manifest yang sama digunakan S1/S2/S3.
-
-Validasi sudah terjadi di lima fold tersebut. Tidak diperlukan lagi split validasi terpisah di luar CV untuk protokol ini. Epoch terbaik per fold dipilih berdasarkan RMSE validasi minimum. Epoch refit adalah pembulatan ke atas median lima epoch terbaik. Semua konfigurasi/epoch ketiga skenario dikunci, semua refit di seluruh development diselesaikan, baru final test dievaluasi. Perbandingan/pemilihan skenario menggunakan CV; angka test untuk pelaporan akhir, bukan tuning lanjutan.
-
-Hasil CV fold tersimpan dan dapat dilanjutkan. Hash dataset, konfigurasi dan source membedakan folder eksperimen. Checkpoint final dan prediksi test diverifikasi dengan SHA256. Pengulangan run selesai memakai hasil tersimpan; hasil test per skenario juga tersimpan agar resume setelah gangguan tidak perlu memprediksi test ulang. Jangan sengaja mengganti konfigurasi setelah melihat test untuk mengejar hasil terbaik.
-
-## Model dan bagian yang belajar
-
-| Skenario | Alur | Parameter yang diperbarui |
+| Tahap | Output yang dihitung/disimpan | Workbook |
 | --- | --- | --- |
-| S1 | RoBERTa Indonesia → CLS setiap window → mean 768 → dropout → linear 768→1 | Encoder RoBERTa dan head |
-| S2 | BGE-M3 frozen → CLS 1024 → L2 → MLP 1024→256→1 | MLP saja |
-| S3 | RoBERTa 768; BGE frozen 1024→proyeksi linear+LayerNorm 256; concat 1024→linear 1 | RoBERTa, proyeksi BGE, head |
+| Konfigurasi/rujukan | Parameter, versi dependency, judul/tahun/halaman dan batas penerapan paper | `01_konfigurasi`, `01_rujukan_paper` |
+| Dataset/cleaning | Sumber, audit, teks asli/bersih, skor guru dan target loss | `02_dataset_dan_cleaning` |
+| Split/CV | RowID, kelompok, peran development/test dan train/validation tiapfold | `03_split_dan_cv` |
+| Tokenisasi | Token/ID, window RoBERTa, padding, attentionmask dan truncation BGE | `04_tokenisasi` |
+| RoBERTa pretrained | Seluruh jawaban×768 dan CLS setiapwindow, sebelum fine-tuning | `05_roberta_pretrained` |
+| BGE frozen | Seluruh jawaban×1024, CLS+L2, sumber/revision dan truncation | `06_bge_frozen` |
+| Kata/kalimat contoh | Koordinat lengkap lookup/kontekstual setiaptoken/kata, CLS kalimat, span/coverage, pasangan kata berulang | `07_vektor_kata_kalimat_pretrained` |
+| Arsitektur | Spesifikasi S1/S2/S3, diberi statusDESIGN bukan angka prediksi | `08_arsitektur` |
+| CV | Loss setiapepoch, empat metrik, epochpilihan, prediksi/label validation | `09_S1_fold_1` … `09_S3_fold_5` |
+| Refit | Riwayat latihan development, epoch tetap dan bukti sampel parameter berubah | `10_S1_refit` … `10_S3_refit` |
+| Finaltest | Prediksi mentah/kategori, label, selisih dan empat metrik | `11_S1_test` … `11_S3_test` |
+| Ringkasan | Semua fold, mean/SD/jumlahvalid tiapmetrik dan tabel test3skenario | `12_evaluasi_tiga_skenario` |
+| Scoring | Satu teks contoh/baru dan tiga prediksi model final | `13_prediksi_satu_jawaban` |
+| Fitur setelahtraining | RoBERTa, BGE, hiddenMLP/GELU, proyeksi sebelum/sesudahLayerNorm, concat, outputhead, hanya komponen yang ada pada skenario | `14_S1_fitur_setelah_training` … S3 |
+| Kata/kalimat setelahtraining | Contoh yang sama dengan RoBERTa finalS1 danS3; BGE tetap frozen | `15_S1_vektor_kata_setelah_training`, S3 |
 
-RoBERTa: `flax-community/indonesian-roberta-base`, revision `cc5ecee7de8532880ad08d802292a6f42865bc83`. BGE: `BAAI/bge-m3`, revision `5617a9f61b028005a4858fdac845db406aefb181`. Sumber resmi: [RoBERTa Indonesia](https://huggingface.co/flax-community/indonesian-roberta-base), [BGE-M3 model card](https://huggingface.co/BAAI/bge-m3), [BGE-M3 paper](https://arxiv.org/abs/2402.03216).
+Semua nama di atas berakhiran `.xlsx`. Run lengkap default menghasilkan38workbook termasuk indeks. Tahap yang belum dieksekusi tidak diberi angka pengganti. `Info` mencatat dataset hash, revision/checksum sumber fitur, metode pooling, status dan provenance; indeks mendaftar shape setiap sheet. Vektor memakai satu koordinat perkolom, bukan satu string daftar angka. Formula teks seperti `=...` disimpan sebagai teks literal, bukan dijalankan Excel. Sel kosong pada vektor tak tercakup/metricundefined bukan nol; lihat coverage/alasan.
 
-Metode BGE yang dipakai adalah dense CLS lalu normalisasi L2 melalui `AutoModel`; bukan sparse retrieval atau multi-vector ColBERT BGE-M3. Fitur BGE frozen dihitung tanpa gradien dalam mode `eval()` dan tidak menggunakan label. Karena checkpoint/normalisasi tersebut tidak di-fit pada dataset, fitur boleh diekstrak untuk semua baris terlebih dahulu, dengan seleksi/training tetap dibatasi indeks development.
+## Metode S1/S2/S3
 
-RoBERTa memakai tokenizer slow karena artifact fast checkpoint tersebut mempunyai postprocessor special-token berbeda. Window 512 memuat 510 token isi + 2 special token; overlap 128 isi. Seluruh token isi tercakup, termasuk akhir jawaban. CLS window dirata-ratakan per jawaban. BGE memakai tokenizer sendiri, batas eksperimen 1024 termasuk special, dan jumlah jawaban terpotong dilaporkan. Batas ini pilihan eksperimen, bukan batas maksimum 8192 checkpoint.
-
-## Training dan empat metrik
-
-AdamW menggunakan learning rate encoder `2e-5`, head/proyeksi `1e-3`, weight decay 0.01, warmup 10%, gradient clipping 1. Micro batch 1 dikumpulkan ke effective batch 8; batch terakhir dibobot sesuai ukuran aktual. CPU memakai float32; GPU memilih autocast bf16 bila didukung atau fp16 dengan GradScaler. Setup mempertahankan PyTorch CUDA bawaan Colab. GPU/AMP perlu verifikasi pada runtime GPU pengguna; uji teknis lokal tidak menggantikannya.
-
-Label MSE adalah `(rater−score_min)/(score_max−score_min)`. Sebelum evaluasi/prediksi, output dikembalikan dengan `prediksi × rentang + score_min`. Jadi RMSE dinyatakan dalam poin skor asli 0–100; nilai lebih dari 1 adalah sah dan tidak sama dengan MSE training berskala. Tidak ada metrik error ternormalisasi yang dilaporkan sebagai hasil.
-
-| Metrik | Prediksi yang digunakan | Cara membaca |
+| Skenario | Alur | Yang belajar |
 | --- | --- | --- |
-| RMSE | Mentah kontinu dalam poin asli | Lebih rendah berarti kesalahan kuadrat rata-rata lebih kecil; tidak dibatasi 0–1 |
-| Pearson | Mentah kontinu | Arah/perubahan linear; tinggi tidak menjamin nilai tepat |
-| QWK | Salinan prediksi di-clip ke 0–100 lalu integer terdekat | Kesepakatan dengan bobot jarak kuadratik dan koreksi peluang Cohen |
-| Gwet AC2 | Salinan kategori yang sama | Agreement kuadratik dengan koreksi peluang Gwet |
+| S1 | RoBERTa→mean CLS window768→dropout→linear1 | RoBERTa dan head |
+| S2 | BGE dense CLS1024→L2→MLP1024→256→1 | MLP; BGE frozen |
+| S3 | RoBERTa768+BGE1024→proyeksi256+LayerNorm→concat1024→dropout→linear1 | RoBERTa, proyeksi, head; BGE frozen |
 
-Tepat setengah (`.5`) dibulatkan ke kategori yang lebih rendah. Daftar kategori selalu semua 101 integer 0…100, termasuk yang tidak teramati. Khusus AC2, daftar kategori dan bobot sangat memengaruhi expected agreement; skor AC2 bisa jauh lebih tinggi daripada QWK. Jangan menyimpulkan kualitas dari AC2 saja. Tidak ada pemetaan otomatis nilai total ke empat trait. Nilai tidak terdefinisi disimpan `null` disertai alasan, bukan dipaksa nol. Skor mentah dan persentase di luar rentang tetap tersedia, tidak disembunyikan oleh clipping.
+BGE pada notebook unggahan fullyfine-tuned. Workflow ini mempertahankan S2/S3frozen yang sudah dibahas; perubahan tersebut dinyatakan terbuka. RoBERTa menggunakan `flax-community/indonesian-roberta-base` revision`cc5ecee7de8532880ad08d802292a6f42865bc83`, dimensi768. BGE `BAAI/bge-m3` revision`5617a9f61b028005a4858fdac845db406aefb181`, dimensi1024. Tidak memakai sparse/ColBERT BGE.
 
-## Satu jawaban dan vektor yang lengkap
+RoBERTa memakai tokenizer slow karena postprocessor fast artifact tersebut tidak menambahkan special dengan benar. Window512 termasuk2special, kapasitas510, overlap128. BGE batas eksperimen1024 termasukspecial; bukan batas maksimum8192 checkpoint. Fitur frozen BGE boleh dihitung untuk semua teks karena tidak ada transformasi yang di-fit pada label/gabungan data; training/pemilihan tetap hanya development.
 
-Default satu jawaban held-out digunakan untuk scoring dan laboratorium vektor. `NEW_ANSWER` dapat diisi untuk prediksi teks baru tanpa nilai guru. RoBERTa dan BGE dijalankan dalam `eval()`/tanpa gradien pada laboratorium, terpisah dari training.
+Default5epoch/fold,5fold, microbatch1/effectivebatch8, AdamW, LRencoder2e−5/head1e−3, warmup10%, weightdecay0.01, clipgrad1. Batchakhir dibobot sesuai ukuran aktual. MSE memakai label `(rater−0)/100` seperti fileunggahan; output dikembalikan ke poin asli sebelum evaluasi. Maksimum epoch dapat diubah sebelum eksperimen, bukan berdasarkan test. Batas5mengikuti rancangan sebelumnya; fileunggahan menggunakan20.
 
-Empat jenis vektor diperlihatkan:
+Lima fold adalah validasi di development. Epoch tiapfold dipilih minimum RMSEvalidation; refit menggunakan ceil median epochpilihan. Konfigurasi ketiga model dikunci dan seluruhrefit selesai sebelumfinaltest. Test hanya untuk pelaporan. Fold yang berbagi data tidak independen; SD bukan intervalkepercayaan. Resume memeriksa hash checkpoint/prediksi dan menggunakan testtersimpan. Excel setiapfold tersimpan saat fold selesai dan dapat dibangunulang dari artefak run yang cocok.
 
-1. Token ID dan **input embedding**: nilai lookup berdasarkan ID sebelum penambahan posisi/konteks.
-2. Vektor kata awal: rata-rata input embedding semua subword yang beririsan dengan span kata.
-3. Vektor kata kontekstual: rata-rata hidden state terakhir subword kata ketika membaca jawaban. Untuk overlap window, vektor token dirata-ratakan antar-window dahulu.
-4. Vektor kalimat: setiap kalimat dibaca sendiri, lalu mean CLS window RoBERTa atau CLS+L2 BGE. Bukan rata-rata vektor kata dari jawaban utuh. Segmentasi tanda baca sederhana bisa keliru pada singkatan.
+## Empat metrik dan arti vektor
 
-Offset karakter berasal dari tokenizer fast dengan `add_special_tokens=False`. ID-nya wajib sama persis dengan tokenizer yang dipakai training. Special token dibangun manual menggunakan tokenizer authoritative agar bug postprocessor fast RoBERTa tidak menghilangkan `<s>`/`</s>`. Jika ID tidak cocok, proses gagal dengan alasan, tidak menebak pemetaan.
+RMSE dan Pearson memakai skor mentah0–100: RMSE dalam poin, tidak dibatasi1; Pearson mengukur hubungan linear, bukan ketepatan nilai. QWK dan AC2kuadratik memakai salinan clip0–100 lalu nearestinteger, tie.5 ke bawah, seluruh101kategori dipertahankan. Undefined kosong+alasan, bukan0. AC2 dapat tinggi walaupun QWK buruk karena koreksi peluang/kategori berbeda; baca bersama empatmetrik.
 
-Kata ejaan sama dapat mempunyai ID subword berbeda karena spasi/case/pemecahan. **ID yang sama pada checkpoint yang sama menghasilkan lookup yang sama**, tetapi hidden state kontekstual dapat berubah karena konteks dan posisi. Tabel kata berulang menunjukkan kesamaan ID, cosine awal/kontekstual, selisih maksimum koordinat dan `allclose(atol=1e-6)`. Toleransi ini hanya pemeriksaan numerik vektor, bukan adjacent agreement skor.
+Kata ejaan sama belum tentu IDsubword sama (spasi/case). ID sama pada checkpoint sama menghasilkan lookup yang sama, sedangkan hiddenstate akhir bisa berubah karena konteks dan posisi. Vektor kata=mean subword beririsan span; overlap window dirata-rata pertoken dahulu. Vektor kalimat dibuat dengan membaca kalimat sendiri dan mengambil CLS(meanwindow untukRoBERTa, CLS+L2BGE). Ini bukan mean vektor kata dari jawaban utuh. Kalimat dipisah aturan tandabaca, singkatan bisa keliru. Vektor BGE di luartruncation ditandai tidaktercakup. Jangan menghitung cosine langsung antara ruang768RoBERTa dan1024BGE.
 
-Bandingkan pengulangan **di dalam encoder yang sama**. RoBERTa mempunyai 768 koordinat dan BGE 1024; cosine langsung antarmodel tidak sah karena dimensi/ruang berbeda. `VECTOR_SOURCE='pretrained'` mempelajari sifat encoder awal; pilihan `S1`/`S3` menggunakan RoBERTa fine-tuned final, dengan sumber/checksum ditandai. BGE selalu frozen pretrained.
+Untuk membandingkan sebelum/sesudah, cocokkan `row_id` pada05dengan14S1/S3. Untuk kata/kalimat cocokkan07dengan15S1/S3. Ekstraksi fitur final dilakukan **setelah test selesai**, modeeval tanpa dropout, untuk inspeksi; tabel semua jawaban bukan hasil evaluasi test baru.
 
-NPZ menyimpan seluruh koordinat token, kata dan kalimat. CSV metadata menyimpan span, ID dan coverage. Preview notebook hanya lima koordinat agar terbaca; arsip unduhan berisi lengkap. Token/kata BGE yang melewati truncation ditandai tidak tercakup; vektornya `NaN`, tidak diganti nol. Semua file hasil tersebut privat.
+## Rujukan dan batas bukti
 
-## Menjalankan lokal dan batas bukti
+Rujukan terpilih ada di [daftar sumber](aes_dataset300_references.json), berasal dari paper library pengguna dan bagian PDF gabungan yang dibaca kembali. Contoh: RoBERTa(m04), M3-Embedding(p14,§3.2/hlm.gabungan3135), hybridAES(p10), AESIndonesia(p08), QWKisNotEnough(m06), dependensiCV(m09). Paperhybrid memakai fiturmanual+RoBERTa, bukan arsitektur proyek yang identik. PaperAESIndonesia memakai pasanganjawaban-acuan, berbeda dari input hanyaresponse_text. Cuplikan bukum08tidak memuat bab rumusAC2; kode AC2 dicocokkan terpisah dengan implementasiirrCAC.
 
-```bash
-python scripts/setup_dataset300.py
-# Simpan config privat berisi dataset/output; gunakan contoh konfigurasi di notebook.
-outputs/dataset300_env/bin/python scripts/dataset300_step.py audit --config outputs/dataset300/notebook_config.json
-outputs/dataset300_env/bin/python scripts/dataset300_step.py encode --config outputs/dataset300/notebook_config.json
-outputs/dataset300_env/bin/python scripts/dataset300_step.py train --config outputs/dataset300/notebook_config.json
-outputs/dataset300_env/bin/python scripts/dataset300_step.py predict --config outputs/dataset300/notebook_config.json
-outputs/dataset300_env/bin/python scripts/dataset300_step.py vectors --config outputs/dataset300/notebook_config.json
-```
-
-Konfigurasi efektif tercatat pada folder run. Setup menggunakan venv baru dengan akses site-packages runtime untuk mempertahankan torch GPU, lalu memasang versi NumPy/Pandas/Transformers worker yang dipatok. Python3.12 memakai Transformers4.44.2, sedangkan Python3.13 memakai4.48.3 karena tokenizers versi lama tidak menyediakan wheel3.13. Kedua environment dipisahkan: `outputs/dataset300_env` dan `outputs/dataset300_env_py313`. Notebook membaca path worker hasil setup dari `outputs/dataset300_setup.json`; perintah CLI contoh di atas memakai path3.12, ganti dengan path3.13 bila itu runtime aktif. Tidak memakai environment CPU notebook lama. Python kernel tetap hanya menjalankan stdlib/IPython dan subprocess.
-
-Jika notebook lama berhenti pada `CalledProcessError` dan traceback menunjukkan `/usr/lib/python3.13`, buka ulang notebook terbaru dari link Colab di atas. Jalankan kembali dari cell pertama untuk mengambil source terbaru, lalu setup. Versi baru mendukung3.13 dan menyertakan rincian log jika instalasi gagal, sehingga penyebab tidak tertutup oleh traceback subprocess umum. Perubahan source di GitHub tidak otomatis mengganti cell pada tab lama yang sudah terbuka.
-
-Output tabel dan jawaban kini mempunyai warna teks/latar eksplisit (gelap di atas terang), sedangkan source kode terang di atas latar gelap. Ini mencegah warna warisan tema Colab membuat teks menyatu dengan latar. Perbaikan tampilan memverifikasi HTML escaping, pasangan warna, sintaks notebook dan kesamaan mirror; belum diuji secara visual pada browser Colab pengguna. Untuk mendapat fungsi tampilan baru, buka ulang notebook dari link GitHub/Colab dan jalankan cell input yang mendefinisikan `table`/`readable_text`, lalu cell output yang ingin dibaca.
-
-Pengujian publik `tests/test_teacher_score.py` menggunakan workbook sintetis dan transformer kecil **berbobot acak** dengan bentuk output yang sesuai. Test memeriksa mapping, split, gradien/freeze, perhitungan metrik, save/reload, CV/refit/resume dan offset vektor; angka test bukan performa penelitian. Eksekusi notebook audit-only membaca Excel unggahan asli tanpa mengunduh checkpoint. Lihat [bukti verifikasi](verification_dataset300.md) untuk yang benar-benar dijalankan; hasil penelitian membutuhkan training checkpoint asli di runtime dengan akses Hugging Face.
+[Bukti eksekusi](verification_dataset300_inline_excel.md) membedakan auditdataasli, fixturetransformeracak, eksekusinotebook, trainingcheckpointasli dan publikasi. Akses HuggingFace di mesin verifikasi ditolak; hasil penelitian harus dihasilkan oleh run Colab yang mengunduh checkpoint asli. Tidak ada angka fixture yang diterbitkan sebagai akurasi siswa. Notebook lama01/02 dan HTML lama tetap mempunyai scope empattrait yang terpisah.

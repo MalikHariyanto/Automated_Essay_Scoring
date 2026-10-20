@@ -306,5 +306,5 @@ def test_public_notebook_syntax_mirror_and_empty_outputs():
     nbformat.validate(notebook)
     for cell in notebook.cells:
         if cell.cell_type == 'code':
-            ast.parse(cell.source)
+            ast.parse(cell.source.removeprefix('%%aes\n'))
             assert cell.outputs == [] and cell.execution_count is None

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "m01",
+    "title": "A Systematic Literature Review on Applying CRISP-DM Process Model",
+    "authors": "Christoph Schröer; Felix Kruse; Jorge Marx Gómez",
+    "year": 2021,
+    "venue": "Procedia Computer Science 181 (2021), 526–534; CENTERIS / ProjMAN / HCist 2020",
+    "url": "https://doi.org/10.1016/j.procs.2021.01.199",
+    "used_for": "Alur data → persiapan → model → evaluasi",
+    "pdf_merged_pages": "1–9",
+    "limitation": "CRISP-DM adalah alur kerja, bukan resep model AES.",
+    "provenance": "Paper library pengguna + pembacaan bagian relevan PDF gabungan; bukan klaim membaca seluruh koleksi."
+  },
+  {
+    "id": "m04",
+    "title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
+    "authors": "Yinhan Liu; Myle Ott; Naman Goyal; Jingfei Du; Mandar Joshi; Danqi Chen; Omer Levy; Mike Lewis; Luke Zettlemoyer; Veselin Stoyanov",
+    "year": 2019,
+    "venue": "arXiv:1907.11692, versi 1",
+    "url": "https://arxiv.org/abs/1907.11692",
+    "used_for": "Token byte-level BPE, encoder, fine-tuning",
+    "pdf_merged_pages": "42–54",
+    "limitation": "Paper RoBERTa umum; checkpoint Indonesia harus dirujuk terpisah.",
+    "provenance": "Paper library pengguna + pembacaan bagian relevan PDF gabungan; bukan klaim membaca seluruh koleksi."
+  },
+  {
+    "id": "p14",
+    "title": "M3-Embedding: Multi-Linguality, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation",
+    "authors": "Jianlv Chen; Shitao Xiao; Peitian Zhang; Kun Luo; Defu Lian; Zheng Liu",
+    "year": 2024,
+    "venue": "arXiv:2402.03216, versi 5 pada PDF unggahan",
+    "url": "https://arxiv.org/abs/2402.03216",
+    "used_for": "Dense CLS + normalisasi L2",
+    "pdf_merged_pages": "3132–3149; rumus §3.2 pada3135",
+    "limitation": "BGE untuk retrieval; bukan bukti bahwa vektor langsung menjadi skor AES. PDF yang diperiksa versi arXivv5 Des2025.",
+    "provenance": "Paper library pengguna + pembacaan bagian relevan PDF gabungan; bukan klaim membaca seluruh koleksi."
+  },
+  {
+    "id": "p10",
+    "title": "Hybrid Approach to Automated Essay Scoring: Integrating Deep Learning Embeddings with Handcrafted Linguistic Features for Improved Accuracy",
+    "authors": "Muhammad Faseeh; Abdul Jaleel; Naeem Iqbal; Anwar Ghani; Akmalbek Abdusalomov; Asif Mehmood; Young-Im Cho",
+    "year": 2024,
+    "venue": "Mathematics, 12(21), artikel 3416",
+    "url": "https://doi.org/10.3390/math12213416",
+    "used_for": "Menggabungkan fitur dengan concatenation",
+    "pdf_merged_pages": "1108–1135",
+    "limitation": "Paper menggabungkan RoBERTa dan fitur manual; fusion RoBERTa+BGE di sini adalah rancangan proyek, bukan replikasi identik.",
+    "provenance": "Paper library pengguna + pembacaan bagian relevan PDF gabungan; bukan klaim membaca seluruh koleksi."
+  },
+  {
+    "id": "p08",
+    "title": "Evaluating the Impact of Sentence Tokenization on Indonesian Automated Essay Scoring Using Pretrained Sentence Embeddings",
+    "authors": "Nurul Chamidah; Evi Yulianti; Indra Budi",
+    "year": 2023,
+    "venue": "Revue d’Intelligence Artificielle, 37(5), 1101–1108",
+    "url": "https://doi.org/10.18280/ria.370502",
+    "used_for": "Sentence embedding AES Indonesia dan fungsi validasi",
+    "pdf_merged_pages": "4044–4051; metode4047–4049",
+    "limitation": "Paper memakai pasangan jawaban-acuan dan MaLSTM/SBERT, berbeda dari input hanya response_text di proyek ini.",
+    "provenance": "Paper library pengguna + pembacaan bagian relevan PDF gabungan; bukan klaim membaca seluruh koleksi."
+  },
+  {
+    "id": "m06",
+    "title": "Quadratic Weighted Kappa is Not Enough for Evaluating Automated Essay Scoring Models",
+    "authors": "Salam Albatarni; Tamer Elsayed",
+    "year": 2026,
+    "venue": "Proceedings of the Fifteenth Language Resources and Evaluation Conference (LREC 2026)",
+    "url": "https://github.com/salbatarni/LREC2026_QWK_for_AES",
+    "used_for": "QWK dibaca bersama RMSE/Pearson/AC2",
+    "pdf_merged_pages": "85–94",
+    "limitation": "Tidak mengimpor hasil paper sebagai hasil dataset guru300.",
+    "provenance": "Paper library pengguna + pembacaan bagian relevan PDF gabungan; bukan klaim membaca seluruh koleksi."
+  },
+  {
+    "id": "m09",
+    "title": "Inference for the Generalization Error",
+    "authors": "Claude Nadeau; Yoshua Bengio",
+    "year": 2003,
+    "venue": "Machine Learning, 52, 239–281",
+    "url": null,
+    "used_for": "Fold CV saling bergantung",
+    "pdf_merged_pages": "388–430",
+    "limitation": "Tidak menetapkan80/20 atau5fold sebagai kewajiban universal.",
+    "provenance": "Paper library pengguna + pembacaan bagian relevan PDF gabungan; bukan klaim membaca seluruh koleksi."
+  },
+  {
+    "id": "m08",
+    "title": "Handbook of Inter-Rater Reliability: The Definitive Guide to Measuring the Extent of Agreement Among Raters",
+    "authors": "Kilem Li Gwet",
+    "year": 2014,
+    "venue": "Advanced Analytics, LLC; ISBN 978-0-9708062-8-4",
+    "url": null,
+    "used_for": "Agreement berbeda dari korelasi",
+    "pdf_merged_pages": "330–365",
+    "limitation": "Cuplikan hanya pendahuluan; rumus AC2 proyek diverifikasi dengan source irrCAC, bukan bab yang tidak tersedia.",
+    "provenance": "Paper library pengguna + pembacaan bagian relevan PDF gabungan; bukan klaim membaca seluruh koleksi."
+  }
+]

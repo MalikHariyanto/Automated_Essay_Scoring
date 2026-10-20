@@ -143,7 +143,7 @@ def load_model(path, cfg):
     return model, payload
 
 
-def train_all(bundle, manifest, bge, cfg, output):
+def train_all(bundle, manifest, bge, cfg, output, observer=None):
     output = Path(output)
     final_path = output/'final_report.json'
     if final_path.exists():
@@ -181,6 +181,8 @@ def train_all(bundle, manifest, bge, cfg, output):
                 del engine, model
                 release()
             completed.append(result)
+            if observer is not None:
+                observer('cv_fold', scenario, result)
             cv_rows.append({'Skenario': scenario, 'Fold': fold['fold'],
                             **{k: result['metrics'][k] for k in ('QWK', 'AC2', 'RMSE', 'Pearson')}})
         cv_folds[scenario] = completed
@@ -204,6 +206,8 @@ def train_all(bundle, manifest, bge, cfg, output):
                                       selected_epochs[scenario], cfg['seed'])
             path = output/scenario/'final.pt'
             save_model(path, model, cfg, bundle, manifest, info)
+            if observer is not None:
+                observer('refit', scenario, info)
             checksums[scenario] = digest(path)
             del engine, model
             release()
@@ -237,6 +241,8 @@ def train_all(bundle, manifest, bge, cfg, output):
         prediction_files[scenario] = digest(path)
         dump(completed_test, {'row': rows[-1], 'checkpoint_sha256': checksums[scenario],
                               'split_sha256': manifest['split_sha256'], 'prediction_sha256': digest(path)})
+        if observer is not None:
+            observer('test', scenario, {'metrics': rows[-1], 'predictions': frame.to_dict('records')})
         del engine, model
         release()
     pd.DataFrame([{k: row[k] for k in ('Skenario', 'QWK', 'AC2', 'RMSE', 'Pearson', 'Status')} for row in rows]).to_csv(output/'test_metrics.csv', index=False)
