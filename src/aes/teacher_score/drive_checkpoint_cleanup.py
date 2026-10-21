@@ -95,10 +95,13 @@ class DriveCheckpointCleaner:
 
     def _list(self, query):
         files, page = [], None
+        # Folder tidak memerlukan checksum file besar atau capability hapus.
+        fields = ('id,name,trashed,parents,mimeType'
+                  if "mimeType='"+DRIVE_FOLDER_MIME+"'" in query else DRIVE_FILE_FIELDS)
         while True:
             response = self._execute(self.api.files().list(
                 q=query, spaces='drive', pageSize=1000, pageToken=page,
-                fields='nextPageToken,files('+DRIVE_FILE_FIELDS+')',
+                fields='nextPageToken,files('+fields+')',
                 supportsAllDrives=True, includeItemsFromAllDrives=True))
             files.extend(response.get('files', []))
             page = response.get('nextPageToken')
@@ -159,14 +162,68 @@ class DriveCheckpointCleaner:
             raise CleanupDeferred('File Drive yang dilindungi masih kosong: '+name)
         return file
 
-    def _marker(self, folder, name, expected):
+    def _remote_marker(self, folder, name):
         file = self._single(folder, name)
         raw = self._execute(self.api.files().get_media(
             fileId=file['id'], supportsAllDrives=True))
         if isinstance(raw, str):
             raw = raw.encode()
-        if not isinstance(raw, bytes) or hashlib.sha256(raw).digest() != hashlib.sha256(expected).digest():
+        if not isinstance(raw, bytes):
+            raise CleanupDeferred('Metadata Drive belum dapat dibaca: '+name)
+        return raw
+
+    def _marker(self, folder, name, expected):
+        raw = self._remote_marker(folder, name)
+        if hashlib.sha256(raw).digest() != hashlib.sha256(expected).digest():
             raise CleanupDeferred('Metadata Drive belum cocok dengan hasil lokal: '+name)
+
+    def _protect_server_snapshots(self, state, folder):
+        """Saat manifest tertinggal, lindungi juga snapshot yang dirujuk server.
+
+        File .pt per epoch tidak ditimpa. Bukti checksum keduanya tetap wajib;
+        manifest server yang lebih lama tidak boleh kehilangan jalur pemulihan.
+        """
+        name, local_raw = state['primary']
+        remote_raw = self._remote_marker(folder, name)
+        if 'remote_primary' in state:
+            if remote_raw != state['remote_primary']:
+                raise CleanupDeferred('Metadata Drive berubah saat pembersihan; mencoba lagi dengan versi terbaru.')
+            return
+        try:
+            server = json.loads(remote_raw)
+        except (ValueError, UnicodeDecodeError) as error:
+            raise CleanupDeferred('Metadata checkpoint Drive belum sah: '+name) from error
+        snapshots = server.get('snapshots') if isinstance(server, dict) else None
+        if (not isinstance(server, dict) or server.get('scope') != DRIVE_CLEANUP_SCOPE
+                or not isinstance(snapshots, list) or not 1 <= len(snapshots) <= 2):
+            raise CleanupDeferred('Manifest checkpoint server belum sah.')
+        protected = {item['file']: item for item in state['protected']}
+        newest_local = max(int(item['file'].rsplit('_', 1)[1][:-3])
+                           for item in state['protected'])
+        additions, names = [], set()
+        for item in snapshots:
+            if not isinstance(item, dict):
+                raise CleanupDeferred('Bukti snapshot server belum sah.')
+            filename = item.get('file', '')
+            match = (re.fullmatch(re.escape(state['stage'])+r'_epoch_(\d+)\.pt', filename)
+                     if isinstance(filename, str) else None)
+            size = item.get('size')
+            if (not match or not 1 <= int(match[1]) <= newest_local or filename in names
+                    or not self._checksum(item.get('sha256'), 64)
+                    or not self._checksum(item.get('md5'), 32)
+                    or type(size) is not int or size <= 0):
+                raise CleanupDeferred('Snapshot server berbeda tahap, lebih baru, atau bukti belum lengkap.')
+            proof = {key: item[key] for key in ('file', 'size', 'sha256', 'md5')}
+            if filename in protected:
+                if any(protected[filename][key] != proof[key] for key in proof):
+                    raise CleanupDeferred('Isi snapshot lokal dan server bertentangan: '+filename)
+            else:
+                additions.append(proof)
+            names.add(filename)
+        state['protected'].extend(additions)
+        state['remote_primary'] = remote_raw
+        if remote_raw != local_raw:
+            print('Drive masih menyinkronkan penunjuk progres; checkpoint yang dirujuk server juga dipertahankan.', flush=True)
 
     def _binary(self, folder, proof):
         file = self._single(folder, proof['file'])
@@ -291,7 +348,10 @@ class DriveCheckpointCleaner:
             if self._stat(path) != expected:
                 raise CleanupDeferred('File yang dilindungi berubah saat pembersihan.')
         name, raw = state['primary']
-        self._marker(folder_id, name, raw)
+        if state['mode'] == 'active':
+            self._protect_server_snapshots(state, folder_id)
+        else:
+            self._marker(folder_id, name, raw)
         if 'split' in state:
             name, raw = state['split']
             self._marker(run_id, name, raw)

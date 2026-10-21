@@ -431,7 +431,7 @@ def test_server_manifest_changes_between_deletions_preserves_remaining_files(dri
     s = drive_state
     a = active(s)
     s.api.on_after_delete = lambda _:s.api.items[a.marker_id].update(_content=b'NEW SERVER MANIFEST')
-    with pytest.raises(CleanupDeferred, match='Metadata Drive belum cocok'):
+    with pytest.raises(CleanupDeferred, match='Metadata Drive berubah'):
         s.cleaner(request(s))
     assert len(s.api.deleted) == 1
     assert all(identifier in s.api.items for identifier in a.identities.values())
@@ -467,3 +467,114 @@ def test_zero_epoch_name_is_not_treated_as_known_checkpoint(drive_state):
     identifier = s.api.add('progress_fold_1_epoch_000.pt', s.remote_folder, b'UNKNOWN', trashed=True)
     assert s.cleaner(request(s))['deleted'] == 2
     assert identifier in s.api.items
+
+
+def lagged_server_manifest(state):
+    current = active(state)
+    snapshots = []
+    for identifier in reversed(current.old):
+        item = state.api.items[identifier]
+        item['trashed'] = False
+        snapshots.append({'file': item['name'], 'size': int(item['size']),
+                          'sha256': item['sha256Checksum'], 'md5': item['md5Checksum']})
+    server = {'scope': DRIVE_CLEANUP_SCOPE, 'snapshots': snapshots}
+    state.api.items[current.marker_id]['_content'] = json.dumps(server).encode()
+    return current, server
+
+
+def test_valid_old_server_manifest_keeps_both_resume_paths_until_sync(drive_state):
+    s = drive_state
+    a, server = lagged_server_manifest(s)
+    result = s.cleaner(request(s))
+    assert result['retained'] == 4 and result['deleted'] == 0
+    assert all(identifier in s.api.items for identifier in [*a.old, *a.identities.values()])
+    # Once the pointer catches up, release only obsolete generations.
+    s.api.items[a.marker_id]['_content'] = a.marker.read_bytes()
+    result = s.cleaner(request(s))
+    assert result['retained'] == 2 and result['deleted'] == 2
+    assert all(identifier in s.api.items for identifier in a.identities.values())
+
+
+def test_folder_search_requests_only_folder_metadata(drive_state):
+    s = drive_state
+    active(s)
+    s.cleaner(request(s))
+    searches = [args for op, args, _ in s.api.requests
+                if op == 'list' and 'mimeType=' in args['q']]
+    assert searches
+    assert all('Checksum' not in args['fields'] and 'capabilities' not in args['fields']
+               for args in searches)
+
+
+@pytest.mark.parametrize('fault', ['scope', 'stage', 'future', 'checksum', 'missing_file',
+                                   'trashed_file', 'duplicate', 'same_name_other_content'])
+def test_unverifiable_old_server_pointer_still_prevents_deletion(drive_state, fault):
+    s = drive_state
+    a, server = lagged_server_manifest(s)
+    row = server['snapshots'][0]
+    if fault == 'scope':server['scope'] = 'UNRELATED'
+    elif fault == 'stage':row['file'] = 'progress_fold_2_epoch_002.pt'
+    elif fault == 'future':row['file'] = 'progress_fold_1_epoch_005.pt'
+    elif fault == 'checksum':row['sha256'] = '0'*64
+    elif fault == 'missing_file':s.api.items.pop(a.old[1])
+    elif fault == 'trashed_file':s.api.items[a.old[1]]['trashed'] = True
+    elif fault == 'duplicate':server['snapshots'].append(dict(row))
+    else:
+        row['file'] = a.protected[0]['file']
+    s.api.items[a.marker_id]['_content'] = json.dumps(server).encode()
+    with pytest.raises(CleanupDeferred):s.cleaner(request(s))
+    assert s.api.deleted == []
+
+
+def test_server_pointer_advancing_during_cleanup_stops_before_deletion(drive_state):
+    s = drive_state
+    a, server = lagged_server_manifest(s)
+    server['snapshots'] = server['snapshots'][:1]
+    s.api.items[a.marker_id]['_content'] = json.dumps(server).encode()
+    original = s.cleaner._remote_marker
+    calls = []
+    def advance(folder, name):
+        calls.append(name)
+        if len(calls) == 2:
+            s.api.items[a.marker_id]['_content'] = a.marker.read_bytes()
+        return original(folder, name)
+    s.cleaner._remote_marker = advance
+    with pytest.raises(CleanupDeferred, match='Metadata Drive berubah'):
+        s.cleaner(request(s))
+    assert s.api.deleted == [] and a.old[0] in s.api.items
+
+
+def test_documented_kernel_repair_replaces_strict_cleaner_without_touching_worker(drive_state, monkeypatch):
+    import io
+    import urllib.request
+    s = drive_state
+    a, server = lagged_server_manifest(s)
+    class LegacyStrictCleaner(DriveCheckpointCleaner):
+        def _protect_server_snapshots(self, state, folder):
+            self._marker(folder, *state['primary'])
+    legacy = LegacyStrictCleaner(s.api, s.root)
+    with pytest.raises(CleanupDeferred, match='Metadata Drive belum cocok'):
+        legacy(request(s))
+    root = Path(__file__).resolve().parents[1]
+    module = (root/'src/aes/teacher_score/drive_checkpoint_cleanup.py').read_bytes()
+    doc = (root/'docs/perbaikan_sinkronisasi_checkpoint_drive.md').read_text()
+    code = doc.split('```python\n', 1)[1].split('```', 1)[0]
+    requests = []
+    def public_code_only(url, timeout):
+        requests.append((url, timeout))
+        return io.BytesIO(module)
+    monkeypatch.setattr(urllib.request, 'urlopen', public_code_only)
+    worker, configuration, fingerprint = object(), {'epochs': 25}, 'ORIGINAL_RUNTIME_HASH'
+    namespace = {'_aes_cleaner': legacy, '_aes_process': worker, 'cfg': configuration,
+                 'WORKER_SOURCE': 'UNCHANGED NUMERICAL WORKER', 'fingerprint': fingerprint}
+    exec(compile(code, '<documented-repair-cell>', 'exec'), namespace)
+    assert namespace['_aes_process'] is worker and namespace['cfg'] is configuration
+    assert namespace['fingerprint'] == fingerprint
+    assert namespace['WORKER_SOURCE'] == 'UNCHANGED NUMERICAL WORKER'
+    cleaner = namespace['_aes_cleaner']
+    assert cleaner.api is s.api and cleaner.root == s.root
+    assert type(cleaner) is not type(legacy)
+    result = cleaner(request(s))
+    assert result['retained'] == 4 and result['deleted'] == 0
+    assert all(identifier in s.api.items for identifier in [*a.old, *a.identities.values()])
+    assert len(requests) == 1 and requests[0][0].endswith('/drive_checkpoint_cleanup.py')

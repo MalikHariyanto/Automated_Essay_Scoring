@@ -131,6 +131,46 @@ def test_real_saver_and_drive_cleaner_keep_latest_two_and_delete_old_trash(drive
     assert len(bridge.requests) == 3 and all(r['mode'] == 'active' for r in bridge.requests)
 
 
+def test_real_saver_continues_with_stale_server_pointer_and_cleans_after_sync(drive_state, monkeypatch):
+    import copy
+    s = drive_state
+    class LaggedPointerBridge(MountedDriveBridge):
+        def __init__(self, state):
+            super().__init__(state)
+            self.frozen_pointer = None
+        def sync(self, force=False):
+            super().sync(force=force)
+            path = s.folder/'progress_fold_1.json'
+            binding = self.bindings.get(path)
+            if self.frozen_pointer is not None and binding:
+                s.api.items[binding['id']] = copy.deepcopy(self.frozen_pointer)
+    bridge = LaggedPointerBridge(s)
+    monkeypatch.setenv('AES300_DRIVE_CLEANUP', '1')
+    monkeypatch.setattr(checkpoints, '_drive_cleanup', bridge, raising=False)
+    path = s.folder/'progress_fold_1.json'
+    checkpoints.save_training_progress(path, payload(1))
+    bridge.frozen_pointer = copy.deepcopy(s.api.items[bridge.bindings[path]['id']])
+    for epoch in (2, 3, 4):
+        checkpoints.save_training_progress(path, payload(epoch))
+    # Latest two plus the older server-referenced epoch stay available.
+    assert {p.name for p in s.folder.glob('*.pt')} == {
+        'progress_fold_1_epoch_001.pt', 'progress_fold_1_epoch_003.pt', 'progress_fold_1_epoch_004.pt'}
+    assert load_training_progress(path, payload(1)['contract'])['epoch'] == 4
+    marker = json.loads(bridge.frozen_pointer['_content'])
+    server_snapshot = marker['snapshots'][0]
+    server_file = s.folder/server_snapshot['file']
+    assert hashlib.sha256(server_file.read_bytes()).hexdigest() == server_snapshot['sha256']
+    assert torch.load(server_file, weights_only=True)['epoch'] == 1
+    bridge.frozen_pointer = None
+    bridge.sync(force=True)
+    checkpoints.request_checkpoint_cleanup(path, 'active')
+    assert {p.name for p in s.folder.glob('*.pt')} == {
+        'progress_fold_1_epoch_003.pt', 'progress_fold_1_epoch_004.pt'}
+    assert load_training_progress(path, payload(1)['contract'])['epoch'] == 4
+    assert json.loads((s.run/'_checkpoint_cleanup_pending.json').read_text())['requests'] == {}
+    assert len(bridge.requests) == 5 and all(r['mode'] == 'active' for r in bridge.requests)
+
+
 def test_real_completed_fold_clear_checks_result_then_keeps_final_and_other_stage(drive_state, monkeypatch):
     s = drive_state
     bridge = install_bridge(s, monkeypatch)
