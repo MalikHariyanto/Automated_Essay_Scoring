@@ -6,8 +6,8 @@ Notebook baru `notebooks/experiments/AES_300_S3_DoubleFrozen_MLP.ipynb` dibangun
 
 - Notebook utama dan mirror tetap SHA-256 `b06735cb45d632b92ad8ed30990e2e34d0fb66c46c612c528b812dd0d090440b`.
 - Notebook eksperimen memiliki 47 cell, termasuk 30 cell kode, tanpa output eksekusi atau lampiran pribadi.
-- Fingerprint runtime baru: `d73116bd365362273be1c5513397ff2a3eac955f74d155b0f7e04381829c9f50`.
-- SHA-256 file eksperimen: `1c36d20a0b0769a8e30470bec6cf026d5bba4b6a651b3a9db601d367b9d9bbe6`.
+- Fingerprint runtime sesudah dukungan CPU: `f1640aef68f62cf5423013a8d1c847bb0bd6e1a1f0f79886a7730efe01fbf0d6`.
+- SHA-256 file eksperimen: `967cb86313346b30f74e21d5dfa1df7fa461295d3f67b04a4ac458235d9f42dc`.
 - Folder Drive dan identitas eksperimen baru terpisah dari acuan. Pembentukan ulang dengan `python scripts/build_double_frozen_notebook.py` pada Python 3.11 menghasilkan file identik.
 - Dataset, hasil individual, notebook terisi, checkpoint, cache, log privat dan kredensial tidak disertakan dalam publikasi.
 
@@ -23,24 +23,17 @@ outputs/dataset300_env_py313/bin/python -m pytest -q \
   tests/test_double_frozen_notebook.py \
   tests/test_drive_checkpoint_cleanup.py \
   tests/test_experimental_checkpoints.py \
-  --junitxml=outputs/double_frozen_mlp/final_tests.xml
-```
-
-Hasil: **56 passed, 0 failed, 0 errors, 0 skipped**, exit code 0, durasi pytest 70,52 detik. Lingkungan: Python 3.13.5, PyTorch 2.6.0+cpu, Transformers 4.48.3, NumPy 2.2.6, pandas 2.2.3, openpyxl 3.1.5, pytest 8.3.5, nbclient 0.10.2.
-
-Pengujian tambahan komposisi saver dan pembersih memakai lingkungan/variabel yang sama:
-
-```bash
-outputs/dataset300_env_py313/bin/python -m pytest -q \
   tests/test_double_frozen_drive_integration.py \
-  --junitxml=outputs/double_frozen_mlp/drive_composition_tests.xml
+  --junitxml=outputs/double_frozen_mlp/cpu_compatibility_tests.xml
 ```
 
-Hasil: **3 passed, 0 failed, 0 errors, 0 skipped**, exit code 0, durasi 2,96 detik. Total dua perintah: 59 kasus lulus. Angka ini mengukur pengujian teknis kode, bukan akurasi AES.
+Hasil revisi CPU: **61 passed, 0 failed, 0 errors, 0 skipped**, exit code 0, durasi pytest 70,29 detik. Lingkungan: Python 3.13.5, PyTorch 2.6.0+cpu, Transformers 4.48.3, NumPy 2.2.6, pandas 2.2.3, openpyxl 3.1.5, pytest 8.3.5, nbclient 0.10.2. Angka pengujian mengukur perilaku kode, bukan akurasi AES.
 
 ## Perilaku yang diperiksa
 
 Pengujian model memeriksa encoder S3 tetap frozen dan eval ketika `model.train()` dipanggil, forward tanpa gradien, serta bobot encoder tidak berubah. Proyeksi, LayerNorm tambahan dan MLP memperoleh gradien serta diperbarui; optimizer S3 hanya memuat kelompok proyeksi/head. Model kontrol S1–S2 tetap menghasilkan parameter/prediksi yang identik dengan acuan pada seed sama.
+
+Revisi CPU menghapus kewajiban GPU pada setup eksperimen dan memberi sakelar terlihat `REQUIRE_GPU=False` pada cell konfigurasi. Cell konfigurasi asli dieksekusi dengan CUDA tidak tersedia, termasuk ketika flag lingkungan dari setup lama masih bernilai `1`: training tetap diizinkan dan perangkat dipilih CPU. Kasus CUDA/T4 tersedia juga diuji melalui simulasi untuk memastikan deteksi GPU otomatis tetap bekerja. Model, epoch, metrik dan kebijakan penyimpanan tidak diubah. Notebook utama/semi-final tidak diubah.
 
 Training S3 yang diputus sesudah epoch 2 lalu dilanjutkan menghasilkan history, bobot dan prediksi identik dengan empat epoch tanpa putus pada fixture teknis. Eksekusi notebook penuh memakai encoder Transformer kecil berbobot acak dan data sintetis berlabel teknis: seluruh 15 fold, refit, evaluasi, lima Excel, ekspor layer MLP, dan pencocokan vektor mentah RoBERTa frozen dengan pretrained. Kernel baru dapat memakai hasil tersimpan tanpa training ulang. Import proyek diblokir selama eksekusi notebook mandiri.
 

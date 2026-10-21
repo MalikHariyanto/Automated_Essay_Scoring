@@ -96,7 +96,7 @@ else:
     print('Mode lokal: checkpoint usang dibersihkan di filesystem lokal; tidak mengakses Drive API.')
 '''.strip())
                 text = replace_once(text, "'AES300_REQUIRE_GPU':'1' if IN_COLAB else os.environ.get('AES300_REQUIRE_GPU','0'),",
-                                    "'AES300_REQUIRE_GPU':'1' if IN_COLAB else os.environ.get('AES300_REQUIRE_GPU','0'),\n               'AES300_DRIVE_CLEANUP':'1' if IN_COLAB else '0',")
+                                    "'AES300_REQUIRE_GPU':'0',\n               'AES300_DRIVE_CLEANUP':'1' if IN_COLAB else '0',")
                 text = replace_once(text, "        if event['kind']=='table':display_aes_table(event)", '''
         if event['kind']=='table':display_aes_table(event)
         if event['kind']=='drive_cleanup':
@@ -133,6 +133,10 @@ else:
                 cls = self.roberta(**windows).last_hidden_state[:, 0, :]''')
             if 'specifications=pd.DataFrame' in text:
                 text = text.replace("'RoBERTa ikut dilatih; BGE-M3 tetap'", "'RoBERTa dan BGE-M3 frozen; proyeksi, LayerNorm tambahan dan MLP dilatih'")
+            if "gpu=check_gpu(require_gpu=RUN_MODELS" in text:
+                text = replace_once(text,
+                    "# Colab harus mendeteksi GPU sebelum latihan panjang dimulai. Pengujian lokal tetap boleh CPU.\ngpu=check_gpu(require_gpu=RUN_MODELS and os.environ.get('AES300_REQUIRE_GPU')=='1')",
+                    "# False: CPU boleh dipakai. True: hentikan sebelum training jika GPU belum aktif.\nREQUIRE_GPU=False\n# device='auto' di atas memilih CUDA jika tersedia; jika tidak, memakai CPU.\ngpu=check_gpu(require_gpu=RUN_MODELS and REQUIRE_GPU)\nif RUN_MODELS and not gpu['cuda_available']:\n    print('Mode CPU aktif. Training tetap berjalan, tetapi lebih lama dibanding GPU; progres tetap disimpan otomatis.', flush=True)")
             if 'def vector_lab(' in text:
                 text = text.replace("source = cfg['vector_source']+' fine-tuned; sha256='+digest(checkpoint)",
                                     "source = cfg['vector_source']+(' encoder frozen; head/proyeksi dilatih; sha256=' if cfg['vector_source']=='S3' else ' fine-tuned; sha256=')+digest(checkpoint)")
@@ -170,7 +174,7 @@ Notebook ini terpisah dari acuan/semi-final S3 MLP. **S1** tetap RoBERTa fine-tu
 
 Alur sama dengan acuan: setup → dataset → split/tokenisasi → embedding → model → training → prediksi/evaluasi → lima Excel. Dataset hanya satu skor guru; tidak dibuat empat label rubrik baru. Batas 25 epoch, patience 5, learning rate, batch, split 80/20 dan 5-fold CV tetap. S1 dan S2 dijalankan sebagai pembanding; ini run eksperimen baru, bukan kelanjutan bobot S3 fine-tuned.
 
-**Cara menjalankan:** pilih Runtime → Change runtime type → T4 GPU, lalu jalankan dari atas. Sambungkan Drive dan otorisasi API pada akun yang memiliki folder eksperimen. Upload `fix_dataset_300.xlsx` jika diminta. Data, checkpoint dan hasil berada di `MyDrive/AES_300_DoubleFrozen_MLP_Privat`; acuan `AES_300_MLP_Privat` tidak dibersihkan atau ditimpa.
+**Cara menjalankan:** runtime CPU maupun GPU didukung; T4 disarankan untuk mempercepat training. Jalankan dari atas, sambungkan Drive dan otorisasi API pada akun yang memiliki folder eksperimen. `REQUIRE_GPU=False` mengizinkan CPU; `device='auto'` memilih GPU jika tersedia dan CPU jika tidak. Upload `fix_dataset_300.xlsx` jika diminta. Data, checkpoint dan hasil berada di `MyDrive/AES_300_DoubleFrozen_MLP_Privat`; acuan `AES_300_MLP_Privat` tidak dibersihkan atau ditimpa.
 
 **Pembersihan otomatis:** setelah checkpoint lengkap dan cadangannya terverifikasi melalui Drive API, hanya epoch usang dari tahap/run ini yang dihapus permanen, termasuk yang sudah di Sampah. Saat fold selesai, checkpoint sementaranya dilepas setelah hasil CV terverifikasi. Saat refit selesai, checkpoint sementara dilepas setelah model final lolos checksum. Model final, hasil CV, dataset, Excel dan file eksperimen lain tetap disimpan. Sampah Drive global tidak dikosongkan. Jika bukti belum lengkap, pembersihan mencoba kembali; jika tetap gagal, training berhenti dengan progres tersimpan agar disk tidak terus penuh. Jalankan notebook yang sama dari atas untuk mencoba pembersihan dan melanjutkan.
 

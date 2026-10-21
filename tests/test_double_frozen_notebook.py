@@ -120,6 +120,42 @@ def test_s3_freezes_encoder_without_freezing_projection_layernorm_or_mlp():
     assert not encoder.training and model.head.training
 
 
+@pytest.mark.parametrize('cuda_available', [False, True])
+def test_configuration_accepts_cpu_and_still_detects_gpu(monkeypatch, tmp_path, capsys, cuda_available):
+    import math
+    from importlib.metadata import version
+    import pandas as pd
+    monkeypatch.setattr(torch.cuda, 'is_available', lambda: cuda_available)
+    monkeypatch.setattr(torch.cuda, 'get_device_name', lambda index=0: 'Tesla T4')
+    monkeypatch.setattr(torch.cuda, 'get_device_properties',
+                        lambda index=0: SimpleNamespace(total_memory=16*1024**3))
+    monkeypatch.setenv('AES300_DATASET', str(tmp_path/'TECHNICAL_INPUT_ONLY.xlsx'))
+    monkeypatch.setenv('AES300_RESULTS', str(tmp_path/'results'))
+    # A previous setup cell may have left this flag set. The visible notebook
+    # switch must allow CPU without asking the user to change hidden state.
+    monkeypatch.setenv('AES300_REQUIRE_GPU', '1')
+    monkeypatch.delenv('AES300_AUDIT_ONLY', raising=False)
+    notebook = nbformat.read(NOTEBOOK, as_version=4)
+    defaults = next(c.source for c in notebook.cells
+                    if c.cell_type == 'code' and 'def config(' in c.source)
+    configuration = next(c.source for c in notebook.cells
+                         if c.cell_type == 'code' and 'ROBERTA_CHECKPOINT=' in c.source)
+    tables = []
+    namespace = {'math': math, 'os': os, 'pd': pd, 'version': version,
+                 'check_gpu': notebook_definition(NOTEBOOK, 'check_gpu'),
+                 'show': lambda frame, title, **kwargs: tables.append((frame, title))}
+    exec(compile(defaults.removeprefix('%%aes\n'), '<actual-defaults>', 'exec'), namespace)
+    exec(compile(configuration.removeprefix('%%aes\n'), '<actual-config>', 'exec'), namespace)
+    assert namespace['REQUIRE_GPU'] is False
+    assert namespace['RUN_TRAINING'] is True
+    assert namespace['cfg']['device'] == 'auto'
+    assert notebook_definition(NOTEBOOK, 'device_name')(namespace['cfg']) == ('cuda' if cuda_available else 'cpu')
+    assert namespace['gpu']['name'] == ('Tesla T4' if cuda_available else 'CPU')
+    assert namespace['gpu']['is_t4'] is cuda_available
+    assert len(tables) == 1
+    assert ('Mode CPU aktif' in capsys.readouterr().out) is (not cuda_available)
+
+
 def test_s3_optimizer_has_only_learned_projection_and_head_parameters():
     cls=notebook_definition(NOTEBOOK,'SingleScoreModel')
     groups_fn=notebook_definition(NOTEBOOK,'optimizer_groups')

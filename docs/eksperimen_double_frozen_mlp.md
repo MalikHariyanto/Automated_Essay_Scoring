@@ -20,12 +20,14 @@ Vektor kata S3 yang ditampilkan adalah keluaran cabang RoBERTa frozen. Karena en
 
 ## Alur dan cara menjalankan
 
-1. Buka notebook eksperimen, pilih **Runtime → Change runtime type → T4 GPU**, lalu jalankan cell dari atas.
+1. Buka notebook eksperimen lalu jalankan cell dari atas. Runtime **CPU didukung**; pilih **Runtime → Change runtime type → T4 GPU** bila tersedia untuk mempercepat training.
 2. Sambungkan Drive dan izinkan akses API menggunakan akun yang memiliki folder penyimpanan. Otorisasi ini memungkinkan kode menghapus checkpoint usang secara permanen. Kredensial tidak ditulis ke notebook atau file hasil.
 3. Pilih `fix_dataset_300.xlsx` jika diminta. Dataset tetap privat. Pembacaan data, tokenisasi, embedding, training, prediksi, evaluasi, dan ekspor berada langsung di cell, tanpa clone/import proyek GitHub.
 4. Jalankan hingga cell terakhir untuk mengunduh `Hasil_AES_Ringkas.zip`, berisi lima Excel seperti acuan: data/tokenisasi, vektor jawaban, vektor kata/kalimat, prediksi/evaluasi, serta riwayat pelatihan.
 
 Dataset menggunakan satu skor guru 0–100. Split tetap 80% development dan 20% test, dengan 5-fold CV di development. Maksimum 25 epoch per fold dan patience 5 berlaku sama untuk ketiga skenario. S1 tetap learning rate encoder `1e-5`; proyeksi/head `1e-4`. S3 tidak mempunyai kelompok optimizer encoder karena kedua encoder frozen. Empat metrik tetap RMSE, Pearson, QWK, dan Gwet AC2. Jumlah epoch refit final dipilih dari hasil CV sebelum evaluasi test.
+
+`REQUIRE_GPU=False` pada cell konfigurasi mengizinkan training tanpa GPU. `device='auto'` memilih CUDA bila tersedia, atau CPU bila tidak; gunakan `device='cpu'` jika ingin memaksa CPU meskipun GPU tersedia. Batas epoch, model dan evaluasi tidak dikurangi otomatis. CPU memakai float32 dan tidak mengaktifkan AMP CUDA. Auto-save/resume dan pembersihan checkpoint Drive tetap berjalan, tetapi waktu training tiga skenario dan lima fold dapat jauh lebih lama daripada T4.
 
 ## Penyimpanan dan penghapusan otomatis
 
