@@ -93,6 +93,7 @@ FUNCTION_NOTES = {
     'write_report':'Buat workbook dengan Panduan dan nama kolom yang jelas tanpa memotong komponen vektor.',
     'build_reports':'Susun lima laporan utama dari hasil sesi yang sudah selesai; tidak menghitung prediksi atau metrik ulang.',
     'encoder':'Memuat encoder dari nama checkpoint dan revision pada cfg; hasilnya objek model pembaca teks.',
+    'check_gpu':'Memeriksa nama GPU, status T4, dan VRAM; Colab berhenti sebelum training jika GPU belum aktif.',
     'tokenizer':'Memuat pemecah teks milik checkpoint yang sama. Hasil tokenisasi menjadi input encoder.',
     'content_windows':'Membagi token isi yang panjang menjadi beberapa potongan; bagian yang bertumpang tindih menjaga konteks.',
     'batch_windows':'Menambahkan token khusus dan padding, lalu mengembalikan tensor input beserta pemetaan ke jawaban asal.',
@@ -107,6 +108,8 @@ FUNCTION_NOTES = {
     'compare_repetitions':'Membandingkan dua kemunculan kata yang sama di model yang sama, sebelum dan sesudah konteks.',
     'metrics':'Membandingkan nilai guru dan prediksi: RMSE/Pearson memakai skor mentah; QWK/AC2 memakai salinan kategori.',
     'fit':'Melatih satu model pada satu pembagian data; RMSE validasi menentukan epoch yang disimpan.',
+    'save_training_progress':'Menyimpan bobot, keadaan optimizer, urutan acak dan riwayat setelah epoch lengkap; satu cadangan tetap disimpan.',
+    'load_training_progress':'Memeriksa kecocokan dan keutuhan checkpoint sebelum melanjutkan epoch berikutnya.',
     'train_all':'Menjalankan lima fold tiap skenario, latihan final, lalu evaluasi data uji setelah pilihan model dikunci.',
     'score_answer':'Membaca satu jawaban dengan ketiga model final untuk menghasilkan prediksi; tidak melatih model lagi.',
     'export_final_features':'Menyimpan vektor model yang sudah dilatih agar dapat dibandingkan dengan vektor sebelum latihan.',
@@ -239,7 +242,9 @@ def build():
 
     **Notebook mandiri:** semua kode pendukung ada di cell. Tidak ada clone/pull GitHub atau import modul proyek. Koneksi internet tetap dipakai saat memasang pustaka dan mengambil bobot pretrained dari Hugging Face.
 
-    File dataset, Excel, checkpoint dan notebook terisi tetap privat. GitHub hanya tempat menyimpan salinan notebook.
+    **Simpan dan lanjut otomatis:** di Colab, hubungkan Google Drive saat diminta. Dataset, hasil, dan checkpoint disimpan di `MyDrive/AES_300_Privat`; pustaka/cache bobot tetap lokal. Setiap epoch yang selesai disimpan lengkap, dengan satu cadangan. Bila runtime terputus, pilih GPU yang sama dan jalankan notebook ini lagi dari atas; epoch tersimpan dilanjutkan, fold selesai dilewati. Epoch yang terputus sebelum penyimpanan selesai diulang. Colab memeriksa GPU/T4 sebelum training; GPU dipilih melalui menu Runtime, bukan otomatis dialokasikan oleh kode.
+
+    File dataset, Excel, checkpoint dan notebook terisi tetap privat. GitHub hanya tempat menyimpan salinan notebook. Penyimpanan Drive membutuhkan ruang kosong; penulisan checkpoint menambah waktu tiap epoch. Pesan “progres tersimpan” baru muncul sesudah penulisan selesai. Progres lama yang sudah hilang sebelum fitur ini tidak bisa dipulihkan.
     ''')
     md(references_markdown())
     md('''
@@ -259,6 +264,22 @@ def build():
     default_workspace='/content/AES_300' if IN_COLAB else str(Path.cwd()/'outputs/AES_300')
     ROOT=Path(os.environ.get('AES300_WORKSPACE',default_workspace)).expanduser().absolute()
     ROOT.mkdir(parents=True,exist_ok=True)
+    def prepare_persistent_storage(workspace,in_colab):
+        # Drive hanya untuk data/hasil/checkpoint; pustaka dan cache bobot tetap lokal agar lebih cepat.
+        if in_colab:
+            from google.colab import drive
+            drive.mount('/content/drive')  # Colab meminta izin akun; setelah tersambung, penyimpanan otomatis.
+            if not Path('/content/drive/MyDrive').is_dir():
+                raise RuntimeError('Google Drive belum tersambung. Training tidak dimulai tanpa penyimpanan permanen.')
+            default_storage='/content/drive/MyDrive/AES_300_Privat'
+        else:
+            default_storage=str(workspace)
+        storage=Path(os.environ.get('AES300_PERSISTENT_DIR',default_storage)).expanduser().absolute()
+        storage.mkdir(parents=True,exist_ok=True)
+        # Gagal menulis harus terlihat sebelum training, bukan diam-diam menyimpan ke /content.
+        probe=storage/'.aes_write_check'
+        probe.write_text('write check');probe.unlink()
+        return storage
     # Identitas kode notebook untuk membedakan hasil dari implementasi yang berbeda.
     NOTEBOOK_CODE_SHA256='__NOTEBOOK_CODE_SHA256__'
     print('Ruang kerja AES siap. Seluruh kode tersedia di notebook ini.')
@@ -275,6 +296,7 @@ def build():
     Output utama berisi status singkat. **Rincian instalasi** bisa dibuka jika diperlukan. Jika pemeriksaan gagal, cell berhenti dengan alasan dan log, bukan menampilkan status siap. Python worker numerik terpisah menghindari NumPy lama yang sudah dimuat kernel.
 
     Awalan **`%%aes` menjalankan kode cell pada worker yang sama**, sehingga variabel bertahan antar-cell. Upload Excel sekali per runtime; bila file sudah ada tidak diminta lagi.
+    Drive dihubungkan pada tahap ini. Jika izin Drive atau penulisan gagal, cell berhenti dan tidak diam-diam beralih ke penyimpanan sementara. Dataset yang sudah ada di folder privat Drive tidak perlu diunggah ulang setelah runtime berganti. Jangan menjalankan dua sesi training pada folder percobaan yang sama secara bersamaan.
     ''')
     code('# Pemeriksaan dan pemasangan pustaka tersedia langsung di sini.\n'+
          assignments('scripts/setup_dataset300.py',['INSPECT','IMPORTS'])+'\n\n'+
@@ -314,8 +336,11 @@ def build():
     display(HTML('<table style="background:#f8fafc!important;color:#172035!important;border-collapse:collapse">'
                  +status_html+'</table>'))
     show_installation_log()
+    PERSISTENT_ROOT=prepare_persistent_storage(ROOT,IN_COLAB)
+    print('Penyimpanan data, checkpoint dan Excel:',PERSISTENT_ROOT)
+    print('Progres disimpan otomatis setiap epoch. Saat sesi terputus, jalankan kembali notebook yang sama dari atas.')
     DATASET_NAME='fix_dataset_300.xlsx'
-    PRIVATE_INPUT=ROOT/'data/dataset300';PRIVATE_INPUT.mkdir(parents=True,exist_ok=True)
+    PRIVATE_INPUT=PERSISTENT_ROOT/'data/dataset300';PRIVATE_INPUT.mkdir(parents=True,exist_ok=True)
     DATA_PATH=Path(os.environ.get('AES300_DATASET',str(PRIVATE_INPUT/DATASET_NAME))).resolve()
     if not DATA_PATH.exists():
         if not IN_COLAB:
@@ -334,7 +359,9 @@ def build():
         _aes_process.terminate()
     _aes_prefix='__AES_'+secrets.token_hex(12)+'__'
     child_env={**os.environ,'HF_HOME':str(ROOT/'outputs/cache/huggingface'),
-               'AES300_DATASET':str(DATA_PATH),'TOKENIZERS_PARALLELISM':'false',
+               'AES300_DATASET':str(DATA_PATH),'AES300_RESULTS':str(PERSISTENT_ROOT/'outputs/dataset300_inline'),
+               'AES300_REQUIRE_GPU':'1' if IN_COLAB else os.environ.get('AES300_REQUIRE_GPU','0'),
+               'TOKENIZERS_PARALLELISM':'false',
                'OMP_NUM_THREADS':'2','MKL_NUM_THREADS':'2','PYTHONUNBUFFERED':'1'}
     child_env.pop('PYTHONPATH',None)
     _aes_process=subprocess.Popen([PYTHON,'-u','-c',WORKER_SOURCE,_aes_prefix,str(ROOT)],
@@ -405,7 +432,8 @@ def build():
          assignments('src/aes/teacher_score/display.py',['REPEATED_NOTES','METRIC_NOTES'])+'\n\n'+
          'REPEATED_HEADERS=REPEATED_COLUMNS\n\n'+
          source('src/aes/teacher_score/presentation.py',['friendly_header','friendly_value','repeated_word_rows'])+'\n\n'+
-         source('src/aes/teacher_score/display.py',['preview_table','cell_text','render_table']))
+         source('src/aes/teacher_score/display.py',['preview_table','cell_text','render_table'])+'\n\n'+
+         source('src/aes/teacher_score/models.py',['check_gpu']))
     code('''
 
     # Nama checkpoint adalah alamat model pretrained di Hugging Face, bukan objek model yang sudah dimuat.
@@ -428,7 +456,7 @@ def build():
     NEW_ANSWER=''  # Kosong: satu jawaban held-out untuk contoh scoring/vektor.
     AUDIT_ONLY=os.environ.get('AES300_AUDIT_ONLY')=='1'
     RUN_MODELS=RUN_TRAINING=RUN_WORD_VECTORS=RUN_FINAL_FEATURES=not AUDIT_ONLY
-    cfg=config(dict(dataset=os.environ['AES300_DATASET'],output=str(ROOT/'outputs/dataset300_inline'),
+    cfg=config(dict(dataset=os.environ['AES300_DATASET'],output=os.environ['AES300_RESULTS'],
                     sheet='Sheet1',expected_rows=300,score_min=0,score_max=100,
                     epochs=EPOCHS,folds=FOLDS,micro_batch=MICRO_BATCH,effective_batch=EFFECTIVE_BATCH,
                     early_stopping_patience=EARLY_STOPPING_PATIENCE,
@@ -437,7 +465,14 @@ def build():
                     bge={'checkpoint':BGE_CHECKPOINT,'revision':BGE_REVISION},
                     device='auto',new_answer=NEW_ANSWER,vector_source='pretrained',lesson_version='candidate_a_layernorm_25_v1',
                     runtime_versions={p:version(p) for p in ('torch','transformers','numpy')}))
-    print('Perangkat perhitungan:', 'GPU (CUDA)' if torch.cuda.is_available() else 'CPU')
+    # Colab harus mendeteksi GPU sebelum latihan panjang dimulai. Pengujian lokal tetap boleh CPU.
+    gpu=check_gpu(require_gpu=RUN_MODELS and os.environ.get('AES300_REQUIRE_GPU')=='1')
+    show(pd.DataFrame([
+        {'Pemeriksaan':'Perangkat aktif','Hasil':gpu['name']},
+        {'Pemeriksaan':'CUDA tersedia','Hasil':'Ya' if gpu['cuda_available'] else 'Tidak'},
+        {'Pemeriksaan':'GPU T4','Hasil':'T4 terdeteksi' if gpu['is_t4'] else 'GPU lain terdeteksi' if gpu['cuda_available'] else 'Belum aktif'},
+        {'Pemeriksaan':'Memori GPU (GiB)','Hasil':str(gpu['memory_gib']) if gpu['memory_gib'] is not None else 'Tidak tersedia'}
+    ]),'Pemeriksaan GPU sebelum training',columns=2)
     ''')
     md('''
     ## 4 · Baca Excel dan cleaning
@@ -587,7 +622,7 @@ if RUN_WORD_VECTORS:
     ''')
     defs('src/aes/metrics.py',['gwet_ac2'],'Agreement kuadratik Gwet, bukan sekadar korelasi.')
     defs('src/aes/teacher_score/models.py',['metrics'],'Empat metrik tanpa menimpa prediksi mentah.')
-    defs('src/aes/teacher_score/experiment.py',['optimizer_groups','fit'],'backward menghitung gradien; optimizer.step memperbarui parameter; validasi memilih bobot terbaik.')
+    defs('src/aes/teacher_score/experiment.py',['optimizer_groups','save_training_progress','load_training_progress','clear_training_progress','fit'],'backward menghitung gradien; optimizer.step memperbarui parameter; checkpoint otomatis menjaga progres setiap epoch.')
     md('''
     ## 12 · TrainingS1→S2→S3, refit, finaltest
 
@@ -595,7 +630,9 @@ if RUN_WORD_VECTORS:
 
     Sesudah CV S3 selesai, alur kembali ke S1 untuk **pelatihan model final**, lalu S2 dan S3. Model dibuat ulang dari pretrained dan dilatih pada seluruh 80% data latih. Jumlah epoch mengikuti median pilihan CV (dibulatkan ke atas), bukan wajib 25. Tidak ada early stopping pada tahap final karena tidak ada fold validasi terpisah. Setelah semua model final terkunci, barulah 20% testing dievaluasi.
 
-    Versi ini mendapat folder hasil baru berdasarkan kode dan pengaturan; hasil lama tidak ditimpa atau dipakai sebagai hasil training revisi. Karena hasil testing versi lama sudah dilihat, pemilihan pengaturan selanjutnya tetap memakai CV; hasil testing lanjutan bukan bukti konfirmasi yang sepenuhnya belum pernah disentuh dalam pengembangan.
+    **Checkpoint otomatis:** tiap epoch lengkap menyimpan bobot saat ini dan bobot terbaik, optimizer, scheduler, GradScaler, riwayat, urutan acak dan penghitung early stopping. Saat dijalankan lagi, kode memeriksa data/fold/pengaturan/perangkat sebelum melanjutkan epoch berikutnya. Dua generasi terakhir disimpan selama tahap aktif; bila salinan terbaru tidak utuh, cadangan sebelumnya diperiksa. Setelah fold atau refit selesai disimpan, checkpoint sementara tahap itu dibersihkan. Model final tetap disimpan. Fold dan refit yang sudah selesai tidak dilatih ulang.
+
+    Versi ini mendapat folder hasil baru berdasarkan kode dan pengaturan; hasil lama tidak ditimpa atau dipakai sebagai hasil training revisi. Untuk melanjutkan, gunakan notebook, dataset, konfigurasi, versi pustaka dan perangkat GPU yang sama. Karena hasil testing versi lama sudah dilihat, pemilihan pengaturan selanjutnya tetap memakai CV; hasil testing lanjutan bukan bukti konfirmasi yang sepenuhnya belum pernah disentuh dalam pengembangan.
 
     **Output:**`09_S1_fold_1.xlsx` sampai`09_S3_fold_5.xlsx`(riwayat setiapepoch,prediksi/metrikvalidation), `10_S1_refit.xlsx`dst., `11_S1_test.xlsx`dst., `12_evaluasi_tiga_skenario.xlsx`. Tiapfold selesai langsung disimpan. Resume hasil cocok sumber/config/code memakai test tersimpan.
     ''')

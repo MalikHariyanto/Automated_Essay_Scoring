@@ -18,6 +18,19 @@ from aes.windows import batch_windows, mean_by_essay
 from .data import dump
 
 
+def check_gpu(require_gpu=False):
+    """Periksa hardware yang benar-benar tersedia, tanpa memuat model pretrained."""
+    available = torch.cuda.is_available()
+    if not available:
+        if require_gpu:
+            raise RuntimeError('GPU belum aktif. Pilih Runtime → Change runtime type → T4 GPU, '
+                               'lalu jalankan notebook dari atas. Training Colab tidak dimulai di CPU.')
+        return {'name': 'CPU', 'cuda_available': False, 'is_t4': False, 'memory_gib': None}
+    name = torch.cuda.get_device_name(0)
+    return {'name': name, 'cuda_available': True, 'is_t4': 'T4' in name.upper(),
+            'memory_gib': round(torch.cuda.get_device_properties(0).total_memory/1024**3, 2)}
+
+
 def device_name(cfg):
     requested = cfg['device']
     if requested == 'cuda' and not torch.cuda.is_available():

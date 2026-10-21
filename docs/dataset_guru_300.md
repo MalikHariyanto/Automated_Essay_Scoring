@@ -6,9 +6,21 @@ Keluaran akhir disatukan menjadi **lima Excel**. Revisi training terbaru memakai
 
 Seluruh kode runtime ada di cell: persiapan pustaka, pemeriksaan data, tokenisasi, model, training, metrik, tampilan tabel, dan pembuat Excel. Notebook tidak melakukan clone/pull GitHub atau memanggil modul `aes` dari repo. Bagian pertama hanya menyiapkan ruang kerja. Rujukan paper menjadi Markdown dan tidak dibaca sebagai input program.
 
-Pustaka Python dan bobot pretrained Hugging Face tetap diperlukan. Dataset Excel disediakan secara privat. Folder default Colab adalah `/content/AES_300`; pada komputer lokal, hasil berada di `outputs/AES_300` dari folder tempat notebook dijalankan. Variabel `AES300_WORKSPACE` dapat menentukan folder lain. Identitas hasil mengikuti data, konfigurasi, dan fingerprint kode notebook, tanpa perintah Git atau pembacaan source repo.
+Pustaka Python dan bobot pretrained Hugging Face tetap diperlukan. Dataset Excel disediakan secara privat. Pada Colab, lingkungan Python/cache bobot ada di `/content/AES_300`, sedangkan dataset, checkpoint dan hasil ada di Drive `MyDrive/AES_300_Privat`. Pada komputer lokal, default hasil berada di `outputs/AES_300` dari folder tempat notebook dijalankan. `AES300_WORKSPACE` menentukan ruang kerja lokal, sedangkan `AES300_PERSISTENT_DIR` dapat menentukan penyimpanan hasil lain. Identitas hasil mengikuti data, konfigurasi, dan fingerprint kode notebook, tanpa perintah Git atau pembacaan source repo.
 
 [Bukti pengujian mandiri](verification_dataset300_standalone.md) mencakup eksekusi dari folder terpisah, Git yang diblokir, import kode repo yang ditolak, serta perbandingan angka dengan versi sebelumnya. Builder di repo hanya digunakan saat menyiapkan notebook untuk publikasi; pengguna cukup menjalankan file ipynb.
+
+## Penyimpanan otomatis dan melanjutkan training
+
+Pilih **Runtime → Change runtime type → T4 GPU**, lalu jalankan notebook dari atas. Pada tahap setup, Colab meminta izin untuk menghubungkan Google Drive. Izin akun ini tidak bisa dilewati kode. Setelah tersambung, penyimpanan berjalan otomatis ke `MyDrive/AES_300_Privat` di akun pengguna. Drive tidak dibagikan ke publik. Dataset hanya diunggah bila belum tersedia di folder privat tersebut. Jika Drive gagal tersambung atau tidak bisa ditulis, notebook berhenti; tidak diam-diam menggantinya dengan folder sementara.
+
+Pada tahap konfigurasi, tabel pemeriksaan menampilkan nama GPU, apakah T4 terdeteksi, CUDA, dan kapasitas VRAM. GPU lain yang tersedia tetap dikenali dengan nama sebenarnya. Training Colab tidak dimulai bila CUDA/GPU belum aktif. Kode tidak dapat memilih atau menjamin alokasi T4; pemilihan hardware tetap lewat menu Colab. Pemeriksaan teknis lokal tetap dapat memakai CPU.
+
+Setelah setiap epoch lengkap, checkpoint menyimpan bobot saat ini, optimizer, scheduler, GradScaler, bobot terbaik, riwayat metrik, urutan acak, dan penghitung early stopping. Dua generasi terbaru dipertahankan selama tahap aktif: satu checkpoint terbaru dan satu cadangan. Manifest baru ditulis setelah file checkpoint lengkap, dengan checksum. Hash dibaca bertahap agar file besar tidak dimuat seluruhnya ke RAM. Checkpoint sementara dibersihkan setelah fold atau refit selesai tersimpan; model final dan hasil tetap disimpan.
+
+Jika runtime terputus, buka notebook yang sama, hubungkan Drive lagi dan jalankan dari atas dengan dataset, konfigurasi, versi pustaka dan GPU yang sama. Persiapan lingkungan dan beberapa inspeksi dapat berjalan ulang; tahap training melanjutkan epoch terakhir yang sudah selesai disimpan dan melewati fold/refit yang sudah selesai. Epoch yang belum selesai disimpan diulang dari checkpoint terakhir. Checkpoint yang tidak utuh dicoba dari cadangan; jika keduanya tidak sah atau konfigurasi berbeda, proses berhenti dengan penjelasan. Hasil testing lengkap yang sudah disimpan dibaca kembali tanpa evaluasi ulang.
+
+Checkpoint memerlukan ruang Drive dan menambah waktu penulisan setiap epoch. Pesan **progres epoch ... tersimpan otomatis** muncul setelah penulisan selesai. Ini mengurangi kehilangan progres, bukan jaminan terhadap semua gangguan sinkronisasi layanan Drive. Jangan menjalankan dua sesi training pada folder percobaan yang sama secara bersamaan. Progres versi lama yang sudah hilang sebelum fitur ini tidak dapat dipulihkan. [Bukti pengujian pemulihan](verification_dataset300_resume.md) membedakan simulasi putus/lanjut dari eksekusi GPU/Drive asli.
 
 ## Unduh langsung dari Colab utama
 

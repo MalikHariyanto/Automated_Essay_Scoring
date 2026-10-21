@@ -1,5 +1,6 @@
 """Eksekusi notebook tanpa repo; data dan encoder fixture, bukan hasil penelitian."""
 import ast
+import hashlib
 import inspect
 import json
 import os
@@ -42,6 +43,7 @@ def test_standalone_notebook_runs_to_five_excel_reports_without_repository(tmp_p
     notebook=nbformat.read(ROOT/'notebooks/03_AES_dataset_guru_300.ipynb',as_version=4)
     isolated=tmp_path/'only_notebook_and_data';isolated.mkdir()
     workspace=isolated/'private_results'
+    persistent=tmp_path/'SIMULATED_PRIVATE_DRIVE'
     fixture=isolated/'TECHNICAL_FIXTURE_ONLY.xlsx';make_book(fixture)
     guard='''
 import builtins
@@ -89,6 +91,7 @@ def tokenizer(*args,**kwargs):return TechnicalTokenizer()
     bin_folder=tmp_path/'bin';bin_folder.mkdir()
     (bin_folder/'git').write_text('#!/bin/sh\nexit 97\n');(bin_folder/'git').chmod(0o755)
     environment={**os.environ,'AES300_WORKSPACE':str(workspace),'AES300_DATASET':str(fixture),
+                 'AES300_PERSISTENT_DIR':str(persistent),'AES300_REQUIRE_GPU':'0',
                  'AES300_PYTHON':sys.executable,'HF_HUB_OFFLINE':'1','TRANSFORMERS_OFFLINE':'1',
                  'PATH':str(bin_folder)+os.pathsep+os.environ['PATH'],'OMP_NUM_THREADS':'2','MKL_NUM_THREADS':'2',
                  'IPYTHONDIR':str(tmp_path/'ipython')}
@@ -115,9 +118,29 @@ def tokenizer(*args,**kwargs):return TechnicalTokenizer()
     assert 'Nilai Guru' in comparison_views[0] and 'Pembulatan S3' in comparison_views[0]
     assert not list(workspace.rglob('*.py'))
     assert not (workspace/'src').exists() and not (workspace/'docs').exists() and not (workspace/'.git').exists()
+    # Mesin lokal diganti; hasil tetap ada di penyimpanan permanen yang sama.
+    run_folder=Path(pointer['run_folder'])
+    assert persistent in run_folder.parents
+    hashes={str(p.relative_to(run_folder)):hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in run_folder.glob('S*/*') if p.name in ('final.pt','test_predictions.csv')}
+    second=nbformat.read(notebook_path,as_version=4)
+    second_workspace=isolated/'new_runtime_after_disconnect'
+    second_manager=KernelManager(kernel_name='aes_isolated',kernel_spec_manager=KernelSpecManager(kernel_dirs=[str(kernels)]))
+    try:
+        NotebookClient(second,timeout=360,km=second_manager,resources={'metadata':{'path':str(isolated)}}).execute(
+            env={**environment,'AES300_WORKSPACE':str(second_workspace)})
+    finally:
+        if second_manager.has_kernel:second_manager.shutdown_kernel(now=True)
+    nbformat.write(second,isolated/'TECHNICAL_resumed.ipynb')
+    second_pointer=json.loads((second_workspace/'outputs/dataset300_download.json').read_text())
+    assert second_pointer['run_folder']==pointer['run_folder'] and second_pointer['excel_count']==5
+    streams='\n'.join(out.get('text','') for cell in second.cells for out in cell.get('outputs',[]) if out.output_type=='stream')
+    assert 'Memakai hasil tersimpan yang cocok' in streams and ' · epoch ' not in streams
+    assert hashes=={name:hashlib.sha256((run_folder/name).read_bytes()).hexdigest() for name in hashes}
     proof={'scope':'TECHNICAL FIXTURE ONLY; NOT STUDENT SCORES','code_cells_executed':sum(c.cell_type=='code' and c.execution_count is not None for c in notebook.cells),
            'production_code_cells':sum(c.cell_type=='code' for c in notebook.cells)-1,'fixture_guard_cells':1,
            'elapsed_seconds':round(time.time()-start,2),'notebook_and_dataset_only':True,'project_imports_blocked':True,
            'git_unavailable':True,'private_python_files_created':False,'output':pointer}
+    proof['fresh_runtime_reuses_persistent_results_without_training']=True
     (isolated/'standalone_proof.json').write_text(json.dumps(proof,indent=2))
     print(json.dumps(proof))

@@ -35,13 +35,20 @@ REQUIRED = ['Email address', 'response_number', 'response_text', 'soal',
 
 
 def digest(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    # Checkpoint besar diperiksa bertahap supaya tidak dimuat seluruhnya ke RAM.
+    checksum = hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for chunk in iter(lambda: stream.read(8*1024*1024), b''):
+            checksum.update(chunk)
+    return checksum.hexdigest()
 
 
 def dump(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False)+'\n', encoding='utf-8')
+    temporary = path.with_name(path.name+'.pending')
+    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False)+'\n', encoding='utf-8')
+    temporary.replace(path)
 
 
 def config(values):

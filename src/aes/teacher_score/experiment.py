@@ -47,7 +47,55 @@ def optimizer_groups(model, cfg):
             for name, params in buckets.items() if params]
 
 
-def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):
+def save_training_progress(path, payload):
+    """Simpan epoch lengkap, pertahankan satu cadangan jika penulisan berikutnya terputus."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    previous = json.loads(path.read_text())['snapshots'] if path.exists() else []
+    target = path.with_name(f'{path.stem}_epoch_{payload["epoch"]:03d}.pt')
+    temporary = target.with_name(target.name+'.pending')
+    torch.save(payload, temporary)
+    checksum = digest(temporary)
+    temporary.replace(target)
+    snapshots = [{'file': target.name, 'sha256': checksum}]+[r for r in previous if r['file'] != target.name][:1]
+    # Manifest baru hanya diterbitkan sesudah file bobot selesai ditulis.
+    dump(path, {'scope': SCOPE, 'snapshots': snapshots})
+    keep = {r['file'] for r in snapshots}
+    for old in path.parent.glob(path.stem+'_epoch_*.pt'):
+        if old.name not in keep:
+            old.unlink()
+
+
+def load_training_progress(path, contract):
+    path = Path(path)
+    if not path.exists():
+        return None
+    manifest = json.loads(path.read_text())
+    if manifest.get('scope') != SCOPE:
+        raise ValueError('Checkpoint progres bukan workflow AES ini.')
+    for snapshot in manifest['snapshots']:
+        source = path.parent/snapshot['file']
+        if source.name != snapshot['file']:
+            raise ValueError('Nama file checkpoint progres tidak sah.')
+        if not source.exists() or digest(source) != snapshot['sha256']:
+            print('Checkpoint terbaru tidak lengkap; memeriksa cadangan epoch sebelumnya.', flush=True)
+            continue
+        payload = torch.load(source, map_location='cpu', weights_only=True)
+        if payload.get('contract') != contract:
+            raise ValueError('Data, fold, konfigurasi atau perangkat checkpoint berbeda. Progres tidak dipakai untuk percobaan lain.')
+        return payload
+    raise RuntimeError('Tidak ada checkpoint progres yang utuh. Hasil lama dipertahankan; training tidak diulang diam-diam.')
+
+
+def clear_training_progress(path):
+    path = Path(path)
+    for file in path.parent.glob(path.stem+'_epoch_*.pt*'):
+        file.unlink()
+    if path.exists():
+        path.unlink()
+
+
+def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed, checkpoint=None):
     seed_everything(seed)
     device = device_name(cfg)
     model = make_model(scenario, cfg).to(device)
@@ -73,7 +121,37 @@ def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):
     patience = cfg['early_stopping_patience']
     without_improvement, early_stopped = 0, False
     history, active_steps, optimizer_steps, skipped_steps = [], 0, 0, 0
-    for epoch in range(1, epochs+1):
+    start_epoch = 1
+    semantic = {k: v for k, v in cfg.items() if k not in ('dataset', 'output', 'trace_position', 'vector_source', 'new_answer', 'focus_word')}
+    contract = {'format': 'epoch_resume_v1', 'source': bundle.source_sha256, 'scenario': scenario,
+                'training': [int(i) for i in training], 'validation': None if validation is None else [int(i) for i in validation],
+                'config': semantic, 'epochs': epochs, 'seed': seed,
+                'torch': str(torch.__version__), 'device': device,
+                'precision': str(dtype) if use_cuda else 'float32',
+                'gpu': torch.cuda.get_device_name() if use_cuda else None}
+    saved = load_training_progress(checkpoint, contract) if checkpoint is not None else None
+    if saved is not None:
+        model.load_state_dict(saved['model'])
+        optimizer.load_state_dict(saved['optimizer'])
+        scheduler.load_state_dict(saved['scheduler'])
+        scaler.load_state_dict(saved['scaler'])
+        generator.set_state(saved['loader_generator'])
+        selected_parameters = saved['selected_parameters']
+        best_state, best_epoch, best_rmse = saved['best_state'], saved['best_epoch'], saved['best_rmse']
+        history, without_improvement = saved['history'], saved['without_improvement']
+        active_steps, optimizer_steps, skipped_steps = saved['active_steps'], saved['optimizer_steps'], saved['skipped_steps']
+        early_stopped = saved['early_stopped']
+        start_epoch = epochs+1 if early_stopped else saved['epoch']+1
+        random.setstate(saved['python_rng'])
+        rng = saved['numpy_rng']
+        np.random.set_state((rng[0], np.asarray(rng[1], dtype=np.uint32), rng[2], rng[3], rng[4]))
+        torch.set_rng_state(saved['torch_rng'])
+        if use_cuda:
+            torch.cuda.set_rng_state_all(saved['cuda_rng'])
+        print(f'{scenario}: progres epoch {saved["epoch"]}/{epochs} ditemukan; '
+              + (f'lanjut epoch {start_epoch}.' if start_epoch <= epochs else 'latihan sudah selesai, memulihkan hasilnya.'), flush=True)
+        del saved
+    for epoch in range(start_epoch, epochs+1):
         model.train()
         loss_total = 0.
         for effective in loader:
@@ -129,6 +207,21 @@ def fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):
         # Hanya fold validasi yang boleh menghentikan latihan; data uji tidak dibaca.
         if validation is not None and without_improvement >= patience and epoch < epochs:
             early_stopped = True
+        if checkpoint is not None:
+            rng = np.random.get_state()
+            # Progres menyimpan keadaan belajar, bukan bobot terbaik saja.
+            save_training_progress(checkpoint, {
+                'contract': contract, 'epoch': epoch, 'model': model.state_dict(),
+                'optimizer': optimizer.state_dict(), 'scheduler': scheduler.state_dict(), 'scaler': scaler.state_dict(),
+                'loader_generator': generator.get_state(), 'python_rng': random.getstate(),
+                'numpy_rng': (rng[0], rng[1].tolist(), rng[2], rng[3], rng[4]),
+                'torch_rng': torch.get_rng_state(), 'cuda_rng': torch.cuda.get_rng_state_all() if use_cuda else [],
+                'selected_parameters': selected_parameters, 'best_state': best_state,
+                'best_epoch': best_epoch, 'best_rmse': best_rmse, 'history': history,
+                'without_improvement': without_improvement, 'early_stopped': early_stopped,
+                'active_steps': active_steps, 'optimizer_steps': optimizer_steps, 'skipped_steps': skipped_steps})
+            print(f'{scenario}: progres epoch {epoch} tersimpan otomatis.', flush=True)
+        if early_stopped:
             print(f'{scenario}: early stopping setelah {epoch} epoch; RMSE validasi tidak membaik selama {patience} epoch. '
                   f'Bobot epoch {best_epoch} dipulihkan.', flush=True)
             break
@@ -200,16 +293,19 @@ def train_all(bundle, manifest, bge, cfg, output, observer=None):
                 result = json.loads(file.read_text())
                 if result['split_sha256'] != manifest['split_sha256'] or result['fold'] != fold['fold']:
                     raise ValueError('Cache fold memakai split berbeda.')
+                clear_training_progress(destination/f'progress_fold_{fold["fold"]}.json')
                 print(f'{scenario}: memakai hasil validasi silang fold {fold["fold"]} yang sudah selesai.', flush=True)
             else:
                 print(f'{scenario}: validasi silang, fold {fold["fold"]} dari {cfg["folds"]}. Data uji disimpan untuk evaluasi akhir.', flush=True)
                 model, engine, info = fit(scenario, fold['train'], fold['validation'], bundle, bge, cfg,
-                                          cfg['epochs'], cfg['seed']+fold['fold'])
+                                          cfg['epochs'], cfg['seed']+fold['fold'],
+                                          checkpoint=destination/f'progress_fold_{fold["fold"]}.json')
                 prediction = engine.predict(fold['validation'])
                 result = {'fold': fold['fold'], 'split_sha256': manifest['split_sha256'],
                           'training': info, 'metrics': metrics(bundle.y[fold['validation']], prediction, cfg),
                           'validation_indices': fold['validation'], 'prediction': prediction.tolist()}
                 dump(file, result)
+                clear_training_progress(destination/f'progress_fold_{fold["fold"]}.json')
                 del engine, model
                 release()
             completed.append(result)
@@ -238,15 +334,26 @@ def train_all(bundle, manifest, bge, cfg, output, observer=None):
     else:
         checksums = {}
         for scenario in SCENARIOS:
+            path = output/scenario/'final.pt'
+            complete = output/scenario/'refit_complete.json'
+            if complete.exists():
+                cached = json.loads(complete.read_text())
+                if cached['selection'] != selection or cached['source'] != bundle.source_sha256 or digest(path) != cached['sha256']:
+                    raise ValueError('Checkpoint pelatihan final tersimpan berbeda dari percobaan ini.')
+                checksums[scenario] = cached['sha256']
+                clear_training_progress(output/scenario/'progress_refit.json')
+                print(f'{scenario}: pelatihan final sudah selesai; memakai checkpoint tersimpan.', flush=True)
+                continue
             print(f'{scenario}: pelatihan final pada {len(manifest["development"])} jawaban, '
                   f'{selected_epochs[scenario]} epoch pilihan CV. Early stopping tidak diterapkan di tahap final.', flush=True)
             model, engine, info = fit(scenario, manifest['development'], None, bundle, bge, cfg,
-                                      selected_epochs[scenario], cfg['seed'])
-            path = output/scenario/'final.pt'
+                                      selected_epochs[scenario], cfg['seed'], checkpoint=output/scenario/'progress_refit.json')
             save_model(path, model, cfg, bundle, manifest, info)
+            checksums[scenario] = digest(path)
+            dump(complete, {'selection': selection, 'source': bundle.source_sha256, 'sha256': checksums[scenario]})
+            clear_training_progress(output/scenario/'progress_refit.json')
             if observer is not None:
                 observer('refit', scenario, info)
-            checksums[scenario] = digest(path)
             del engine, model
             release()
         dump(lock, {'scope': SCOPE, 'checkpoints': checksums,
