@@ -4,6 +4,28 @@ Unduh [belajar_MLP_Spider.html](belajar_MLP_Spider.html) dengan **Download raw f
 
 Source mengikuti [commit 15bc7bb](https://github.com/MalikHariyanto/Automated_Essay_Scoring/commit/15bc7bbb2aee91ecaf44fb91a0139a8c21f64a20). Seluruh 30 cell kode unggahan `AES_300_S3_MLP (1).ipynb` sama dengan source pada commit itu. Buku tidak mengikuti eksperimen double-frozen yang dibuat kemudian, dan tidak mengubah notebook utama.
 
+## Menu perbandingan eksperimen
+
+Klik **Bandingkan eksperimen** pada beranda atau pemilih ruang di atas buku. Menu ini memiliki lima pembahasan: **Peta perubahan**, **Layer & kode**, **Training & CV**, **Prediksi & metrik**, serta **Kenapa lanjut?**. Pilih S1/S2/S3 dan versi awal pembanding; run MLP terakhir tetap di sebelah kanan. Area pembahasan mempunyai scroll sendiri.
+
+Jejak eksperimen dipisahkan berdasarkan bukti:
+
+| Versi | Source | Perubahan penting | Bukti hasil |
+| --- | --- | --- | --- |
+| E0 · awal | `3afad79` | Lima fold, batas 5 epoch, tanpa early stopping; head S3 linear | Notebook tersimpan: 15 hasil fold, riwayat CV/refit dan metrik test |
+| E1 · revisi training | `312f394` | Batas 25 epoch, patience 5, LR lebih kecil, LayerNorm tambahan RoBERTa S3; head S3 masih linear | Source terverifikasi; hasil akhir lengkap belum terpasangkan secara pasti |
+| E2 · MLP | `15bc7bb` | Head S3 MLP 1024→256→1, konfigurasi training revisi dipertahankan | Notebook dan lima Excel tersimpan |
+
+Kedua versi hasil memakai **lima fold**, bukan 5 versus 25 fold. Yang berubah adalah batas epoch per fold. S2 sudah memakai MLP sejak awal; S1 tetap head linear. Versi awal juga sudah memilih bobot CV menurut RMSE validation terbaik meskipun belum memakai early stopping.
+
+Klik layer untuk sticky note fungsi lapisan, lalu lihat source asli berdampingan dengan sorotan baris berubah. Grafik training dapat dipilih per skenario, fold, dan satuan RMSE/MSE. Semua epoch yang ditampilkan berasal dari riwayat tersimpan, bukan angka simulasi. Tabel test menampilkan empat metrik semua skenario; tabel CV memperlihatkan keempat metrik tiap fold.
+
+Contoh hasil S3: RMSE test **11,7224 → 6,7085** dan rata-rata RMSE CV **10,9542 → 6,0516**. Perubahan awal → MLP mencakup beberapa pengaturan sekaligus, sehingga hasil tersebut tidak membuktikan MLP sebagai penyebab tunggal. Manifest anggota fold/test awal belum tersedia untuk pencocokan per jawaban; nomor fold yang sama tidak diasumsikan mempunyai anggota yang sama. Test lama juga sudah dilihat sebelum pengembangan selanjutnya, sehingga perbandingan lanjutan dijelaskan sebagai eksplorasi.
+
+Prediksi individual tetap lokal. HTML pribadi terbaru menyertakan notebook awal juga: tiga prediksi contoh lama tampil terpisah dari nilai guru/prediksi/pembulatan contoh MLP. Identitas kedua contoh belum diverifikasi sama, dan skor guru contoh lama tidak tercantum pada tabel sumber; keduanya tidak dipasangkan atau diisi dengan angka buatan. Tabel lengkap 60 pasangan lama belum tersedia pada sumber pembanding yang dapat dibuka. Seluruh 60 pasangan run MLP dapat dibuka melalui tombol menuju Excel.
+
+Salinan publik sudah memuat angka agregat perbandingan. Bila memiliki notebook awal yang persis cocok, tombol di tab Prediksi & metrik dapat membukanya lokal. **Simpan HTML lengkap** ikut mempertahankan notebook awal yang telah dimuat.
+
 ## Cara membaca
 
 Ada 16 bab. Mulai dari hasil, lalu ikuti setup → dataset → split → token → vektor → arsitektur → training → CV/refit/test → prediksi → lima laporan Excel.
@@ -60,7 +82,10 @@ Untuk membuat ulang snapshot dan HTML pribadi dengan file asli, gunakan Python y
 ```bash
 python scripts/build_mlp_study.py \
   --notebook '/path/AES_300_S3_MLP (1).ipynb' \
-  --results '/path/Hasil_AES_Ringkas (2).zip'
+  --results '/path/Hasil_AES_Ringkas (2).zip' \
+  --baseline '/path/notebook_awal_5_epoch.ipynb'
 ```
+
+Argumen `--baseline` bersifat opsional untuk bundel pribadi. Ekstraksi ulang snapshot pembanding dilakukan dengan `python scripts/build_mlp_comparison.py --baseline '/path/notebook_awal_5_epoch.ipynb'`; source awal wajib cocok commit `3afad79`. Snapshot publik hanya menyimpan source, riwayat agregat, dan metrik.
 
 Builder membaca source dari commit tetap, bukan dari notebook eksperimen terbaru. Template, isi catatan, dan JSZip berlisensi MIT/GPL disertakan di repository. Tidak ada bobot encoder yang diunduh atau dilatih oleh builder. Bukti pemeriksaan ada di [laporan verifikasi](verification_mlp_study.md).

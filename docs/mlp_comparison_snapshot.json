@@ -1,0 +1,934 @@
+{
+  "scope": "SAVED BASELINE AND SOURCE HISTORY; NO NEW TRAINING",
+  "baseline": {
+    "id": "E0",
+    "commit": "3afad7982ed7b5bca0f99d44c0255560eb6b05e8",
+    "notebook_sha256": "d4f00d143e9389841d8741586417c787dc5e03b77b254124ce15e9df2e9e171e",
+    "source_matches_commit": true,
+    "metrics": [
+      {
+        "Skenario": "S1",
+        "RMSE (poin)": 9.8920275,
+        "Pearson": 0.39466007,
+        "QWK": 0.32350513,
+        "Gwet AC2": 0.96022879
+      },
+      {
+        "Skenario": "S2",
+        "RMSE (poin)": 6.9430954,
+        "Pearson": 0.51845536,
+        "QWK": 0.46362236,
+        "Gwet AC2": 0.97701962
+      },
+      {
+        "Skenario": "S3",
+        "RMSE (poin)": 11.722398,
+        "Pearson": -0.21643278,
+        "QWK": -0.21238397,
+        "Gwet AC2": 0.9347106
+      }
+    ],
+    "folds": [
+      {
+        "Skenario": "S1",
+        "Fold": 1.0,
+        "QWK": 0.36036951,
+        "Gwet AC2": 0.95523414,
+        "RMSE (poin)": 10.87188,
+        "Pearson": 0.356779
+      },
+      {
+        "Skenario": "S1",
+        "Fold": 2.0,
+        "QWK": 0.35491534,
+        "Gwet AC2": 0.94682096,
+        "RMSE (poin)": 11.059262,
+        "Pearson": 0.43717161
+      },
+      {
+        "Skenario": "S1",
+        "Fold": 3.0,
+        "QWK": 0.20965629,
+        "Gwet AC2": 0.93938464,
+        "RMSE (poin)": 11.473473,
+        "Pearson": 0.2685117
+      },
+      {
+        "Skenario": "S1",
+        "Fold": 4.0,
+        "QWK": 0.095229878,
+        "Gwet AC2": 0.87719503,
+        "RMSE (poin)": 17.348686,
+        "Pearson": 0.1180741
+      },
+      {
+        "Skenario": "S1",
+        "Fold": 5.0,
+        "QWK": 0.36398363,
+        "Gwet AC2": 0.97735566,
+        "RMSE (poin)": 6.8874138,
+        "Pearson": 0.39955873
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 1.0,
+        "QWK": 0.57711697,
+        "Gwet AC2": 0.9859789,
+        "RMSE (poin)": 5.4433507,
+        "Pearson": 0.6616934
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 2.0,
+        "QWK": 0.67525943,
+        "Gwet AC2": 0.98345636,
+        "RMSE (poin)": 6.0600342,
+        "Pearson": 0.70592749
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 3.0,
+        "QWK": 0.23688074,
+        "Gwet AC2": 0.97904694,
+        "RMSE (poin)": 6.8773237,
+        "Pearson": 0.31181821
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 4.0,
+        "QWK": 0.34172119,
+        "Gwet AC2": 0.97950073,
+        "RMSE (poin)": 6.7354953,
+        "Pearson": 0.43495057
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 5.0,
+        "QWK": 0.23365865,
+        "Gwet AC2": 0.97966785,
+        "RMSE (poin)": 6.8252394,
+        "Pearson": 0.35993119
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 1.0,
+        "QWK": 0.26283182,
+        "Gwet AC2": 0.96275029,
+        "RMSE (poin)": 9.559463,
+        "Pearson": 0.34080499
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 2.0,
+        "QWK": 0.16616713,
+        "Gwet AC2": 0.9276489,
+        "RMSE (poin)": 12.018116,
+        "Pearson": 0.17652151
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 3.0,
+        "QWK": 0.01645673,
+        "Gwet AC2": 0.9520236,
+        "RMSE (poin)": 10.352563,
+        "Pearson": 0.04531702
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 4.0,
+        "QWK": 0.19231702,
+        "Gwet AC2": 0.94908133,
+        "RMSE (poin)": 13.858476,
+        "Pearson": 0.10249002
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 5.0,
+        "QWK": 0.13158549,
+        "Gwet AC2": 0.96189982,
+        "RMSE (poin)": 8.9822038,
+        "Pearson": 0.1503225
+      }
+    ],
+    "history": {
+      "S1": [
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.850737,
+          "RMSE Validasi (poin)": 29.6432
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.195555,
+          "RMSE Validasi (poin)": 27.7874
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.080635,
+          "RMSE Validasi (poin)": 13.3462
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.051821,
+          "RMSE Validasi (poin)": 12.1389
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.048616,
+          "RMSE Validasi (poin)": 10.8719
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.248747,
+          "RMSE Validasi (poin)": 36.8967
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.150827,
+          "RMSE Validasi (poin)": 21.9945
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.086757,
+          "RMSE Validasi (poin)": 13.0846
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.05476,
+          "RMSE Validasi (poin)": 17.2214
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.041742,
+          "RMSE Validasi (poin)": 11.0593
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.597411,
+          "RMSE Validasi (poin)": 36.0886
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.176617,
+          "RMSE Validasi (poin)": 27.5166
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.07888,
+          "RMSE Validasi (poin)": 13.6854
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.074011,
+          "RMSE Validasi (poin)": 14.2246
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.03749,
+          "RMSE Validasi (poin)": 11.4735
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.635843,
+          "RMSE Validasi (poin)": 29.9111
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.121222,
+          "RMSE Validasi (poin)": 26.3474
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.074295,
+          "RMSE Validasi (poin)": 21.2218
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.063217,
+          "RMSE Validasi (poin)": 19.2697
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.038813,
+          "RMSE Validasi (poin)": 17.3487
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.658395,
+          "RMSE Validasi (poin)": 31.8267
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.145084,
+          "RMSE Validasi (poin)": 9.3879
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.091096,
+          "RMSE Validasi (poin)": 10.324
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.077356,
+          "RMSE Validasi (poin)": 8.123
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.042324,
+          "RMSE Validasi (poin)": 6.8874
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.784834,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.114347,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.070238,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.046555,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.03985,
+          "RMSE Validasi (poin)": null
+        }
+      ],
+      "S2": [
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.354685,
+          "RMSE Validasi (poin)": 28.9597
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.03178,
+          "RMSE Validasi (poin)": 9.8481
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.005981,
+          "RMSE Validasi (poin)": 6.4727
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.004827,
+          "RMSE Validasi (poin)": 5.4434
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.004001,
+          "RMSE Validasi (poin)": 5.5944
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.272592,
+          "RMSE Validasi (poin)": 23.4538
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.017042,
+          "RMSE Validasi (poin)": 6.858
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.004516,
+          "RMSE Validasi (poin)": 6.2852
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.003896,
+          "RMSE Validasi (poin)": 6.0656
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.003904,
+          "RMSE Validasi (poin)": 6.06
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.351063,
+          "RMSE Validasi (poin)": 25.2425
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.019169,
+          "RMSE Validasi (poin)": 8.3447
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.005078,
+          "RMSE Validasi (poin)": 7.7311
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.004414,
+          "RMSE Validasi (poin)": 6.8773
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.003868,
+          "RMSE Validasi (poin)": 7.1185
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.295646,
+          "RMSE Validasi (poin)": 27.1049
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.017887,
+          "RMSE Validasi (poin)": 6.8899
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.005002,
+          "RMSE Validasi (poin)": 6.7355
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.003752,
+          "RMSE Validasi (poin)": 6.8008
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.00344,
+          "RMSE Validasi (poin)": 6.7744
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.357666,
+          "RMSE Validasi (poin)": 35.1126
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.029218,
+          "RMSE Validasi (poin)": 7.3539
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.005846,
+          "RMSE Validasi (poin)": 6.8662
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.004438,
+          "RMSE Validasi (poin)": 6.9306
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.004007,
+          "RMSE Validasi (poin)": 6.8252
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.294057,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.010307,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.004633,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.004346,
+          "RMSE Validasi (poin)": null
+        }
+      ],
+      "S3": [
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.510104,
+          "RMSE Validasi (poin)": 42.693
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.252057,
+          "RMSE Validasi (poin)": 22.6026
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.053855,
+          "RMSE Validasi (poin)": 14.8062
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.047907,
+          "RMSE Validasi (poin)": 9.5595
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 1,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.048342,
+          "RMSE Validasi (poin)": 12.2884
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.531514,
+          "RMSE Validasi (poin)": 38.8425
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.175721,
+          "RMSE Validasi (poin)": 15.7102
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.08759,
+          "RMSE Validasi (poin)": 21.5763
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.058871,
+          "RMSE Validasi (poin)": 13.4658
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 2,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.040895,
+          "RMSE Validasi (poin)": 12.0181
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.336294,
+          "RMSE Validasi (poin)": 28.4517
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.12105,
+          "RMSE Validasi (poin)": 28.7625
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.09283,
+          "RMSE Validasi (poin)": 14.3597
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.046464,
+          "RMSE Validasi (poin)": 12.213
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 3,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.032871,
+          "RMSE Validasi (poin)": 10.3526
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.303151,
+          "RMSE Validasi (poin)": 35.3315
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.252563,
+          "RMSE Validasi (poin)": 51.6352
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.115061,
+          "RMSE Validasi (poin)": 16.9013
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.050687,
+          "RMSE Validasi (poin)": 16.0284
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 4,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.058037,
+          "RMSE Validasi (poin)": 13.8585
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.854509,
+          "RMSE Validasi (poin)": 17.9358
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.087437,
+          "RMSE Validasi (poin)": 19.5115
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.078731,
+          "RMSE Validasi (poin)": 14.3168
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.095591,
+          "RMSE Validasi (poin)": 28.1275
+        },
+        {
+          "Tahap": "Validasi silang",
+          "Fold": 5,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.072325,
+          "RMSE Validasi (poin)": 8.9822
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 1,
+          "Loss Training (MSE)": 0.779907,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 2,
+          "Loss Training (MSE)": 0.11908,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 3,
+          "Loss Training (MSE)": 0.094448,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 4,
+          "Loss Training (MSE)": 0.046527,
+          "RMSE Validasi (poin)": null
+        },
+        {
+          "Tahap": "Pelatihan final",
+          "Fold": null,
+          "Epoch": 5,
+          "Loss Training (MSE)": 0.03828,
+          "RMSE Validasi (poin)": null
+        }
+      ]
+    },
+    "foldSummary": [
+      {
+        "Skenario": "S1",
+        "Fold": 1,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.048616
+      },
+      {
+        "Skenario": "S1",
+        "Fold": 2,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.041742
+      },
+      {
+        "Skenario": "S1",
+        "Fold": 3,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.03749
+      },
+      {
+        "Skenario": "S1",
+        "Fold": 4,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.038813
+      },
+      {
+        "Skenario": "S1",
+        "Fold": 5,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.042324
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 1,
+        "Epoch Terpilih": 4,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.004827
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 2,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.003904
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 3,
+        "Epoch Terpilih": 4,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.004414
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 4,
+        "Epoch Terpilih": 3,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.005002
+      },
+      {
+        "Skenario": "S2",
+        "Fold": 5,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.004007
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 1,
+        "Epoch Terpilih": 4,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.047907
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 2,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.040895
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 3,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.032871
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 4,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.058037
+      },
+      {
+        "Skenario": "S3",
+        "Fold": 5,
+        "Epoch Terpilih": 5,
+        "Epoch Dijalankan": 5,
+        "Loss Training Terpilih": 0.072325
+      }
+    ],
+    "evidence": {
+      "config": {
+        "cell": 12,
+        "source": "%%aes\n# Nama checkpoint adalah alamat model pretrained di Hugging Face, bukan objek model yang sudah dimuat.\nROBERTA_CHECKPOINT='flax-community/indonesian-roberta-base'  # RoBERTa bahasa Indonesia untuk S1 dan S3.\nBGE_CHECKPOINT='BAAI/bge-m3'  # BGE-M3 untuk menghasilkan embedding di S2 dan S3.\n# Revision mengunci versi bobot/tokenizer agar eksperimen berikutnya memakai sumber yang sama.\nROBERTA_REVISION=DEFAULTS['roberta']['revision']\nBGE_REVISION=DEFAULTS['bge']['revision']\n\n# Ubah parameter DI SINI sebelum latihan; jangan memilihnya dari hasil data uji.\n# Epoch = satu putaran data latih. Lima fold = lima pembagian latihan/validasi di data development.\nEPOCHS,FOLDS=5,5\n# Proses satu jawaban per microbatch, lalu akumulasikan gradien hingga batch efektif delapan jawaban.\nMICRO_BATCH,EFFECTIVE_BATCH=1,8\nNEW_ANSWER=''  # Kosong: satu jawaban held-out untuk contoh scoring/vektor.\nAUDIT_ONLY=os.environ.get('AES300_AUDIT_ONLY')=='1'\nRUN_MODELS=RUN_TRAINING=RUN_WORD_VECTORS=RUN_FINAL_FEATURES=not AUDIT_ONLY\ncfg=config(dict(dataset=os.environ['AES300_DATASET'],output=str(ROOT/'outputs/dataset300_inline'),\n                sheet='Sheet1',expected_rows=300,score_min=0,score_max=100,\n                epochs=EPOCHS,folds=FOLDS,micro_batch=MICRO_BATCH,effective_batch=EFFECTIVE_BATCH,\n                roberta={'checkpoint':ROBERTA_CHECKPOINT,'revision':ROBERTA_REVISION},\n                bge={'checkpoint':BGE_CHECKPOINT,'revision':BGE_REVISION},\n                device='auto',new_answer=NEW_ANSWER,vector_source='pretrained',lesson_version='inline_excel_v1',\n                runtime_versions={p:version(p) for p in ('torch','transformers','numpy')}))\nprint('Perangkat perhitungan:', 'GPU (CUDA)' if torch.cuda.is_available() else 'CPU')\n"
+      },
+      "model": {
+        "cell": 30,
+        "source": "%%aes\n# Satu head satu nilai; Engine menyiapkan tensor dan mengembalikan satuan0–100.\n# Menyusun encoder dan lapisan prediksi untuk S1, S2, atau S3; ketiganya menghasilkan satu skor per jawaban.\nclass SingleScoreModel(nn.Module):\n    def __init__(self, scenario, roberta=None, dropout=.1):\n        super().__init__()\n        if scenario not in ('S1', 'S2', 'S3'):\n            raise ValueError('Skenario harus S1, S2, atau S3')\n        if scenario != 'S2' and roberta is None:\n            raise ValueError('RoBERTa diperlukan oleh S1/S3.')\n        # Simpan skenario dan encoder RoBERTa. S2 memakai vektor BGE yang sudah dihitung, jadi tidak memuat RoBERTa.\n        self.scenario, self.roberta = scenario, roberta\n        if roberta is not None:\n            # Fine-tuning: bobot RoBERTa boleh berubah ketika optimizer menjalankan langkah latihan.\n            roberta.requires_grad_(True)\n        self.dropout = nn.Dropout(dropout)\n        if scenario == 'S1':\n            # S1: 768 koordinat RoBERTa dipetakan ke satu prediksi kontinu.\n            self.head = nn.Linear(768, 1)\n        elif scenario == 'S2':\n            # S2: MLP belajar memberi skor di atas fitur BGE yang tetap.\n            self.head = nn.Sequential(nn.Linear(1024, 256), nn.GELU(), nn.Dropout(dropout), nn.Linear(256, 1))\n        else:\n            # S3: padatkan 1024 angka BGE menjadi 256 angka sebelum digabung.\n            self.projection = nn.Sequential(nn.Linear(1024, 256), nn.LayerNorm(256))\n            self.head = nn.Linear(1024, 1)\n\n    def forward(self, windows=None, mapping=None, n_essays=None, bge=None, return_features=False):\n        features = {}\n        if self.scenario != 'S2':\n            # Baca token pada setiap window, lalu ambil vektor token pertama (CLS) sebagai ringkasannya.\n            cls = self.roberta(**windows).last_hidden_state[:, 0, :]\n            # Rata-ratakan vektor CLS semua window milik jawaban yang sama.\n            essay = mean_by_essay(cls, mapping, n_essays)\n            features.update(roberta=essay, roberta_window_cls=cls)\n        if self.scenario == 'S1':\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            prediction = self.head(self.dropout(essay))\n        elif self.scenario == 'S2':\n            if bge is None or bge.ndim != 2 or bge.shape[1] != 1024:\n                raise ValueError('BGE memerlukan [N,1024]')\n            features['bge'] = bge\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            prediction = self.head(bge)\n        else:\n            if bge is None or bge.shape != (n_essays, 1024):\n                raise ValueError('BGE memerlukan [N,1024]')\n            features['bge'] = bge\n            # Proyeksi BGE ikut belajar, walaupun bobot encoder BGE tetap frozen.\n            features['projection'] = self.projection(bge)\n            # Sambung 768 angka RoBERTa dan 256 angka proyeksi BGE menjadi vektor fusion 1024 angka.\n            features['concat'] = torch.cat([essay, features['projection']], dim=1)\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            prediction = self.head(self.dropout(features['concat']))\n        if prediction.ndim != 2 or prediction.shape[1] != 1:\n            raise ValueError('Dataset satu skor membutuhkan output [N,1].')\n        return (prediction, features) if return_features else prediction\n\n\n# Menghubungkan teks, tokenizer, dan model. Saat prediksi, hasil dikembalikan ke skala nilai guru.\nclass Engine:\n    def __init__(self, model, texts, bge, cfg, device, roberta_tokenizer=None):\n        self.model, self.texts, self.bge, self.cfg, self.device = model, texts, bge, cfg, device\n        self.tokenizer = roberta_tokenizer or (tokenizer(cfg, 'roberta') if model.scenario != 'S2' else None)\n\n    def forward(self, indices, return_features=False):\n        ids = [int(i) for i in indices]\n        features = self.bge[ids].to(self.device) if self.model.scenario != 'S1' else None\n        if self.model.scenario == 'S2':\n            return self.model(bge=features, return_features=return_features)\n        # Pecah jawaban panjang menjadi window; mapping menghubungkan setiap window dengan jawaban asalnya.\n        windows, mapping, _ = batch_windows([self.texts[i] for i in ids], self.tokenizer,\n                                             self.device, self.cfg['roberta_max_length'], self.cfg['roberta_overlap'])\n        return self.model(windows=windows, mapping=mapping, n_essays=len(ids), bge=features,\n                          return_features=return_features)\n\n    def predict(self, indices):\n        # Mode prediksi: nonaktifkan dropout. Pembacaan di bawah memakai no_grad.\n        self.model.eval()\n        values = []\n        # Tidak menghitung gradien untuk tahap pembacaan ini; bukan langkah latihan.\n        with torch.no_grad():\n            for start in range(0, len(indices), self.cfg['micro_batch']):\n                ids = indices[start:start+self.cfg['micro_batch']]\n                values.append(self.forward(ids).reshape(-1).float().cpu().numpy())\n        scaled = np.concatenate(values)\n        # Kembalikan skala asli sebelum RMSE/Pearson maupun tampilan prediksi.\n        # Kembalikan prediksi ke skala nilai guru sebelum ditampilkan atau dihitung RMSE/Pearson.\n        return scaled*(self.cfg['score_max']-self.cfg['score_min'])+self.cfg['score_min']\n"
+      },
+      "fit": {
+        "cell": 36,
+        "source": "%%aes\n# backward menghitung gradien; optimizer.step memperbarui parameter.\n# Melatih satu model pada satu pembagian data; RMSE validasi menentukan epoch yang disimpan.\ndef fit(scenario, training, validation, bundle, bge, cfg, epochs, seed):\n    seed_everything(seed)\n    device = device_name(cfg)\n    # Buat model baru untuk fold ini, lalu tempatkan di GPU atau CPU yang tersedia.\n    model = make_model(scenario, cfg).to(device)\n    engine = Engine(model, bundle.texts, bge, cfg, device)\n    # Pilih bobot encoder RoBERTa yang menerima gradien.\n    enc = [p for name, p in model.named_parameters() if name.startswith('roberta.') and p.requires_grad]\n    # Pilih bobot head/proyeksi; kecepatannya bisa berbeda dari encoder.\n    head = [p for name, p in model.named_parameters() if not name.startswith('roberta.') and p.requires_grad]\n    groups = ([{'params': enc, 'lr': cfg['encoder_lr']}] if enc else [])+[\n        {'params': head, 'lr': cfg['head_lr']}]\n    # AdamW memperbarui kelompok parameter sesuai learning rate masing-masing.\n    optimizer = torch.optim.AdamW(groups, weight_decay=cfg['weight_decay'])\n    generator = torch.Generator().manual_seed(seed)\n    loader = DataLoader([int(i) for i in training], batch_size=cfg['effective_batch'],\n                        shuffle=True, generator=generator, num_workers=0)\n    total_steps = len(loader)*epochs\n    warmup = min(int(cfg['warmup_ratio']*total_steps), max(0, total_steps-1))\n    scheduler = get_linear_schedule_with_warmup(optimizer, warmup, total_steps)\n    use_cuda = device == 'cuda'\n    dtype = torch.bfloat16 if use_cuda and torch.cuda.is_bf16_supported() else torch.float16\n    scaler = torch.amp.GradScaler('cuda', enabled=use_cuda and dtype == torch.float16)\n    selected_parameters = {}\n    for name, parameter in model.named_parameters():\n        group = name.split('.')[0]\n        if parameter.requires_grad and group not in selected_parameters:\n            selected_parameters[group] = (name, parameter.detach().reshape(-1)[:32].cpu().clone())\n    best_state, best_epoch, best_rmse = None, 0, float('inf')\n    history, active_steps, optimizer_steps, skipped_steps = [], 0, 0, 0\n    for epoch in range(1, epochs+1):\n        model.train()\n        loss_total = 0.\n        for effective in loader:\n            batch = effective.tolist()\n            optimizer.zero_grad(set_to_none=True)\n            for start in range(0, len(batch), cfg['micro_batch']):\n                ids = batch[start:start+cfg['micro_batch']]\n                # Ubah nilai guru dari skala 0–100 menjadi 0–1 hanya untuk menghitung loss.\n                targets = torch.as_tensor((bundle.y[ids]-cfg['score_min'])/(cfg['score_max']-cfg['score_min']),\n                                          dtype=torch.float32, device=device).reshape(-1, 1)\n                with torch.autocast(device_type=device, dtype=dtype, enabled=use_cuda):\n                    prediction = engine.forward(ids).float()\n                    if prediction.shape != targets.shape:\n                        raise ValueError('Shape prediksi/target harus [B,1], tanpa broadcasting.')\n                    # MSE mengukur selisih kuadrat antara prediksi dan target; optimizer berusaha memperkecilnya.\n                    loss = torch.mean((prediction-targets)**2)\n                if not torch.isfinite(loss):\n                    raise RuntimeError('Loss nonfinite; run dihentikan, tidak diklaim berhasil.')\n                # Hitung gradien dan bobot microbatch sesuai ukuran batch efektif aktual.\n                scaler.scale(loss*(len(ids)/len(batch))).backward()\n                loss_total += loss.item()*len(ids)\n            scaler.unscale_(optimizer)\n            torch.nn.utils.clip_grad_norm_(model.parameters(), cfg['gradient_clip'])\n            lr_active = any(g['lr'] > 0 for g in optimizer.param_groups)\n            previous_scale = scaler.get_scale()\n            # Perbarui bobot; GradScaler bisa melewati langkah yang overflow pada AMP.\n            scaler.step(optimizer)\n            scaler.update()\n            skipped = scaler.is_enabled() and scaler.get_scale() < previous_scale\n            if skipped:\n                skipped_steps += 1\n            else:\n                active_steps += int(lr_active)\n                scheduler.step()\n                optimizer_steps += 1\n        row = {'epoch': epoch, 'train_mse_scaled': loss_total/len(training),\n               'optimizer_steps': optimizer_steps, 'active_lr_steps': active_steps, 'amp_skipped_steps': skipped_steps,\n               'effective_batch_target': cfg['effective_batch'], 'micro_batch': cfg['micro_batch']}\n        if validation is not None:\n            predicted = engine.predict(validation)\n            row['validation'] = metrics(bundle.y[validation], predicted, cfg)\n            # Simpan epoch dengan RMSE validasi terkecil; data uji akhir tidak ikut memilih epoch.\n            if row['validation']['RMSE'] < best_rmse:\n                best_rmse, best_epoch = row['validation']['RMSE'], epoch\n                best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}\n            message = f\" | RMSE validasi: {row['validation']['RMSE']:.4f} poin\"\n        else:\n            best_epoch = epoch\n            message = ' | pelatihan final; data uji belum dibuka'\n        history.append(row)\n        print(f'{scenario} · epoch {epoch}/{epochs} · loss latih (MSE, target 0–1): {row[\"train_mse_scaled\"]:.6f}'+message, flush=True)\n    if active_steps == 0:\n        raise RuntimeError('Tidak ada pembaruan dengan LR aktif.')\n    named = dict(model.named_parameters())\n    changed = {group: not torch.equal(before, named[name].detach().reshape(-1)[:32].cpu())\n               for group, (name, before) in selected_parameters.items()}\n    if best_state is not None:\n        model.load_state_dict(best_state)\n    # Mode pembacaan: dropout dinonaktifkan agar ekstraksi vektor dan prediksi konsisten.\n    model.eval()\n    info = {'scenario': scenario, 'best_epoch': best_epoch, 'epochs_completed': len(history),\n            'history': history, 'optimizer_steps': optimizer_steps, 'active_lr_steps': active_steps, 'amp_skipped_steps': skipped_steps,\n            'parameter_samples_changed': changed, 'BGE_encoder_trained': False,\n            'selection': 'minimum validation RMSE in original score units' if validation is not None else 'fixed refit epochs selected from CV'}\n    return model, engine, info\n"
+      }
+    },
+    "precision": "Metrik awal disalin dari tampilan notebook (sekitar 8 digit); log loss 6 desimal dan RMSE 4 desimal."
+  },
+  "intermediate": {
+    "id": "E1",
+    "commit": "312f394108c7b99ca650c273507f7ce132073a42",
+    "evidence": {
+      "config": {
+        "cell": 12,
+        "source": "%%aes\n# Nama checkpoint adalah alamat model pretrained di Hugging Face, bukan objek model yang sudah dimuat.\nROBERTA_CHECKPOINT='flax-community/indonesian-roberta-base'  # RoBERTa bahasa Indonesia untuk S1 dan S3.\nBGE_CHECKPOINT='BAAI/bge-m3'  # BGE-M3 untuk menghasilkan embedding di S2 dan S3.\n# Revision mengunci versi bobot/tokenizer agar eksperimen berikutnya memakai sumber yang sama.\nROBERTA_REVISION=DEFAULTS['roberta']['revision']\nBGE_REVISION=DEFAULTS['bge']['revision']\n\n# Ubah parameter DI SINI sebelum latihan; jangan memilihnya dari hasil data uji.\n# Batas maksimal sama untuk tiga skenario; setiap fold memulai model baru.\nEPOCHS,FOLDS=25,5\n# Berhenti jika RMSE validasi tidak turun selama lima epoch berturut-turut.\nEARLY_STOPPING_PATIENCE=5\n# Kandidat A: encoder pretrained berubah perlahan; proyeksi dan head baru belajar lebih cepat.\nENCODER_LR=1e-5\nPROJECTION_LR=HEAD_LR=1e-4\n# Proses satu jawaban per microbatch, lalu akumulasikan gradien hingga batch efektif delapan jawaban.\nMICRO_BATCH,EFFECTIVE_BATCH=1,8\nNEW_ANSWER=''  # Kosong: satu jawaban held-out untuk contoh scoring/vektor.\nAUDIT_ONLY=os.environ.get('AES300_AUDIT_ONLY')=='1'\nRUN_MODELS=RUN_TRAINING=RUN_WORD_VECTORS=RUN_FINAL_FEATURES=not AUDIT_ONLY\ncfg=config(dict(dataset=os.environ['AES300_DATASET'],output=os.environ['AES300_RESULTS'],\n                sheet='Sheet1',expected_rows=300,score_min=0,score_max=100,\n                epochs=EPOCHS,folds=FOLDS,micro_batch=MICRO_BATCH,effective_batch=EFFECTIVE_BATCH,\n                early_stopping_patience=EARLY_STOPPING_PATIENCE,\n                encoder_lr=ENCODER_LR,projection_lr=PROJECTION_LR,head_lr=HEAD_LR,\n                roberta={'checkpoint':ROBERTA_CHECKPOINT,'revision':ROBERTA_REVISION},\n                bge={'checkpoint':BGE_CHECKPOINT,'revision':BGE_REVISION},\n                device='auto',new_answer=NEW_ANSWER,vector_source='pretrained',lesson_version='candidate_a_layernorm_25_v1',\n                runtime_versions={p:version(p) for p in ('torch','transformers','numpy')}))\n# Colab harus mendeteksi GPU sebelum latihan panjang dimulai. Pengujian lokal tetap boleh CPU.\ngpu=check_gpu(require_gpu=RUN_MODELS and os.environ.get('AES300_REQUIRE_GPU')=='1')\nshow(pd.DataFrame([\n    {'Pemeriksaan':'Perangkat aktif','Hasil':gpu['name']},\n    {'Pemeriksaan':'CUDA tersedia','Hasil':'Ya' if gpu['cuda_available'] else 'Tidak'},\n    {'Pemeriksaan':'GPU T4','Hasil':'T4 terdeteksi' if gpu['is_t4'] else 'GPU lain terdeteksi' if gpu['cuda_available'] else 'Belum aktif'},\n    {'Pemeriksaan':'Memori GPU (GiB)','Hasil':str(gpu['memory_gib']) if gpu['memory_gib'] is not None else 'Tidak tersedia'}\n]),'Pemeriksaan GPU sebelum training',columns=2)\n"
+      },
+      "model": {
+        "cell": 30,
+        "source": "%%aes\n# Satu head satu nilai; Engine menyiapkan tensor dan mengembalikan satuan0–100.\n# Menyusun encoder dan lapisan prediksi untuk S1, S2, atau S3; ketiganya menghasilkan satu skor per jawaban.\nclass SingleScoreModel(nn.Module):\n    def __init__(self, scenario, roberta=None, dropout=.1):\n        super().__init__()\n        if scenario not in ('S1', 'S2', 'S3'):\n            raise ValueError('Skenario harus S1, S2, atau S3')\n        if scenario != 'S2' and roberta is None:\n            raise ValueError('RoBERTa diperlukan oleh S1/S3.')\n        # Simpan skenario dan encoder RoBERTa. S2 memakai vektor BGE yang sudah dihitung, jadi tidak memuat RoBERTa.\n        self.scenario, self.roberta = scenario, roberta\n        if roberta is not None:\n            # Fine-tuning: bobot RoBERTa boleh berubah ketika optimizer menjalankan langkah latihan.\n            roberta.requires_grad_(True)\n        self.dropout = nn.Dropout(dropout)\n        if scenario == 'S1':\n            # S1: 768 koordinat RoBERTa dipetakan ke satu prediksi kontinu.\n            self.head = nn.Linear(768, 1)\n        elif scenario == 'S2':\n            # S2: MLP belajar memberi skor di atas fitur BGE yang tetap.\n            self.head = nn.Sequential(nn.Linear(1024, 256), nn.GELU(), nn.Dropout(dropout), nn.Linear(256, 1))\n        else:\n            # LayerNorm tambahan pada vektor jawaban RoBERTa, khusus cabang fusion.\n            self.roberta_norm = nn.LayerNorm(768)\n            # S3: padatkan 1024 angka BGE menjadi 256 angka sebelum digabung.\n            self.projection = nn.Sequential(nn.Linear(1024, 256), nn.LayerNorm(256))\n            self.head = nn.Linear(1024, 1)\n\n    def forward(self, windows=None, mapping=None, n_essays=None, bge=None, return_features=False):\n        features = {}\n        if self.scenario != 'S2':\n            # Baca token pada setiap window, lalu ambil vektor token pertama (CLS) sebagai ringkasannya.\n            cls = self.roberta(**windows).last_hidden_state[:, 0, :]\n            # Rata-ratakan vektor CLS semua window milik jawaban yang sama.\n            essay = mean_by_essay(cls, mapping, n_essays)\n            features.update(roberta=essay, roberta_window_cls=cls)\n        if self.scenario == 'S1':\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            prediction = self.head(self.dropout(essay))\n        elif self.scenario == 'S2':\n            if bge is None or bge.ndim != 2 or bge.shape[1] != 1024:\n                raise ValueError('BGE memerlukan [N,1024]')\n            features['bge'] = bge\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            prediction = self.head(bge)\n        else:\n            if bge is None or bge.shape != (n_essays, 1024):\n                raise ValueError('BGE memerlukan [N,1024]')\n            features['bge'] = bge\n            # Simpan vektor asli dan hasil normalisasi agar setiap tahap bisa diperiksa.\n            # Normalisasi tambahan pada 768 komponen RoBERTa sebelum fusion; vektor asli tetap disimpan.\n            features['roberta_layernorm'] = self.roberta_norm(essay)\n            # Proyeksi BGE ikut belajar, walaupun bobot encoder BGE tetap frozen.\n            features['projection'] = self.projection(bge)\n            # Sambung 768 angka RoBERTa setelah LayerNorm dan 256 angka proyeksi BGE menjadi vektor fusion 1024 angka.\n            features['concat'] = torch.cat([features['roberta_layernorm'], features['projection']], dim=1)\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            prediction = self.head(self.dropout(features['concat']))\n        if prediction.ndim != 2 or prediction.shape[1] != 1:\n            raise ValueError('Dataset satu skor membutuhkan output [N,1].')\n        return (prediction, features) if return_features else prediction\n\n\n# Menghubungkan teks, tokenizer, dan model. Saat prediksi, hasil dikembalikan ke skala nilai guru.\nclass Engine:\n    def __init__(self, model, texts, bge, cfg, device, roberta_tokenizer=None):\n        self.model, self.texts, self.bge, self.cfg, self.device = model, texts, bge, cfg, device\n        self.tokenizer = roberta_tokenizer or (tokenizer(cfg, 'roberta') if model.scenario != 'S2' else None)\n\n    def forward(self, indices, return_features=False):\n        ids = [int(i) for i in indices]\n        features = self.bge[ids].to(self.device) if self.model.scenario != 'S1' else None\n        if self.model.scenario == 'S2':\n            return self.model(bge=features, return_features=return_features)\n        # Pecah jawaban panjang menjadi window; mapping menghubungkan setiap window dengan jawaban asalnya.\n        windows, mapping, _ = batch_windows([self.texts[i] for i in ids], self.tokenizer,\n                                             self.device, self.cfg['roberta_max_length'], self.cfg['roberta_overlap'])\n        return self.model(windows=windows, mapping=mapping, n_essays=len(ids), bge=features,\n                          return_features=return_features)\n\n    def predict(self, indices):\n        # Mode prediksi: nonaktifkan dropout. Pembacaan di bawah memakai no_grad.\n        self.model.eval()\n        values = []\n        # Tidak menghitung gradien untuk tahap pembacaan ini; bukan langkah latihan.\n        with torch.no_grad():\n            for start in range(0, len(indices), self.cfg['micro_batch']):\n                ids = indices[start:start+self.cfg['micro_batch']]\n                values.append(self.forward(ids).reshape(-1).float().cpu().numpy())\n        scaled = np.concatenate(values)\n        # Kembalikan skala asli sebelum RMSE/Pearson maupun tampilan prediksi.\n        # Kembalikan prediksi ke skala nilai guru sebelum ditampilkan atau dihitung RMSE/Pearson.\n        return scaled*(self.cfg['score_max']-self.cfg['score_min'])+self.cfg['score_min']\n"
+      },
+      "fit": {
+        "cell": 36,
+        "source": "%%aes\n# backward menghitung gradien; optimizer.step memperbarui parameter; checkpoint otomatis menjaga progres setiap epoch.\n# Memisahkan parameter RoBERTa pretrained, proyeksi BGE, dan head agar learning rate setiap bagian jelas.\ndef optimizer_groups(model, cfg):\n    # Tiap parameter hanya masuk satu kelompok; encoder BGE frozen berada di luar model ini.\n    buckets = {'roberta': [], 'projection': [], 'head': []}\n    for name, parameter in model.named_parameters():\n        if not parameter.requires_grad:\n            continue\n        group = 'roberta' if name.startswith('roberta.') else 'projection' if name.startswith('projection.') else 'head'\n        buckets[group].append(parameter)\n    rates = {'roberta': cfg['encoder_lr'], 'projection': cfg['projection_lr'], 'head': cfg['head_lr']}\n    # LayerNorm tambahan RoBERTa baru dibuat, sehingga ikut kelompok head yang baru belajar.\n    return [{'name': name, 'params': params, 'lr': rates[name]}\n            for name, params in buckets.items() if params]\n\n\n# Menyimpan bobot, keadaan optimizer, urutan acak dan riwayat setelah epoch lengkap; satu cadangan tetap disimpan.\ndef save_training_progress(path, payload):\n    \"\"\"Simpan epoch lengkap, pertahankan satu cadangan jika penulisan berikutnya terputus.\"\"\"\n    path = Path(path)\n    path.parent.mkdir(parents=True, exist_ok=True)\n    previous = json.loads(path.read_text())['snapshots'] if path.exists() else []\n    target = path.with_name(f'{path.stem}_epoch_{payload[\"epoch\"]:03d}.pt')\n    temporary = target.with_name(target.name+'.pending')\n    torch.save(payload, temporary)\n    checksum = digest(temporary)\n    temporary.replace(target)\n    snapshots = [{'file': target.name, 'sha256': checksum}]+[r for r in previous if r['file'] != target.name][:1]\n    # Manifest baru hanya diterbitkan sesudah file bobot selesai ditulis.\n    dump(path, {'scope': SCOPE, 'snapshots': snapshots})\n    keep = {r['file'] for r in snapshots}\n    for old in path.parent.glob(path.stem+'_epoch_*.pt'):\n        if old.name not in keep:\n            old.unlink()\n\n\n# Memeriksa kecocokan dan keutuhan checkpoint sebelum melanjutkan epoch berikutnya.\ndef load_training_progress(path, contract):\n    path = Path(path)\n    if not path.exists():\n        return None\n    manifest = json.loads(path.read_text())\n    if manifest.get('scope') != SCOPE:\n        raise ValueError('Checkpoint progres bukan workflow AES ini.')\n    for snapshot in manifest['snapshots']:\n        source = path.parent/snapshot['file']\n        if source.name != snapshot['file']:\n            raise ValueError('Nama file checkpoint progres tidak sah.')\n        if not source.exists() or digest(source) != snapshot['sha256']:\n            print('Checkpoint terbaru tidak lengkap; memeriksa cadangan epoch sebelumnya.', flush=True)\n            continue\n        payload = torch.load(source, map_location='cpu', weights_only=True)\n        if payload.get('contract') != contract:\n            raise ValueError('Data, fold, konfigurasi atau perangkat checkpoint berbeda. Progres tidak dipakai untuk percobaan lain.')\n        return payload\n    raise RuntimeError('Tidak ada checkpoint progres yang utuh. Hasil lama dipertahankan; training tidak diulang diam-diam.')\n\n\ndef clear_training_progress(path):\n    path = Path(path)\n    for file in path.parent.glob(path.stem+'_epoch_*.pt*'):\n        file.unlink()\n    if path.exists():\n        path.unlink()\n\n\n# Melatih satu model pada satu pembagian data; RMSE validasi menentukan epoch yang disimpan.\ndef fit(scenario, training, validation, bundle, bge, cfg, epochs, seed, checkpoint=None):\n    seed_everything(seed)\n    device = device_name(cfg)\n    # Buat model baru untuk fold ini, lalu tempatkan di GPU atau CPU yang tersedia.\n    model = make_model(scenario, cfg).to(device)\n    engine = Engine(model, bundle.texts, bge, cfg, device)\n    groups = optimizer_groups(model, cfg)\n    learning_rates = {group['name']: group['lr'] for group in groups}\n    # AdamW memperbarui kelompok parameter sesuai learning rate masing-masing.\n    optimizer = torch.optim.AdamW(groups, weight_decay=cfg['weight_decay'])\n    generator = torch.Generator().manual_seed(seed)\n    loader = DataLoader([int(i) for i in training], batch_size=cfg['effective_batch'],\n                        shuffle=True, generator=generator, num_workers=0)\n    total_steps = len(loader)*epochs\n    warmup = min(int(cfg['warmup_ratio']*total_steps), max(0, total_steps-1))\n    scheduler = get_linear_schedule_with_warmup(optimizer, warmup, total_steps)\n    use_cuda = device == 'cuda'\n    dtype = torch.bfloat16 if use_cuda and torch.cuda.is_bf16_supported() else torch.float16\n    scaler = torch.amp.GradScaler('cuda', enabled=use_cuda and dtype == torch.float16)\n    selected_parameters = {}\n    for name, parameter in model.named_parameters():\n        group = name.split('.')[0]\n        if parameter.requires_grad and group not in selected_parameters:\n            selected_parameters[group] = (name, parameter.detach().reshape(-1)[:32].cpu().clone())\n    best_state, best_epoch, best_rmse = None, 0, float('inf')\n    patience = cfg['early_stopping_patience']\n    without_improvement, early_stopped = 0, False\n    history, active_steps, optimizer_steps, skipped_steps = [], 0, 0, 0\n    start_epoch = 1\n    semantic = {k: v for k, v in cfg.items() if k not in ('dataset', 'output', 'trace_position', 'vector_source', 'new_answer', 'focus_word')}\n    contract = {'format': 'epoch_resume_v1', 'source': bundle.source_sha256, 'scenario': scenario,\n                'training': [int(i) for i in training], 'validation': None if validation is None else [int(i) for i in validation],\n                'config': semantic, 'epochs': epochs, 'seed': seed,\n                'torch': str(torch.__version__), 'device': device,\n                'precision': str(dtype) if use_cuda else 'float32',\n                'gpu': torch.cuda.get_device_name() if use_cuda else None}\n    saved = load_training_progress(checkpoint, contract) if checkpoint is not None else None\n    if saved is not None:\n        model.load_state_dict(saved['model'])\n        optimizer.load_state_dict(saved['optimizer'])\n        scheduler.load_state_dict(saved['scheduler'])\n        scaler.load_state_dict(saved['scaler'])\n        generator.set_state(saved['loader_generator'])\n        selected_parameters = saved['selected_parameters']\n        best_state, best_epoch, best_rmse = saved['best_state'], saved['best_epoch'], saved['best_rmse']\n        history, without_improvement = saved['history'], saved['without_improvement']\n        active_steps, optimizer_steps, skipped_steps = saved['active_steps'], saved['optimizer_steps'], saved['skipped_steps']\n        early_stopped = saved['early_stopped']\n        start_epoch = epochs+1 if early_stopped else saved['epoch']+1\n        random.setstate(saved['python_rng'])\n        rng = saved['numpy_rng']\n        np.random.set_state((rng[0], np.asarray(rng[1], dtype=np.uint32), rng[2], rng[3], rng[4]))\n        torch.set_rng_state(saved['torch_rng'])\n        if use_cuda:\n            torch.cuda.set_rng_state_all(saved['cuda_rng'])\n        print(f'{scenario}: progres epoch {saved[\"epoch\"]}/{epochs} ditemukan; '\n              + (f'lanjut epoch {start_epoch}.' if start_epoch <= epochs else 'latihan sudah selesai, memulihkan hasilnya.'), flush=True)\n        del saved\n    for epoch in range(start_epoch, epochs+1):\n        model.train()\n        loss_total = 0.\n        for effective in loader:\n            batch = effective.tolist()\n            optimizer.zero_grad(set_to_none=True)\n            for start in range(0, len(batch), cfg['micro_batch']):\n                ids = batch[start:start+cfg['micro_batch']]\n                # Ubah nilai guru dari skala 0–100 menjadi 0–1 hanya untuk menghitung loss.\n                targets = torch.as_tensor((bundle.y[ids]-cfg['score_min'])/(cfg['score_max']-cfg['score_min']),\n                                          dtype=torch.float32, device=device).reshape(-1, 1)\n                with torch.autocast(device_type=device, dtype=dtype, enabled=use_cuda):\n                    prediction = engine.forward(ids).float()\n                    if prediction.shape != targets.shape:\n                        raise ValueError('Shape prediksi/target harus [B,1], tanpa broadcasting.')\n                    # MSE mengukur selisih kuadrat antara prediksi dan target; optimizer berusaha memperkecilnya.\n                    loss = torch.mean((prediction-targets)**2)\n                if not torch.isfinite(loss):\n                    raise RuntimeError('Loss nonfinite; run dihentikan, tidak diklaim berhasil.')\n                # Hitung gradien dan bobot microbatch sesuai ukuran batch efektif aktual.\n                scaler.scale(loss*(len(ids)/len(batch))).backward()\n                loss_total += loss.item()*len(ids)\n            scaler.unscale_(optimizer)\n            torch.nn.utils.clip_grad_norm_(model.parameters(), cfg['gradient_clip'])\n            lr_active = any(g['lr'] > 0 for g in optimizer.param_groups)\n            previous_scale = scaler.get_scale()\n            # Perbarui bobot; GradScaler bisa melewati langkah yang overflow pada AMP.\n            scaler.step(optimizer)\n            scaler.update()\n            skipped = scaler.is_enabled() and scaler.get_scale() < previous_scale\n            if skipped:\n                skipped_steps += 1\n            else:\n                active_steps += int(lr_active)\n                scheduler.step()\n                optimizer_steps += 1\n        row = {'epoch': epoch, 'train_mse_scaled': loss_total/len(training),\n               'optimizer_steps': optimizer_steps, 'active_lr_steps': active_steps, 'amp_skipped_steps': skipped_steps,\n               'effective_batch_target': cfg['effective_batch'], 'micro_batch': cfg['micro_batch']}\n        if validation is not None:\n            predicted = engine.predict(validation)\n            row['validation'] = metrics(bundle.y[validation], predicted, cfg)\n            # Simpan epoch dengan RMSE validasi terkecil; data uji akhir tidak ikut memilih epoch.\n            if row['validation']['RMSE'] < best_rmse:\n                best_rmse, best_epoch = row['validation']['RMSE'], epoch\n                best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}\n                without_improvement = 0\n            else:\n                without_improvement += 1\n            row.update(best_epoch_so_far=best_epoch, epochs_without_improvement=without_improvement)\n            message = (f\" | RMSE validasi: {row['validation']['RMSE']:.4f} poin\"\n                       f\" | terbaik: epoch {best_epoch}, {best_rmse:.4f} poin\"\n                       f\" | tanpa perbaikan: {without_improvement}/{patience}\")\n        else:\n            best_epoch = epoch\n            message = ' | pelatihan final; data uji belum dibuka'\n        history.append(row)\n        print(f'{scenario} · epoch {epoch}/{epochs} · loss latih (MSE, target 0–1): {row[\"train_mse_scaled\"]:.6f}'+message, flush=True)\n        # Hanya fold validasi yang boleh menghentikan latihan; data uji tidak dibaca.\n        if validation is not None and without_improvement >= patience and epoch < epochs:\n            early_stopped = True\n        if checkpoint is not None:\n            rng = np.random.get_state()\n            # Progres menyimpan keadaan belajar, bukan bobot terbaik saja.\n            save_training_progress(checkpoint, {\n                'contract': contract, 'epoch': epoch, 'model': model.state_dict(),\n                'optimizer': optimizer.state_dict(), 'scheduler': scheduler.state_dict(), 'scaler': scaler.state_dict(),\n                'loader_generator': generator.get_state(), 'python_rng': random.getstate(),\n                'numpy_rng': (rng[0], rng[1].tolist(), rng[2], rng[3], rng[4]),\n                'torch_rng': torch.get_rng_state(), 'cuda_rng': torch.cuda.get_rng_state_all() if use_cuda else [],\n                'selected_parameters': selected_parameters, 'best_state': best_state,\n                'best_epoch': best_epoch, 'best_rmse': best_rmse, 'history': history,\n                'without_improvement': without_improvement, 'early_stopped': early_stopped,\n                'active_steps': active_steps, 'optimizer_steps': optimizer_steps, 'skipped_steps': skipped_steps})\n            print(f'{scenario}: progres epoch {epoch} tersimpan otomatis.', flush=True)\n        if early_stopped:\n            print(f'{scenario}: early stopping setelah {epoch} epoch; RMSE validasi tidak membaik selama {patience} epoch. '\n                  f'Bobot epoch {best_epoch} dipulihkan.', flush=True)\n            break\n    if active_steps == 0:\n        raise RuntimeError('Tidak ada pembaruan dengan LR aktif.')\n    named = dict(model.named_parameters())\n    changed = {group: not torch.equal(before, named[name].detach().reshape(-1)[:32].cpu())\n               for group, (name, before) in selected_parameters.items()}\n    if best_state is not None:\n        model.load_state_dict(best_state)\n    # Mode pembacaan: dropout dinonaktifkan agar ekstraksi vektor dan prediksi konsisten.\n    model.eval()\n    info = {'scenario': scenario, 'best_epoch': best_epoch, 'epochs_completed': len(history),\n            'max_epochs': epochs, 'early_stopping_patience': patience if validation is not None else None,\n            'early_stopped': early_stopped, 'optimizer_learning_rates': learning_rates,\n            'best_validation_rmse': best_rmse if validation is not None else None,\n            'stop_reason': ('RMSE validasi tidak membaik selama batas kesabaran' if early_stopped else\n                            'Batas maksimum epoch tercapai' if validation is not None else\n                            'Jumlah epoch final yang dipilih dari CV selesai'),\n            'history': history, 'optimizer_steps': optimizer_steps, 'active_lr_steps': active_steps, 'amp_skipped_steps': skipped_steps,\n            'parameter_samples_changed': changed, 'BGE_encoder_trained': False,\n            'selection': 'minimum validation RMSE in original score units' if validation is not None else 'fixed refit epochs selected from CV'}\n    return model, engine, info\n"
+      }
+    },
+    "metrics": null,
+    "history": null,
+    "status": "Source revisi terverifikasi; tidak ada hasil akhir lengkap yang dipasangkan secara pasti dengan versi ini."
+  },
+  "comparison_limits": [
+    "Perubahan awal ke MLP mencakup learning rate, batas epoch, early stopping dan LayerNorm tambahan, selain head S3. Ini perkembangan eksperimen, bukan ablation yang membuktikan MLP sebagai penyebab tunggal.",
+    "Nama dataset dan resep split sama; manifest keanggotaan test/fold versi awal belum tersedia untuk dicocokkan per jawaban. Nomor fold yang sama belum membuktikan anggotanya identik.",
+    "Test versi awal sudah dilihat sebelum revisi. Perbandingan test lanjutan bersifat eksploratif; konfirmasi independen memerlukan holdout baru atau evaluasi tersarang.",
+    "Angka yang tidak tersedia ditulis belum tersedia, tidak diganti nol. Prediksi satu jawaban hanya dibandingkan berpasangan jika identitas teks/keanggotaannya benar-benar cocok."
+  ]
+}
