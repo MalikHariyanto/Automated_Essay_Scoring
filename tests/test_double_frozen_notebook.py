@@ -273,6 +273,7 @@ def tokenizer(*args,**kwargs):return TechnicalTokenizer()
         if 'EPOCHS,FOLDS=25,5' in cell.source:
             cell.source=cell.source.replace('EPOCHS,FOLDS=25,5','EPOCHS,FOLDS=1,5').replace('expected_rows=300','expected_rows=24')
             cell.source=cell.source.replace("lesson_version='s3_double_frozen_mlp_autocleanup_v1'","lesson_version='TECHNICAL_FIXTURE_ONLY'")
+            cell.source=cell.source.replace("lesson_version='s3_double_frozen_mlp_manual_v1'","lesson_version='TECHNICAL_FIXTURE_ONLY'")
         if "journal.save('01_konfigurasi'" in cell.source:
             cell.source=cell.source.replace("journal.save('01_konfigurasi'","journal.metadata['evidence_scope']='TECHNICAL RANDOM TRANSFORMER FIXTURE ONLY; NOT STUDENT RESULTS'\njournal.save('01_konfigurasi'")
         if 'def encoder(cfg, role):' in cell.source:
