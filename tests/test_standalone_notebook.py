@@ -20,6 +20,25 @@ from test_teacher_score import TechnicalTokenizer,make_book
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def test_primary_notebook_is_clean_mirrored_and_preserves_mlp_runtime():
+    primary=ROOT/'notebooks/03_AES_dataset_guru_300.ipynb'
+    mirror=ROOT/'aes-learning/notebooks/03_AES_dataset_guru_300.ipynb'
+    assert primary.read_bytes()==mirror.read_bytes()
+    latest=nbformat.read(primary,as_version=4)
+    experiment=nbformat.read(ROOT/'notebooks/experiments/AES_300_S3_MLP.ipynb',as_version=4)
+    assert [c.source for c in latest.cells if c.cell_type=='code']==[
+        c.source for c in experiment.cells if c.cell_type=='code']
+    fingerprint=latest.metadata.aes_standalone.code_sha256
+    # Fingerprint build dipertahankan; format ast.dump berbeda antarversi Python.
+    assert fingerprint==experiment.metadata.aes_standalone.code_sha256
+    assert any(fingerprint in c.source for c in latest.cells if c.cell_type=='code')
+    for cell in latest.cells:
+        assert not cell.get('attachments')
+        if cell.cell_type!='code':continue
+        assert cell.execution_count is None and cell.outputs==[]
+        ast.parse(cell.source.removeprefix('%%aes\n'))
+
+
 def test_notebook_has_no_project_imports_or_git_commands():
     notebook=nbformat.read(ROOT/'notebooks/03_AES_dataset_guru_300.ipynb',as_version=4)
     assert notebook.metadata.aes_standalone.repository_required is False
@@ -72,7 +91,7 @@ def tokenizer(*args,**kwargs):return TechnicalTokenizer()
         if cell.cell_type!='code':continue
         if 'EPOCHS,FOLDS=25,5' in cell.source:
             cell.source=cell.source.replace('EPOCHS,FOLDS=25,5','EPOCHS,FOLDS=1,5').replace('expected_rows=300','expected_rows=24')
-            cell.source=cell.source.replace("lesson_version='candidate_a_layernorm_25_v1'","lesson_version='TECHNICAL_FIXTURE_ONLY'")
+            cell.source=cell.source.replace("lesson_version='s3_mlp_account2_v1'","lesson_version='TECHNICAL_FIXTURE_ONLY'")
         if "journal.save('01_konfigurasi'" in cell.source:
             cell.source=cell.source.replace("journal.save('01_konfigurasi'","journal.metadata['evidence_scope']='TECHNICAL RANDOM TRANSFORMER FIXTURE ONLY; NOT STUDENT RESULTS'\njournal.save('01_konfigurasi'")
         if 'def encoder(cfg, role):' in cell.source:
@@ -112,6 +131,27 @@ def tokenizer(*args,**kwargs):return TechnicalTokenizer()
     assert [r['Skenario'] for r in report['rows']]==['S1','S2','S3']
     assert len(report['cv'])==15
     assert report['test_evaluations_per_scenario']==1
+    # Notebook utama memakai S3 MLP; angka di sini hanya fixture teknis.
+    import torch
+    import pandas as pd
+    import numpy as np
+    run=Path(pointer['run_folder'])
+    payload=torch.load(run/'S3/final.pt',map_location='cpu',weights_only=True)
+    assert payload['state']['head.0.weight'].shape==(256,1024)
+    assert payload['state']['head.3.weight'].shape==(1,256)
+    assert payload['training']['BGE_encoder_trained'] is False
+    assert payload['training']['parameter_samples_changed']['roberta'] is True
+    s1=torch.load(run/'S1/final.pt',map_location='cpu',weights_only=True)
+    assert s1['state']['head.weight'].shape==(1,768)
+    book=run/'excel/14_S3_fitur_setelah_training.xlsx'
+    hidden=pd.read_excel(book,sheet_name='MLP_dropout_eval').iloc[:,1:].to_numpy()
+    gelu=pd.read_excel(book,sheet_name='MLP_GELU256').iloc[:,1:].to_numpy()
+    assert hidden.shape==(24,256)
+    np.testing.assert_array_equal(hidden,gelu)
+    raw=pd.read_excel(book,sheet_name='Prediksi_semua_jawaban')['prediksi_mentah'].to_numpy()
+    reconstructed=torch.nn.functional.linear(torch.as_tensor(hidden,dtype=torch.float32),
+                    payload['state']['head.3.weight'],payload['state']['head.3.bias']).numpy().reshape(-1)*100
+    np.testing.assert_allclose(reconstructed,raw,atol=5e-5,rtol=1e-6)
     comparison_views=[out.data.get('text/html','') for cell in notebook.cells for out in cell.get('outputs',[])
                       if out.output_type=='display_data' and 'Nilai guru, prediksi mentah, dan pembulatan pada data uji' in out.data.get('text/html','')]
     assert len(comparison_views)==1
