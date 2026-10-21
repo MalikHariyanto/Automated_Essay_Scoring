@@ -1,10 +1,12 @@
 # Rencana eksperimen setelah S3 MLP
 
+**Perkembangan 21 Oktober 2026:** prioritas 1 dan pembersihan checkpoint otomatis kini tersedia di [eksperimen double frozen + MLP terpisah](eksperimen_double_frozen_mlp.md). Colab utama/semi-final tetap. Rencana Ridge dan MLP pada S1 di bawah belum diterapkan.
+
 Dokumen ini adalah rencana, bukan perubahan metode yang sudah diterapkan. Colab utama tetap memakai kode notebook MLP unggahan pengguna: S1 RoBERTa fine-tuned + head linear; S2 BGE-M3 frozen + MLP; S3 RoBERTa fine-tuned + BGE frozen + proyeksi, LayerNorm, concat dan MLP. Tidak ada metode yang diketahui pasti optimal sebelum diuji pada data sasaran.
 
 ## Sebelum pelatihan panjang: perbaiki penyimpanan
 
-Penghapusan file melalui filesystem Drive dapat meninggalkan checkpoint di Sampah. Usulan perbaikan penyimpanan perlu mempertahankan checkpoint terbaru dan satu cadangan yang sudah diverifikasi, serta menghapus permanen hanya checkpoint usang yang tercatat untuk run dan tahap yang sama. Setelah hasil fold atau model final tersimpan dan diperiksa, checkpoint sementara tahap tersebut dapat dibersihkan. File dataset, hasil CV, model final, Excel, run lain, dan checkpoint yang masih dirujuk harus tetap dilindungi. Permintaan API perlu menangani rate limit, error server sementara, dan file yang sudah terhapus. Perbaikan operasional ini belum diterapkan dan bukan metode penurun RMSE.
+Penghapusan file melalui filesystem Drive dapat meninggalkan checkpoint di Sampah. Perbaikan penyimpanan perlu mempertahankan checkpoint terbaru dan satu cadangan yang sudah diverifikasi, serta menghapus permanen hanya checkpoint usang yang tercatat untuk run dan tahap yang sama. Setelah hasil fold atau model final tersimpan dan diperiksa, checkpoint sementara tahap tersebut dapat dibersihkan. File dataset, hasil CV, model final, Excel, run lain, dan checkpoint yang masih dirujuk harus tetap dilindungi. Permintaan API perlu menangani rate limit, error server sementara, dan file yang sudah terhapus. Perbaikan operasional ini telah diterapkan hanya pada notebook eksperimen baru; bukan metode penurun RMSE.
 
 ## Prioritas 1: double frozen + MLP pada S3
 
