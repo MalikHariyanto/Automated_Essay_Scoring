@@ -49,6 +49,14 @@ Setiap bab mempunyai empat tab:
 
 Daftar bab, kode, catatan, output, dan tabel mempunyai area scroll agar halaman utama tidak memanjang mengikuti seluruh hasil. Ada navigasi keyboard, dialog istilah, tampilan HP, dan tombol jeda animasi.
 
+### Kode dan catatan dalam satu layar
+
+Di tab **Kode + sticky note**, klik **⛶ Layar penuh**. Kode dan catatan memenuhi layar browser, tetap berdampingan di desktop maupun HP. Pilihan blok kode, pencarian, salin kode dan kamus istilah tetap bisa dipakai. Keluar melalui **Kembali ke buku** atau **Esc**; blok dan catatan yang sedang dibaca tetap terbuka.
+
+Klik nomor baris bertanda atau judul catatan: sticky note disejajarkan dengan baris yang disorot. Saat kode digulir, catatan mengikuti posisi baris itu. Jika baris keluar dari area baca, catatan beralih ke penanda penting yang terlihat di dekat bagian atas kode. Gerak kertas dibatasi tepi panel agar penjelasannya tetap terbaca. Daftar catatan di kanan juga dapat digulir untuk memilih baris lain. Perilaku ini berlaku pada tampilan biasa saat kedua panel berdampingan; di HP, gunakan layar penuh untuk membacanya berdampingan.
+
+[Preview layar penuh](previews/mlp_study/10_kode_layar_penuh.png) · [Preview HP](previews/mlp_study/11_kode_layar_penuh_mobile.png).
+
 ## Memuat seluruh output pribadi
 
 Salinan GitHub memuat kode lengkap, hasil agregat aktual, riwayat epoch, grafik validasi, metadata seluruh sheet, dan matriks guru/prediksi yang dikelompokkan per rentang sepuluh poin. Matriks itu membantu membaca hasil; metrik QWK/AC2 aslinya tetap memakai kategori integer 0–100.

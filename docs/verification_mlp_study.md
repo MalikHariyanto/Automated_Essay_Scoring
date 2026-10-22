@@ -1,5 +1,28 @@
 # Verifikasi buku hasil MLP
 
+## Layar penuh dan catatan mengikuti kode — 22 Oktober 2026
+
+Dilanjutkan dari HEAD `52199cfb46fca416ca40b9b5467533d42134850c`, branch `codex/aes-learning`. Tab **Kode + sticky note** mempunyai tombol **Layar penuh**: satu dialog memenuhi viewport dan memindahkan panel yang sama, sehingga kode dan catatan tetap berdampingan tanpa menggandakan source. Tombol kembali/Esc mengembalikan panel, fokus, blok, catatan dan posisi gulir. Pengambilan posisi dilakukan sebelum dialog ditutup karena elemen tersembunyi melaporkan posisi gulir nol.
+
+Sticky note disejajarkan secara vertikal dengan baris terpilih. Scroll kode menggeser catatan; ketika baris terpilih keluar dari area baca, penanda penting yang terlihat dekat bagian atas menjadi catatan aktif. Geraknya dibatasi tinggi panel, dan catatan panjang tetap dapat digulir. Perilaku juga berlaku pada mode biasa dengan panel berdampingan. Di HP, mode layar penuh mempertahankan kedua kolom, sedangkan mode biasa tetap bertumpuk. Kamus istilah memakai dialog di atasnya; Esc pertama menutup kamus, berikutnya menutup layar penuh.
+
+Perintah dari cwd `/workspace/Automated_Essay_Scoring`:
+
+```bash
+python -m unittest discover -s tests -p 'test_mlp_*.py' -v
+node scripts/check_mlp_fullscreen.mjs \
+  http://127.0.0.1:8765/docs/belajar_MLP_Spider.html \
+  http://127.0.0.1:8765/outputs/mlp_study/belajar_MLP_Spider_Privat.html
+node scripts/check_mlp_comparison.mjs
+node scripts/check_mlp_metrics.mjs
+```
+
+Unit test: **14 passed, 0 failed, 0 skipped, 0 xfailed**, exit 0. Browser Chromium `154.0.8037.57`, Playwright `1.62.1`, Node `24.19.0`; Python unit test `3.12.14`. Uji layar penuh: **11 kelompok lolos, 0 gagal, 0 dilewati**, exit 0. Cakupan enam ukuran 320×568 sampai 1440×1000 termasuk landscape, seluruh 16 bab desktop/HP, dua scroll mandiri, posisi kertas terhadap sorotan, pergantian catatan ketika scroll, batas panel, fokus keyboard/background inert, kamus bertingkat, pencarian, salin kode asli dan fallback clipboard, pemulihan posisi, serta ekspor/reopen HTML pribadi dengan 34 output dan workbook awal tetap utuh. Tidak ada error JS atau permintaan jaringan eksternal.
+
+Regresi pembaca lengkap `check_mlp_study.mjs` dijalankan dengan notebook/ZIP asli dan `outputs/mlp_study/expected_workbooks.json` seperti perintah di bawah: **12 kelompok lolos**, exit 0. Regresi perbandingan **8 kelompok**, interpretasi metrik **6 kelompok**, semuanya 0 gagal/exit 0. Kode, catatan dan JSON hasil yang diembed identik dengan versi sebelumnya; source notebook training tidak berubah dan tidak ada training/encoder yang dijalankan. Hasil double-frozen tetap belum dimasukkan. Build publik deterministik; bundel pribadi dibangun ulang dari berkas asli yang sama dan tetap berada di `outputs/`.
+
+[Preview desktop](previews/mlp_study/10_kode_layar_penuh.png) dan [HP](previews/mlp_study/11_kode_layar_penuh_mobile.png) diambil dari HTML publik tanpa memuat berkas pribadi. Daftar source, SHA-256, log dan hasil pemeriksaan privasi disimpan lokal di `outputs/mlp_study/fullscreen_*`; tidak ikut diterbitkan.
+
 ## Meja tabel dan interpretasi — 22 Oktober 2026
 
 Dilanjutkan dari HEAD `8c226b3d4f276f54cf8909382da9687f32f0ae28` setelah lingkungan cloud pulih. ZIP `Hasil_AES_Ringkas (1).zip` berhasil dibaca: pengaturan dan seluruh hasilnya cocok eksperimen awal **5 epoch**, bukan double-frozen. Source metadata workbook menyatakan RoBERTa fine-tuned, BGE frozen, head S3 linear. Hasil/log double-frozen tidak ditambahkan sesuai arahan pengguna.
