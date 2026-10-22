@@ -182,8 +182,10 @@ def build(args):
     template=(ROOT/'scripts/templates/mlp_study.html').read_text()
     js=(ROOT/'scripts/templates/mlp_study.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_comparison.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_metrics.js').read_text()
     css=(ROOT/'scripts/templates/mlp_study.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_comparison.css').read_text()
+    css+='\n'+(ROOT/'scripts/templates/mlp_metrics.css').read_text()
     vendor=(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
         css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())
@@ -202,6 +204,11 @@ def build(args):
                 if sha(baseline)!=data['comparison']['baseline']['notebook_sha256']:
                     raise ValueError('Notebook awal tidak cocok dengan snapshot pembanding.')
                 z.writestr('baseline.ipynb',baseline,compress_type=zipfile.ZIP_DEFLATED)
+            if args.baseline_evaluation:
+                evaluation=Path(args.baseline_evaluation).read_bytes()
+                if sha(evaluation)!=data['comparison']['baseline']['eval_xlsx_sha256']:
+                    raise ValueError('Workbook evaluasi awal berbeda dari sumber terverifikasi.')
+                z.writestr('baseline_eval.xlsx',evaluation,compress_type=zipfile.ZIP_STORED)
         private=ROOT/'outputs/mlp_study/belajar_MLP_Spider_Privat.html'
         private.parent.mkdir(parents=True,exist_ok=True)
         private.write_text(document.replace('__PRIVATE_PAYLOAD__',base64.b64encode(bundle.getvalue()).decode()))
@@ -210,5 +217,5 @@ def build(args):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--notebook');p.add_argument('--results');p.add_argument('--baseline')
+    p=argparse.ArgumentParser();p.add_argument('--notebook');p.add_argument('--results');p.add_argument('--baseline');p.add_argument('--baseline-evaluation')
     build(p.parse_args())

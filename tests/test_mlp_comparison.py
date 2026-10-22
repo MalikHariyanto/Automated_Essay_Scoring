@@ -40,6 +40,20 @@ class ComparisonIntegrity(unittest.TestCase):
         self.assertNotIn('native',self.data['baseline'])
         self.assertGreaterEqual(len(self.data['comparison_limits']),4)
 
+    def test_uploaded_workbook_is_verified_as_baseline_not_double_frozen(self):
+        self.assertIn('zip_sha256',self.data['baseline'])
+        self.assertIn('eval_xlsx_sha256',self.data['baseline'])
+        for row in self.data['baseline']['history']['S3']:
+            self.assertLessEqual(row['Epoch'],5)
+        self.assertNotIn('double_frozen',self.data)
+
+    def test_pairing_proof_and_benchmark_are_aggregate_only(self):
+        for key in ['dataset_equal','partition_equal','fold_membership_equal','teacher_values_equal','same_example_text']:
+            self.assertTrue(self.data['pairing'][key])
+        self.assertEqual(self.data['pairing']['test_rows'],60)
+        self.assertAlmostEqual(self.data['naive_baseline']['rmse'],8.14280634295627,places=10)
+        self.assertNotIn('rows',self.data['pairing'])
+
     def test_html_table_parser_preserves_negative_metrics_and_column_names(self):
         parser=compare.SavedTable('<table><thead><tr><th>Skenario</th><th>QWK</th></tr></thead>'
                                  '<tbody><tr><td>S3</td><td>-0.21238397</td></tr></tbody></table>')

@@ -1,5 +1,23 @@
 # Verifikasi buku hasil MLP
 
+## Meja tabel dan interpretasi — 22 Oktober 2026
+
+Dilanjutkan dari HEAD `8c226b3d4f276f54cf8909382da9687f32f0ae28` setelah lingkungan cloud pulih. ZIP `Hasil_AES_Ringkas (1).zip` berhasil dibaca: pengaturan dan seluruh hasilnya cocok eksperimen awal **5 epoch**, bukan double-frozen. Source metadata workbook menyatakan RoBERTa fine-tuned, BGE frozen, head S3 linear. Hasil/log double-frozen tidak ditambahkan sesuai arahan pengguna.
+
+Ekstraksi memakai `scripts/build_mlp_comparison.py --baseline ... --baseline-results ... --mlp-results ...`. Workbook awal dibandingkan dengan notebook awal pada seluruh 15 fold dan metrik test (toleransi `1e-5` terhadap tampilan notebook yang sebelumnya dibulatkan). Metrik/riwayat awal kini memakai angka penuh dari Excel. RMSE tiap skenario juga dihitung ulang dari 60 pasangan mentah dan cocok metrik sumber dengan toleransi `1e-5`.
+
+Dataset 300 baris, 240/60 pembagian development/test, 1.200 baris keanggotaan training/validation kelima fold, nilai guru dan teks contoh **cocok persis** antara kedua workbook. Kedua tabel test dicocokkan melalui ID unik dan nilai guru. Bukti ini menggantikan batas keanggotaan split yang belum terverifikasi pada versi buku sebelumnya. Data individual tidak ditulis ke snapshot publik.
+
+Model konstan yang hanya memakai rata-rata nilai guru **development** menghasilkan RMSE test `8.14280634295627` poin. Tidak memakai label test untuk fitting rata-rata. Nilai ini menjadi acuan relatif, bukan ambang kelulusan universal. Pilihan batas RMSE 5/10 poin pada UI diberi label ilustrasi dan bukan standar AES.
+
+Menu **Tabel hasil & arti angka** menampilkan enam baris metrik test, enam MSE refit terakhir, 15 baris perbandingan fold untuk metrik yang dipilih, serta mean/SD RMSE CV. Penjelasan mengikuti skenario dan metrik: RMSE/MSE mendekati nol lebih kecil; MSE target 0–1 tidak dibatasi maksimum satu; Pearson mengukur hubungan, bukan kedekatan; QWK/AC2 dibaca terhadap acuan peluang masing-masing; AC2 tinggi bukan persentase prediksi tepat. MSE log selama pembaruan/dropout tidak disamakan dengan MSE test.
+
+Unit test gabungan: **14 passed, 0 failed, 0 skipped, 0 xfailed**, exit 0. Dua pemeriksaan baru memastikan source ZIP memang awal lima epoch dan bukti pencocokan/benchmark hanya berupa agregat. Build publik deterministik dan sintaks ketiga modul JS diperiksa. Tidak ada perubahan notebook training atau eksekusi encoder/model baru.
+
+Pengujian baru `node scripts/check_mlp_metrics.mjs`: **6 kelompok lolos, 0 gagal**, exit 0. Cakupan 60 kombinasi tiga skenario × lima metrik/loss × empat viewport; jumlah baris tabel; makna ambang ilustrasi; skala MSE/AC2; penolakan workbook berbeda; ekspor/reopen; serta tidak adanya error browser/jaringan eksternal. Enam puluh prediksi privat tetap cocok ketika urutan baris awal dibalik, membuktikan join berdasarkan ID, bukan posisi. Regresi menu pembanding dan pembaca lama tetap dijalankan; prasyarat uji klik layer diperbaiki agar target sudah terlihat sebelum mengukur posisi halaman.
+
+Workbook evaluasi awal asli disimpan pada `outputs/mlp_study/baseline_eval.xlsx` dan tertanam hanya pada HTML pribadi. Pembaca publik menerima ZIP awal lewat pemilih lokal; SHA-256 ZIP/workbook diverifikasi. Ekspor HTML pribadi ikut menyimpan workbook itu. Semua nilai siswa, notebook terisi, ZIP unggahan dan hasil unduhan tetap tidak diterbitkan. [Preview meja hasil](previews/mlp_study/08_tabel_arti_angka.png) dan [HP](previews/mlp_study/09_tabel_mobile.png) diambil dari versi publik.
+
 ## Penambahan menu pembanding — 22 Oktober 2026
 
 Pekerjaan lanjutan dimulai dari HEAD `2a67b89641ae50e5fad8a19a6341acdacdea4c98`, branch `codex/aes-learning`. Menu **Bandingkan eksperimen** memakai snapshot agregat terpisah `docs/mlp_comparison_snapshot.json`; buku MLP 16 bab dan notebook training tetap dipertahankan.

@@ -159,6 +159,9 @@ Unduh [belajar_colab_AI_interaktif.html](docs/belajar_colab_AI_interaktif.html) 
 
 Menu **Bandingkan eksperimen** menambahkan jejak versi awal 5 epoch → revisi training/LayerNorm → S3 MLP: layer yang bisa diklik, source berdampingan, grafik epoch tiap fold, empat metrik, contoh prediksi privat, dan alasan percobaan lanjutan. Kelengkapan bukti serta batas perbandingan dijelaskan; kedua hasil tetap memakai lima fold.
 
+Menu **Tabel hasil & arti angka** menampilkan tabel test, MSE refit dan seluruh fold secara langsung, interpretasi kontekstual lima metrik/loss, acuan prediksi rata-rata development, serta 60 pasangan prediksi privat yang sudah cocok ID/nilai gurunya.
+
+
 [Code belajar paper — HTML interaktif](docs/code%20belajar%20paper.html) memetakan 42 sumber unik ke tujuh topik dan subtopik berdasarkan tugas model. Ruang baca memiliki scroll sendiri, identitas publikasi, proses input → tindakan → output dengan sticky note, rumus beserta arti simbol, kamus kontekstual, hasil dan batas bukti, serta rute membaca halaman sumber. Tema Spider-Man full colour memakai splash cat, kota komik, pose SVG yang menimpa border kartu, serta adegan Andrew–Gwen yang mengikuti scroll. Delapan tab ruang baca kini mencakup 82 visual/cuplik PDF dengan sticky note dan perbesaran; semua animasi dapat dijeda. [Preview beranda](docs/previews/paper_library/01_beranda_desktop.png) dan [panduan penggunaan](docs/cara_membaca_paper.md) tersedia untuk review. Buku/cuplikan, tesis, laporan, dan kebijakan diberi jenis serta batas cakupan; indeks tidak ditebak. PDF/ZIP lengkap tidak diterbitkan; hanya cuplikan visual akademik terpilih dengan atribusi sesuai permintaan pengguna.
 
 [Panduan hosting statis dengan akses email](docs/hosting_belajar_paper.md) menyediakan builder dan konfigurasi Cloudflare Workers Free. Paket sudah diperiksa lokal; deployment dan login email belum aktif karena perlu akun Cloudflare serta kebijakan Access.

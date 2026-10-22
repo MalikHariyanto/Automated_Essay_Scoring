@@ -20,11 +20,21 @@ Kedua versi hasil memakai **lima fold**, bukan 5 versus 25 fold. Yang berubah ad
 
 Klik layer untuk sticky note fungsi lapisan, lalu lihat source asli berdampingan dengan sorotan baris berubah. Grafik training dapat dipilih per skenario, fold, dan satuan RMSE/MSE. Semua epoch yang ditampilkan berasal dari riwayat tersimpan, bukan angka simulasi. Tabel test menampilkan empat metrik semua skenario; tabel CV memperlihatkan keempat metrik tiap fold.
 
-Contoh hasil S3: RMSE test **11,7224 → 6,7085** dan rata-rata RMSE CV **10,9542 → 6,0516**. Perubahan awal → MLP mencakup beberapa pengaturan sekaligus, sehingga hasil tersebut tidak membuktikan MLP sebagai penyebab tunggal. Manifest anggota fold/test awal belum tersedia untuk pencocokan per jawaban; nomor fold yang sama tidak diasumsikan mempunyai anggota yang sama. Test lama juga sudah dilihat sebelum pengembangan selanjutnya, sehingga perbandingan lanjutan dijelaskan sebagai eksplorasi.
+Contoh hasil S3: RMSE test **11,7224 → 6,7085** dan rata-rata RMSE CV **10,9542 → 6,0516**. Perubahan awal → MLP mencakup beberapa pengaturan sekaligus, sehingga hasil tersebut tidak membuktikan MLP sebagai penyebab tunggal. Dataset, 240 development/60 test, anggota kelima fold, serta nilai guru sekarang sudah dicocokkan persis dari kedua workbook. Test lama juga sudah dilihat sebelum pengembangan selanjutnya, sehingga perbandingan lanjutan dijelaskan sebagai eksplorasi.
 
-Prediksi individual tetap lokal. HTML pribadi terbaru menyertakan notebook awal juga: tiga prediksi contoh lama tampil terpisah dari nilai guru/prediksi/pembulatan contoh MLP. Identitas kedua contoh belum diverifikasi sama, dan skor guru contoh lama tidak tercantum pada tabel sumber; keduanya tidak dipasangkan atau diisi dengan angka buatan. Tabel lengkap 60 pasangan lama belum tersedia pada sumber pembanding yang dapat dibuka. Seluruh 60 pasangan run MLP dapat dibuka melalui tombol menuju Excel.
+Prediksi individual tetap lokal. HTML pribadi terbaru menyertakan notebook awal juga: tiga prediksi contoh lama tampil terpisah dari nilai guru/prediksi/pembulatan contoh MLP. Teks contoh juga sudah dicocokkan. Tabel contoh lama tetap ditampilkan sesuai sumbernya; tabel lengkap 60 pasangan awal/MLP dengan nilai guru tersedia pada menu Tabel hasil & arti angka setelah workbook pribadi dimuat.
 
 Salinan publik sudah memuat angka agregat perbandingan. Bila memiliki notebook awal yang persis cocok, tombol di tab Prediksi & metrik dapat membukanya lokal. **Simpan HTML lengkap** ikut mempertahankan notebook awal yang telah dimuat.
+
+## Tabel hasil & arti angka
+
+Tombol **Tabel hasil & arti angka** membuka meja hasil tersendiri dengan scroll. Enam baris metrik test S1/S2/S3 untuk kedua eksperimen tampil langsung, diikuti pilihan penjelasan RMSE, MSE training, Pearson, QWK, dan Gwet AC2. Ada tabel enam loss refit terakhir, seluruh 15 fold, serta rata-rata RMSE CV dan simpangan baku.
+
+Penjelasan mengikuti skenario yang dipilih. RMSE/MSE tidak diberi batas bagus/jelek universal. RMSE dibandingkan dengan prediktor sederhana yang selalu memakai rata-rata nilai guru development: RMSE test **8,1428 poin**. Rata-rata itu dihitung tanpa memakai label test untuk fitting. Contoh pilihan batas 5/10 poin diberi label ilustrasi, bukan standar AES. MSE memakai target latihan 0–1 tetapi tidak dibatasi maksimum 1; loss training dibedakan dari error test. Pearson/QWK/AC2 dijelaskan melalui titik acuan −1/0/1 yang relevan, serta contoh aktual. AC2 tinggi tidak disamakan dengan persen prediksi tepat.
+
+ZIP `Hasil_AES_Ringkas (1).zip` yang dikirim kemudian terverifikasi sebagai hasil **awal lima epoch**, bukan double-frozen: pengaturannya lima epoch, head S3 linear, serta metriknya cocok sumber awal. File ini melengkapi pembuktian bahwa data, train/test dan anggota semua fold sama dengan run MLP. Metrik awal dan riwayat sekarang memakai nilai numerik penuh dari Excel.
+
+HTML pribadi memuat workbook evaluasi awal asli. Tabel **60 pasangan prediksi awal/MLP** dicocokkan melalui ID dan nilai guru, bukan posisi baris. Ada prediksi mentah kedua versi, pembulatan MLP, serta error absolut per jawaban. Salinan GitHub hanya menyimpan agregat; pilih ZIP awal pada meja hasil dan ZIP MLP pada tombol di atas untuk membuka nilai individual lokal. Tombol Simpan HTML lengkap ikut menyimpan workbook awal, sehingga tidak perlu memilihnya lagi ketika dibuka ulang. Hasil double-frozen belum ditambahkan.
 
 ## Cara membaca
 
@@ -86,6 +96,6 @@ python scripts/build_mlp_study.py \
   --baseline '/path/notebook_awal_5_epoch.ipynb'
 ```
 
-Argumen `--baseline` bersifat opsional untuk bundel pribadi. Ekstraksi ulang snapshot pembanding dilakukan dengan `python scripts/build_mlp_comparison.py --baseline '/path/notebook_awal_5_epoch.ipynb'`; source awal wajib cocok commit `3afad79`. Snapshot publik hanya menyimpan source, riwayat agregat, dan metrik.
+Argumen `--baseline` bersifat opsional untuk bundel pribadi. Tambahkan `--baseline-evaluation outputs/mlp_study/baseline_eval.xlsx` untuk menanamkan workbook evaluasi awal yang sudah diverifikasi. Ekstraksi ulang snapshot pembanding dilakukan dengan `python scripts/build_mlp_comparison.py --baseline '/path/notebook_awal_5_epoch.ipynb' --baseline-results '/path/hasil_awal.zip' --mlp-results '/path/hasil_mlp.zip'`; source awal wajib cocok commit `3afad79`. Sertakan `--baseline-results` dan `--mlp-results` dengan kedua ZIP asli untuk memverifikasi seluruh manifest dan menyimpan evaluasi awal privat. Snapshot publik hanya menyimpan source, riwayat agregat, metrik, checksum dan bukti pencocokan berupa hitungan/status; bukan jawaban atau nilai individual.
 
 Builder membaca source dari commit tetap, bukan dari notebook eksperimen terbaru. Template, isi catatan, dan JSZip berlisensi MIT/GPL disertakan di repository. Tidak ada bobot encoder yang diunduh atau dilatih oleh builder. Bukti pemeriksaan ada di [laporan verifikasi](verification_mlp_study.md).

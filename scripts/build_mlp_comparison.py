@@ -10,6 +10,9 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import io
+import zipfile
+import math
 
 ROOT=Path(__file__).resolve().parents[1]
 TARGET=ROOT/'docs/mlp_comparison_snapshot.json'
@@ -122,9 +125,54 @@ def extract(path):
             ]}
 
 
+def enrich_from_excel(data, baseline_zip, mlp_zip):
+    from openpyxl import load_workbook
+    archives=[zipfile.ZipFile(p) for p in [baseline_zip,mlp_zip]]
+    def rows(archive,file,sheet):
+        w=load_workbook(io.BytesIO(archive.read(file)),read_only=True,data_only=True)
+        result=list(w[sheet].values);w.close();return result
+    def records(values):
+        return [dict(zip(values[0],r)) for r in values[1:]]
+    old,new=archives;first='01_Data_dan_Tokenisasi.xlsx';evaluation='04_Prediksi_dan_Evaluasi.xlsx';training='05_Riwayat_Pelatihan.xlsx'
+    for sheet in ['Data dan Nilai Guru','Pembagian Data','Pembagian Lima Fold']:
+        if rows(old,first,sheet)!=rows(new,first,sheet):raise ValueError('Manifest berbeda: '+sheet)
+    teacher=records(rows(old,first,'Data dan Nilai Guru'))
+    partition=records(rows(old,first,'Pembagian Data'))
+    train_ids={r['ID Jawaban'] for r in partition if r['Penggunaan Data'].startswith('Data latih')}
+    if len(teacher)!=300 or len(train_ids)!=240:raise ValueError('Ukuran dataset/development bukan 300/240.')
+    mean=sum(r['Nilai Guru'] for r in teacher if r['ID Jawaban'] in train_ids)/len(train_ids)
+    pairs=records(rows(old,evaluation,'Nilai Guru dan Prediksi'));latest=records(rows(new,evaluation,'Nilai Guru dan Prediksi'))
+    left={r['ID Jawaban']:r for r in pairs};right={r['ID Jawaban']:r for r in latest}
+    if len(left)!=60 or set(left)!=set(right) or any(left[k]['Nilai Guru']!=right[k]['Nilai Guru'] for k in left):raise ValueError('Pasangan test tidak cocok.')
+    metrics=records(rows(old,evaluation,'Perbandingan Model'));folds=records(rows(old,evaluation,'Hasil Tiap Fold'))
+    for original,values in [(data['baseline']['metrics'],metrics),(data['baseline']['folds'],folds)]:
+        for a,b in zip(original,values):
+            for key in ['RMSE (poin)','Pearson','QWK','Gwet AC2']:
+                if abs(a[key]-b[key])>1e-5:raise ValueError('Excel tidak cocok dengan notebook awal.')
+    for r in metrics:
+        s=r['Skenario'];actual=math.sqrt(sum((p['Prediksi '+s]-p['Nilai Guru'])**2 for p in pairs)/60)
+        if abs(actual-r['RMSE (poin)'])>1e-5:raise ValueError('RMSE tidak cocok pasangan test.')
+    baseline=data['baseline'];baseline.update(metrics=metrics,folds=folds)
+    baseline['history']={s:records(rows(old,training,sheet)) for s,sheet in [('S1','RoBERTa (S1)'),('S2','BGE-M3 (S2)'),('S3','Fusion (S3)')]}
+    settings=dict(rows(old,training,'Pengaturan Eksperimen')[1:])
+    if settings.get('Maksimum epoch per fold')!=5:raise ValueError('ZIP ini bukan eksperimen awal lima epoch.')
+    baseline['zip_sha256']=hashlib.sha256(Path(baseline_zip).read_bytes()).hexdigest()
+    baseline['eval_xlsx_sha256']=hashlib.sha256(old.read(evaluation)).hexdigest()
+    baseline['precision']='Metrik dan riwayat memakai nilai numerik penuh dari Excel awal; tabel cocok dengan notebook tersimpan.'
+    same_example=rows(old,evaluation,'Jawaban Contoh')==rows(new,evaluation,'Jawaban Contoh')
+    data['pairing']={'dataset_rows':300,'development_rows':len(train_ids),'test_rows':60,'dataset_equal':True,'partition_equal':True,'fold_membership_equal':True,'teacher_values_equal':True,'same_example_text':same_example}
+    data['naive_baseline']={'method':'Selalu memprediksi rata-rata nilai guru development; tidak belajar dari nilai guru test.','rmse':math.sqrt(sum((p['Nilai Guru']-mean)**2 for p in pairs)/60)}
+    data['comparison_limits'][1]='Dataset, 240/60 train-test, anggota kelima fold, dan nilai guru telah dicocokkan persis pada kedua Excel. Perbandingan 60 prediksi dipasangkan berdasarkan ID jawaban, bukan posisi baris.'
+    data['comparison_limits'][3]='Contoh teks pada kedua workbook cocok. Hasil individual dibaca lokal; data siswa tidak disertakan dalam HTML publik.'
+    target=ROOT/'outputs/mlp_study/baseline_eval.xlsx';target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(old.read(evaluation))
+    return data
+
+
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--baseline',required=True)
+    parser=argparse.ArgumentParser();parser.add_argument('--baseline',required=True);parser.add_argument('--baseline-results',required=True);parser.add_argument('--mlp-results',required=True)
     args=parser.parse_args();data=extract(args.baseline)
+    if bool(args.baseline_results)!=bool(args.mlp_results):raise ValueError('Sediakan kedua ZIP agar manifest bisa dicocokkan.')
+    if args.baseline_results:data=enrich_from_excel(data,args.baseline_results,args.mlp_results)
     TARGET.write_text(json.dumps(data,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     print(json.dumps({'target':str(TARGET),'CV':len(data['baseline']['folds']),
                       'history':sum(map(len,data['baseline']['history'].values())),'metrics':len(data['baseline']['metrics'])}))
