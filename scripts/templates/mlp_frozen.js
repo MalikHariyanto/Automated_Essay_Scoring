@@ -25,15 +25,15 @@ function review(root){
  }root.append(cards);
  const delta=now['RMSE (poin)']-old['RMSE (poin)'];
  note(root,state.scenario+' · cara membaca hasil test','RMSE '+(delta>=0?'bertambah ':'berkurang ')+fmt(Math.abs(delta))+' poin. '+(delta>=0?'Kesalahan prediksi run baru lebih besar.':'Kesalahan prediksi run baru lebih kecil.')+' Baca Pearson, QWK dan AC2 bersama-sama; ini hasil run, bukan ukuran efek satu lapisan.');
- const rows=[];for(const s of ['S1','S2','S3'])for(const v of versions){const r=metric(v.data,s);rows.push([s,v.label,...['RMSE (poin)','Pearson','QWK','Gwet AC2'].map(k=>r[k])])}
- root.append(table(['Skenario','Eksperimen','RMSE ↓ · poin','Pearson','QWK','Gwet AC2'],rows,'frozenAllTest'));
+ root.append(window.MLPCompare.experimentTable(versions,[['RMSE (poin)','RMSE ↓ · poin'],['Pearson','Pearson ↑'],['QWK','QWK ↑'],['Gwet AC2','Gwet AC2 ↑']].map(([key,label])=>({key,label,get:(d,s)=>metric(d,s)[key]})),'frozenAllTest',fmt));
+ note(root,'Nama head pada kolom merujuk perubahan S3.','S1 tetap memakai head linear dan S2 tetap memakai MLP pada ketiga eksperimen. Pada eksperimen ketiga, double frozen berlaku pada kedua encoder S3. Semua head tetap menghasilkan prediksi skor regresi.');
  note(root,'Pemenang run baru berbeda dari pemenang keseluruhan.','Run double frozen: S2 RMSE 6,8435, S1 6,8829 dan S3 7,8611. Selisih S2–S1 hanya sekitar 0,039 poin; belum ada bukti keunggulan yang konsisten dari pengulangan seed. Dari hasil yang tersedia, S1 MLP acuan masih RMSE test terkecil: 6,3805.');
  section(root,'VALIDATION / LIMA FOLD',state.scenario+' · RMSE per pembagian yang sama.','CV dilakukan pada 240 development; tabel test di atas memakai 60 jawaban held-out. Keduanya dibaca terpisah.');
  root.append(table(['Fold',...versions.map(v=>v.label)],Array.from({length:5},(_,i)=>[i+1,...versions.map(v=>v.data.folds.find(r=>r.Skenario===state.scenario&&r.Fold===i+1)['RMSE (poin)'])]),'frozenFoldComparison'));
  root.append(table(['Skenario',...versions.map(v=>v.label+' · mean ± SD')],['S1','S2','S3'].map(s=>[s,...versions.map(v=>{const x=stats(v.data,s);return fmt(x.mean)+' ± '+fmt(x.sd)})]),'frozenCVSummary'));
  const detail=el('details',undefined,'compare-details');detail.append(el('summary','Keempat metrik semua 15 fold double frozen'));detail.append(table(['Skenario','Fold','RMSE ↓','Pearson','QWK','Gwet AC2'],F.folds.map(r=>[r.Skenario,r.Fold,r['RMSE (poin)'],r.Pearson,r.QWK,r['Gwet AC2']]),'frozenAllFolds'));root.append(detail);
  section(root,'LOSS / LATIHAN FINAL','Loss rendah tetap perlu diuji pada jawaban baru.','MSE training memakai target 0–1 dan dicatat selama pembaruan bobot/dropout. RMSE test memakai poin 0–100. Angka ini tidak dipertukarkan.');
- root.append(table(['Skenario','Eksperimen','Epoch refit','MSE terakhir'],['S1','S2','S3'].flatMap(s=>versions.map(v=>{const r=last(v.data,s);return [s,v.label,r?.Epoch,r?fmt(r['Loss Training (MSE)'],6):'—']})),'frozenFinalLoss'));
+ root.append(window.MLPCompare.experimentTable(versions,[{key:'Epoch',label:'Epoch refit',get:(d,s)=>last(d,s)?.Epoch},{key:'MSE',label:'MSE training ↓',digits:6,get:(d,s)=>last(d,s)?.['Loss Training (MSE)']}],'frozenFinalLoss',fmt));
  note(root,'S3 baru: MSE 0,002006 belum menjamin prediksi test paling dekat.','Training S3 sudah mempelajari pemetaan fitur tetap, tetapi RMSE test masih 7,8611 dan Pearson 0,3992. MLP acuan S3 mempunyai RMSE 6,7085. Fitur frozen mungkin kurang sesuai untuk tugas penilaian atau resep head masih perlu diuji; ini hipotesis, bukan penyebab yang dibuktikan oleh tabel.');
  for(const text of F.limits)note(root,'Batas kesimpulan',text,'blue');
 }

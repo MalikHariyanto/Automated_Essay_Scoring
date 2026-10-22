@@ -5,19 +5,27 @@ const [url='http://127.0.0.1:8765/docs/belajar_MLP_Spider.html',privateUrl='http
 const b=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']}),p=await b.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce',acceptDownloads:true});
 const errors=[],requests=[],checks=[];p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>requests.push(r.url()));const ok=s=>{checks.push(s);console.log('OK:',s)};
 try{
- await p.goto(url);await p.locator('#openFrozen').click();assert.ok(await p.locator('#frozenRoom').isVisible());assert.ok(await p.locator('#reader').isHidden());assert.equal(await p.locator('#frozenAllTest tbody tr').count(),9);assert.equal(await p.locator('#frozenFinalLoss tbody tr').count(),9);assert.equal(await p.locator('#frozenAllFolds tbody tr').count(),15);
+ await p.goto(url);await p.locator('#openFrozen').click();assert.ok(await p.locator('#frozenRoom').isVisible());assert.ok(await p.locator('#reader').isHidden());assert.equal(await p.locator('#frozenAllTest tbody tr').count(),12);assert.equal(await p.locator('#frozenFinalLoss tbody tr').count(),6);assert.equal(await p.locator('#frozenAllFolds tbody tr').count(),15);
+ const matrix=await p.evaluate(()=>{
+  const data=MLPStudy.data,runs=[data.comparison.baseline,data.snapshot,data.frozen];
+  return [...document.querySelectorAll('#frozenAllTest tbody tr')].every(row=>[...row.querySelectorAll('td')].every((td,i)=>Number(td.title)===runs[i].metrics.find(r=>r.Skenario===row.dataset.scenario)[row.dataset.metric]));
+ });assert.ok(matrix,'Every test metric must stay on its original scenario and experiment column');
+ assert.equal(await p.locator('#frozenAllTest thead th.experiment-column').count(),3);assert.equal(await p.locator('#frozenAllTest th[scope=rowgroup]').count(),3);assert.equal(await p.locator('#frozenAllTest th[scope=row]').count(),12);
  assert.match(await p.locator('#frozenBody').innerText(),/7,8611/);assert.match(await p.locator('#frozenBody').innerText(),/belum ada bukti keunggulan/);assert.equal(await p.locator('#frozenPredictions').count(),0);
- ok('Discoverable E3 comparison with all nine test/loss rows, 15 folds, interpretation and no public individual predictions');
+ ok('Three experiment columns preserve all 36 test values with scenario/metric row headers; six refit rows, 15 folds and no public individual predictions');
  for(const width of [1440,900,390,320]){await p.setViewportSize({width,height:1000});for(const s of ['S1','S2','S3'])for(const tab of ['review','process','predictions','excel']){
   await p.evaluate(([s,t])=>{MLPFrozen.setScenario(s);MLPFrozen.setTab(t)},[s,tab]);assert.ok((await p.locator('#frozenBody').innerText()).length>60);assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}/${s}/${tab}`);assert.ok(!/\b(?:NaN|undefined|Infinity)\b/.test(await p.locator('#frozenBody').innerText()));
- }}ok('48 scenario/tab/viewport combinations without page overflow or invalid values');
+  if(width<=390&&tab==='review'){
+   const pinned=await p.evaluate(()=>{const table=document.getElementById('frozenAllTest'),wrap=table.parentElement;wrap.scrollLeft=wrap.scrollWidth;return Math.abs(table.querySelector('.metric-row-label').getBoundingClientRect().left-wrap.getBoundingClientRect().left)<3});assert.ok(pinned,'Mobile scenario/metric label remains visible while scrolling across experiments');
+  }
+ }}ok('48 scenario/tab/viewport combinations without page overflow or invalid values; mobile metric labels remain visible during horizontal scroll');
  await p.setViewportSize({width:1440,height:1000});
  for(const s of ['S1','S2','S3']){await p.evaluate(s=>{MLPFrozen.setScenario(s);MLPFrozen.setTab('process')},s);for(let fold=1;fold<=5;fold++)for(const field of ['RMSE Validasi (poin)','Loss Training (MSE)']){
   await p.getByRole('combobox',{name:'Fold grafik double frozen',exact:true}).selectOption(String(fold));await p.getByRole('combobox',{name:'Metrik grafik double frozen',exact:true}).selectOption(field);
   const expected=await p.evaluate(([s,f,k])=>[MLPStudy.data.snapshot,MLPStudy.data.frozen].flatMap(d=>d.history[s].filter(r=>r.Fold===f&&Number.isFinite(r[k]))).length,[s,fold,field]);assert.equal(await p.locator('.frozen-chart circle').count(),expected);
  }}ok('30 actual two-run training curves include every saved epoch and correct selected-epoch markers');
  await p.locator('#frozen-tab-process').focus();await p.keyboard.press('ArrowRight');assert.equal(await p.locator('#frozen-tab-predictions').getAttribute('aria-selected'),'true');
- await p.locator('#openComparison').click();await p.locator('#experimentNav button').filter({hasText:'Double frozen'}).click();assert.ok(await p.locator('#frozenRoom').isVisible());
+ await p.locator('#openComparison').click();assert.equal(await p.locator('#experimentNav .experiment-current').count(),0);assert.equal(await p.locator('#experimentNav').getByText('E2 · Run MLP terakhir',{exact:true}).count(),0);await p.locator('#experimentNav button').filter({hasText:'Double frozen'}).click();assert.ok(await p.locator('#frozenRoom').isVisible());
  const rejected=await p.evaluate(async()=>{try{await MLPFrozen.loadResults(new Uint8Array([0,1,2]));return false}catch{return true}});assert.ok(rejected);ok('Keyboard tabs and E3 entry in the original comparison menu work; mismatched ZIP is rejected');
  await p.goto(privateUrl);await p.waitForFunction(()=>window.MLPFrozen?.getState().loaded&&window.MLPStudy?.getState().resultsLoaded,null,{timeout:120000});await p.locator('#openFrozen').click();
  const expected=JSON.parse(fs.readFileSync('outputs/mlp_study/frozen_expected.json','utf8'));

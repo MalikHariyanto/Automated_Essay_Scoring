@@ -1,5 +1,15 @@
 # Verifikasi buku hasil MLP
 
+## Eksperimen sebagai kolom dan penghapusan kartu E2 — 22 Oktober 2026
+
+Revisi dari `b5dc595f6a6528e17aeb2e9ccad92c940fac1433` mengubah penyajian tabel, tanpa mengganti metode, angka atau notebook penelitian. Tiga eksperimen menjadi kolom pada meja double frozen; kelompok S1/S2/S3 mempunyai masing-masing empat baris metrik. Tabel refit memakai dua baris per skenario: epoch dan MSE. Meja awal/MLP memakai susunan yang sama dengan dua kolom eksperimen. Header menyebut head **S3**, batas epoch dan aturan lima epoch tanpa perbaikan; S1 tetap head linear dan S2 tetap MLP. Kartu E2 yang bukan tombol telah dihapus dari sidebar, sedangkan data MLP tetap menjadi pembanding.
+
+Pengujian membandingkan seluruh **36 nilai test** tiga versi dan **24 nilai test** dua versi dengan sumber agregat aslinya berdasarkan skenario/metrik/kolom. Ada header aksesibel `scope="col"`, `scope="rowgroup"` dan `scope="row"`. Tabel tidak memiliki scroll vertikal tersendiri; scroll horizontal tetap tersedia di HP, dengan nama skenario/metrik tetap terlihat saat digeser. [Preview tabel lengkap](previews/mlp_study/16_eksperimen_sebagai_kolom.png) berasal dari halaman publik tanpa file pribadi.
+
+Perintah dari cwd `/workspace/Automated_Essay_Scoring`: `node scripts/check_mlp_frozen.mjs` **8 kelompok**, `node scripts/check_mlp_metrics.mjs` **6 kelompok**, dan `node scripts/check_mlp_comparison.mjs` **8 kelompok**; final semuanya exit 0, 0 gagal/0 dilewati. Pemeriksaan mencakup desktop/HP, tabel, navigasi setelah E2 dihapus, workbook, prediksi dan ekspor/reopen pribadi. Chromium `154.0.8037.57`, Playwright `1.62.1`, Node `24.19.0`. Tidak ada unit test Python atau training baru karena perubahannya hanya penyajian DOM/CSS.
+
+Percobaan awal pengujian pribadi mengalami timeout akibat penyusunan ulang HTML privat yang mengganti lebih dari satu kecocokan tag. Penggantian dibatasi pada tag payload pertama, lalu ketiga pengujian dijalankan ulang dan lolos. Isi payload hasil sebelum/sesudah identik SHA-256. HTML publik tetap tanpa payload; seluruh JSON sumber yang diembed identik dengan versi sebelumnya. Log, manifest dan bukti privasi disimpan lokal di `outputs/mlp_study/column_*`.
+
 ## Hasil double frozen dan semua blok dalam satu scroll — 22 Oktober 2026
 
 Dilanjutkan dari HEAD `7789483dabe26328f6b5bb56817af96663dc515d` pada branch `codex/aes-learning`. ZIP terbaru pengguna dibaca sebagai hasil double frozen + MLP, lalu ditambahkan sebagai pembanding E3. Buku MLP acuan tetap mengikuti source `15bc7bb`; notebook training, snapshot MLP, snapshot awal dan seluruh kode/output acuan tidak diubah. Tidak ada eksekusi encoder atau training baru.

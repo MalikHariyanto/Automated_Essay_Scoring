@@ -28,7 +28,7 @@ Salinan publik sudah memuat angka agregat perbandingan. Bila memiliki notebook a
 
 ## Tabel hasil & arti angka
 
-Tombol **Tabel hasil & arti angka** membuka meja hasil tersendiri dengan scroll. Enam baris metrik test S1/S2/S3 untuk kedua eksperimen tampil langsung, diikuti pilihan penjelasan RMSE, MSE training, Pearson, QWK, dan Gwet AC2. Ada tabel enam loss refit terakhir, seluruh 15 fold, serta rata-rata RMSE CV dan simpangan baku.
+Tombol **Tabel hasil & arti angka** membuka meja hasil tersendiri dengan scroll. Versi awal dan MLP menjadi kolom berdampingan; S1/S2/S3 dan keempat metrik menjadi 12 baris, diikuti pilihan penjelasan RMSE, MSE training, Pearson, QWK, dan Gwet AC2. Tabel loss membandingkan epoch dan MSE refit per skenario secara mendatar. Seluruh 15 fold serta rata-rata RMSE CV dan simpangan baku tetap tersedia.
 
 Penjelasan mengikuti skenario yang dipilih. RMSE/MSE tidak diberi batas bagus/jelek universal. RMSE dibandingkan dengan prediktor sederhana yang selalu memakai rata-rata nilai guru development: RMSE test **8,1428 poin**. Rata-rata itu dihitung tanpa memakai label test untuk fitting. Contoh pilihan batas 5/10 poin diberi label ilustrasi, bukan standar AES. MSE memakai target latihan 0–1 tetapi tidak dibatasi maksimum 1; loss training dibedakan dari error test. Pearson/QWK/AC2 dijelaskan melalui titik acuan −1/0/1 yang relevan, serta contoh aktual. AC2 tinggi tidak disamakan dengan persen prediksi tepat.
 
@@ -38,7 +38,11 @@ HTML pribadi memuat workbook evaluasi awal asli. Tabel **60 pasangan prediksi aw
 
 ## Pembanding baru: double frozen + MLP
 
-Tombol **MLP vs double frozen** di pemilih ruang atau **E3** di daftar eksperimen membuka empat tab: **Hasil & kesimpulan**, **Proses, kode & latihan**, **Guru & prediksi**, serta **Excel run baru**. Ada sembilan baris test dari tiga versi hasil, empat metrik lengkap, perbandingan kelima fold, mean/SD, loss refit dan grafik seluruh epoch MLP versus double frozen. S1 tetap fine-tuned; istilah double frozen berlaku pada kedua encoder S3.
+Tombol **MLP vs double frozen** di pemilih ruang atau **E3** di daftar eksperimen membuka empat tab: **Hasil & kesimpulan**, **Proses, kode & latihan**, **Guru & prediksi**, serta **Excel run baru**. Tabel test menempatkan tiga eksperimen sebagai kolom: **Awal—5 epoch**, **MLP acuan—maksimal 25 epoch**, dan **Double frozen + MLP**. Tiap kelompok S1/S2/S3 memiliki empat baris RMSE, Pearson, QWK dan Gwet AC2; baca satu baris mendatar untuk membandingkan hasil. Ada perbandingan kelima fold, mean/SD, loss refit dan grafik seluruh epoch MLP versus double frozen. Tabel loss juga memakai eksperimen sebagai kolom. S1 tetap fine-tuned; istilah double frozen berlaku pada kedua encoder S3.
+
+Header menjelaskan head S3 dan aturan berhenti: lima epoch tanpa perbaikan RMSE validasi, bukan lima perbaikan. S1 tetap memakai head linear dan S2 memakai MLP pada ketiga eksperimen. Meja **Tabel hasil & arti angka** memakai susunan kolom yang sama untuk dua eksperimen awal/MLP. Kartu E2 yang sebelumnya hanya berupa penanda tetap dan tidak dapat diklik telah dihapus dari sidebar; hasil MLP tetap menjadi pembanding.
+
+[Lihat preview tabel dengan eksperimen sebagai kolom](previews/mlp_study/16_eksperimen_sebagai_kolom.png). Di HP, geser tabel ke samping; label skenario/metrik tetap terlihat.
 
 Hasil ZIP baru menunjukkan RMSE test S1 **6,8829**, S2 **6,8435**, dan S3 **7,8611**. S3 MLP acuan **6,7085**, sehingga pembekuan belum memperbaiki S3 pada run ini. Dataset, pembagian 240/60, anggota semua fold serta nilai guru test telah dicocokkan. S1/S2 juga bergeser meskipun arsitektur tetap; perbandingan belum mengisolasi satu penyebab. [Review dan bukti lengkap](review_double_frozen_results.md).
 

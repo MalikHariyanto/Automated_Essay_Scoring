@@ -17,8 +17,32 @@ function note(title,body,kind='blue'){const box=el('aside',undefined,'compare-no
 function badge(text,kind=''){return el('span',text,'evidence-badge '+kind)}
 function sectionTitle(kicker,title,body){const h=el('header',undefined,'compare-section-title');h.append(el('small',kicker),el('h3',title));if(body)h.append(el('p',body));return h}
 function table(headers,rows){const viewport=el('div',undefined,'compare-table-wrap');viewport.tabIndex=0;viewport.setAttribute('aria-label','Tabel perbandingan; gulir mendatar di dalam kotak');const t=el('table'),head=el('thead'),r=el('tr');headers.forEach(v=>r.append(el('th',v)));head.append(r);t.append(head);const body=el('tbody');for(const values of rows){const row=el('tr');values.forEach(v=>row.append(el('td',v??'Belum tersedia')));body.append(row)}t.append(body);viewport.append(t);return viewport}
+// Eksperimen selalu menjadi kolom: satu metrik dibaca mendatar pada skenario yang sama.
+function experimentTable(runs,fields,id,format){
+ const headers=[
+  ['Awal','Head S3 linear · 5 epoch','Tanpa early stopping'],
+  ['MLP acuan','Head S3 MLP · maks. 25 epoch','Berhenti setelah 5 epoch tanpa perbaikan'],
+  ['Double frozen + MLP','Dua encoder S3 frozen · maks. 25 epoch','Head S3 MLP · 5 epoch tanpa perbaikan']
+ ];
+ const wrap=el('div',undefined,'compare-table-wrap experiment-matrix-wrap');wrap.tabIndex=0;wrap.setAttribute('aria-label','Perbandingan mendatar antar eksperimen; gulir tabel untuk kolom berikutnya');
+ const t=el('table',undefined,'experiment-matrix');t.id=id;
+ t.append(el('caption','Baca satu baris ke kanan untuk membandingkan eksperimen. S1: RoBERTa · S2: BGE-M3 · S3: fusion.'));
+ const head=el('thead'),row=el('tr');
+ for(const label of ['Skenario','Yang dibandingkan']){const th=el('th',label);th.scope='col';row.append(th)}
+ runs.forEach((run,i)=>{const th=el('th',undefined,'experiment-column');th.scope='col';th.dataset.experiment=i;th.append(el('small','EKSPERIMEN '+(i+1)),el('strong',headers[i][0]),el('span',headers[i][1]),el('span',headers[i][2]));row.append(th)});head.append(row);t.append(head);
+ for(const s of ['S1','S2','S3']){
+  const body=el('tbody');body.dataset.scenario=s;
+  fields.forEach((field,i)=>{
+   const tr=el('tr');tr.dataset.scenario=s;tr.dataset.metric=field.key;
+   if(i===0){const th=el('th',s,'scenario-group');th.scope='rowgroup';th.rowSpan=fields.length;th.append(el('span',{S1:'RoBERTa',S2:'BGE-M3',S3:'Fusion'}[s]));tr.append(th)}
+   const label=el('th',field.label,'metric-row-label');label.scope='row';label.dataset.scenario=s;tr.append(label);
+   runs.forEach((run,j)=>{const value=field.get(run.data,s),td=el('td',value===undefined||value===null?'—':format(value,field.digits??4));td.dataset.experiment=j;if(typeof value==='number')td.title=String(value);tr.append(td)});body.append(tr);
+  });t.append(body);
+ }
+ wrap.append(t);return wrap;
+}
 function versionCard(v){const box=el('article',undefined,'version-card '+v.color);box.append(badge(v.short),el('h3',v.title),el('p',v.label),el('div',undefined,'version-tags'));const tags=box.lastChild;tags.append(badge('5 fold'),badge(v.epoch+' epoch maks.'),badge(v.patience?'Patience '+v.patience:'Tanpa early stopping'));box.append(el('p',v.norm?'LayerNorm tambahan RoBERTa pada S3.':'RoBERTa langsung menuju concat pada S3.','version-caption'));return box}
-function renderNav(){const root=$('experimentNav');root.replaceChildren();for(const id of ['E0','E1']){const v=versions[id],b=el('button',undefined,'experiment-step '+v.color);b.append(el('span',id),el('b',v.label),el('small',v.tag));b.setAttribute('aria-pressed',String(state.experiment===id));b.addEventListener('click',()=>setExperiment(id));root.append(b)}const now=el('div',undefined,'experiment-current');now.append(el('small','TITIK PEMBANDING TETAP'),el('b','E2 · Run MLP terakhir'),el('span','Source 15bc7bb · output Excel lengkap'));root.append(now);const frozen=el('button',undefined,'experiment-step new');frozen.append(el('span','E3'),el('b','Double frozen + MLP'),el('small','HASIL BARU · ZIP TERVERIFIKASI'));frozen.addEventListener('click',()=>setMode('frozen',true));root.append(frozen)}
+function renderNav(){const root=$('experimentNav');root.replaceChildren();for(const id of ['E0','E1']){const v=versions[id],b=el('button',undefined,'experiment-step '+v.color);b.append(el('span',id),el('b',v.label),el('small',v.tag));b.setAttribute('aria-pressed',String(state.experiment===id));b.addEventListener('click',()=>setExperiment(id));root.append(b)}const frozen=el('button',undefined,'experiment-step new');frozen.append(el('span','E3'),el('b','Double frozen + MLP'),el('small','HASIL BARU · ZIP TERVERIFIKASI'));frozen.addEventListener('click',()=>setMode('frozen',true));root.append(frozen)}
 function setMode(mode,scroll=false){state.mode=mode;$('frozenRoom').hidden=mode!=='frozen';$('openFrozen').setAttribute('aria-pressed',String(mode==='frozen'));if(mode==='frozen')window.MLPFrozen.render();$('metricsRoom').hidden=mode!=='metrics';$('openMetricGuide').setAttribute('aria-pressed',String(mode==='metrics'));if(mode==='metrics')window.MLPResults.render();$('reader').hidden=mode!=='book';$('comparison').hidden=mode!=='comparison';$('openStudy').setAttribute('aria-pressed',String(mode==='book'));$('openComparison').setAttribute('aria-pressed',String(mode==='comparison'));if(mode==='comparison')render();if(scroll)(mode==='book'?$('reader'):mode==='metrics'?$('metricsRoom'):mode==='frozen'?$('frozenRoom'):$('comparison')).scrollIntoView({behavior:'instant',block:'start'})}
 function setExperiment(id){if(!['E0','E1'].includes(id))return;state.experiment=id;renderNav();render()}
 function setScenario(id){if(!['S1','S2','S3'].includes(id))return;state.scenario=id;render()}
@@ -71,6 +95,6 @@ function controlTabKeys(e){if(!['ArrowLeft','ArrowRight','Home','End'].includes(
 document.querySelectorAll('[data-compare-tab]').forEach(b=>{b.addEventListener('click',()=>setTab(b.dataset.compareTab));b.addEventListener('keydown',controlTabKeys)});
 $('openComparison').addEventListener('click',()=>setMode('comparison'));$('heroComparison').addEventListener('click',()=>setMode('comparison',true));$('openStudy').addEventListener('click',()=>setMode('book'));$('backToBook').addEventListener('click',()=>{setMode('book',true);app.openChapter(10);app.setTab('code')});$('comparisonNext').addEventListener('click',()=>setTab(tabs[(tabs.indexOf(state.tab)+1)%tabs.length]));for(const id of ['startBook','jumpResults'])$(id).addEventListener('click',()=>setMode('book',true));
 window.addEventListener('mlp-private-ready',()=>{if(state.mode==='comparison'&&state.tab==='results')render()});
-window.MLPCompare={setMode,setExperiment,setScenario,setTab,getState:()=>({...state,baselineLoaded:Boolean(baselineBytes)}),loadBaselineNotebook,getBaselineBytes:()=>baselineBytes,getBaselineEvalBytes:()=>baselineEvalBytes,getBaselineEvaluation:()=>baselineEvaluation,loadBaselineWorkbook,loadBaselineZip,changedLines};
+window.MLPCompare={setMode,setExperiment,setScenario,setTab,getState:()=>({...state,baselineLoaded:Boolean(baselineBytes)}),loadBaselineNotebook,getBaselineBytes:()=>baselineBytes,getBaselineEvalBytes:()=>baselineEvalBytes,getBaselineEvaluation:()=>baselineEvaluation,loadBaselineWorkbook,loadBaselineZip,changedLines,experimentTable};
 renderNav();
 })();
