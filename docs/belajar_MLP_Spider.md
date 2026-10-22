@@ -51,9 +51,11 @@ Daftar bab, kode, catatan, output, dan tabel mempunyai area scroll agar halaman 
 
 ### Kode dan catatan dalam satu layar
 
-Di tab **Kode + sticky note**, klik **⛶ Layar penuh**. Kode dan catatan memenuhi layar browser, tetap berdampingan di desktop maupun HP. Pilihan blok kode, pencarian, salin kode dan kamus istilah tetap bisa dipakai. Keluar melalui **Kembali ke buku** atau **Esc**; blok dan catatan yang sedang dibaca tetap terbuka.
+Di tab **Kode + sticky note**, klik **⛶ Layar penuh**. Browser masuk ke fullscreen bila mendukungnya; bila tidak, kanvas tetap memenuhi area halaman. Tidak ada header besar atau panel catatan terpisah. Kode dan sticky note menempati satu latar dan **satu area scroll**. Baris panjang dibungkus secara visual agar tidak memerlukan scrollbar mendatar; kode yang disalin tetap persis seperti sumber.
 
-Klik nomor baris bertanda atau judul catatan: sticky note disejajarkan dengan baris yang disorot. Saat kode digulir, catatan mengikuti posisi baris itu. Jika baris keluar dari area baca, catatan beralih ke penanda penting yang terlihat di dekat bagian atas kode. Gerak kertas dibatasi tepi panel agar penjelasannya tetap terbaca. Daftar catatan di kanan juga dapat digulir untuk memilih baris lain. Perilaku ini berlaku pada tampilan biasa saat kedua panel berdampingan; di HP, gunakan layar penuh untuk membacanya berdampingan.
+Catatan menempel di samping baris yang disorot dan ikut bergerak bersama kode ketika digulir, termasuk saat roda mouse berada di atas kertas catatan. Penjelasan panjang dapat dibaca sampai akhir dengan scroll yang sama. Setelah catatan keluar dari area baca, penanda penting yang sedang terlihat menjadi catatan aktif berikutnya.
+
+Dua kontrol kecil mengambang di pojok: **☰ Kode** membuka pilihan blok, catatan baris, pencarian dan salin kode; **×** atau **Esc** mengembalikan buku. Pilihan kode disembunyikan saat tidak diperlukan. Blok dan posisi baca dipertahankan dengan mengikuti nomor baris ketika ukuran baris berubah. Pada tampilan buku biasa, susunan kode dan catatan sebelumnya tetap tersedia.
 
 [Preview layar penuh](previews/mlp_study/10_kode_layar_penuh.png) · [Preview HP](previews/mlp_study/11_kode_layar_penuh_mobile.png).
 

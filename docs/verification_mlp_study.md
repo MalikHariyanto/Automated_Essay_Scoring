@@ -1,6 +1,20 @@
 # Verifikasi buku hasil MLP
 
-## Layar penuh dan catatan mengikuti kode — 22 Oktober 2026
+## Kanvas tanpa header dengan satu scroll — 22 Oktober 2026
+
+Revisi dari HEAD `8324b1f140ee0ca18d363973e1e1c2f62f2ae95e`, sesuai koreksi pengguna terhadap versi layar penuh pertama. Header, toolbar permanen, pembatas kolom dan scroll terpisah dihapus dari mode layar penuh. `codeLines` dan `notePane` sekarang anak dari satu `codeCanvas` di dalam `codeScroll`. Latar catatan transparan tanpa border; kertas kuning ditempel pada koordinat baris sumber di kanvas. Kode dan catatan bergerak bersama, termasuk scroll di atas catatan. Baris panjang dibungkus secara visual; tombol salin tetap mengambil source asli.
+
+Kontrol hanya tombol × dan menu kecil **Kode** yang mengambang. Menu berisi pemilih blok, pemilih catatan, pencarian dan salin kode. Fullscreen memakai Fullscreen API browser dari klik pengguna; bila API tidak tersedia atau ditolak, kanvas tetap memenuhi viewport. Keluar dari fullscreen browser juga menutup kanvas dan kamus yang masih terbuka. Nomor baris menjadi acuan pemulihan posisi karena tinggi baris berbeda antara kode terbungkus dan tampilan biasa.
+
+`node scripts/check_mlp_fullscreen.mjs http://127.0.0.1:8765/docs/belajar_MLP_Spider.html http://127.0.0.1:8765/outputs/mlp_study/belajar_MLP_Spider_Privat.html` dari cwd `/workspace/Automated_Essay_Scoring`: **11 kelompok lolos, 0 gagal, 0 dilewati**, exit 0. Versi Chromium `154.0.8037.57`, Playwright `1.62.1`, Node `24.19.0`. Pemeriksaan menguji satu-satunya elemen scroll vertikal adalah `codeScroll`, tidak ada overflow mendatar, tidak ada header, latar catatan transparan dan border nol, serta kedua elemen berada dalam kanvas yang sama. Enam ukuran viewport mencakup HP 320×568 dan landscape. Scroll melalui kertas menggeser kode dan catatan dengan jarak sama; penjelasan panjang tidak berganti ketika masih dibaca.
+
+Seluruh 16 bab desktop/HP diperiksa, termasuk menu, keyboard, kamus, pencarian, salin source persis, fallback saat clipboard ditolak, pemulihan struktur buku dan blok terpilih. Fullscreen browser asli diuji pada context terpisah; keluar melalui Fullscreen API memulihkan buku dan menutup kamus. Fallback diuji ketika API tidak tersedia maupun mengembalikan penolakan. Bundel pribadi serta HTML hasil ekspor browser dibuka ulang: satu kanvas, seluruh 34 output dan workbook awal tetap tersedia. Tidak ada error JS atau jaringan eksternal.
+
+Unit test `python -m unittest discover -s tests -p 'test_mlp_*.py' -v`: **14 passed, 0 failed, 0 skipped, 0 xfailed**, exit 0, Python `3.12.14`. Regresi pembaca lengkap **12 kelompok**, pembanding **8 kelompok**, dan interpretasi angka **6 kelompok**, semuanya exit 0/0 gagal. Template, kode sumber yang ditampilkan dan hasil penelitian diperiksa terpisah: JSON kode/catatan/output yang diembed identik dengan HEAD sebelumnya, notebook training tidak diubah, dan tidak ada eksekusi model/training baru.
+
+Preview desktop/HP diperbarui dari HTML publik tanpa memuat file pribadi. HTML pribadi tetap di `outputs/` dan tidak diterbitkan. Bukti log, hasil browser, manifest SHA-256 dan audit privasi disimpan lokal pada `outputs/mlp_study/canvas_*`.
+
+## Layar penuh dan catatan mengikuti kode, versi pertama — 22 Oktober 2026
 
 Dilanjutkan dari HEAD `52199cfb46fca416ca40b9b5467533d42134850c`, branch `codex/aes-learning`. Tab **Kode + sticky note** mempunyai tombol **Layar penuh**: satu dialog memenuhi viewport dan memindahkan panel yang sama, sehingga kode dan catatan tetap berdampingan tanpa menggandakan source. Tombol kembali/Esc mengembalikan panel, fokus, blok, catatan dan posisi gulir. Pengambilan posisi dilakukan sebelum dialog ditutup karena elemen tersembunyi melaporkan posisi gulir nol.
 
