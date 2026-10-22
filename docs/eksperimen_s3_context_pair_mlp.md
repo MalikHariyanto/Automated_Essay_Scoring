@@ -20,7 +20,7 @@ Kapasitas total RoBERTa tetap 512 token, termasuk special token pasangan. Batas 
 
 ## Menjalankan
 
-1. Buka notebook baru, pilih T4 bila tersedia, lalu jalankan dari atas. CPU tetap diperbolehkan, dengan waktu training lebih lama.
+1. Buka notebook baru, pilih **Runtime → Change runtime type → T4 GPU**, lalu jalankan dari atas. Metadata notebook meminta GPU dan `REQUIRE_GPU=True` menghentikan model bila CUDA belum aktif. GPU NVIDIA lain juga diterima. Tabel pemeriksaan menampilkan nama GPU, status CUDA dan memori; embedding/training memakai CUDA, sedangkan tokenisasi/Excel tetap CPU. Mode audit tanpa model boleh CPU.
 2. Sambungkan Drive ketika Colab meminta izin. Folder baru: `MyDrive/AES_300_S3_ContextPair_MLP_Privat`.
 3. Pilih `fix_dataset_300.xlsx` jika diminta. Dataset pribadi tidak ditanam di repo. Enam header tetap: `Email address`, `response_number`, `response_text`, `soal`, `jawaban_referensi`, `rater`.
 4. Untuk contoh prediksi, biarkan `NEW_ANSWER`, `NEW_QUESTION`, dan `NEW_REFERENCE` kosong. Ketiganya diambil dari satu baris data uji yang sama.

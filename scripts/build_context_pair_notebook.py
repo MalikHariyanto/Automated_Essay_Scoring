@@ -40,7 +40,6 @@ def build():
             text = text.replace('/content/AES_300_MLP', '/content/AES_300_S3_ContextPair_MLP')
             text = text.replace('outputs/AES_300_MLP', 'outputs/AES_300_S3_ContextPair_MLP')
             text = text.replace("lesson_version='s3_mlp_account2_v1'", "lesson_version='s3_context_pair_mlp_v1'")
-            text = text.replace("'AES300_REQUIRE_GPU':'1' if IN_COLAB else os.environ.get('AES300_REQUIRE_GPU','0')", "'AES300_REQUIRE_GPU':'0'")
             text = text.replace("'new_answer', 'focus_word'", "'new_answer', 'focus_word', 'new_question', 'new_reference'")
             if 'DEFAULTS = {' in text:
                 text = replace_once(text, "    'vector_source': 'pretrained', 'trace_position': 0,", """    # Batas konteks dihitung termasuk prefix; semua token jawaban tetap dicakup.
@@ -74,10 +73,10 @@ CONTEXT_MAX_TOKENS,QUESTION_MAX_TOKENS=192,64
 NEW_ANSWER=''""")
                 text = replace_once(text, "device='auto',new_answer=NEW_ANSWER,", """device='auto',new_answer=NEW_ANSWER,new_question=NEW_QUESTION,new_reference=NEW_REFERENCE,
                 context_max_tokens=CONTEXT_MAX_TOKENS,question_max_tokens=QUESTION_MAX_TOKENS,""")
-                text = replace_once(text, "gpu=check_gpu(require_gpu=RUN_MODELS and os.environ.get('AES300_REQUIRE_GPU')=='1')", """REQUIRE_GPU=False  # CPU boleh; pilih T4 untuk mempercepat training.
+                text = replace_once(text, "gpu=check_gpu(require_gpu=RUN_MODELS and os.environ.get('AES300_REQUIRE_GPU')=='1')", """REQUIRE_GPU=True  # Wajib GPU saat menjalankan model; aktifkan T4 di menu Runtime.
 gpu=check_gpu(require_gpu=RUN_MODELS and REQUIRE_GPU)
-if RUN_MODELS and not gpu['cuda_available']:
-    print('Mode CPU aktif; training lebih lama. Progres tetap disimpan otomatis.', flush=True)""")
+if RUN_MODELS and gpu['cuda_available']:
+    print(f\"GPU aktif: {gpu['name']}. Embedding dan training memakai CUDA; checkpoint tetap disimpan ke Drive.\", flush=True)""")
             if 'def read_dataset(' in text:
                 text = text.replace("'input_features': ['response_text']", "'input_features': ['response_text', 'soal (S3)', 'jawaban_referensi (S3)']")
                 text = text.replace('Pertanyaan/referensi/email/nilai tidak masuk fitur.', 'S3 memakai soal/referensi dan jawaban; S1/S2 hanya jawaban. Email/nilai tidak masuk fitur encoder.')
@@ -181,7 +180,9 @@ S1 tetap RoBERTa fine-tuned + head linear, hanya membaca jawaban siswa. S2 tetap
 
 Alur dan lima laporan Excel mengikuti MLP acuan: setup → dataset → split → tokenisasi → embedding → model → CV/refit/test → prediksi → vektor → unduhan. Maksimal 25 epoch, patience 5, encoder LR 1e-5, proyeksi/head LR 1e-4. Tidak menambahkan gated fusion, Ridge atau perubahan learning rate lain.
 
-**Drive terpisah:** MyDrive/AES_300_S3_ContextPair_MLP_Privat. Progres otomatis disimpan tiap epoch; checkpoint lama tidak dihapus otomatis dan tidak menggunakan Drive API cleanup. CPU didukung; T4 dianjurkan untuk training. Jalankan dari atas dan pilih dataset fix_dataset_300.xlsx bila diminta. Notebook tidak clone/import proyek.
+**Runtime GPU:** pilih Runtime → Change runtime type → T4 GPU, lalu jalankan dari atas. REQUIRE_GPU=True mencegah model berjalan di CPU tanpa sengaja. Tabel pemeriksaan menunjukkan nama GPU, CUDA dan memorinya; GPU NVIDIA lain juga diterima. Mode audit tanpa model tetap boleh CPU. Tokenisasi dan Excel tetap diproses CPU; embedding dan training memakai CUDA.
+
+**Drive terpisah:** MyDrive/AES_300_S3_ContextPair_MLP_Privat. Progres otomatis disimpan tiap epoch; checkpoint lama tidak dihapus otomatis dan tidak menggunakan Drive API cleanup. Pilih dataset fix_dataset_300.xlsx bila diminta. Notebook tidak clone/import proyek. Jika sebelumnya training di CPU, jangan menganggap checkpoint epoch bisa langsung dilanjutkan di GPU; kontrak perangkat tetap diperiksa.
 
 **Anggaran input S3:** maksimal 512 token total, termasuk special token pasangan. Konteks dibatasi 192 token; soal termasuk prefix maksimal 64 token, sisa anggaran konteks untuk referensi. Pemotongan konteks dilaporkan. Konteks diulang di setiap window; seluruh token jawaban dicakup dengan overlap 128. Nilai guru tidak masuk encoder.
 
@@ -216,7 +217,7 @@ Alur dan lima laporan Excel mengikuti MLP acuan: setup → dataset → split →
         cell['source'] = source(cell).replace('__NOTEBOOK_CODE_SHA256__', fingerprint)
     notebook['metadata']['aes_standalone']['code_sha256'] = fingerprint
     notebook['metadata']['colab']['name'] = DESTINATION.name
-    notebook['metadata'].pop('accelerator', None)
+    notebook['metadata']['accelerator'] = 'GPU'
     notebook['metadata']['aes_experiment'] = {'name': 'S3_CONTEXT_PAIR_MLP', 'base_sha256': hashlib.sha256(original).hexdigest(),
         's1': 'answer_only_fine_tuned_linear', 's2': 'answer_only_frozen_mlp',
         's3': 'roberta_context_pair_fine_tuned_bge_answer_only_frozen_mlp',

@@ -71,6 +71,7 @@ def test_clean_isolated_standalone_notebook_and_originals_unchanged():
     assert len(n.cells)==47 and sum(c.cell_type=='code' for c in n.cells)==30
     assert n.metadata.aes_experiment.base_sha256==hashlib.sha256(BASE.read_bytes()).hexdigest()
     assert n.metadata.aes_experiment.name=='S3_CONTEXT_PAIR_MLP'
+    assert n.metadata.accelerator=='GPU'
     assert not n.metadata.aes_experiment.automatic_checkpoint_deletion
     assert (ROOT/'aes-learning/notebooks/experiments'/NOTEBOOK.name).read_bytes()==NOTEBOOK.read_bytes()
     assert n.metadata.aes_standalone.code_sha256!=nbformat.read(BASE,as_version=4).metadata.aes_standalone.code_sha256
@@ -90,6 +91,26 @@ def test_builder_is_deterministic_across_python_versions():
     for executable in ('python',sys.executable):
         subprocess.run([executable,str(ROOT/'scripts/build_context_pair_notebook.py')],cwd=ROOT,check=True,capture_output=True)
         assert NOTEBOOK.read_bytes()==before
+
+
+def test_gpu_guard_blocks_cpu_and_accepts_reported_cuda_device():
+    """Pemeriksaan perangkat dengan CUDA tiruan; bukan eksekusi GPU asli."""
+    notebook=nbformat.read(NOTEBOOK,as_version=4)
+    code=next(c.source.removeprefix('%%aes\n') for c in notebook.cells
+              if c.cell_type=='code' and 'def check_gpu(' in c.source)
+    node=next(n for n in ast.parse(code).body if isinstance(n,ast.FunctionDef) and n.name=='check_gpu')
+    cuda=types.SimpleNamespace(is_available=lambda:False)
+    ns={'torch':types.SimpleNamespace(cuda=cuda)}
+    exec(compile(ast.Module(body=[node],type_ignores=[]),str(NOTEBOOK),'exec'),ns)
+    with pytest.raises(RuntimeError,match='GPU belum aktif'):
+        ns['check_gpu'](require_gpu=True)
+    assert ns['check_gpu'](require_gpu=False)['name']=='CPU'
+    cuda.is_available=lambda:True
+    cuda.get_device_name=lambda index:'NVIDIA T4'
+    cuda.get_device_properties=lambda index:types.SimpleNamespace(total_memory=16*1024**3)
+    assert ns['check_gpu'](require_gpu=True)=={'name':'NVIDIA T4','cuda_available':True,'is_t4':True,'memory_gib':16.0}
+    cuda.get_device_name=lambda index:'NVIDIA L4'
+    assert not ns['check_gpu'](require_gpu=True)['is_t4']
 
 
 def test_pair_layout_repeats_context_and_covers_entire_answer():
@@ -274,6 +295,9 @@ def tokenizer(*args,**kwargs):return PairTechnicalTokenizer()
     for cell in notebook.cells:
         if cell.cell_type!='code':continue
         if 'EPOCHS,FOLDS=25,5' in cell.source:
+            # Fixture teknis berjalan di CPU; notebook pengguna tetap mewajibkan GPU.
+            assert 'REQUIRE_GPU=True' in cell.source
+            cell.source=cell.source.replace('REQUIRE_GPU=True','REQUIRE_GPU=False')
             cell.source=cell.source.replace('EPOCHS,FOLDS=25,5','EPOCHS,FOLDS=1,5').replace('expected_rows=300','expected_rows=24')
             cell.source=cell.source.replace('CONTEXT_MAX_TOKENS,QUESTION_MAX_TOKENS=192,64','CONTEXT_MAX_TOKENS,QUESTION_MAX_TOKENS=12,4')
             cell.source=cell.source.replace("context_max_tokens=CONTEXT_MAX_TOKENS,question_max_tokens=QUESTION_MAX_TOKENS,", "context_max_tokens=CONTEXT_MAX_TOKENS,question_max_tokens=QUESTION_MAX_TOKENS,roberta_max_length=32,roberta_overlap=4,bge_max_length=32,")
