@@ -1,5 +1,33 @@
 # Verifikasi buku hasil MLP
 
+## Hasil double frozen dan semua blok dalam satu scroll — 22 Oktober 2026
+
+Dilanjutkan dari HEAD `7789483dabe26328f6b5bb56817af96663dc515d` pada branch `codex/aes-learning`. ZIP terbaru pengguna dibaca sebagai hasil double frozen + MLP, lalu ditambahkan sebagai pembanding E3. Buku MLP acuan tetap mengikuti source `15bc7bb`; notebook training, snapshot MLP, snapshot awal dan seluruh kode/output acuan tidak diubah. Tidak ada eksekusi encoder atau training baru.
+
+`scripts/build_mlp_frozen.py --frozen <ZIP_baru> --mlp <ZIP_MLP_acuan>` dijalankan memakai Python di `outputs/dataset300_env_py313/bin/python`. Ekstraksi memeriksa lima workbook/41 sheet, dataset 300 jawaban, pembagian development/test 240/60, 1.200 baris anggota fold serta ID/nilai guru 60 test terhadap sumber MLP acuan. Metrik dihitung ulang dari pasangan prediksi dengan toleransi absolut `1e-6`; QWK/AC2 cocok pada presisi numerik dan perbedaan terbesar RMSE/Pearson kurang dari `4e-7`. Semua 300 × 768 komponen RoBERTa mentah S3 sama persis dengan pretrained, selisih maksimum nol. Snapshot publik menyimpan agregat dan kode rujukan, tanpa pasangan individual/teks/vektor.
+
+Kode E3 merupakan rujukan notebook manual pada commit `0c79d655898f967e855922be3c5fad1865efb1aa`. Notebook eksekusi hasil E3 belum diunggah, sehingga source runtime tidak diklaim identik byte demi byte. Angka baru S3 test 7,8611 dan CV mean 6,8363 dibanding MLP acuan 6,7085/6,0516. UI menjelaskan bahwa pembekuan belum memperbaiki run ini, S1/S2 juga bergeser meski arsitektur tetap, dan hasil satu run belum mengisolasi penyebab maupun membuktikan signifikansi.
+
+Mode layar penuh mendapat tombol **Semua blok / Per blok**. Seluruh 30 blok/2.488 baris tetap source asli dan mengikuti urutan notebook, dengan pembatas bernama. Kode dan catatan tetap memakai satu `codeScroll`; pencarian, pemilih blok dan catatan mengenali blok sekaligus nomor baris. Salin mengambil blok sumber aktif. Keluar layar penuh memulihkan buku biasa; mode per blok tetap tersedia.
+
+Perintah verifikasi dari cwd `/workspace/Automated_Essay_Scoring` (semua exit 0):
+
+```bash
+python -m unittest discover -s tests -p 'test_mlp_*.py' -v
+node scripts/check_mlp_fullscroll.mjs
+node scripts/check_mlp_frozen.mjs
+node scripts/check_mlp_metrics.mjs
+node scripts/check_mlp_study.mjs <URL_publik> <notebook_MLP_privat> <ZIP_MLP_privat> outputs/mlp_study/expected_workbooks.json
+node scripts/check_mlp_fullscreen.mjs <URL_publik> <URL_privat>
+node scripts/check_mlp_comparison.mjs
+```
+
+Unit test: **17 passed, 0 failed, 0 skipped, 0 xfailed**. Pengujian browser baru: **5 kelompok** semua blok dan **8 kelompok** double frozen. Regresi pembaca lama **12 kelompok**, arti angka **6 kelompok**, kanvas fullscreen **11 kelompok**, pembanding lama **8 kelompok**; semuanya 0 gagal. Browser Chromium `154.0.8037.57`, Playwright `1.62.1`, Node `24.19.0`, Python unit test `3.12.14`. Pemeriksaan mencakup 48 kombinasi skenario/tab/viewport, 30 grafik dua run dengan semua epoch, 60 pasangan prediksi tiap skenario, 41 sheet baru, komponen terakhir 1024, unduhan XLSX identik dan ekspor/reopen pribadi yang mempertahankan seluruh sumber hasil. Tidak ada error JS atau jaringan eksternal.
+
+Seluruh pengujian browser di atas memakai server localhost. Percobaan tambahan membuka `file://` langsung terhalang kebijakan Chromium lingkungan cloud (`ERR_BLOCKED_BY_ADMINISTRATOR`, proses exit 1), sebelum halaman dieksekusi. Jadi pembukaan langsung sebagai berkas lokal tidak diklaim teruji di lingkungan ini; halaman tetap menyertakan CSS/JS/data sendiri tanpa CDN atau permintaan jaringan eksternal.
+
+HTML publik dibangun ulang deterministik dan diperiksa tidak berisi payload pribadi. Seluruh teks siswa dari workbook dipindai terhadap perubahan publik; hasil individual/berkas sumber tetap di `outputs/` atau unggahan lokal dan tidak diterbitkan. Preview publik [hasil desktop](previews/mlp_study/12_double_frozen_review.png), [HP](previews/mlp_study/14_double_frozen_mobile.png), [semua blok](previews/mlp_study/13_semua_blok_layar_penuh.png) dan [semua blok HP](previews/mlp_study/15_semua_blok_mobile.png) tidak memuat file pribadi. Log, JSON hasil test, manifest SHA-256 dan audit privasi disimpan lokal pada `outputs/mlp_study/frozen_*` dan `fullscroll_*`.
+
 ## Kanvas tanpa header dengan satu scroll — 22 Oktober 2026
 
 Revisi dari HEAD `8324b1f140ee0ca18d363973e1e1c2f62f2ae95e`, sesuai koreksi pengguna terhadap versi layar penuh pertama. Header, toolbar permanen, pembatas kolom dan scroll terpisah dihapus dari mode layar penuh. `codeLines` dan `notePane` sekarang anak dari satu `codeCanvas` di dalam `codeScroll`. Latar catatan transparan tanpa border; kertas kuning ditempel pada koordinat baris sumber di kanvas. Kode dan catatan bergerak bersama, termasuk scroll di atas catatan. Baris panjang dibungkus secara visual; tombol salin tetap mengambil source asli.

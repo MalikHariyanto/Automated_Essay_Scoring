@@ -52,3 +52,19 @@ body.reading-code-fullscreen{overflow:hidden;overflow-anchor:none}
 /* Tampilan buku biasa tetap menyelaraskan catatan dengan sorotan kode. */
 #notePane.note-follows-code .sticky-note{margin-top:var(--note-offset,0px);transform:none}
 #notePane.note-follows-code .sticky-note:after{content:'';position:absolute;left:-10px;top:8px;width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:10px solid #ffe76b;pointer-events:none}
+
+/* Pembatas menyebut fungsi blok; seluruh 30 blok tetap berbagi satu kanvas. */
+#canvasModeToggle{border:1px solid #617994;background:#172841ed;color:#dbeaff;border-radius:8px;font-size:11px;padding:8px 11px;height:36px;white-space:nowrap;box-shadow:0 3px 15px #0004}
+#canvasModeToggle[aria-pressed=true]{background:var(--yellow);color:var(--ink);border-color:#c3aa48}
+.canvas-code-block{margin:0 0 42px;min-width:0}
+.canvas-block-heading{border-top:2px solid #55728f;border-bottom:1px solid #324b67;background:linear-gradient(110deg,#203550,#14243b);padding:22px 21px 18px;margin:0 0 22px;color:#e0f2ff;border-radius:0 0 8px 8px}
+.canvas-block-heading small{color:#ffe56e;font-size:10px;font-weight:800;letter-spacing:1.5px}
+.canvas-block-heading h3{font-size:22px;line-height:1.3;margin:5px 0 8px;overflow-wrap:anywhere}
+.canvas-block-heading p{font-size:11px;line-height:1.5;color:#9bb6cf;margin:0}
+@media(max-width:700px){
+ #canvasModeToggle{font-size:10px;height:32px;padding:6px 8px}
+ .canvas-block-heading{padding:16px 10px;margin-bottom:16px}
+ .canvas-block-heading h3{font-size:16px}
+ .canvas-block-heading small{font-size:8px;letter-spacing:.5px}
+ .canvas-block-heading p{font-size:9px}
+}

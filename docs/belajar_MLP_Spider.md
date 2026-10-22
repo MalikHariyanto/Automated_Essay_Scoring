@@ -2,7 +2,7 @@
 
 Unduh [belajar_MLP_Spider.html](belajar_MLP_Spider.html) dengan **Download raw file**, lalu buka di Chrome, Edge, atau Firefox. Halaman berjalan offline tanpa instalasi, CDN, atau training. Tampilan memakai tema Spider-Man full colour dari buku paper: splash warna, kota komik, pose di tepi halaman dan sticky note yang menimpa border.
 
-Source mengikuti [commit 15bc7bb](https://github.com/MalikHariyanto/Automated_Essay_Scoring/commit/15bc7bbb2aee91ecaf44fb91a0139a8c21f64a20). Seluruh 30 cell kode unggahan `AES_300_S3_MLP (1).ipynb` sama dengan source pada commit itu. Buku tidak mengikuti eksperimen double-frozen yang dibuat kemudian, dan tidak mengubah notebook utama.
+Source mengikuti [commit 15bc7bb](https://github.com/MalikHariyanto/Automated_Essay_Scoring/commit/15bc7bbb2aee91ecaf44fb91a0139a8c21f64a20). Seluruh 30 cell kode unggahan `AES_300_S3_MLP (1).ipynb` sama dengan source pada commit itu. Buku MLP tetap mengikuti run acuan tersebut. Hasil double frozen kini tersedia sebagai pembanding E3 tersendiri; notebook utama tidak diubah.
 
 ## Menu perbandingan eksperimen
 
@@ -34,7 +34,17 @@ Penjelasan mengikuti skenario yang dipilih. RMSE/MSE tidak diberi batas bagus/je
 
 ZIP `Hasil_AES_Ringkas (1).zip` yang dikirim kemudian terverifikasi sebagai hasil **awal lima epoch**, bukan double-frozen: pengaturannya lima epoch, head S3 linear, serta metriknya cocok sumber awal. File ini melengkapi pembuktian bahwa data, train/test dan anggota semua fold sama dengan run MLP. Metrik awal dan riwayat sekarang memakai nilai numerik penuh dari Excel.
 
-HTML pribadi memuat workbook evaluasi awal asli. Tabel **60 pasangan prediksi awal/MLP** dicocokkan melalui ID dan nilai guru, bukan posisi baris. Ada prediksi mentah kedua versi, pembulatan MLP, serta error absolut per jawaban. Salinan GitHub hanya menyimpan agregat; pilih ZIP awal pada meja hasil dan ZIP MLP pada tombol di atas untuk membuka nilai individual lokal. Tombol Simpan HTML lengkap ikut menyimpan workbook awal, sehingga tidak perlu memilihnya lagi ketika dibuka ulang. Hasil double-frozen belum ditambahkan.
+HTML pribadi memuat workbook evaluasi awal asli. Tabel **60 pasangan prediksi awal/MLP** dicocokkan melalui ID dan nilai guru, bukan posisi baris. Ada prediksi mentah kedua versi, pembulatan MLP, serta error absolut per jawaban. Salinan GitHub hanya menyimpan agregat; pilih ZIP awal pada meja hasil dan ZIP MLP pada tombol di atas untuk membuka nilai individual lokal. Tombol Simpan HTML lengkap ikut menyimpan workbook awal, sehingga tidak perlu memilihnya lagi ketika dibuka ulang. Hasil double frozen yang diunggah kemudian tersedia pada menu **MLP vs double frozen**.
+
+## Pembanding baru: double frozen + MLP
+
+Tombol **MLP vs double frozen** di pemilih ruang atau **E3** di daftar eksperimen membuka empat tab: **Hasil & kesimpulan**, **Proses, kode & latihan**, **Guru & prediksi**, serta **Excel run baru**. Ada sembilan baris test dari tiga versi hasil, empat metrik lengkap, perbandingan kelima fold, mean/SD, loss refit dan grafik seluruh epoch MLP versus double frozen. S1 tetap fine-tuned; istilah double frozen berlaku pada kedua encoder S3.
+
+Hasil ZIP baru menunjukkan RMSE test S1 **6,8829**, S2 **6,8435**, dan S3 **7,8611**. S3 MLP acuan **6,7085**, sehingga pembekuan belum memperbaiki S3 pada run ini. Dataset, pembagian 240/60, anggota semua fold serta nilai guru test telah dicocokkan. S1/S2 juga bergeser meskipun arsitektur tetap; perbandingan belum mengisolasi satu penyebab. [Review dan bukti lengkap](review_double_frozen_results.md).
+
+Semua 300 × 768 komponen RoBERTa mentah S3 baru sama persis dengan pretrained. LayerNorm tambahan, proyeksi dan MLP tetap dilatih. Kode pembanding di tab proses adalah rujukan notebook manual dari repo; notebook eksekusi double frozen belum diunggah, sehingga kecocokan source runtime byte demi byte tidak diklaim.
+
+Berkas `Hasil_AES_Ringkas (3).zip` dibuka lokal melalui pemilih ZIP double frozen. Seluruh 41 sheet tersedia dengan paging baris dan delapan komponen; komponen terakhir tetap dapat dijangkau. Tabel 60 pasangan guru/prediksi/pembulatan/error untuk MLP dan frozen dicocokkan melalui ID. HTML pribadi terbaru memuat ZIP ini otomatis; tombol **Simpan HTML lengkap** mempertahankannya saat diekspor dan dibuka lagi. Teks, ID, skor individual dan vektor tetap berada pada file pribadi.
 
 ## Cara membaca
 
@@ -55,9 +65,13 @@ Di tab **Kode + sticky note**, klik **⛶ Layar penuh**. Browser masuk ke fullsc
 
 Catatan menempel di samping baris yang disorot dan ikut bergerak bersama kode ketika digulir, termasuk saat roda mouse berada di atas kertas catatan. Penjelasan panjang dapat dibaca sampai akhir dengan scroll yang sama. Setelah catatan keluar dari area baca, penanda penting yang sedang terlihat menjadi catatan aktif berikutnya.
 
-Dua kontrol kecil mengambang di pojok: **☰ Kode** membuka pilihan blok, catatan baris, pencarian dan salin kode; **×** atau **Esc** mengembalikan buku. Pilihan kode disembunyikan saat tidak diperlukan. Blok dan posisi baca dipertahankan dengan mengikuti nomor baris ketika ukuran baris berubah. Pada tampilan buku biasa, susunan kode dan catatan sebelumnya tetap tersedia.
+Kontrol kecil mengambang di pojok: tombol **Semua blok / Per blok** mengganti cara membaca, **☰ Kode** membuka pilihan blok, catatan baris, pencarian dan salin kode; **×** atau **Esc** mengembalikan buku. Pilihan kode disembunyikan saat tidak diperlukan. Blok dan posisi baca dipertahankan dengan mengikuti nomor baris ketika ukuran baris berubah. Pada tampilan buku biasa, susunan kode dan catatan sebelumnya tetap tersedia.
+
+**Semua blok:** seluruh 30 blok dan 2.488 baris disusun sesuai urutan notebook pada satu scroll. Setiap blok mempunyai pembatas bernama, seperti Environment & folder kerja, Tokenisasi aktual, Arsitektur S1–S3, atau Unduh hasil. Nomor baris tetap lokal per blok. Sticky note mengenali blok dan baris sekaligus; pencarian menjangkau seluruh kode. Menu **Kode** dapat melompat ke blok/catatan mana pun. **Salin blok aktif** tetap menyalin source blok asli, bukan menggabungkan cell Python dan `%%aes` menjadi program baru. Tombol **Per blok** mengembalikan tampilan satu blok.
 
 [Preview layar penuh](previews/mlp_study/10_kode_layar_penuh.png) · [Preview HP](previews/mlp_study/11_kode_layar_penuh_mobile.png).
+
+[Preview semua blok](previews/mlp_study/13_semua_blok_layar_penuh.png) · [Semua blok di HP](previews/mlp_study/15_semua_blok_mobile.png) · [Pembanding double frozen](previews/mlp_study/12_double_frozen_review.png).
 
 ## Memuat seluruh output pribadi
 
@@ -103,9 +117,12 @@ Untuk membuat ulang snapshot dan HTML pribadi dengan file asli, gunakan Python y
 python scripts/build_mlp_study.py \
   --notebook '/path/AES_300_S3_MLP (1).ipynb' \
   --results '/path/Hasil_AES_Ringkas (2).zip' \
-  --baseline '/path/notebook_awal_5_epoch.ipynb'
+  --baseline '/path/notebook_awal_5_epoch.ipynb' \
+  --frozen-results '/path/Hasil_AES_Ringkas (3).zip'
 ```
 
 Argumen `--baseline` bersifat opsional untuk bundel pribadi. Tambahkan `--baseline-evaluation outputs/mlp_study/baseline_eval.xlsx` untuk menanamkan workbook evaluasi awal yang sudah diverifikasi. Ekstraksi ulang snapshot pembanding dilakukan dengan `python scripts/build_mlp_comparison.py --baseline '/path/notebook_awal_5_epoch.ipynb' --baseline-results '/path/hasil_awal.zip' --mlp-results '/path/hasil_mlp.zip'`; source awal wajib cocok commit `3afad79`. Sertakan `--baseline-results` dan `--mlp-results` dengan kedua ZIP asli untuk memverifikasi seluruh manifest dan menyimpan evaluasi awal privat. Snapshot publik hanya menyimpan source, riwayat agregat, metrik, checksum dan bukti pencocokan berupa hitungan/status; bukan jawaban atau nilai individual.
 
 Builder membaca source dari commit tetap, bukan dari notebook eksperimen terbaru. Template, isi catatan, dan JSZip berlisensi MIT/GPL disertakan di repository. Tidak ada bobot encoder yang diunduh atau dilatih oleh builder. Bukti pemeriksaan ada di [laporan verifikasi](verification_mlp_study.md).
+
+Snapshot double frozen dibangun dengan `python scripts/build_mlp_frozen.py --frozen '/path/hasil_frozen.zip' --mlp '/path/hasil_MLP_acuan.zip'`. Builder memeriksa identitas dataset/split, empat metrik terhadap 60 pasangan (toleransi absolut 1e-6), epoch CV terpilih, serta kesamaan vektor S3/pretrained. Snapshot publik hanya menyimpan agregat, metadata dan kode rujukan.

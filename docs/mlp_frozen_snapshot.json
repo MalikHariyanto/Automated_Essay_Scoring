@@ -1,0 +1,4410 @@
+{
+  "id": "E3",
+  "scope": "SAVED DOUBLE FROZEN MLP RESULTS; NO NEW TRAINING",
+  "label": "Double frozen + MLP",
+  "zip_sha256": "cf637ddc2b7fd876a5033542112af4f47c83953722c3252b730740fdbd4ae554",
+  "rows": 300,
+  "development": 240,
+  "test": 60,
+  "metrics_recheck": {
+    "max_absolute_difference": 3.985581900067814e-07,
+    "absolute_tolerance": 1e-06,
+    "category_metrics_match": true
+  },
+  "metrics": [
+    {
+      "Skenario": "S1",
+      "Model": "RoBERTa",
+      "RMSE (poin)": 6.882890179195859,
+      "Pearson": 0.52375521527366,
+      "QWK": 0.4749661209390909,
+      "Gwet AC2": 0.9775835914287019,
+      "Di Luar Rentang (%)": 0,
+      "Catatan": null
+    },
+    {
+      "Skenario": "S2",
+      "Model": "BGE-M3",
+      "RMSE (poin)": 6.843471876754506,
+      "Pearson": 0.5522878402090603,
+      "QWK": 0.5046286524138346,
+      "Gwet AC2": 0.9787661831432213,
+      "Di Luar Rentang (%)": 0,
+      "Catatan": null
+    },
+    {
+      "Skenario": "S3",
+      "Model": "Fusion RoBERTa + BGE-M3",
+      "RMSE (poin)": 7.861086215771192,
+      "Pearson": 0.3992172963262476,
+      "QWK": 0.3830594324390082,
+      "Gwet AC2": 0.9706008408681251,
+      "Di Luar Rentang (%)": 0,
+      "Catatan": null
+    }
+  ],
+  "folds": [
+    {
+      "Skenario": "S1",
+      "Fold": 1,
+      "RMSE (poin)": 8.781507831510465,
+      "Pearson": 0.3428102934356871,
+      "QWK": 0.3663952166669261,
+      "Gwet AC2": 0.9661096528710901
+    },
+    {
+      "Skenario": "S1",
+      "Fold": 2,
+      "RMSE (poin)": 9.364580713361581,
+      "Pearson": 0.3531862573607632,
+      "QWK": 0.3917968579374209,
+      "Gwet AC2": 0.9651797860705804
+    },
+    {
+      "Skenario": "S1",
+      "Fold": 3,
+      "RMSE (poin)": 7.667439059987208,
+      "Pearson": 0.4573177547368293,
+      "QWK": 0.3905986339895541,
+      "Gwet AC2": 0.9726735117005637
+    },
+    {
+      "Skenario": "S1",
+      "Fold": 4,
+      "RMSE (poin)": 7.613914050412841,
+      "Pearson": 0.3553039802930691,
+      "QWK": 0.3478158205430932,
+      "Gwet AC2": 0.9730773909259254
+    },
+    {
+      "Skenario": "S1",
+      "Fold": 5,
+      "RMSE (poin)": 5.497396138497717,
+      "Pearson": 0.5609725715224506,
+      "QWK": 0.5094087305377782,
+      "Gwet AC2": 0.9857854111869905
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 1,
+      "RMSE (poin)": 5.647137399425417,
+      "Pearson": 0.6826329753237678,
+      "QWK": 0.5834094646446191,
+      "Gwet AC2": 0.9853828614451133
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 2,
+      "RMSE (poin)": 6.030166306017417,
+      "Pearson": 0.7114310399501947,
+      "QWK": 0.6773006324709666,
+      "Gwet AC2": 0.9822798533638334
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 3,
+      "RMSE (poin)": 7.063325399328689,
+      "Pearson": 0.3101320676307076,
+      "QWK": 0.2352149473517536,
+      "Gwet AC2": 0.9783402810606384
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 4,
+      "RMSE (poin)": 6.96151795536498,
+      "Pearson": 0.4188454448140708,
+      "QWK": 0.3602638087386645,
+      "Gwet AC2": 0.9778176012641177
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 5,
+      "RMSE (poin)": 6.465512461388343,
+      "Pearson": 0.3954698377006526,
+      "QWK": 0.2783533137299253,
+      "Gwet AC2": 0.9819892056043247
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 1,
+      "RMSE (poin)": 6.596861575781972,
+      "Pearson": 0.6056402746747638,
+      "QWK": 0.6006370694803902,
+      "Gwet AC2": 0.980003978935731
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 2,
+      "RMSE (poin)": 7.741499398763635,
+      "Pearson": 0.5477653294024158,
+      "QWK": 0.5379636412066324,
+      "Gwet AC2": 0.971056235289481
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 3,
+      "RMSE (poin)": 6.446608658273759,
+      "Pearson": 0.527955558428579,
+      "QWK": 0.519268451992162,
+      "Gwet AC2": 0.9815448285579134
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 4,
+      "RMSE (poin)": 8.12811551101644,
+      "Pearson": 0.3612004283150306,
+      "QWK": 0.3613751263902932,
+      "Gwet AC2": 0.9692173789080646
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 5,
+      "RMSE (poin)": 5.268641879923486,
+      "Pearson": 0.6045215745590352,
+      "QWK": 0.5789748067824885,
+      "Gwet AC2": 0.9872383204351315
+    }
+  ],
+  "history": {
+    "S1": [
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 1,
+        "Loss Training (MSE)": 1.455831061860711,
+        "RMSE Validasi (poin)": 63.71717597245861,
+        "Pearson Validasi": 0.1690356758892041,
+        "QWK Validasi": 0.09002111538939273,
+        "Gwet AC2 Validasi": 0.9143128271168212
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.2381135490653226,
+        "RMSE Validasi (poin)": 27.86704965703781,
+        "Pearson Validasi": -0.002292063743998957,
+        "QWK Validasi": 0.02973715417986378,
+        "Gwet AC2 Validasi": 0.6563110796996614
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.08778179562185073,
+        "RMSE Validasi (poin)": 18.97351579502617,
+        "Pearson Validasi": 0.09120274065802589,
+        "QWK Validasi": 0.04349884034647611,
+        "Gwet AC2 Validasi": 0.8740422508215957
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.09243208015445248,
+        "RMSE Validasi (poin)": 14.86672199230316,
+        "Pearson Validasi": 0.2457111397611179,
+        "QWK Validasi": 0.2464319695528069,
+        "Gwet AC2 Validasi": 0.9261228410566499
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.09432101105200748,
+        "RMSE Validasi (poin)": 33.50879494247197,
+        "Pearson Validasi": -0.1900312804931695,
+        "QWK Validasi": -0.03670608173169509,
+        "Gwet AC2 Validasi": 0.4285529011081655
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.09255093704418371,
+        "RMSE Validasi (poin)": 23.28086388968691,
+        "Pearson Validasi": 0.2156142817244034,
+        "QWK Validasi": 0.1943860661874138,
+        "Gwet AC2 Validasi": 0.9460821969409998
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.07636092747483995,
+        "RMSE Validasi (poin)": 18.54083234661492,
+        "Pearson Validasi": -0.2563829883172388,
+        "QWK Validasi": -0.09284778948681183,
+        "Gwet AC2 Validasi": 0.8796568226428813
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.07306934829155882,
+        "RMSE Validasi (poin)": 15.1697145062252,
+        "Pearson Validasi": 0.6933314453472936,
+        "QWK Validasi": 0.49170001615132,
+        "Gwet AC2 Validasi": 0.9287960493086437
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.06574399217049098,
+        "RMSE Validasi (poin)": 11.93997887953855,
+        "Pearson Validasi": 0.3960881816449537,
+        "QWK Validasi": 0.4862807931103545,
+        "Gwet AC2 Validasi": 0.9656700181060544
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.05172846797931404,
+        "RMSE Validasi (poin)": 9.819794473238977,
+        "Pearson Validasi": 0.5771531592440987,
+        "QWK Validasi": 0.3796976724691944,
+        "Gwet AC2 Validasi": 0.964418807465078
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.04390754436034191,
+        "RMSE Validasi (poin)": 8.781507831510465,
+        "Pearson Validasi": 0.3428102934356871,
+        "QWK Validasi": 0.3663952166669261,
+        "Gwet AC2 Validasi": 0.9661096528710901
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.0606330129173358,
+        "RMSE Validasi (poin)": 11.31507727626933,
+        "Pearson Validasi": 0.5295224498879723,
+        "QWK Validasi": 0.447261638344441,
+        "Gwet AC2 Validasi": 0.9654836612335613
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.05241862719305453,
+        "RMSE Validasi (poin)": 13.14600635978877,
+        "Pearson Validasi": -0.01492168804023783,
+        "QWK Validasi": 0.06748797266309958,
+        "Gwet AC2 Validasi": 0.9494161300717627
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.0487576150576506,
+        "RMSE Validasi (poin)": 14.12198970648099,
+        "Pearson Validasi": 0.3971419815330148,
+        "QWK Validasi": 0.1633892839662568,
+        "Gwet AC2 Validasi": 0.8979410534772924
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.04121851229210923,
+        "RMSE Validasi (poin)": 11.02312222990188,
+        "Pearson Validasi": 0.6566413939878313,
+        "QWK Validasi": 0.5757511712282928,
+        "Gwet AC2 Validasi": 0.9720083416412423
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.03344275747642689,
+        "RMSE Validasi (poin)": 9.338076359765846,
+        "Pearson Validasi": 0.3397390183467341,
+        "QWK Validasi": 0.3495934959349594,
+        "Gwet AC2 Validasi": 0.9617534427202862
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.257169660759286,
+        "RMSE Validasi (poin)": 23.02270691361701,
+        "Pearson Validasi": -0.0795724666024826,
+        "QWK Validasi": 0.1416597735393148,
+        "Gwet AC2 Validasi": 0.9028943374056775
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.1153931413092787,
+        "RMSE Validasi (poin)": 21.61969214454391,
+        "Pearson Validasi": -0.0477588699042541,
+        "QWK Validasi": 0.1494611306748606,
+        "Gwet AC2 Validasi": 0.9056286077945345
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.09527534157004602,
+        "RMSE Validasi (poin)": 22.17269570100095,
+        "Pearson Validasi": -0.003834373260712093,
+        "QWK Validasi": 0.09888070908447744,
+        "Gwet AC2 Validasi": 0.8952353691979978
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.08911778785306979,
+        "RMSE Validasi (poin)": 22.67428267830691,
+        "Pearson Validasi": 0.2503837205641096,
+        "QWK Validasi": 0.2754299541958344,
+        "Gwet AC2 Validasi": 0.8940346521073084
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.08426139745753088,
+        "RMSE Validasi (poin)": 21.71761718501813,
+        "Pearson Validasi": -0.2928971171222383,
+        "QWK Validasi": -0.1187470875458394,
+        "Gwet AC2 Validasi": 0.9058037411615841
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.08174007147995788,
+        "RMSE Validasi (poin)": 22.27459768002228,
+        "Pearson Validasi": -0.2569440138135433,
+        "QWK Validasi": -0.07744775216719302,
+        "Gwet AC2 Validasi": 0.899980515507619
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.07014918641143215,
+        "RMSE Validasi (poin)": 19.54476145557108,
+        "Pearson Validasi": -0.1334930013001109,
+        "QWK Validasi": -0.03485283549297047,
+        "Gwet AC2 Validasi": 0.8570157237649468
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.06708263369511758,
+        "RMSE Validasi (poin)": 21.27354215314667,
+        "Pearson Validasi": -0.2935013001708718,
+        "QWK Validasi": -0.1167189232700439,
+        "Gwet AC2 Validasi": 0.9165871468674455
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.05144781555360941,
+        "RMSE Validasi (poin)": 13.65043290302341,
+        "Pearson Validasi": 0.3244471222162154,
+        "QWK Validasi": 0.2834507954088199,
+        "Gwet AC2 Validasi": 0.9244440378893057
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.06076216704799749,
+        "RMSE Validasi (poin)": 24.41668877458844,
+        "Pearson Validasi": -0.04740509365900787,
+        "QWK Validasi": -0.01471977750970122,
+        "Gwet AC2 Validasi": 0.6922050154986695
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.06400606485347637,
+        "RMSE Validasi (poin)": 17.42098691424365,
+        "Pearson Validasi": 0.2037186349215173,
+        "QWK Validasi": 0.1758076660421301,
+        "Gwet AC2 Validasi": 0.9113574408822676
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.03642938105848911,
+        "RMSE Validasi (poin)": 13.66520906651125,
+        "Pearson Validasi": 0.03519448132528327,
+        "QWK Validasi": 0.09462725413645667,
+        "Gwet AC2 Validasi": 0.9258271544663689
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.04429195399447757,
+        "RMSE Validasi (poin)": 14.60882435951341,
+        "Pearson Validasi": 0.3746618606775901,
+        "QWK Validasi": 0.3661789086715203,
+        "Gwet AC2 Validasi": 0.9087772482593305
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.04235526549705781,
+        "RMSE Validasi (poin)": 11.76313898235649,
+        "Pearson Validasi": 0.291459314457706,
+        "QWK Validasi": 0.3370880766926303,
+        "Gwet AC2 Validasi": 0.949887930943968
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.04064793223719931,
+        "RMSE Validasi (poin)": 20.48193523140091,
+        "Pearson Validasi": 0.4712924474824765,
+        "QWK Validasi": 0.1911692660692691,
+        "Gwet AC2 Validasi": 0.9245110914197844
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.04279718202009875,
+        "RMSE Validasi (poin)": 11.48401839577873,
+        "Pearson Validasi": 0.250786031979898,
+        "QWK Validasi": 0.2952786811707974,
+        "Gwet AC2 Validasi": 0.9534658743265533
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.04055965765959183,
+        "RMSE Validasi (poin)": 11.50713160443668,
+        "Pearson Validasi": 0.4092285764245083,
+        "QWK Validasi": 0.3823716723984206,
+        "Gwet AC2 Validasi": 0.9511973734243205
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.03510696794818813,
+        "RMSE Validasi (poin)": 12.32374953327448,
+        "Pearson Validasi": 0.1859178349104905,
+        "QWK Validasi": 0.2084495815065764,
+        "Gwet AC2 Validasi": 0.9443454638048021
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.03131260542374056,
+        "RMSE Validasi (poin)": 12.01172430685873,
+        "Pearson Validasi": 0.3397768078442487,
+        "QWK Validasi": 0.2937155174625984,
+        "Gwet AC2 Validasi": 0.9436279780813703
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.03325059052303279,
+        "RMSE Validasi (poin)": 11.18385085361331,
+        "Pearson Validasi": 0.5076001013263658,
+        "QWK Validasi": 0.384927536231884,
+        "Gwet AC2 Validasi": 0.9468415678731342
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.03142730500004435,
+        "RMSE Validasi (poin)": 13.44147596526976,
+        "Pearson Validasi": 0.001088935684908268,
+        "QWK Validasi": 0.09583039581025277,
+        "Gwet AC2 Validasi": 0.9410591503268644
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.03178032446896376,
+        "RMSE Validasi (poin)": 12.3313732136576,
+        "Pearson Validasi": 0.1564130475924492,
+        "QWK Validasi": 0.1851824411928135,
+        "Gwet AC2 Validasi": 0.9455173526278258
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.03090683399846246,
+        "RMSE Validasi (poin)": 9.364580713361581,
+        "Pearson Validasi": 0.3531862573607632,
+        "QWK Validasi": 0.3917968579374209,
+        "Gwet AC2 Validasi": 0.9651797860705804
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 24,
+        "Loss Training (MSE)": 0.02569911659833224,
+        "RMSE Validasi (poin)": 10.80250090827734,
+        "Pearson Validasi": 0.3593382984318221,
+        "QWK Validasi": 0.353652186165618,
+        "Gwet AC2 Validasi": 0.956966822576144
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 25,
+        "Loss Training (MSE)": 0.02533654330707099,
+        "RMSE Validasi (poin)": 10.75372835657405,
+        "Pearson Validasi": 0.3579793539844695,
+        "QWK Validasi": 0.3564204263758055,
+        "Gwet AC2 Validasi": 0.957203273837458
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.8109127749130494,
+        "RMSE Validasi (poin)": 55.39680990553573,
+        "Pearson Validasi": -0.04105166177899976,
+        "QWK Validasi": -0.0567741078964088,
+        "Gwet AC2 Validasi": 0.9143197357474261
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.2050850989828342,
+        "RMSE Validasi (poin)": 21.66729239396346,
+        "Pearson Validasi": 0.3266591927298362,
+        "QWK Validasi": 0.163606814233788,
+        "Gwet AC2 Validasi": 0.7770940470942771
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.09273891647379084,
+        "RMSE Validasi (poin)": 21.78799205373455,
+        "Pearson Validasi": 0.3059510219501671,
+        "QWK Validasi": 0.1904958091597382,
+        "Gwet AC2 Validasi": 0.8577172367106767
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.08174766305749574,
+        "RMSE Validasi (poin)": 17.04730702387032,
+        "Pearson Validasi": 0.2584257669745867,
+        "QWK Validasi": 0.1903264288038173,
+        "Gwet AC2 Validasi": 0.8890432500598333
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.08655696300705291,
+        "RMSE Validasi (poin)": 16.56553448386906,
+        "Pearson Validasi": 0.2483005375441958,
+        "QWK Validasi": 0.1629311907207153,
+        "Gwet AC2 Validasi": 0.8828186729147054
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.07064837453453077,
+        "RMSE Validasi (poin)": 14.56359791177041,
+        "Pearson Validasi": 0.2465359238083055,
+        "QWK Validasi": 0.1724581724581724,
+        "Gwet AC2 Validasi": 0.923836569198412
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.06452309768715736,
+        "RMSE Validasi (poin)": 12.69534241502255,
+        "Pearson Validasi": 0.2119967318374877,
+        "QWK Validasi": 0.1646939701826053,
+        "Gwet AC2 Validasi": 0.9434801889388013
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.04438874233696369,
+        "RMSE Validasi (poin)": 16.40387984673706,
+        "Pearson Validasi": 0.2344763632501397,
+        "QWK Validasi": 0.1052055651086446,
+        "Gwet AC2 Validasi": 0.8668695736723951
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.05631540808870398,
+        "RMSE Validasi (poin)": 10.69669929478409,
+        "Pearson Validasi": 0.1971433340893348,
+        "QWK Validasi": 0.1757969607512928,
+        "Gwet AC2 Validasi": 0.9482109271831324
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.0447399348863815,
+        "RMSE Validasi (poin)": 8.360008147645921,
+        "Pearson Validasi": 0.3772079304810718,
+        "QWK Validasi": 0.3815730337078652,
+        "Gwet AC2 Validasi": 0.9682801499486028
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.03102237092158185,
+        "RMSE Validasi (poin)": 10.67650136288981,
+        "Pearson Validasi": 0.259286354972857,
+        "QWK Validasi": 0.2478990781174187,
+        "Gwet AC2 Validasi": 0.9527830853168668
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.03796256161978206,
+        "RMSE Validasi (poin)": 17.31545179798935,
+        "Pearson Validasi": 0.006827947060364815,
+        "QWK Validasi": 0.001471581170686131,
+        "Gwet AC2 Validasi": 0.8522839407297715
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.03385867527479528,
+        "RMSE Validasi (poin)": 9.115636308542593,
+        "Pearson Validasi": 0.01777292568087116,
+        "QWK Validasi": 0.01651148355058973,
+        "Gwet AC2 Validasi": 0.962507095438716
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.03022364682521091,
+        "RMSE Validasi (poin)": 9.463734346739997,
+        "Pearson Validasi": 0.176689204891753,
+        "QWK Validasi": 0.1252984793263793,
+        "Gwet AC2 Validasi": 0.9576344135982978
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.02598573091405854,
+        "RMSE Validasi (poin)": 7.667439059987208,
+        "Pearson Validasi": 0.4573177547368293,
+        "QWK Validasi": 0.3905986339895541,
+        "Gwet AC2 Validasi": 0.9726735117005637
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.02586407833458211,
+        "RMSE Validasi (poin)": 9.36673970828151,
+        "Pearson Validasi": 0.1946314531739217,
+        "QWK Validasi": 0.171926331508213,
+        "Gwet AC2 Validasi": 0.9602385424543368
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.02456241849953087,
+        "RMSE Validasi (poin)": 8.878348389504495,
+        "Pearson Validasi": 0.1279800761110981,
+        "QWK Validasi": 0.1331376273527888,
+        "Gwet AC2 Validasi": 0.964683438776224
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.02307590054755515,
+        "RMSE Validasi (poin)": 11.25811243649412,
+        "Pearson Validasi": 0.1968813491636489,
+        "QWK Validasi": 0.1203181489515546,
+        "Gwet AC2 Validasi": 0.9389388070582241
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.02056078284756737,
+        "RMSE Validasi (poin)": 8.58910660353726,
+        "Pearson Validasi": 0.2507941568640903,
+        "QWK Validasi": 0.2477970976598248,
+        "Gwet AC2 Validasi": 0.9655635166558816
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.02443334991518993,
+        "RMSE Validasi (poin)": 7.869755028192267,
+        "Pearson Validasi": 0.2982595605650483,
+        "QWK Validasi": 0.3002124144441822,
+        "Gwet AC2 Validasi": 0.9717008397783754
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.7658812528097959,
+        "RMSE Validasi (poin)": 49.25962337846232,
+        "Pearson Validasi": 0.07984384209169063,
+        "QWK Validasi": 0.03675675675675671,
+        "Gwet AC2 Validasi": 0.8500591960560296
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.1374205542808653,
+        "RMSE Validasi (poin)": 23.43324146031201,
+        "Pearson Validasi": 0.03744865217278626,
+        "QWK Validasi": 0.04869974200324212,
+        "Gwet AC2 Validasi": 0.7869566148313163
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.08853911054530765,
+        "RMSE Validasi (poin)": 25.32203862630595,
+        "Pearson Validasi": 0.005224262974644678,
+        "QWK Validasi": 5.841974587417198e-06,
+        "Gwet AC2 Validasi": 0.6920296520458987
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.0970055147745003,
+        "RMSE Validasi (poin)": 24.11882961114104,
+        "Pearson Validasi": 0.1982598768039263,
+        "QWK Validasi": 0.1182162107871034,
+        "Gwet AC2 Validasi": 0.8817969330056026
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.06788714315035338,
+        "RMSE Validasi (poin)": 17.19639870377896,
+        "Pearson Validasi": 0.2253061833100504,
+        "QWK Validasi": 0.1412221960148904,
+        "Gwet AC2 Validasi": 0.8529386003905186
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.06235447218079079,
+        "RMSE Validasi (poin)": 14.06695697206924,
+        "Pearson Validasi": 0.1258669339794232,
+        "QWK Validasi": 0.1072657863445774,
+        "Gwet AC2 Validasi": 0.9021366656490435
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.05492592799589365,
+        "RMSE Validasi (poin)": 15.47375294764679,
+        "Pearson Validasi": 0.04114229388039539,
+        "QWK Validasi": 0.03841585349351218,
+        "Gwet AC2 Validasi": 0.8874817411177494
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.05480231015746048,
+        "RMSE Validasi (poin)": 13.54197096530381,
+        "Pearson Validasi": 0.06783460071514312,
+        "QWK Validasi": 0.05709887854577422,
+        "Gwet AC2 Validasi": 0.9132295307700464
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.03686535565287841,
+        "RMSE Validasi (poin)": 13.44422801428099,
+        "Pearson Validasi": 0.1371720102957453,
+        "QWK Validasi": 0.09561175093060226,
+        "Gwet AC2 Validasi": 0.909866926354421
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.03587013869396275,
+        "RMSE Validasi (poin)": 13.25570931981688,
+        "Pearson Validasi": 0.3067347704011993,
+        "QWK Validasi": 0.2535268400414658,
+        "Gwet AC2 Validasi": 0.9125843229379952
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.02945752633337969,
+        "RMSE Validasi (poin)": 11.57412559530577,
+        "Pearson Validasi": 0.2766933590454388,
+        "QWK Validasi": 0.213534262155246,
+        "Gwet AC2 Validasi": 0.9334650750276894
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.02432045386414454,
+        "RMSE Validasi (poin)": 12.8126140957372,
+        "Pearson Validasi": 0.1460018210384011,
+        "QWK Validasi": 0.09455620615687887,
+        "Gwet AC2 Validasi": 0.917869666695005
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.02620871832515833,
+        "RMSE Validasi (poin)": 9.674571999575447,
+        "Pearson Validasi": 0.3669463984589891,
+        "QWK Validasi": 0.3014142371810066,
+        "Gwet AC2 Validasi": 0.9559310024301407
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.02407448698983957,
+        "RMSE Validasi (poin)": 8.942129297604465,
+        "Pearson Validasi": 0.3295502099204289,
+        "QWK Validasi": 0.315009083982887,
+        "Gwet AC2 Validasi": 0.9606157495723727
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.02842577377145113,
+        "RMSE Validasi (poin)": 8.986059229961393,
+        "Pearson Validasi": 0.2851493571199402,
+        "QWK Validasi": 0.2443815709095585,
+        "Gwet AC2 Validasi": 0.9604383853459416
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.02206863127022037,
+        "RMSE Validasi (poin)": 12.89367193128089,
+        "Pearson Validasi": 0.2677894428803841,
+        "QWK Validasi": 0.1375215889464594,
+        "Gwet AC2 Validasi": 0.9156561695778975
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.02982660774336909,
+        "RMSE Validasi (poin)": 8.64763038668341,
+        "Pearson Validasi": 0.3140128770785919,
+        "QWK Validasi": 0.2935271152521242,
+        "Gwet AC2 Validasi": 0.9648366219055078
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.02015658745033527,
+        "RMSE Validasi (poin)": 9.027960527645831,
+        "Pearson Validasi": 0.3483303241410695,
+        "QWK Validasi": 0.2946230007616147,
+        "Gwet AC2 Validasi": 0.9619634906431875
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.01839730525131837,
+        "RMSE Validasi (poin)": 11.11854499717701,
+        "Pearson Validasi": 0.391389851958443,
+        "QWK Validasi": 0.2172344411295359,
+        "Gwet AC2 Validasi": 0.9432263112985345
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.01743823378233008,
+        "RMSE Validasi (poin)": 9.90470638277962,
+        "Pearson Validasi": 0.3238844305439826,
+        "QWK Validasi": 0.2436371546660865,
+        "Gwet AC2 Validasi": 0.9542655707678466
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.017080039709045,
+        "RMSE Validasi (poin)": 7.613914050412841,
+        "Pearson Validasi": 0.3553039802930691,
+        "QWK Validasi": 0.3478158205430932,
+        "Gwet AC2 Validasi": 0.9730773909259254
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.01921701107630162,
+        "RMSE Validasi (poin)": 7.633715805401916,
+        "Pearson Validasi": 0.3846437308362001,
+        "QWK Validasi": 0.3450977409294895,
+        "Gwet AC2 Validasi": 0.9715647939701512
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.0123414547265018,
+        "RMSE Validasi (poin)": 8.69344377647879,
+        "Pearson Validasi": 0.3528252902628496,
+        "QWK Validasi": 0.2990028863815272,
+        "Gwet AC2 Validasi": 0.9659176127019565
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 24,
+        "Loss Training (MSE)": 0.01694926070663468,
+        "RMSE Validasi (poin)": 7.929529367501171,
+        "Pearson Validasi": 0.3552095791705223,
+        "QWK Validasi": 0.3341729016964219,
+        "Gwet AC2 Validasi": 0.9714049632296837
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 25,
+        "Loss Training (MSE)": 0.01474356783232148,
+        "RMSE Validasi (poin)": 7.633920116900163,
+        "Pearson Validasi": 0.3601819685497558,
+        "QWK Validasi": 0.3368556000155395,
+        "Gwet AC2 Validasi": 0.9728687807401725
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.7311156379495364,
+        "RMSE Validasi (poin)": 31.43452941084282,
+        "Pearson Validasi": -0.01909485868756498,
+        "QWK Validasi": 0.08059822744828904,
+        "Gwet AC2 Validasi": 0.9221772295333802
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.1460209616630822,
+        "RMSE Validasi (poin)": 19.16751644004342,
+        "Pearson Validasi": 0.03273400953010264,
+        "QWK Validasi": 0.0871030926461378,
+        "Gwet AC2 Validasi": 0.9250115814923421
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.1385455267642225,
+        "RMSE Validasi (poin)": 25.76254328845559,
+        "Pearson Validasi": -0.03967627089851784,
+        "QWK Validasi": -0.04897218863361541,
+        "Gwet AC2 Validasi": 0.9204266027342228
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.1114686473518098,
+        "RMSE Validasi (poin)": 14.09192192604753,
+        "Pearson Validasi": 0.2354623403836071,
+        "QWK Validasi": 0.172509545296772,
+        "Gwet AC2 Validasi": 0.9065315304633492
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.08724700813680286,
+        "RMSE Validasi (poin)": 20.28544488433511,
+        "Pearson Validasi": 0.2592065262883299,
+        "QWK Validasi": 0.0720592056548589,
+        "Gwet AC2 Validasi": 0.7907074661374719
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.08913504821392186,
+        "RMSE Validasi (poin)": 9.412630918404616,
+        "Pearson Validasi": 0.1671413091951477,
+        "QWK Validasi": 0.1521356212528427,
+        "Gwet AC2 Validasi": 0.9578564534771877
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.06699971457997951,
+        "RMSE Validasi (poin)": 17.50152450721585,
+        "Pearson Validasi": 0.3103067373853827,
+        "QWK Validasi": 0.1367268422610239,
+        "Gwet AC2 Validasi": 0.8485510916163352
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.08651987820081312,
+        "RMSE Validasi (poin)": 17.40098299221992,
+        "Pearson Validasi": 0.3197282485560069,
+        "QWK Validasi": 0.07642623558838291,
+        "Gwet AC2 Validasi": 0.9338478414825921
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.04813756149911116,
+        "RMSE Validasi (poin)": 12.15935364850503,
+        "Pearson Validasi": 0.3766713489299536,
+        "QWK Validasi": 0.158035275103647,
+        "Gwet AC2 Validasi": 0.9444851403522985
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.04484463938171324,
+        "RMSE Validasi (poin)": 8.327062854027584,
+        "Pearson Validasi": 0.4729221918715527,
+        "QWK Validasi": 0.4163875056586691,
+        "Gwet AC2 Validasi": 0.9685837910768497
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.05531167601662664,
+        "RMSE Validasi (poin)": 8.604679679948802,
+        "Pearson Validasi": 0.2826651599376884,
+        "QWK Validasi": 0.2860816078064381,
+        "Gwet AC2 Validasi": 0.9688554478144148
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.05436099484573257,
+        "RMSE Validasi (poin)": 11.25400453272471,
+        "Pearson Validasi": 0.5655236732422578,
+        "QWK Validasi": 0.2048429081663539,
+        "Gwet AC2 Validasi": 0.9476762545930714
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.04433733192484368,
+        "RMSE Validasi (poin)": 8.911807538718733,
+        "Pearson Validasi": 0.2289030672201317,
+        "QWK Validasi": 0.1052646964249174,
+        "Gwet AC2 Validasi": 0.9639339928911981
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.05390522094291347,
+        "RMSE Validasi (poin)": 8.123209794446804,
+        "Pearson Validasi": 0.4266500917534997,
+        "QWK Validasi": 0.2244873268404816,
+        "Gwet AC2 Validasi": 0.9701806200779562
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.04634005155897773,
+        "RMSE Validasi (poin)": 6.109347727570492,
+        "Pearson Validasi": 0.4057432789391568,
+        "QWK Validasi": 0.3446270543615676,
+        "Gwet AC2 Validasi": 0.9825925381269697
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.04271279393513202,
+        "RMSE Validasi (poin)": 6.143028297712534,
+        "Pearson Validasi": 0.4508899247064815,
+        "QWK Validasi": 0.3847945433372152,
+        "Gwet AC2 Validasi": 0.9833252215887203
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.03497426335262806,
+        "RMSE Validasi (poin)": 10.25014788968555,
+        "Pearson Validasi": 0.5296303255548939,
+        "QWK Validasi": 0.1888328380899731,
+        "Gwet AC2 Validasi": 0.9523249525773725
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.04098422736366033,
+        "RMSE Validasi (poin)": 5.497396138497717,
+        "Pearson Validasi": 0.5609725715224506,
+        "QWK Validasi": 0.5094087305377782,
+        "Gwet AC2 Validasi": 0.9857854111869905
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.03750966262315103,
+        "RMSE Validasi (poin)": 10.23519839719669,
+        "Pearson Validasi": 0.564242070783072,
+        "QWK Validasi": 0.2402219855669694,
+        "Gwet AC2 Validasi": 0.9529479426399436
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.03356113896670779,
+        "RMSE Validasi (poin)": 10.00249916373891,
+        "Pearson Validasi": 0.5463037197445217,
+        "QWK Validasi": 0.2520113306675629,
+        "Gwet AC2 Validasi": 0.9555180258839849
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.02867528988782087,
+        "RMSE Validasi (poin)": 7.68416907079961,
+        "Pearson Validasi": 0.5037423116032047,
+        "QWK Validasi": 0.3299504554898514,
+        "Gwet AC2 Validasi": 0.972962844769829
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.0305281138292021,
+        "RMSE Validasi (poin)": 9.023441381741375,
+        "Pearson Validasi": 0.4773689206101829,
+        "QWK Validasi": 0.2477737205500843,
+        "Gwet AC2 Validasi": 0.9622079402916837
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.0318952679260025,
+        "RMSE Validasi (poin)": 10.22231669777163,
+        "Pearson Validasi": 0.4955421179776528,
+        "QWK Validasi": 0.2129455141335517,
+        "Gwet AC2 Validasi": 0.9536951126937242
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 1,
+        "Loss Training (MSE)": 1.194125194392473
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.1377817769406344
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.1208592071865393
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.09809901686743766
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.08283378674272181
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.07877638075827917
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.05705337292952587
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.05735326890175448
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.0515620406225113
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.04576739808370339
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.05528310124391069
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.03876318007037748
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.04809156706974894
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.04132273954314816
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.03295229378034605
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.04516421156221071
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.0390725594020734
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.03516759494973011
+      }
+    ],
+    "S2": [
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.8221004990239938,
+        "RMSE Validasi (poin)": 90.15310041641149,
+        "Pearson Validasi": 0.3219938662116868,
+        "QWK Validasi": 0,
+        "Gwet AC2 Validasi": -0.9935815075828368
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.7056123178141812,
+        "RMSE Validasi (poin)": 79.73895001982258,
+        "Pearson Validasi": 0.4228566451938217,
+        "QWK Validasi": 0.0008613574437073002,
+        "Gwet AC2 Validasi": -1.694397857016082
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.4830875425444295,
+        "RMSE Validasi (poin)": 60.91377829019126,
+        "Pearson Validasi": 0.4387634263778188,
+        "QWK Validasi": 0.00331516621008221,
+        "Gwet AC2 Validasi": -0.8027392575101711
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.2340657070938808,
+        "RMSE Validasi (poin)": 38.14466856565436,
+        "Pearson Validasi": 0.453800373288233,
+        "QWK Validasi": 0.01493275200048949,
+        "Gwet AC2 Validasi": 0.2705575071959859
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.0646676526551649,
+        "RMSE Validasi (poin)": 16.74821122571273,
+        "Pearson Validasi": 0.4592682167917557,
+        "QWK Validasi": 0.1014758497316637,
+        "Gwet AC2 Validasi": 0.8602848601402365
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.01139106879407947,
+        "RMSE Validasi (poin)": 8.008085313217059,
+        "Pearson Validasi": 0.486571791247887,
+        "QWK Validasi": 0.3543304341763547,
+        "Gwet AC2 Validasi": 0.9697549879694349
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.006586070315066195,
+        "RMSE Validasi (poin)": 6.677391643769552,
+        "Pearson Validasi": 0.5269409474444818,
+        "QWK Validasi": 0.4639175257731958,
+        "Gwet AC2 Validasi": 0.9791498167214526
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.006579638522853593,
+        "RMSE Validasi (poin)": 6.43325198711153,
+        "Pearson Validasi": 0.5658631341763216,
+        "QWK Validasi": 0.4766025985182004,
+        "Gwet AC2 Validasi": 0.9796662794441134
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.00593403960379398,
+        "RMSE Validasi (poin)": 6.638429634861534,
+        "Pearson Validasi": 0.5956426394058967,
+        "QWK Validasi": 0.475528399526155,
+        "Gwet AC2 Validasi": 0.9793250153305065
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.005717155307574846,
+        "RMSE Validasi (poin)": 6.350136315720199,
+        "Pearson Validasi": 0.6252538173010505,
+        "QWK Validasi": 0.5019239915257901,
+        "Gwet AC2 Validasi": 0.9809441712394487
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.005241257904366303,
+        "RMSE Validasi (poin)": 6.267486183216684,
+        "Pearson Validasi": 0.6443827409232439,
+        "QWK Validasi": 0.5151644505154418,
+        "Gwet AC2 Validasi": 0.9813575558176698
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.004953451105417154,
+        "RMSE Validasi (poin)": 6.072611061646697,
+        "Pearson Validasi": 0.6556015242454918,
+        "QWK Validasi": 0.5304256067534294,
+        "Gwet AC2 Validasi": 0.9827376014398264
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.005021308581450039,
+        "RMSE Validasi (poin)": 6.072030773337739,
+        "Pearson Validasi": 0.6648491492416659,
+        "QWK Validasi": 0.5305255278395455,
+        "Gwet AC2 Validasi": 0.9826491460253697
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.004848496046216362,
+        "RMSE Validasi (poin)": 5.92485614845962,
+        "Pearson Validasi": 0.6695615304334732,
+        "QWK Validasi": 0.5488151658767773,
+        "Gwet AC2 Validasi": 0.9840324813449718
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.004667452883113599,
+        "RMSE Validasi (poin)": 5.809527742990283,
+        "Pearson Validasi": 0.6743139356821055,
+        "QWK Validasi": 0.5533444396266459,
+        "Gwet AC2 Validasi": 0.9842625639871071
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.004525930027346877,
+        "RMSE Validasi (poin)": 5.847578087931621,
+        "Pearson Validasi": 0.6778652921971415,
+        "QWK Validasi": 0.5432861992221748,
+        "Gwet AC2 Validasi": 0.9838143429610952
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.004639180315921069,
+        "RMSE Validasi (poin)": 5.802356638058513,
+        "Pearson Validasi": 0.6800586622158726,
+        "QWK Validasi": 0.5623903952515851,
+        "Gwet AC2 Validasi": 0.9841760777196531
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.00465967492673099,
+        "RMSE Validasi (poin)": 5.717655798133238,
+        "Pearson Validasi": 0.6814833349998115,
+        "QWK Validasi": 0.5800081710472559,
+        "Gwet AC2 Validasi": 0.9850836159696161
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.004279306565787344,
+        "RMSE Validasi (poin)": 5.795846452941396,
+        "Pearson Validasi": 0.6811014026079645,
+        "QWK Validasi": 0.5671283306022582,
+        "Gwet AC2 Validasi": 0.9844285381920815
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.00461323422538847,
+        "RMSE Validasi (poin)": 5.783164050146869,
+        "Pearson Validasi": 0.6815206659472115,
+        "QWK Validasi": 0.5596849121389618,
+        "Gwet AC2 Validasi": 0.9842637450863055
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.004413243521657506,
+        "RMSE Validasi (poin)": 5.737816039542359,
+        "Pearson Validasi": 0.6818670968893447,
+        "QWK Validasi": 0.5649034688431958,
+        "Gwet AC2 Validasi": 0.984251688916885
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.004009964117111575,
+        "RMSE Validasi (poin)": 5.647328509137447,
+        "Pearson Validasi": 0.6817768978396234,
+        "QWK Validasi": 0.5839135214364235,
+        "Gwet AC2 Validasi": 0.9852297050971364
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.004203468349305166,
+        "RMSE Validasi (poin)": 5.647137399425417,
+        "Pearson Validasi": 0.6826329753237678,
+        "QWK Validasi": 0.5834094646446191,
+        "Gwet AC2 Validasi": 0.9853828614451133
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 24,
+        "Loss Training (MSE)": 0.004169170060956314,
+        "RMSE Validasi (poin)": 5.673629287556798,
+        "Pearson Validasi": 0.6824255053700925,
+        "QWK Validasi": 0.573335755153937,
+        "Gwet AC2 Validasi": 0.9847872023716164
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 25,
+        "Loss Training (MSE)": 0.004381048899747479,
+        "RMSE Validasi (poin)": 5.689287917530642,
+        "Pearson Validasi": 0.6823690461387064,
+        "QWK Validasi": 0.573335755153937,
+        "Gwet AC2 Validasi": 0.9847872023716164
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.619113908149302,
+        "RMSE Validasi (poin)": 74.5846517903572,
+        "Pearson Validasi": 0.383527422731595,
+        "QWK Validasi": 0.0005900895205559475,
+        "Gwet AC2 Validasi": -0.9609766774249471
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.5185846004945537,
+        "RMSE Validasi (poin)": 64.30936555701095,
+        "Pearson Validasi": 0.4943044265114911,
+        "QWK Validasi": 0.002327859818779698,
+        "Gwet AC2 Validasi": -0.7559762633161673
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.3304345901900281,
+        "RMSE Validasi (poin)": 45.68387848346326,
+        "Pearson Validasi": 0.5099143995502651,
+        "QWK Validasi": 0.01205049009052261,
+        "Gwet AC2 Validasi": -0.009055080103922942
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.1324332941536947,
+        "RMSE Validasi (poin)": 24.25543277377148,
+        "Pearson Validasi": 0.5012138474571569,
+        "QWK Validasi": 0.06318432257310114,
+        "Gwet AC2 Validasi": 0.6999259042033673
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.02885141411522814,
+        "RMSE Validasi (poin)": 10.20744076826724,
+        "Pearson Validasi": 0.5172746027142197,
+        "QWK Validasi": 0.3365262200666869,
+        "Gwet AC2 Validasi": 0.9489785182244322
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.007239952493968527,
+        "RMSE Validasi (poin)": 7.498524688129186,
+        "Pearson Validasi": 0.5416920753137637,
+        "QWK Validasi": 0.5180987419890815,
+        "Gwet AC2 Validasi": 0.972292809662545
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.005768038458280629,
+        "RMSE Validasi (poin)": 7.241306743610308,
+        "Pearson Validasi": 0.5681588596188626,
+        "QWK Validasi": 0.5438298384246971,
+        "Gwet AC2 Validasi": 0.9747346512704567
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.005644810684007832,
+        "RMSE Validasi (poin)": 7.064106263343631,
+        "Pearson Validasi": 0.5909082852101204,
+        "QWK Validasi": 0.5613980588409113,
+        "Gwet AC2 Validasi": 0.9758306996625817
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.005233250078959213,
+        "RMSE Validasi (poin)": 6.901772888107596,
+        "Pearson Validasi": 0.6116338037603308,
+        "QWK Validasi": 0.5882805778200426,
+        "Gwet AC2 Validasi": 0.9768796196021003
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.00492448695267463,
+        "RMSE Validasi (poin)": 6.720868895171757,
+        "Pearson Validasi": 0.6308454802211028,
+        "QWK Validasi": 0.600055013065603,
+        "Gwet AC2 Validasi": 0.9780686602940479
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.005061228930086277,
+        "RMSE Validasi (poin)": 6.609444966974037,
+        "Pearson Validasi": 0.6462282803337489,
+        "QWK Validasi": 0.6122224261332354,
+        "Gwet AC2 Validasi": 0.9789739954943688
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.004840407824308964,
+        "RMSE Validasi (poin)": 6.499323564975316,
+        "Pearson Validasi": 0.6576200640484174,
+        "QWK Validasi": 0.6221491346309376,
+        "Gwet AC2 Validasi": 0.9795896587770894
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.004287859323597635,
+        "RMSE Validasi (poin)": 6.407958354065937,
+        "Pearson Validasi": 0.6686247609610108,
+        "QWK Validasi": 0.6390921894119548,
+        "Gwet AC2 Validasi": 0.9806903997366422
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.004327775050761614,
+        "RMSE Validasi (poin)": 6.314722336472927,
+        "Pearson Validasi": 0.6787954814129242,
+        "QWK Validasi": 0.6532949534541891,
+        "Gwet AC2 Validasi": 0.9814326116816336
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.004425927507954341,
+        "RMSE Validasi (poin)": 6.264190833619136,
+        "Pearson Validasi": 0.6838704396733847,
+        "QWK Validasi": 0.6604601399354972,
+        "Gwet AC2 Validasi": 0.9815339578613638
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.004067132110376903,
+        "RMSE Validasi (poin)": 6.219174900887201,
+        "Pearson Validasi": 0.689632900611198,
+        "QWK Validasi": 0.6567739952355338,
+        "Gwet AC2 Validasi": 0.9812039405485828
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.004011280143101222,
+        "RMSE Validasi (poin)": 6.175804534295223,
+        "Pearson Validasi": 0.6950488565704336,
+        "QWK Validasi": 0.6643408516655462,
+        "Gwet AC2 Validasi": 0.981638067026128
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.004056608279358442,
+        "RMSE Validasi (poin)": 6.133630747303393,
+        "Pearson Validasi": 0.6985968089048016,
+        "QWK Validasi": 0.6720499188280462,
+        "Gwet AC2 Validasi": 0.9820466045278582
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.004098708668114496,
+        "RMSE Validasi (poin)": 6.110114725314446,
+        "Pearson Validasi": 0.7025496215097111,
+        "QWK Validasi": 0.67033725971684,
+        "Gwet AC2 Validasi": 0.9818248605742367
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.003773823925650788,
+        "RMSE Validasi (poin)": 6.085436517431758,
+        "Pearson Validasi": 0.7051860105125607,
+        "QWK Validasi": 0.6714020241733603,
+        "Gwet AC2 Validasi": 0.9818959365384716
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.003999244020039909,
+        "RMSE Validasi (poin)": 6.061356063070483,
+        "Pearson Validasi": 0.7074774746704451,
+        "QWK Validasi": 0.6760765586973045,
+        "Gwet AC2 Validasi": 0.9820862462412997
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.003848663720987503,
+        "RMSE Validasi (poin)": 6.047332385606681,
+        "Pearson Validasi": 0.7087449825760792,
+        "QWK Validasi": 0.677564147058143,
+        "Gwet AC2 Validasi": 0.9822176380673887
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.003984495773076802,
+        "RMSE Validasi (poin)": 6.035889669699215,
+        "Pearson Validasi": 0.7106541194315708,
+        "QWK Validasi": 0.677564147058143,
+        "Gwet AC2 Validasi": 0.9822176380673887
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 24,
+        "Loss Training (MSE)": 0.003699040737353924,
+        "RMSE Validasi (poin)": 6.031914159374157,
+        "Pearson Validasi": 0.7112840335684931,
+        "QWK Validasi": 0.6773006324709666,
+        "Gwet AC2 Validasi": 0.9822798533638334
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 25,
+        "Loss Training (MSE)": 0.004067595857901729,
+        "RMSE Validasi (poin)": 6.030166306017417,
+        "Pearson Validasi": 0.7114310399501947,
+        "QWK Validasi": 0.6773006324709666,
+        "Gwet AC2 Validasi": 0.9822798533638334
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.7794512063264847,
+        "RMSE Validasi (poin)": 88.41734374839336,
+        "Pearson Validasi": 0.1917315749599376,
+        "QWK Validasi": 1.931354338924329e-05,
+        "Gwet AC2 Validasi": -1.073833512271209
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.6702016163617373,
+        "RMSE Validasi (poin)": 78.03987773818456,
+        "Pearson Validasi": 0.09421051222411381,
+        "QWK Validasi": 0.0001941478297046162,
+        "Gwet AC2 Validasi": -1.394352764213464
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.4568450076039881,
+        "RMSE Validasi (poin)": 59.26507376159998,
+        "Pearson Validasi": 0.06184377276919201,
+        "QWK Validasi": 0.0003869458409252458,
+        "Gwet AC2 Validasi": -0.5863570949615506
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.2233714112759723,
+        "RMSE Validasi (poin)": 36.61508992166372,
+        "Pearson Validasi": 0.05014330796848359,
+        "QWK Validasi": 0.001849460864710162,
+        "Gwet AC2 Validasi": 0.3482510536590241
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.06151560963329909,
+        "RMSE Validasi (poin)": 16.38054895629524,
+        "Pearson Validasi": 0.05089501856062552,
+        "QWK Validasi": 0.01381484666093435,
+        "Gwet AC2 Validasi": 0.869334255432222
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.01209131744337929,
+        "RMSE Validasi (poin)": 8.739359973785572,
+        "Pearson Validasi": 0.07524604521233517,
+        "QWK Validasi": 0.06002750327800699,
+        "Gwet AC2 Validasi": 0.9649338567776555
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.006399452847998699,
+        "RMSE Validasi (poin)": 8.092126428690431,
+        "Pearson Validasi": 0.1029620024786976,
+        "QWK Validasi": 0.09063957482193863,
+        "Gwet AC2 Validasi": 0.9704116163893663
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.005686817233951647,
+        "RMSE Validasi (poin)": 7.892865135267741,
+        "Pearson Validasi": 0.1324876256896822,
+        "QWK Validasi": 0.1090245174752217,
+        "Gwet AC2 Validasi": 0.9717542693091582
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.005349778819624618,
+        "RMSE Validasi (poin)": 7.733921580702352,
+        "Pearson Validasi": 0.1606226484172169,
+        "QWK Validasi": 0.1398537477148081,
+        "Gwet AC2 Validasi": 0.9741753631661025
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.005398198106939682,
+        "RMSE Validasi (poin)": 7.562435023665524,
+        "Pearson Validasi": 0.1919844293151115,
+        "QWK Validasi": 0.1580091622020343,
+        "Gwet AC2 Validasi": 0.9753574134222448
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.005108319776423009,
+        "RMSE Validasi (poin)": 7.442838728660973,
+        "Pearson Validasi": 0.2135673295957515,
+        "QWK Validasi": 0.1837940821960419,
+        "Gwet AC2 Validasi": 0.9758801983977776
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.004421346329361938,
+        "RMSE Validasi (poin)": 7.341934950111886,
+        "Pearson Validasi": 0.2306305690135729,
+        "QWK Validasi": 0.1888787674759397,
+        "Gwet AC2 Validasi": 0.9764873591810377
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.004560804866212316,
+        "RMSE Validasi (poin)": 7.375435383376556,
+        "Pearson Validasi": 0.2475331525601527,
+        "QWK Validasi": 0.1845380749903363,
+        "Gwet AC2 Validasi": 0.9753249714092611
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.004441597129104895,
+        "RMSE Validasi (poin)": 7.353936399834864,
+        "Pearson Validasi": 0.2613104394138857,
+        "QWK Validasi": 0.2021671826625387,
+        "Gwet AC2 Validasi": 0.9755061402963356
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.003997044956554082,
+        "RMSE Validasi (poin)": 7.27830138188715,
+        "Pearson Validasi": 0.2729516810305281,
+        "QWK Validasi": 0.2129915867736255,
+        "Gwet AC2 Validasi": 0.976379409262085
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.004294338002774752,
+        "RMSE Validasi (poin)": 7.194997807948978,
+        "Pearson Validasi": 0.2831584511864425,
+        "QWK Validasi": 0.2079895788102475,
+        "Gwet AC2 Validasi": 0.9769834196458287
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.004158499370419566,
+        "RMSE Validasi (poin)": 7.159533225220099,
+        "Pearson Validasi": 0.2902762130364687,
+        "QWK Validasi": 0.21188650912827,
+        "Gwet AC2 Validasi": 0.9770843500783757
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.003850114721362855,
+        "RMSE Validasi (poin)": 7.102852510602083,
+        "Pearson Validasi": 0.2970538470284052,
+        "QWK Validasi": 0.234379372376574,
+        "Gwet AC2 Validasi": 0.9780647849719194
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.004056814550053171,
+        "RMSE Validasi (poin)": 7.13121361036685,
+        "Pearson Validasi": 0.2996776723523656,
+        "QWK Validasi": 0.2469884261081805,
+        "Gwet AC2 Validasi": 0.9782834034021304
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.003843513856819728,
+        "RMSE Validasi (poin)": 7.07989035953871,
+        "Pearson Validasi": 0.3043494409799987,
+        "QWK Validasi": 0.2310884136610277,
+        "Gwet AC2 Validasi": 0.9782063410855009
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.003879343047049714,
+        "RMSE Validasi (poin)": 7.06551848312566,
+        "Pearson Validasi": 0.3073254951290713,
+        "QWK Validasi": 0.2244199466709118,
+        "Gwet AC2 Validasi": 0.9781861042753017
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.003969638916119918,
+        "RMSE Validasi (poin)": 7.063325399328689,
+        "Pearson Validasi": 0.3101320676307076,
+        "QWK Validasi": 0.2352149473517536,
+        "Gwet AC2 Validasi": 0.9783402810606384
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.003799981708526431,
+        "RMSE Validasi (poin)": 7.079815940235022,
+        "Pearson Validasi": 0.3124026314629815,
+        "QWK Validasi": 0.2397862979258328,
+        "Gwet AC2 Validasi": 0.9779240357308472
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 24,
+        "Loss Training (MSE)": 0.004060002478701659,
+        "RMSE Validasi (poin)": 7.086062908762401,
+        "Pearson Validasi": 0.3132405900333234,
+        "QWK Validasi": 0.2426683350277625,
+        "Gwet AC2 Validasi": 0.9778351295115614
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 25,
+        "Loss Training (MSE)": 0.003944111510483239,
+        "RMSE Validasi (poin)": 7.081949550886183,
+        "Pearson Validasi": 0.3135750909584333,
+        "QWK Validasi": 0.2426683350277625,
+        "Gwet AC2 Validasi": 0.9778351295115614
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.6815247383589546,
+        "RMSE Validasi (poin)": 78.18780508403333,
+        "Pearson Validasi": 0.3423881893628431,
+        "QWK Validasi": 0.0003468104243254944,
+        "Gwet AC2 Validasi": -1.060295186456446
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.5729849085522195,
+        "RMSE Validasi (poin)": 67.3860827647425,
+        "Pearson Validasi": 0.2660833392904093,
+        "QWK Validasi": 0.001105635679261474,
+        "Gwet AC2 Validasi": -0.9200353220376405
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.369233742239885,
+        "RMSE Validasi (poin)": 47.90151042676642,
+        "Pearson Validasi": 0.2264477158109753,
+        "QWK Validasi": 0.003702937744453627,
+        "Gwet AC2 Validasi": -0.1003127584091324
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.1546162291488145,
+        "RMSE Validasi (poin)": 25.28655977296459,
+        "Pearson Validasi": 0.2320575021929382,
+        "QWK Validasi": 0.02001287035510479,
+        "Gwet AC2 Validasi": 0.6793561578283379
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.03484719008715468,
+        "RMSE Validasi (poin)": 9.922442769449653,
+        "Pearson Validasi": 0.2423715152573374,
+        "QWK Validasi": 0.1579726011184426,
+        "Gwet AC2 Validasi": 0.9520111549023237
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.007331567447621978,
+        "RMSE Validasi (poin)": 8.019183871411956,
+        "Pearson Validasi": 0.2614145771203953,
+        "QWK Validasi": 0.2474130584750233,
+        "Gwet AC2 Validasi": 0.9703995633991461
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.006073996707955294,
+        "RMSE Validasi (poin)": 7.909150770811562,
+        "Pearson Validasi": 0.2830482491971874,
+        "QWK Validasi": 0.2641648270787343,
+        "Gwet AC2 Validasi": 0.9714144346187079
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.005604493405466519,
+        "RMSE Validasi (poin)": 7.648100515067333,
+        "Pearson Validasi": 0.3092539084142065,
+        "QWK Validasi": 0.2845409589335626,
+        "Gwet AC2 Validasi": 0.9731982992405543
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.004933011134895082,
+        "RMSE Validasi (poin)": 7.456825375785392,
+        "Pearson Validasi": 0.3277494689894658,
+        "QWK Validasi": 0.2837470397333567,
+        "Gwet AC2 Validasi": 0.9735797332191239
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.004863236061332543,
+        "RMSE Validasi (poin)": 7.352871331709665,
+        "Pearson Validasi": 0.3480776717125708,
+        "QWK Validasi": 0.2975037754286222,
+        "Gwet AC2 Validasi": 0.9750695091514066
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.004635247856808651,
+        "RMSE Validasi (poin)": 7.291649753269194,
+        "Pearson Validasi": 0.3607398597107078,
+        "QWK Validasi": 0.3132707118372435,
+        "Gwet AC2 Validasi": 0.9756440295821
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.004460617434934496,
+        "RMSE Validasi (poin)": 7.23698555501011,
+        "Pearson Validasi": 0.3724081818398146,
+        "QWK Validasi": 0.3273756857193417,
+        "Gwet AC2 Validasi": 0.9759945433531855
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.003936004788251068,
+        "RMSE Validasi (poin)": 7.128858843813864,
+        "Pearson Validasi": 0.3828543325048759,
+        "QWK Validasi": 0.3361935189411227,
+        "Gwet AC2 Validasi": 0.9769603741087763
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.004212412670147121,
+        "RMSE Validasi (poin)": 7.13320017283709,
+        "Pearson Validasi": 0.3892170093521508,
+        "QWK Validasi": 0.3444695259593679,
+        "Gwet AC2 Validasi": 0.9770934539161051
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.004014996360319915,
+        "RMSE Validasi (poin)": 7.051568204429849,
+        "Pearson Validasi": 0.3973530132668253,
+        "QWK Validasi": 0.3466048541041723,
+        "Gwet AC2 Validasi": 0.9771696617821415
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.004104053402088859,
+        "RMSE Validasi (poin)": 7.126482809779869,
+        "Pearson Validasi": 0.4016219776295109,
+        "QWK Validasi": 0.3383539537385689,
+        "Gwet AC2 Validasi": 0.9767724300074708
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.003711047362827458,
+        "RMSE Validasi (poin)": 7.04941953396156,
+        "Pearson Validasi": 0.405648592530589,
+        "QWK Validasi": 0.3376959781867758,
+        "Gwet AC2 Validasi": 0.9770272525526423
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.003786456547345033,
+        "RMSE Validasi (poin)": 7.007000971387706,
+        "Pearson Validasi": 0.409335918344798,
+        "QWK Validasi": 0.3401266868631231,
+        "Gwet AC2 Validasi": 0.9773393565731296
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.003950368794080727,
+        "RMSE Validasi (poin)": 6.983783457273418,
+        "Pearson Validasi": 0.4121624658680022,
+        "QWK Validasi": 0.3544163747003503,
+        "Gwet AC2 Validasi": 0.9777789193682522
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.003691409625992274,
+        "RMSE Validasi (poin)": 6.99589466418971,
+        "Pearson Validasi": 0.412541309524472,
+        "QWK Validasi": 0.3551504102096626,
+        "Gwet AC2 Validasi": 0.9776433577905197
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.003744954131038961,
+        "RMSE Validasi (poin)": 6.986644015930591,
+        "Pearson Validasi": 0.4145041424979405,
+        "QWK Validasi": 0.3588307608250239,
+        "Gwet AC2 Validasi": 0.9777476508627442
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.003672776907106841,
+        "RMSE Validasi (poin)": 6.977121743630909,
+        "Pearson Validasi": 0.4163994467631307,
+        "QWK Validasi": 0.3588307608250239,
+        "Gwet AC2 Validasi": 0.9777476508627442
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.003873620056621711,
+        "RMSE Validasi (poin)": 6.962054689043845,
+        "Pearson Validasi": 0.4178817912156975,
+        "QWK Validasi": 0.3602638087386645,
+        "Gwet AC2 Validasi": 0.9778176012641177
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 24,
+        "Loss Training (MSE)": 0.003434074146065706,
+        "RMSE Validasi (poin)": 6.96151795536498,
+        "Pearson Validasi": 0.4188454448140708,
+        "QWK Validasi": 0.3602638087386645,
+        "Gwet AC2 Validasi": 0.9778176012641177
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 25,
+        "Loss Training (MSE)": 0.003459461442473018,
+        "RMSE Validasi (poin)": 6.961563100091996,
+        "Pearson Validasi": 0.4188196779725811,
+        "QWK Validasi": 0.3602638087386645,
+        "Gwet AC2 Validasi": 0.9778176012641177
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.8153504140985509,
+        "RMSE Validasi (poin)": 87.6389922758695,
+        "Pearson Validasi": -0.2206808358970542,
+        "QWK Validasi": 0,
+        "Gwet AC2 Validasi": -0.9028177968413296
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.6970254730743667,
+        "RMSE Validasi (poin)": 76.57430893134926,
+        "Pearson Validasi": -0.04274330849712236,
+        "QWK Validasi": -3.673699628858884e-05,
+        "Gwet AC2 Validasi": -1.284836063319767
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.4735862796660513,
+        "RMSE Validasi (poin)": 56.85963584363102,
+        "Pearson Validasi": 0.003012969670995888,
+        "QWK Validasi": -5.17455267599054e-05,
+        "Gwet AC2 Validasi": -0.4895605517946983
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.2292461121784678,
+        "RMSE Validasi (poin)": 33.26564669559457,
+        "Pearson Validasi": 0.04042614167170477,
+        "QWK Validasi": 0.001846075100769506,
+        "Gwet AC2 Validasi": 0.4644747311666478
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.06435855197208736,
+        "RMSE Validasi (poin)": 12.49773909003878,
+        "Pearson Validasi": 0.05888855348109254,
+        "QWK Validasi": 0.01830317171771989,
+        "Gwet AC2 Validasi": 0.9262722841911
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.01166534797067165,
+        "RMSE Validasi (poin)": 7.742929157580461,
+        "Pearson Validasi": 0.0810222241100649,
+        "QWK Validasi": 0.07999092377304096,
+        "Gwet AC2 Validasi": 0.9732788583038657
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.006114787230616277,
+        "RMSE Validasi (poin)": 8.161895077132392,
+        "Pearson Validasi": 0.1109943805295432,
+        "QWK Validasi": 0.09846765039727579,
+        "Gwet AC2 Validasi": 0.9692155979068076
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.005903293630552604,
+        "RMSE Validasi (poin)": 7.680627632060163,
+        "Pearson Validasi": 0.141686027313257,
+        "QWK Validasi": 0.1119928885224359,
+        "Gwet AC2 Validasi": 0.9728599068102722
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.005529648618871619,
+        "RMSE Validasi (poin)": 7.332096037680303,
+        "Pearson Validasi": 0.1821245412050029,
+        "QWK Validasi": 0.1255344930846692,
+        "Gwet AC2 Validasi": 0.9765559077318284
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.005523966748442059,
+        "RMSE Validasi (poin)": 7.219373830829935,
+        "Pearson Validasi": 0.2159842937103616,
+        "QWK Validasi": 0.1533283470456245,
+        "Gwet AC2 Validasi": 0.9766067593101966
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.004963988385057923,
+        "RMSE Validasi (poin)": 7.029504902572138,
+        "Pearson Validasi": 0.2479439126301055,
+        "QWK Validasi": 0.1792145429600412,
+        "Gwet AC2 Validasi": 0.9776081367396139
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.004534966533240888,
+        "RMSE Validasi (poin)": 6.885407629895637,
+        "Pearson Validasi": 0.2763862278444688,
+        "QWK Validasi": 0.2141227049868226,
+        "Gwet AC2 Validasi": 0.9793246601827054
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.004847552166606724,
+        "RMSE Validasi (poin)": 6.915687624363536,
+        "Pearson Validasi": 0.2983854690436279,
+        "QWK Validasi": 0.2074898346043091,
+        "Gwet AC2 Validasi": 0.9787163533801164
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.005097938440910592,
+        "RMSE Validasi (poin)": 6.838955084548346,
+        "Pearson Validasi": 0.3250018523344025,
+        "QWK Validasi": 0.2180041182100287,
+        "Gwet AC2 Validasi": 0.9791615909882615
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.00438748028447596,
+        "RMSE Validasi (poin)": 6.634430573243824,
+        "Pearson Validasi": 0.34500920667685,
+        "QWK Validasi": 0.2367452801737135,
+        "Gwet AC2 Validasi": 0.9807223923185122
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.004451753270966623,
+        "RMSE Validasi (poin)": 6.626184486970209,
+        "Pearson Validasi": 0.3637046751309722,
+        "QWK Validasi": 0.2303301589209,
+        "Gwet AC2 Validasi": 0.9805313545783095
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.004486343641691408,
+        "RMSE Validasi (poin)": 6.541825583722241,
+        "Pearson Validasi": 0.3793952476871374,
+        "QWK Validasi": 0.2700584424409913,
+        "Gwet AC2 Validasi": 0.9816054353320374
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.004146837046758556,
+        "RMSE Validasi (poin)": 6.465512461388343,
+        "Pearson Validasi": 0.3954698377006526,
+        "QWK Validasi": 0.2783533137299253,
+        "Gwet AC2 Validasi": 0.9819892056043247
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.004204023886856589,
+        "RMSE Validasi (poin)": 6.523011317979364,
+        "Pearson Validasi": 0.4048065462206994,
+        "QWK Validasi": 0.2722006295535491,
+        "Gwet AC2 Validasi": 0.9813771891554122
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.003818345677248406,
+        "RMSE Validasi (poin)": 6.551078261676976,
+        "Pearson Validasi": 0.4110144645493587,
+        "QWK Validasi": 0.2490299823633157,
+        "Gwet AC2 Validasi": 0.9804928685067729
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.003628958231504479,
+        "RMSE Validasi (poin)": 6.512893645599791,
+        "Pearson Validasi": 0.4168118571481355,
+        "QWK Validasi": 0.2590154298310066,
+        "Gwet AC2 Validasi": 0.9807955174306274
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.003884864301196334,
+        "RMSE Validasi (poin)": 6.490095301613226,
+        "Pearson Validasi": 0.4211949201363985,
+        "QWK Validasi": 0.2683964773331757,
+        "Gwet AC2 Validasi": 0.9811277981621215
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.004418887948700971,
+        "RMSE Validasi (poin)": 6.477763021708923,
+        "Pearson Validasi": 0.4237550889849651,
+        "QWK Validasi": 0.2780112459307488,
+        "Gwet AC2 Validasi": 0.9814319017030939
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.7693707048892975
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.6147096071392297
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.3341662163225313
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.09236653004257771
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.01123746968316273
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.006567287847552213
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.005933241873509483
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.005326895898108871
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.005080261507396955
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.004640454826442145
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.004505751183547702
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.004371025074884945
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.0043751998883567
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.004410916890606146
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.003984403064496078
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.003574044788258372
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.004069151633512528
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.004077170289326304
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 19,
+        "Loss Training (MSE)": 0.003742325308149012
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 20,
+        "Loss Training (MSE)": 0.004026597941458832
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 21,
+        "Loss Training (MSE)": 0.00398213012738194
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 22,
+        "Loss Training (MSE)": 0.003922976378896056
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 23,
+        "Loss Training (MSE)": 0.003823920705010172
+      }
+    ],
+    "S3": [
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.3549981788002909,
+        "RMSE Validasi (poin)": 29.57643644707118,
+        "Pearson Validasi": 0.3726072348158331,
+        "QWK Validasi": 0.03706521436590204,
+        "Gwet AC2 Validasi": 0.9506702615473541
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.03991925013412315,
+        "RMSE Validasi (poin)": 12.91080769475951,
+        "Pearson Validasi": 0.4633256672504752,
+        "QWK Validasi": 0.2617675900956116,
+        "Gwet AC2 Validasi": 0.9146834112424931
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.01412375647302314,
+        "RMSE Validasi (poin)": 7.734112808150734,
+        "Pearson Validasi": 0.4389471910776707,
+        "QWK Validasi": 0.3965818297264405,
+        "Gwet AC2 Validasi": 0.971556170421456
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.00892664075779237,
+        "RMSE Validasi (poin)": 8.63807770579975,
+        "Pearson Validasi": 0.3478964369875057,
+        "QWK Validasi": 0.3350615072818965,
+        "Gwet AC2 Validasi": 0.9646888072867504
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.008774463337918684,
+        "RMSE Validasi (poin)": 14.08060717210147,
+        "Pearson Validasi": 0.2413225258767127,
+        "QWK Validasi": 0.08981637646388108,
+        "Gwet AC2 Validasi": 0.8997143948008496
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.009077115769021038,
+        "RMSE Validasi (poin)": 7.573392691298576,
+        "Pearson Validasi": 0.5663682359857416,
+        "QWK Validasi": 0.5236813544606034,
+        "Gwet AC2 Validasi": 0.9725858973239166
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.007614903836313728,
+        "RMSE Validasi (poin)": 11.0664239434583,
+        "Pearson Validasi": 0.6007113835617296,
+        "QWK Validasi": 0.3732237609943331,
+        "Gwet AC2 Validasi": 0.9613087379549381
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.006277225360707979,
+        "RMSE Validasi (poin)": 6.772297731792269,
+        "Pearson Validasi": 0.6886238108570458,
+        "QWK Validasi": 0.6409387853859182,
+        "Gwet AC2 Validasi": 0.9778109955687616
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.004505116593318537,
+        "RMSE Validasi (poin)": 6.596861575781972,
+        "Pearson Validasi": 0.6056402746747638,
+        "QWK Validasi": 0.6006370694803902,
+        "Gwet AC2 Validasi": 0.980003978935731
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.003566656498425894,
+        "RMSE Validasi (poin)": 8.91367953089819,
+        "Pearson Validasi": 0.5284209742553496,
+        "QWK Validasi": 0.4123124943570958,
+        "Gwet AC2 Validasi": 0.9617515834008384
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.003609852377479239,
+        "RMSE Validasi (poin)": 7.04416634175028,
+        "Pearson Validasi": 0.6645549568705881,
+        "QWK Validasi": 0.6160552854674756,
+        "Gwet AC2 Validasi": 0.9763713014092179
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.003109084252691685,
+        "RMSE Validasi (poin)": 7.012644523290055,
+        "Pearson Validasi": 0.6230979492353867,
+        "QWK Validasi": 0.5884660143959313,
+        "Gwet AC2 Validasi": 0.9755899505401217
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.003043938727005221,
+        "RMSE Validasi (poin)": 7.339749780664231,
+        "Pearson Validasi": 0.6405539944642316,
+        "QWK Validasi": 0.5223231379516319,
+        "Gwet AC2 Validasi": 0.9736338874038154
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 1,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.002953566592487226,
+        "RMSE Validasi (poin)": 7.287339109650214,
+        "Pearson Validasi": 0.6569203393858318,
+        "QWK Validasi": 0.5409360699560509,
+        "Gwet AC2 Validasi": 0.9745959976117937
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.2214289623387581,
+        "RMSE Validasi (poin)": 24.02909924346145,
+        "Pearson Validasi": 0.4170064608760548,
+        "QWK Validasi": 0.1006015298165707,
+        "Gwet AC2 Validasi": 0.9194979171972166
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.02541237856533958,
+        "RMSE Validasi (poin)": 13.78236524382674,
+        "Pearson Validasi": 0.4871747499630877,
+        "QWK Validasi": 0.3283509728409517,
+        "Gwet AC2 Validasi": 0.9033826193590706
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.01481495449069216,
+        "RMSE Validasi (poin)": 10.71910771994501,
+        "Pearson Validasi": 0.3889529270063811,
+        "QWK Validasi": 0.3203085203270438,
+        "Gwet AC2 Validasi": 0.942795247011519
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.009198567528249768,
+        "RMSE Validasi (poin)": 7.974060325782815,
+        "Pearson Validasi": 0.5678890685241883,
+        "QWK Validasi": 0.5695803168167177,
+        "Gwet AC2 Validasi": 0.9704270369248906
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.006200236424190948,
+        "RMSE Validasi (poin)": 8.029893912877434,
+        "Pearson Validasi": 0.6725105932447297,
+        "QWK Validasi": 0.6377389875147279,
+        "Gwet AC2 Validasi": 0.9691234708837364
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.005924938288144925,
+        "RMSE Validasi (poin)": 10.99865334411392,
+        "Pearson Validasi": 0.5692879137059546,
+        "QWK Validasi": 0.4250982043277091,
+        "Gwet AC2 Validasi": 0.9467369304952675
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.007307878408190287,
+        "RMSE Validasi (poin)": 11.11626687658347,
+        "Pearson Validasi": 0.5765088679700193,
+        "QWK Validasi": 0.4197549325756709,
+        "Gwet AC2 Validasi": 0.9442838622515543
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.004352062296973195,
+        "RMSE Validasi (poin)": 7.741499398763635,
+        "Pearson Validasi": 0.5477653294024158,
+        "QWK Validasi": 0.5379636412066324,
+        "Gwet AC2 Validasi": 0.971056235289481
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.003059554918211305,
+        "RMSE Validasi (poin)": 7.864333460209523,
+        "Pearson Validasi": 0.6228759888929887,
+        "QWK Validasi": 0.5943991736485711,
+        "Gwet AC2 Validasi": 0.9705156046100031
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.002684101856785896,
+        "RMSE Validasi (poin)": 8.001316918040699,
+        "Pearson Validasi": 0.616821213862321,
+        "QWK Validasi": 0.585893111800258,
+        "Gwet AC2 Validasi": 0.9690138668196718
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.002809942248714596,
+        "RMSE Validasi (poin)": 8.023179280298573,
+        "Pearson Validasi": 0.5927834253333011,
+        "QWK Validasi": 0.5677239530042691,
+        "Gwet AC2 Validasi": 0.9693877519151134
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.002823790540985657,
+        "RMSE Validasi (poin)": 8.551751535708483,
+        "Pearson Validasi": 0.5471708371478325,
+        "QWK Validasi": 0.506383865756423,
+        "Gwet AC2 Validasi": 0.9649290866980518
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 2,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.002876252499708206,
+        "RMSE Validasi (poin)": 8.083352689081208,
+        "Pearson Validasi": 0.6229365364887118,
+        "QWK Validasi": 0.5839045345009182,
+        "Gwet AC2 Validasi": 0.9684128201937583
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.309486101724436,
+        "RMSE Validasi (poin)": 29.30902763746604,
+        "Pearson Validasi": 0.1750092171622635,
+        "QWK Validasi": 0.04358841480969655,
+        "Gwet AC2 Validasi": 0.952561392084664
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.02537939007816921,
+        "RMSE Validasi (poin)": 9.137969350910984,
+        "Pearson Validasi": 0.3269388165270555,
+        "QWK Validasi": 0.3113702894846894,
+        "Gwet AC2 Validasi": 0.9636378878323711
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.01307802638467296,
+        "RMSE Validasi (poin)": 8.763217424631954,
+        "Pearson Validasi": 0.3991955264518885,
+        "QWK Validasi": 0.3932864393197401,
+        "Gwet AC2 Validasi": 0.9661564976395477
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.008210280867215166,
+        "RMSE Validasi (poin)": 8.107254711846528,
+        "Pearson Validasi": 0.3798775870034904,
+        "QWK Validasi": 0.3792855307118993,
+        "Gwet AC2 Validasi": 0.9709188287098297
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.005325247061338708,
+        "RMSE Validasi (poin)": 9.076547065149141,
+        "Pearson Validasi": 0.369003569864415,
+        "QWK Validasi": 0.2915856580910612,
+        "Gwet AC2 Validasi": 0.9624581209053132
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.006307261856566641,
+        "RMSE Validasi (poin)": 8.39119968212785,
+        "Pearson Validasi": 0.3421879469290315,
+        "QWK Validasi": 0.3591307358385043,
+        "Gwet AC2 Validasi": 0.9706795046724053
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.004486920470632538,
+        "RMSE Validasi (poin)": 8.577835472057703,
+        "Pearson Validasi": 0.3808343319408012,
+        "QWK Validasi": 0.281652564982087,
+        "Gwet AC2 Validasi": 0.965610859728506
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.004031482677543756,
+        "RMSE Validasi (poin)": 7.789922175065406,
+        "Pearson Validasi": 0.5230611799175576,
+        "QWK Validasi": 0.4070949762747609,
+        "Gwet AC2 Validasi": 0.9709034009791888
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.002653633561581215,
+        "RMSE Validasi (poin)": 6.546470205139468,
+        "Pearson Validasi": 0.5495043502160747,
+        "QWK Validasi": 0.5148491879350348,
+        "Gwet AC2 Validasi": 0.9795483346038195
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.003104532714593766,
+        "RMSE Validasi (poin)": 7.000998541809468,
+        "Pearson Validasi": 0.4835250024284712,
+        "QWK Validasi": 0.4418550318322528,
+        "Gwet AC2 Validasi": 0.9767330147324905
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.003820582280029165,
+        "RMSE Validasi (poin)": 7.711629160112498,
+        "Pearson Validasi": 0.4891364735701774,
+        "QWK Validasi": 0.4460787973817169,
+        "Gwet AC2 Validasi": 0.9723888981188262
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.00469623931642434,
+        "RMSE Validasi (poin)": 6.446608658273759,
+        "Pearson Validasi": 0.527955558428579,
+        "QWK Validasi": 0.519268451992162,
+        "Gwet AC2 Validasi": 0.9815448285579134
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.003267475187407406,
+        "RMSE Validasi (poin)": 7.963626848796411,
+        "Pearson Validasi": 0.4772349281433819,
+        "QWK Validasi": 0.4503122077002806,
+        "Gwet AC2 Validasi": 0.9739279299029341
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.003091592472095876,
+        "RMSE Validasi (poin)": 8.200382138324535,
+        "Pearson Validasi": 0.419083001658431,
+        "QWK Validasi": 0.3557300467150383,
+        "Gwet AC2 Validasi": 0.9678054619459274
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.002274930435464265,
+        "RMSE Validasi (poin)": 6.677497614107397,
+        "Pearson Validasi": 0.5230051137087275,
+        "QWK Validasi": 0.5107441692380397,
+        "Gwet AC2 Validasi": 0.9783341905963414
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.002069933011169608,
+        "RMSE Validasi (poin)": 7.01631161621196,
+        "Pearson Validasi": 0.4612393440610839,
+        "QWK Validasi": 0.4606043165467626,
+        "Gwet AC2 Validasi": 0.9773734476611592
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 3,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.001658637287482279,
+        "RMSE Validasi (poin)": 7.032563644020168,
+        "Pearson Validasi": 0.4762236407114829,
+        "QWK Validasi": 0.471045139176825,
+        "Gwet AC2 Validasi": 0.9765039735596037
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.2294399054502492,
+        "RMSE Validasi (poin)": 26.01351094668642,
+        "Pearson Validasi": 0.1835766296312388,
+        "QWK Validasi": 0.03876540177657706,
+        "Gwet AC2 Validasi": 0.9115915738032658
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.02881794420953628,
+        "RMSE Validasi (poin)": 12.32976719967267,
+        "Pearson Validasi": 0.3183023580518676,
+        "QWK Validasi": 0.271639088668712,
+        "Gwet AC2 Validasi": 0.9250820433620052
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.01498619064193812,
+        "RMSE Validasi (poin)": 13.53801443799396,
+        "Pearson Validasi": 0.08428269365911607,
+        "QWK Validasi": 0.04628159726462322,
+        "Gwet AC2 Validasi": 0.9203464064411313
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.01143566110102654,
+        "RMSE Validasi (poin)": 11.97315169988093,
+        "Pearson Validasi": 0.267778067878276,
+        "QWK Validasi": 0.2002498438475951,
+        "Gwet AC2 Validasi": 0.933762635216622
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.008550959758913734,
+        "RMSE Validasi (poin)": 11.86940688272649,
+        "Pearson Validasi": 0.3315039327314054,
+        "QWK Validasi": 0.2983091350157501,
+        "Gwet AC2 Validasi": 0.9347541407543484
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.00686154075504386,
+        "RMSE Validasi (poin)": 8.992057993087444,
+        "Pearson Validasi": 0.3306651523741183,
+        "QWK Validasi": 0.3294704836211348,
+        "Gwet AC2 Validasi": 0.9609261771399707
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.004315362609437952,
+        "RMSE Validasi (poin)": 9.18308892375788,
+        "Pearson Validasi": 0.3062672287870755,
+        "QWK Validasi": 0.3048864418444598,
+        "Gwet AC2 Validasi": 0.9589061430675256
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.00310972679457174,
+        "RMSE Validasi (poin)": 8.36752195255074,
+        "Pearson Validasi": 0.3854376033629758,
+        "QWK Validasi": 0.3833955511677413,
+        "Gwet AC2 Validasi": 0.9667673110045142
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.003136140181183578,
+        "RMSE Validasi (poin)": 8.81282381307439,
+        "Pearson Validasi": 0.3464004125904113,
+        "QWK Validasi": 0.348627611634576,
+        "Gwet AC2 Validasi": 0.9626935945396231
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.003712707751623098,
+        "RMSE Validasi (poin)": 9.240766430544813,
+        "Pearson Validasi": 0.3788436773327019,
+        "QWK Validasi": 0.340329350984824,
+        "Gwet AC2 Validasi": 0.9594116376152608
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.004385519973642597,
+        "RMSE Validasi (poin)": 12.59157542135948,
+        "Pearson Validasi": 0.3261525422151588,
+        "QWK Validasi": 0.1990008326394671,
+        "Gwet AC2 Validasi": 0.9278918152358931
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.004589739587402756,
+        "RMSE Validasi (poin)": 9.002710827582314,
+        "Pearson Validasi": 0.3049449382869205,
+        "QWK Validasi": 0.2989518818484993,
+        "Gwet AC2 Validasi": 0.9603676854984616
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.002775367035775152,
+        "RMSE Validasi (poin)": 8.12811551101644,
+        "Pearson Validasi": 0.3612004283150306,
+        "QWK Validasi": 0.3613751263902932,
+        "Gwet AC2 Validasi": 0.9692173789080646
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.002147283274446317,
+        "RMSE Validasi (poin)": 8.600082882780502,
+        "Pearson Validasi": 0.3418646578206204,
+        "QWK Validasi": 0.3160474308300394,
+        "Gwet AC2 Validasi": 0.9640649771003523
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.002358308542473801,
+        "RMSE Validasi (poin)": 9.289097175893454,
+        "Pearson Validasi": 0.3470538211274465,
+        "QWK Validasi": 0.333442703633828,
+        "Gwet AC2 Validasi": 0.9590720788405602
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.002402526370653154,
+        "RMSE Validasi (poin)": 8.42949023932319,
+        "Pearson Validasi": 0.3430790429773409,
+        "QWK Validasi": 0.338231029482842,
+        "Gwet AC2 Validasi": 0.9662899701869438
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 17,
+        "Loss Training (MSE)": 0.001865154626930303,
+        "RMSE Validasi (poin)": 8.393605156512262,
+        "Pearson Validasi": 0.3672541698001149,
+        "QWK Validasi": 0.3612994795773538,
+        "Gwet AC2 Validasi": 0.9666479524622152
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 4,
+        "Epoch": 18,
+        "Loss Training (MSE)": 0.002049833314643035,
+        "RMSE Validasi (poin)": 8.424214998019984,
+        "Pearson Validasi": 0.3590883929514387,
+        "QWK Validasi": 0.3511177907195191,
+        "Gwet AC2 Validasi": 0.9659846792362557
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.4981255499342296,
+        "RMSE Validasi (poin)": 42.10073227604433,
+        "Pearson Validasi": 0.1275596127715644,
+        "QWK Validasi": -0.004192731104683656,
+        "Gwet AC2 Validasi": 0.9391674471320426
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.05411888023200984,
+        "RMSE Validasi (poin)": 13.54202735447768,
+        "Pearson Validasi": 0.1639390226576482,
+        "QWK Validasi": 0.09538757320959157,
+        "Gwet AC2 Validasi": 0.941044568976294
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.01741074968436607,
+        "RMSE Validasi (poin)": 14.96481046495979,
+        "Pearson Validasi": 0.3159410989861963,
+        "QWK Validasi": 0.0889533672111702,
+        "Gwet AC2 Validasi": 0.936085219707057
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.008911096303786318,
+        "RMSE Validasi (poin)": 6.919400807874183,
+        "Pearson Validasi": 0.4447249105524515,
+        "QWK Validasi": 0.414553787342788,
+        "Gwet AC2 Validasi": 0.9768932220117906
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.01213286395464519,
+        "RMSE Validasi (poin)": 10.63825270587555,
+        "Pearson Validasi": 0.3743837882125954,
+        "QWK Validasi": 0.1842287181512935,
+        "Gwet AC2 Validasi": 0.9445749505975946
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.008124195322748143,
+        "RMSE Validasi (poin)": 6.551939529449918,
+        "Pearson Validasi": 0.453709222678414,
+        "QWK Validasi": 0.4551208672816645,
+        "Gwet AC2 Validasi": 0.9802975675193923
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.004942386328359305,
+        "RMSE Validasi (poin)": 9.020066181922322,
+        "Pearson Validasi": 0.5464123460261193,
+        "QWK Validasi": 0.3094884296259408,
+        "Gwet AC2 Validasi": 0.9646633465251143
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.004259670213649851,
+        "RMSE Validasi (poin)": 6.785233417108973,
+        "Pearson Validasi": 0.4102111183024987,
+        "QWK Validasi": 0.3836586791350087,
+        "Gwet AC2 Validasi": 0.9786029440633246
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.003958904236767517,
+        "RMSE Validasi (poin)": 6.354575739831696,
+        "Pearson Validasi": 0.4475616810408594,
+        "QWK Validasi": 0.4231210591907999,
+        "Gwet AC2 Validasi": 0.9821083498768205
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.003770140673159913,
+        "RMSE Validasi (poin)": 6.250694842247671,
+        "Pearson Validasi": 0.525382103539373,
+        "QWK Validasi": 0.4794741454864154,
+        "Gwet AC2 Validasi": 0.9824320043257402
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.003356159374272601,
+        "RMSE Validasi (poin)": 5.268641879923486,
+        "Pearson Validasi": 0.6045215745590352,
+        "QWK Validasi": 0.5789748067824885,
+        "Gwet AC2 Validasi": 0.9872383204351315
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 12,
+        "Loss Training (MSE)": 0.003483816728827971,
+        "RMSE Validasi (poin)": 5.892243789111348,
+        "Pearson Validasi": 0.5042529501474915,
+        "QWK Validasi": 0.4655108227410519,
+        "Gwet AC2 Validasi": 0.9843522031037331
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 13,
+        "Loss Training (MSE)": 0.003708132622597393,
+        "RMSE Validasi (poin)": 6.101853104403042,
+        "Pearson Validasi": 0.5213697752827285,
+        "QWK Validasi": 0.4782168552731479,
+        "Gwet AC2 Validasi": 0.9822797526344171
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 14,
+        "Loss Training (MSE)": 0.00286803952372087,
+        "RMSE Validasi (poin)": 6.344158200077567,
+        "Pearson Validasi": 0.5246184407702219,
+        "QWK Validasi": 0.4515879163439195,
+        "Gwet AC2 Validasi": 0.9814941618769756
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 15,
+        "Loss Training (MSE)": 0.00226016798013499,
+        "RMSE Validasi (poin)": 6.555479428184466,
+        "Pearson Validasi": 0.5006281312607691,
+        "QWK Validasi": 0.418779408666339,
+        "Gwet AC2 Validasi": 0.9803996488546727
+      },
+      {
+        "Tahap": "Validasi silang",
+        "Fold": 5,
+        "Epoch": 16,
+        "Loss Training (MSE)": 0.00283883533491025,
+        "RMSE Validasi (poin)": 7.469296079246705,
+        "Pearson Validasi": 0.4703069125048019,
+        "QWK Validasi": 0.3692343570972288,
+        "Gwet AC2 Validasi": 0.9749265451318058
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 1,
+        "Loss Training (MSE)": 0.1679733831429985
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 2,
+        "Loss Training (MSE)": 0.0122812365391205
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 3,
+        "Loss Training (MSE)": 0.008713788585344003
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 4,
+        "Loss Training (MSE)": 0.006074913077698815
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 5,
+        "Loss Training (MSE)": 0.00582291560590266
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 6,
+        "Loss Training (MSE)": 0.003719678957403083
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 7,
+        "Loss Training (MSE)": 0.003668834179168234
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 8,
+        "Loss Training (MSE)": 0.002983709625042034
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 9,
+        "Loss Training (MSE)": 0.002539841982095344
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 10,
+        "Loss Training (MSE)": 0.002694982989404337
+      },
+      {
+        "Tahap": "Latihan final",
+        "Fold": null,
+        "Epoch": 11,
+        "Loss Training (MSE)": 0.002006152711047567
+      }
+    ]
+  },
+  "foldSummary": [
+    {
+      "Skenario": "S1",
+      "Fold": 1,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 16,
+      "Epoch Terpilih": 11,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    },
+    {
+      "Skenario": "S1",
+      "Fold": 2,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 25,
+      "Epoch Terpilih": 23,
+      "Berhenti Lebih Awal?": false,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "Batas maksimum epoch tercapai"
+    },
+    {
+      "Skenario": "S1",
+      "Fold": 3,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 20,
+      "Epoch Terpilih": 15,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    },
+    {
+      "Skenario": "S1",
+      "Fold": 4,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 25,
+      "Epoch Terpilih": 21,
+      "Berhenti Lebih Awal?": false,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "Batas maksimum epoch tercapai"
+    },
+    {
+      "Skenario": "S1",
+      "Fold": 5,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 23,
+      "Epoch Terpilih": 18,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 1,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 25,
+      "Epoch Terpilih": 23,
+      "Berhenti Lebih Awal?": false,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "Batas maksimum epoch tercapai"
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 2,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 25,
+      "Epoch Terpilih": 25,
+      "Berhenti Lebih Awal?": false,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "Batas maksimum epoch tercapai"
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 3,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 25,
+      "Epoch Terpilih": 22,
+      "Berhenti Lebih Awal?": false,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "Batas maksimum epoch tercapai"
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 4,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 25,
+      "Epoch Terpilih": 24,
+      "Berhenti Lebih Awal?": false,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "Batas maksimum epoch tercapai"
+    },
+    {
+      "Skenario": "S2",
+      "Fold": 5,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 23,
+      "Epoch Terpilih": 18,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 1,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 14,
+      "Epoch Terpilih": 9,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 2,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 13,
+      "Epoch Terpilih": 8,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 3,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 17,
+      "Epoch Terpilih": 12,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 4,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 18,
+      "Epoch Terpilih": 13,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    },
+    {
+      "Skenario": "S3",
+      "Fold": 5,
+      "Epoch Maksimal": 25,
+      "Epoch Dijalankan": 16,
+      "Epoch Terpilih": 11,
+      "Berhenti Lebih Awal?": true,
+      "Batas Tanpa Perbaikan": 5,
+      "Alasan Selesai": "RMSE validasi tidak membaik selama batas kesabaran"
+    }
+  ],
+  "cvSummary": [
+    {
+      "Skenario": "S1",
+      "mean": 7.784967558753962,
+      "sd": 1.4802301752553884,
+      "n": 5
+    },
+    {
+      "Skenario": "S2",
+      "mean": 6.433531904304969,
+      "sd": 0.6036455904970502,
+      "n": 5
+    },
+    {
+      "Skenario": "S3",
+      "mean": 6.836345404751858,
+      "sd": 1.1352219318229138,
+      "n": 5
+    }
+  ],
+  "models": [
+    {
+      "Skenario": "S1",
+      "Encoder": "RoBERTa: bobot ikut dilatih",
+      "Panjang Vektor": 768,
+      "Lapisan Prediksi": "Linear: 768 angka → 1 skor",
+      "Jumlah Skor": 1
+    },
+    {
+      "Skenario": "S2",
+      "Encoder": "BGE-M3: bobot tetap",
+      "Panjang Vektor": 1024,
+      "Lapisan Prediksi": "MLP: 1024 → 256 → 1 skor",
+      "Jumlah Skor": 1
+    },
+    {
+      "Skenario": "S3",
+      "Encoder": "RoBERTa dan BGE-M3 frozen; proyeksi, LayerNorm tambahan dan MLP dilatih",
+      "Panjang Vektor": 1024,
+      "Lapisan Prediksi": "RoBERTa 768 → LayerNorm; BGE → proyeksi 256 + LayerNorm; concat 1024 → MLP: Linear 256 → GELU → dropout → Linear 1",
+      "Jumlah Skor": 1
+    }
+  ],
+  "parameters": [
+    {
+      "Pengaturan": "Skor minimum",
+      "Nilai": 0
+    },
+    {
+      "Pengaturan": "Skor maksimum",
+      "Nilai": 100
+    },
+    {
+      "Pengaturan": "Jumlah fold",
+      "Nilai": 5
+    },
+    {
+      "Pengaturan": "Maksimum epoch per fold",
+      "Nilai": 25
+    },
+    {
+      "Pengaturan": "Batas epoch tanpa perbaikan",
+      "Nilai": 5
+    },
+    {
+      "Pengaturan": "Batch efektif",
+      "Nilai": 8
+    },
+    {
+      "Pengaturan": "Micro batch",
+      "Nilai": 1
+    },
+    {
+      "Pengaturan": "Learning rate encoder",
+      "Nilai": 1e-05
+    },
+    {
+      "Pengaturan": "Learning rate proyeksi BGE",
+      "Nilai": 0.0001
+    },
+    {
+      "Pengaturan": "Learning rate head",
+      "Nilai": 0.0001
+    },
+    {
+      "Pengaturan": "Batas token RoBERTa",
+      "Nilai": 512
+    },
+    {
+      "Pengaturan": "Batas token BGE-M3",
+      "Nilai": 1024
+    }
+  ],
+  "pairing": {
+    "Data dan Nilai Guru": {
+      "identical": true,
+      "rows": 300
+    },
+    "Pembagian Data": {
+      "identical": true,
+      "rows": 300
+    },
+    "Pembagian Lima Fold": {
+      "identical": true,
+      "rows": 1200
+    }
+  },
+  "teacher_test_pairs_identical": true,
+  "predictionImpact": [
+    {
+      "Skenario": "S1",
+      "new_lower_error": 31,
+      "old_lower_error": 29,
+      "equal_error": 0
+    },
+    {
+      "Skenario": "S2",
+      "new_lower_error": 38,
+      "old_lower_error": 22,
+      "equal_error": 0
+    },
+    {
+      "Skenario": "S3",
+      "new_lower_error": 30,
+      "old_lower_error": 30,
+      "equal_error": 0
+    }
+  ],
+  "vector_check": {
+    "rows": 300,
+    "dimensions": 768,
+    "max_abs_difference_S3_vs_pretrained": 0.0,
+    "allclose_1e_6": true
+  },
+  "source_reference": {
+    "commit": "0c79d655898f967e855922be3c5fad1865efb1aa",
+    "path": "notebooks/experiments/AES_300_S3_DoubleFrozen_MLP_Manual.ipynb",
+    "evidence": {
+      "model": {
+        "cell": 30,
+        "source": "%%aes\n# Satu head satu nilai; Engine menyiapkan tensor dan mengembalikan satuan0–100.\n# Menyusun encoder dan lapisan prediksi untuk S1, S2, atau S3; ketiganya menghasilkan satu skor per jawaban.\nclass SingleScoreModel(nn.Module):\n    def __init__(self, scenario, roberta=None, dropout=.1):\n        super().__init__()\n        if scenario not in ('S1', 'S2', 'S3'):\n            raise ValueError('Skenario harus S1, S2, atau S3')\n        if scenario != 'S2' and roberta is None:\n            raise ValueError('RoBERTa diperlukan oleh S1/S3.')\n        # Simpan skenario dan encoder RoBERTa. S2 memakai vektor BGE yang sudah dihitung, jadi tidak memuat RoBERTa.\n        self.scenario, self.roberta = scenario, roberta\n        if roberta is not None:\n            # S1 tetap fine-tuned sebagai kontrol; S3 membekukan seluruh encoder RoBERTa.\n            roberta.requires_grad_(scenario == 'S1')\n            if scenario == 'S3':\n                roberta.eval()\n        self.dropout = nn.Dropout(dropout)\n        if scenario == 'S1':\n            # S1: 768 koordinat RoBERTa dipetakan ke satu prediksi kontinu.\n            self.head = nn.Linear(768, 1)\n        elif scenario == 'S2':\n            # MLP mempelajari pemetaan vektor menjadi skor; GELU memungkinkan hubungan nonlinier.\n            self.head = nn.Sequential(nn.Linear(1024, 256), nn.GELU(), nn.Dropout(dropout), nn.Linear(256, 1))\n        else:\n            # LayerNorm tambahan pada vektor jawaban RoBERTa, khusus cabang fusion.\n            self.roberta_norm = nn.LayerNorm(768)\n            # S3: padatkan 1024 angka BGE menjadi 256 angka sebelum digabung.\n            self.projection = nn.Sequential(nn.Linear(1024, 256), nn.LayerNorm(256))\n            # MLP S3: linear 1024 ke 256, GELU, dropout, lalu satu skor.\n            self.head = nn.Sequential(nn.Linear(1024, 256), nn.GELU(), nn.Dropout(dropout), nn.Linear(256, 1))\n\n    def train(self, mode=True):\n        # model.train() tidak boleh mengaktifkan kembali dropout encoder S3 yang frozen.\n        super().train(mode)\n        if self.scenario == 'S3' and self.roberta is not None:\n            self.roberta.eval()\n        return self\n\n    def forward(self, windows=None, mapping=None, n_essays=None, bge=None, return_features=False):\n        features = {}\n        if self.scenario != 'S2':\n            # Baca token pada setiap window, lalu ambil vektor token pertama (CLS) sebagai ringkasannya.\n            # Gradien hanya melalui encoder S1; proyeksi/LN/MLP S3 tetap belajar di luar blok ini.\n            with torch.set_grad_enabled(torch.is_grad_enabled() and self.scenario == 'S1'):\n                cls = self.roberta(**windows).last_hidden_state[:, 0, :]\n            # Rata-ratakan vektor CLS semua window milik jawaban yang sama.\n            essay = mean_by_essay(cls, mapping, n_essays)\n            features.update(roberta=essay, roberta_window_cls=cls)\n        if self.scenario == 'S1':\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            prediction = self.head(self.dropout(essay))\n        elif self.scenario == 'S2':\n            if bge is None or bge.ndim != 2 or bge.shape[1] != 1024:\n                raise ValueError('BGE memerlukan [N,1024]')\n            features['bge'] = bge\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            prediction = self.head(bge)\n        else:\n            if bge is None or bge.shape != (n_essays, 1024):\n                raise ValueError('BGE memerlukan [N,1024]')\n            features['bge'] = bge\n            # Simpan vektor asli dan hasil normalisasi agar setiap tahap bisa diperiksa.\n            # Normalisasi tambahan pada 768 komponen RoBERTa sebelum fusion; vektor asli tetap disimpan.\n            features['roberta_layernorm'] = self.roberta_norm(essay)\n            # Proyeksi BGE ikut belajar, walaupun bobot encoder BGE tetap frozen.\n            features['projection'] = self.projection(bge)\n            # Sambung 768 angka RoBERTa setelah LayerNorm dan 256 angka proyeksi BGE menjadi vektor fusion 1024 angka.\n            features['concat'] = torch.cat([features['roberta_layernorm'], features['projection']], dim=1)\n            # Lapisan prediksi memetakan vektor menjadi satu angka; saat latihan angka ini masih memakai skala target 0–1.\n            # Dropout sudah berada di hidden MLP; concat masuk langsung ke head.\n            prediction = self.head(features['concat'])\n        if prediction.ndim != 2 or prediction.shape[1] != 1:\n            raise ValueError('Dataset satu skor membutuhkan output [N,1].')\n        return (prediction, features) if return_features else prediction\n\n\n# Menghubungkan teks, tokenizer, dan model. Saat prediksi, hasil dikembalikan ke skala nilai guru.\nclass Engine:\n    def __init__(self, model, texts, bge, cfg, device, roberta_tokenizer=None):\n        self.model, self.texts, self.bge, self.cfg, self.device = model, texts, bge, cfg, device\n        self.tokenizer = roberta_tokenizer or (tokenizer(cfg, 'roberta') if model.scenario != 'S2' else None)\n\n    def forward(self, indices, return_features=False):\n        ids = [int(i) for i in indices]\n        features = self.bge[ids].to(self.device) if self.model.scenario != 'S1' else None\n        if self.model.scenario == 'S2':\n            return self.model(bge=features, return_features=return_features)\n        # Pecah jawaban panjang menjadi window; mapping menghubungkan setiap window dengan jawaban asalnya.\n        windows, mapping, _ = batch_windows([self.texts[i] for i in ids], self.tokenizer,\n                                             self.device, self.cfg['roberta_max_length'], self.cfg['roberta_overlap'])\n        return self.model(windows=windows, mapping=mapping, n_essays=len(ids), bge=features,\n                          return_features=return_features)\n\n    def predict(self, indices):\n        # Mode prediksi: nonaktifkan dropout. Pembacaan di bawah memakai no_grad.\n        self.model.eval()\n        values = []\n        # Tidak menghitung gradien untuk tahap pembacaan ini; bukan langkah latihan.\n        with torch.no_grad():\n            for start in range(0, len(indices), self.cfg['micro_batch']):\n                ids = indices[start:start+self.cfg['micro_batch']]\n                values.append(self.forward(ids).reshape(-1).float().cpu().numpy())\n        scaled = np.concatenate(values)\n        # Kembalikan skala asli sebelum RMSE/Pearson maupun tampilan prediksi.\n        # Kembalikan prediksi ke skala nilai guru sebelum ditampilkan atau dihitung RMSE/Pearson.\n        return scaled*(self.cfg['score_max']-self.cfg['score_min'])+self.cfg['score_min']\n"
+      },
+      "config": {
+        "cell": 12,
+        "source": "%%aes\n# Nama checkpoint adalah alamat model pretrained di Hugging Face, bukan objek model yang sudah dimuat.\nROBERTA_CHECKPOINT='flax-community/indonesian-roberta-base'  # RoBERTa bahasa Indonesia untuk S1 dan S3.\nBGE_CHECKPOINT='BAAI/bge-m3'  # BGE-M3 untuk menghasilkan embedding di S2 dan S3.\n# Revision mengunci versi bobot/tokenizer agar eksperimen berikutnya memakai sumber yang sama.\nROBERTA_REVISION=DEFAULTS['roberta']['revision']\nBGE_REVISION=DEFAULTS['bge']['revision']\n\n# Ubah parameter DI SINI sebelum latihan; jangan memilihnya dari hasil data uji.\n# Batas maksimal sama untuk tiga skenario; setiap fold memulai model baru.\nEPOCHS,FOLDS=25,5\n# Berhenti jika RMSE validasi tidak turun selama lima epoch berturut-turut.\nEARLY_STOPPING_PATIENCE=5\n# Kandidat A: encoder pretrained berubah perlahan; proyeksi dan head baru belajar lebih cepat.\nENCODER_LR=1e-5\nPROJECTION_LR=HEAD_LR=1e-4\n# Proses satu jawaban per microbatch, lalu akumulasikan gradien hingga batch efektif delapan jawaban.\nMICRO_BATCH,EFFECTIVE_BATCH=1,8\nNEW_ANSWER=''  # Kosong: satu jawaban held-out untuk contoh scoring/vektor.\nAUDIT_ONLY=os.environ.get('AES300_AUDIT_ONLY')=='1'\nRUN_MODELS=RUN_TRAINING=RUN_WORD_VECTORS=RUN_FINAL_FEATURES=not AUDIT_ONLY\ncfg=config(dict(dataset=os.environ['AES300_DATASET'],output=os.environ['AES300_RESULTS'],\n                sheet='Sheet1',expected_rows=300,score_min=0,score_max=100,\n                epochs=EPOCHS,folds=FOLDS,micro_batch=MICRO_BATCH,effective_batch=EFFECTIVE_BATCH,\n                early_stopping_patience=EARLY_STOPPING_PATIENCE,\n                encoder_lr=ENCODER_LR,projection_lr=PROJECTION_LR,head_lr=HEAD_LR,\n                roberta={'checkpoint':ROBERTA_CHECKPOINT,'revision':ROBERTA_REVISION},\n                bge={'checkpoint':BGE_CHECKPOINT,'revision':BGE_REVISION},\n                device='auto',new_answer=NEW_ANSWER,vector_source='pretrained',lesson_version='s3_double_frozen_mlp_manual_v1',\n                runtime_versions={p:version(p) for p in ('torch','transformers','numpy')}))\n# False: CPU boleh dipakai. True: hentikan sebelum training jika GPU belum aktif.\nREQUIRE_GPU=False\n# device='auto' di atas memilih CUDA jika tersedia; jika tidak, memakai CPU.\ngpu=check_gpu(require_gpu=RUN_MODELS and REQUIRE_GPU)\nif RUN_MODELS and not gpu['cuda_available']:\n    print('Mode CPU aktif. Training tetap berjalan, tetapi lebih lama dibanding GPU; progres tetap disimpan otomatis.', flush=True)\nshow(pd.DataFrame([\n    {'Pemeriksaan':'Perangkat aktif','Hasil':gpu['name']},\n    {'Pemeriksaan':'CUDA tersedia','Hasil':'Ya' if gpu['cuda_available'] else 'Tidak'},\n    {'Pemeriksaan':'GPU T4','Hasil':'T4 terdeteksi' if gpu['is_t4'] else 'GPU lain terdeteksi' if gpu['cuda_available'] else 'Belum aktif'},\n    {'Pemeriksaan':'Memori GPU (GiB)','Hasil':str(gpu['memory_gib']) if gpu['memory_gib'] is not None else 'Tidak tersedia'}\n]),'Pemeriksaan GPU sebelum training',columns=2)\n"
+      },
+      "fit": {
+        "cell": 36,
+        "source": "%%aes\n# Semua checkpoint epoch dan fold disimpan untuk dibersihkan manual.\n\ndef optimizer_groups(model, cfg):\n    # Tiap parameter hanya masuk satu kelompok; encoder BGE frozen berada di luar model ini.\n    buckets = {'roberta': [], 'projection': [], 'head': []}\n    for name, parameter in model.named_parameters():\n        if not parameter.requires_grad:\n            continue\n        group = 'roberta' if name.startswith('roberta.') else 'projection' if name.startswith('projection.') else 'head'\n        buckets[group].append(parameter)\n    rates = {'roberta': cfg['encoder_lr'], 'projection': cfg['projection_lr'], 'head': cfg['head_lr']}\n    # LayerNorm tambahan RoBERTa baru dibuat, sehingga ikut kelompok head yang baru belajar.\n    return [{'name': name, 'params': params, 'lr': rates[name]}\n            for name, params in buckets.items() if params]\n\n\ndef save_training_progress(path, payload):\n    \"\"\"Simpan tiap epoch; penunjuk memuat dua terbaru, file lama tetap ada.\"\"\"\n    path = Path(path)\n    path.parent.mkdir(parents=True, exist_ok=True)\n    previous = json.loads(path.read_text())['snapshots'] if path.exists() else []\n    target = path.with_name(f'{path.stem}_epoch_{payload[\"epoch\"]:03d}.pt')\n    temporary = target.with_name(target.name + '.pending')\n    torch.save(payload, temporary)\n    checksum = digest(temporary)\n    temporary.replace(target)\n    snapshots = [{'file': target.name, 'sha256': checksum}]\n    snapshots += [row for row in previous if row['file'] != target.name][:1]\n    # Semua file epoch tetap disimpan; tidak ada unlink atau permintaan Drive API.\n    dump(path, {'scope': SCOPE, 'snapshots': snapshots})\n\n\ndef load_training_progress(path, contract):\n    path = Path(path)\n    if not path.exists():\n        return None\n    manifest = json.loads(path.read_text())\n    if manifest.get('scope') != SCOPE:\n        raise ValueError('Checkpoint progres bukan workflow AES ini.')\n    for snapshot in manifest['snapshots']:\n        source = path.parent/snapshot['file']\n        if source.name != snapshot['file']:\n            raise ValueError('Nama file checkpoint progres tidak sah.')\n        if not source.exists() or digest(source) != snapshot['sha256']:\n            print('Checkpoint terbaru tidak lengkap; memeriksa cadangan epoch sebelumnya.', flush=True)\n            continue\n        payload = torch.load(source, map_location='cpu', weights_only=True)\n        if payload.get('contract') != contract:\n            raise ValueError('Data, fold, konfigurasi atau perangkat checkpoint berbeda. Progres tidak dipakai untuk percobaan lain.')\n        return payload\n    raise RuntimeError('Tidak ada checkpoint progres yang utuh. Hasil lama dipertahankan; training tidak diulang diam-diam.')\n\n\ndef fit(scenario, training, validation, bundle, bge, cfg, epochs, seed, checkpoint=None):\n    seed_everything(seed)\n    device = device_name(cfg)\n    # Buat model baru untuk fold ini, lalu tempatkan di GPU atau CPU yang tersedia.\n    model = make_model(scenario, cfg).to(device)\n    engine = Engine(model, bundle.texts, bge, cfg, device)\n    groups = optimizer_groups(model, cfg)\n    learning_rates = {group['name']: group['lr'] for group in groups}\n    # AdamW memperbarui kelompok parameter sesuai learning rate masing-masing.\n    optimizer = torch.optim.AdamW(groups, weight_decay=cfg['weight_decay'])\n    generator = torch.Generator().manual_seed(seed)\n    loader = DataLoader([int(i) for i in training], batch_size=cfg['effective_batch'],\n                        shuffle=True, generator=generator, num_workers=0)\n    total_steps = len(loader)*epochs\n    warmup = min(int(cfg['warmup_ratio']*total_steps), max(0, total_steps-1))\n    scheduler = get_linear_schedule_with_warmup(optimizer, warmup, total_steps)\n    use_cuda = device == 'cuda'\n    dtype = torch.bfloat16 if use_cuda and torch.cuda.is_bf16_supported() else torch.float16\n    scaler = torch.amp.GradScaler('cuda', enabled=use_cuda and dtype == torch.float16)\n    selected_parameters = {}\n    for name, parameter in model.named_parameters():\n        group = name.split('.')[0]\n        if (parameter.requires_grad or group == 'roberta') and group not in selected_parameters:\n            selected_parameters[group] = (name, parameter.detach().reshape(-1)[:32].cpu().clone())\n    best_state, best_epoch, best_rmse = None, 0, float('inf')\n    patience = cfg['early_stopping_patience']\n    without_improvement, early_stopped = 0, False\n    history, active_steps, optimizer_steps, skipped_steps = [], 0, 0, 0\n    start_epoch = 1\n    semantic = {k: v for k, v in cfg.items() if k not in ('dataset', 'output', 'trace_position', 'vector_source', 'new_answer', 'focus_word')}\n    contract = {'format': 'epoch_resume_v1', 'source': bundle.source_sha256, 'scenario': scenario,\n                'training': [int(i) for i in training], 'validation': None if validation is None else [int(i) for i in validation],\n                'config': semantic, 'epochs': epochs, 'seed': seed,\n                'torch': str(torch.__version__), 'device': device,\n                'precision': str(dtype) if use_cuda else 'float32',\n                'gpu': torch.cuda.get_device_name() if use_cuda else None}\n    saved = load_training_progress(checkpoint, contract) if checkpoint is not None else None\n    if saved is not None:\n        model.load_state_dict(saved['model'])\n        optimizer.load_state_dict(saved['optimizer'])\n        scheduler.load_state_dict(saved['scheduler'])\n        scaler.load_state_dict(saved['scaler'])\n        generator.set_state(saved['loader_generator'])\n        selected_parameters = saved['selected_parameters']\n        best_state, best_epoch, best_rmse = saved['best_state'], saved['best_epoch'], saved['best_rmse']\n        history, without_improvement = saved['history'], saved['without_improvement']\n        active_steps, optimizer_steps, skipped_steps = saved['active_steps'], saved['optimizer_steps'], saved['skipped_steps']\n        early_stopped = saved['early_stopped']\n        start_epoch = epochs+1 if early_stopped else saved['epoch']+1\n        random.setstate(saved['python_rng'])\n        rng = saved['numpy_rng']\n        np.random.set_state((rng[0], np.asarray(rng[1], dtype=np.uint32), rng[2], rng[3], rng[4]))\n        torch.set_rng_state(saved['torch_rng'])\n        if use_cuda:\n            torch.cuda.set_rng_state_all(saved['cuda_rng'])\n        print(f'{scenario}: progres epoch {saved[\"epoch\"]}/{epochs} ditemukan; '\n              + (f'lanjut epoch {start_epoch}.' if start_epoch <= epochs else 'latihan sudah selesai, memulihkan hasilnya.'), flush=True)\n        del saved\n    for epoch in range(start_epoch, epochs+1):\n        model.train()\n        loss_total = 0.\n        for effective in loader:\n            batch = effective.tolist()\n            optimizer.zero_grad(set_to_none=True)\n            for start in range(0, len(batch), cfg['micro_batch']):\n                ids = batch[start:start+cfg['micro_batch']]\n                # Ubah nilai guru dari skala 0–100 menjadi 0–1 hanya untuk menghitung loss.\n                targets = torch.as_tensor((bundle.y[ids]-cfg['score_min'])/(cfg['score_max']-cfg['score_min']),\n                                          dtype=torch.float32, device=device).reshape(-1, 1)\n                with torch.autocast(device_type=device, dtype=dtype, enabled=use_cuda):\n                    prediction = engine.forward(ids).float()\n                    if prediction.shape != targets.shape:\n                        raise ValueError('Shape prediksi/target harus [B,1], tanpa broadcasting.')\n                    # MSE mengukur selisih kuadrat antara prediksi dan target; optimizer berusaha memperkecilnya.\n                    loss = torch.mean((prediction-targets)**2)\n                if not torch.isfinite(loss):\n                    raise RuntimeError('Loss nonfinite; run dihentikan, tidak diklaim berhasil.')\n                # Hitung gradien dan bobot microbatch sesuai ukuran batch efektif aktual.\n                scaler.scale(loss*(len(ids)/len(batch))).backward()\n                loss_total += loss.item()*len(ids)\n            scaler.unscale_(optimizer)\n            torch.nn.utils.clip_grad_norm_(model.parameters(), cfg['gradient_clip'])\n            lr_active = any(g['lr'] > 0 for g in optimizer.param_groups)\n            previous_scale = scaler.get_scale()\n            # Perbarui bobot; GradScaler bisa melewati langkah yang overflow pada AMP.\n            scaler.step(optimizer)\n            scaler.update()\n            skipped = scaler.is_enabled() and scaler.get_scale() < previous_scale\n            if skipped:\n                skipped_steps += 1\n            else:\n                active_steps += int(lr_active)\n                scheduler.step()\n                optimizer_steps += 1\n        row = {'epoch': epoch, 'train_mse_scaled': loss_total/len(training),\n               'optimizer_steps': optimizer_steps, 'active_lr_steps': active_steps, 'amp_skipped_steps': skipped_steps,\n               'effective_batch_target': cfg['effective_batch'], 'micro_batch': cfg['micro_batch']}\n        if validation is not None:\n            predicted = engine.predict(validation)\n            row['validation'] = metrics(bundle.y[validation], predicted, cfg)\n            # Simpan epoch dengan RMSE validasi terkecil; data uji akhir tidak ikut memilih epoch.\n            if row['validation']['RMSE'] < best_rmse:\n                best_rmse, best_epoch = row['validation']['RMSE'], epoch\n                best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}\n                without_improvement = 0\n            else:\n                without_improvement += 1\n            row.update(best_epoch_so_far=best_epoch, epochs_without_improvement=without_improvement)\n            message = (f\" | RMSE validasi: {row['validation']['RMSE']:.4f} poin\"\n                       f\" | terbaik: epoch {best_epoch}, {best_rmse:.4f} poin\"\n                       f\" | tanpa perbaikan: {without_improvement}/{patience}\")\n        else:\n            best_epoch = epoch\n            message = ' | pelatihan final; data uji belum dibuka'\n        history.append(row)\n        print(f'{scenario} · epoch {epoch}/{epochs} · loss latih (MSE, target 0–1): {row[\"train_mse_scaled\"]:.6f}'+message, flush=True)\n        # Hanya fold validasi yang boleh menghentikan latihan; data uji tidak dibaca.\n        if validation is not None and without_improvement >= patience and epoch < epochs:\n            early_stopped = True\n        if checkpoint is not None:\n            rng = np.random.get_state()\n            # Progres menyimpan keadaan belajar, bukan bobot terbaik saja.\n            save_training_progress(checkpoint, {\n                'contract': contract, 'epoch': epoch, 'model': model.state_dict(),\n                'optimizer': optimizer.state_dict(), 'scheduler': scheduler.state_dict(), 'scaler': scaler.state_dict(),\n                'loader_generator': generator.get_state(), 'python_rng': random.getstate(),\n                'numpy_rng': (rng[0], rng[1].tolist(), rng[2], rng[3], rng[4]),\n                'torch_rng': torch.get_rng_state(), 'cuda_rng': torch.cuda.get_rng_state_all() if use_cuda else [],\n                'selected_parameters': selected_parameters, 'best_state': best_state,\n                'best_epoch': best_epoch, 'best_rmse': best_rmse, 'history': history,\n                'without_improvement': without_improvement, 'early_stopped': early_stopped,\n                'active_steps': active_steps, 'optimizer_steps': optimizer_steps, 'skipped_steps': skipped_steps})\n            print(f'{scenario}: progres epoch {epoch} tersimpan otomatis.', flush=True)\n        if early_stopped:\n            print(f'{scenario}: early stopping setelah {epoch} epoch; RMSE validasi tidak membaik selama {patience} epoch. '\n                  f'Bobot epoch {best_epoch} dipulihkan.', flush=True)\n            break\n    if active_steps == 0:\n        raise RuntimeError('Tidak ada pembaruan dengan LR aktif.')\n    named = dict(model.named_parameters())\n    changed = {group: not torch.equal(before, named[name].detach().reshape(-1)[:32].cpu())\n               for group, (name, before) in selected_parameters.items()}\n    if best_state is not None:\n        model.load_state_dict(best_state)\n    # Mode pembacaan: dropout dinonaktifkan agar ekstraksi vektor dan prediksi konsisten.\n    model.eval()\n    info = {'scenario': scenario, 'best_epoch': best_epoch, 'epochs_completed': len(history),\n            'max_epochs': epochs, 'early_stopping_patience': patience if validation is not None else None,\n            'early_stopped': early_stopped, 'optimizer_learning_rates': learning_rates,\n            'best_validation_rmse': best_rmse if validation is not None else None,\n            'stop_reason': ('RMSE validasi tidak membaik selama batas kesabaran' if early_stopped else\n                            'Batas maksimum epoch tercapai' if validation is not None else\n                            'Jumlah epoch final yang dipilih dari CV selesai'),\n            'history': history, 'optimizer_steps': optimizer_steps, 'active_lr_steps': active_steps, 'amp_skipped_steps': skipped_steps,\n            'parameter_samples_changed': changed, 'BGE_encoder_trained': False,\n            'RoBERTa_encoder_trained': scenario == 'S1',\n            'trainable_parameters': sum(p.numel() for p in model.parameters() if p.requires_grad),\n            'selection': 'minimum validation RMSE in original score units' if validation is not None else 'fixed refit epochs selected from CV'}\n    return model, engine, info\n"
+      }
+    },
+    "status": "Kode rujukan versi manual di repo; workbook menyatakan metode frozen. Notebook eksekusi run ini belum diunggah, sehingga source runtime tidak diklaim cocok byte demi byte."
+  },
+  "books": [
+    {
+      "file": "01_Data_dan_Tokenisasi.xlsx",
+      "sha256": "cd0a76ead72b654351c3c2b56b7df9a6eca66223bbda71018df0e977df94a85e",
+      "sheets": [
+        {
+          "name": "Panduan",
+          "rows": 7,
+          "columns": 2,
+          "headers": [
+            "Bagian",
+            "Cara Membaca"
+          ]
+        },
+        {
+          "name": "Data dan Nilai Guru",
+          "rows": 300,
+          "columns": 3,
+          "headers": [
+            "ID Jawaban",
+            "Jawaban Siswa",
+            "Nilai Guru"
+          ]
+        },
+        {
+          "name": "Pembagian Data",
+          "rows": 300,
+          "columns": 2,
+          "headers": [
+            "ID Jawaban",
+            "Penggunaan Data"
+          ]
+        },
+        {
+          "name": "Pembagian Lima Fold",
+          "rows": 1200,
+          "columns": 3,
+          "headers": [
+            "Fold",
+            "ID Jawaban",
+            "Penggunaan Data"
+          ]
+        },
+        {
+          "name": "Token RoBERTa",
+          "rows": 17546,
+          "columns": 5,
+          "headers": [
+            "ID Jawaban",
+            "Bagian Teks",
+            "Posisi Token",
+            "Token",
+            "ID Token"
+          ]
+        },
+        {
+          "name": "Token BGE-M3",
+          "rows": 19013,
+          "columns": 4,
+          "headers": [
+            "ID Jawaban",
+            "Posisi Token",
+            "Token",
+            "ID Token"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "02_Vektor_Jawaban.xlsx",
+      "sha256": "e86299532e1c2b50138830baf08e5ef83830d27bacb5818a56d1c6f18c999e51",
+      "sheets": [
+        {
+          "name": "Panduan",
+          "rows": 11,
+          "columns": 2,
+          "headers": [
+            "Bagian",
+            "Cara Membaca"
+          ]
+        },
+        {
+          "name": "RoBERTa Sebelum Latihan",
+          "rows": 300,
+          "columns": 769,
+          "headers": [
+            "ID Jawaban",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4",
+            "Komponen 5"
+          ]
+        },
+        {
+          "name": "BGE-M3",
+          "rows": 300,
+          "columns": 1025,
+          "headers": [
+            "ID Jawaban",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4",
+            "Komponen 5"
+          ]
+        },
+        {
+          "name": "RoBERTa S1 Setelah Latihan",
+          "rows": 300,
+          "columns": 769,
+          "headers": [
+            "ID Jawaban",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4",
+            "Komponen 5"
+          ]
+        },
+        {
+          "name": "RoBERTa S3 Setelah Latihan",
+          "rows": 300,
+          "columns": 769,
+          "headers": [
+            "ID Jawaban",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4",
+            "Komponen 5"
+          ]
+        },
+        {
+          "name": "RoBERTa S3 Setelah LayerNorm",
+          "rows": 300,
+          "columns": 769,
+          "headers": [
+            "ID Jawaban",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4",
+            "Komponen 5"
+          ]
+        },
+        {
+          "name": "Fusion S3",
+          "rows": 300,
+          "columns": 1025,
+          "headers": [
+            "ID Jawaban",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4",
+            "Komponen 5"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "03_Vektor_Kata_dan_Kalimat.xlsx",
+      "sha256": "417b7e7e46baed05fdaaa4dc94f738b0096b8bf810c00ece0084b0e7ebb71776",
+      "sheets": [
+        {
+          "name": "Panduan",
+          "rows": 9,
+          "columns": 2,
+          "headers": [
+            "Bagian",
+            "Cara Membaca"
+          ]
+        },
+        {
+          "name": "Jawaban Contoh",
+          "rows": 1,
+          "columns": 1,
+          "headers": [
+            "Jawaban Siswa"
+          ]
+        },
+        {
+          "name": "Kata RoBERTa Sebelum",
+          "rows": 39,
+          "columns": 771,
+          "headers": [
+            "Urutan Kata",
+            "Kata",
+            "Tercakup",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3"
+          ]
+        },
+        {
+          "name": "Kalimat RoBERTa Sebelum",
+          "rows": 2,
+          "columns": 770,
+          "headers": [
+            "Urutan Kalimat",
+            "Kalimat",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4"
+          ]
+        },
+        {
+          "name": "Kata BGE-M3",
+          "rows": 39,
+          "columns": 1027,
+          "headers": [
+            "Urutan Kata",
+            "Kata",
+            "Tercakup",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3"
+          ]
+        },
+        {
+          "name": "Kalimat BGE-M3",
+          "rows": 2,
+          "columns": 1026,
+          "headers": [
+            "Urutan Kalimat",
+            "Kalimat",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4"
+          ]
+        },
+        {
+          "name": "Kata RoBERTa S1",
+          "rows": 39,
+          "columns": 771,
+          "headers": [
+            "Urutan Kata",
+            "Kata",
+            "Tercakup",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3"
+          ]
+        },
+        {
+          "name": "Kalimat RoBERTa S1",
+          "rows": 2,
+          "columns": 770,
+          "headers": [
+            "Urutan Kalimat",
+            "Kalimat",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4"
+          ]
+        },
+        {
+          "name": "Kata RoBERTa S3",
+          "rows": 39,
+          "columns": 771,
+          "headers": [
+            "Urutan Kata",
+            "Kata",
+            "Tercakup",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3"
+          ]
+        },
+        {
+          "name": "Kalimat RoBERTa S3",
+          "rows": 2,
+          "columns": 770,
+          "headers": [
+            "Urutan Kalimat",
+            "Kalimat",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3",
+            "Komponen 4"
+          ]
+        },
+        {
+          "name": "RoBERTa Sebelum Konteks",
+          "rows": 39,
+          "columns": 771,
+          "headers": [
+            "Urutan Kata",
+            "Kata",
+            "Tercakup",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3"
+          ]
+        },
+        {
+          "name": "BGE Sebelum Konteks",
+          "rows": 39,
+          "columns": 1027,
+          "headers": [
+            "Urutan Kata",
+            "Kata",
+            "Tercakup",
+            "Komponen 1",
+            "Komponen 2",
+            "Komponen 3"
+          ]
+        },
+        {
+          "name": "Kata Berulang",
+          "rows": 12,
+          "columns": 9,
+          "headers": [
+            "Model",
+            "Kata",
+            "Posisi Kata A",
+            "Posisi Kata B",
+            "ID Token Sama?",
+            "Vektor Sebelum Konteks Sama?"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "04_Prediksi_dan_Evaluasi.xlsx",
+      "sha256": "dc474b229d744f08d1c41a70d33c014c51764a2ec92671696466bda7680767bb",
+      "sheets": [
+        {
+          "name": "Panduan",
+          "rows": 9,
+          "columns": 2,
+          "headers": [
+            "Bagian",
+            "Cara Membaca"
+          ]
+        },
+        {
+          "name": "Perbandingan Model",
+          "rows": 3,
+          "columns": 8,
+          "headers": [
+            "Skenario",
+            "Model",
+            "RMSE (poin)",
+            "Pearson",
+            "QWK",
+            "Gwet AC2"
+          ]
+        },
+        {
+          "name": "Hasil Tiap Fold",
+          "rows": 15,
+          "columns": 6,
+          "headers": [
+            "Skenario",
+            "Fold",
+            "RMSE (poin)",
+            "Pearson",
+            "QWK",
+            "Gwet AC2"
+          ]
+        },
+        {
+          "name": "Ringkasan Validasi",
+          "rows": 3,
+          "columns": 5,
+          "headers": [
+            "Skenario",
+            "RMSE (rata-rata ± SD)",
+            "Pearson (rata-rata ± SD)",
+            "QWK (rata-rata ± SD)",
+            "Gwet AC2 (rata-rata ± SD)"
+          ]
+        },
+        {
+          "name": "Nilai Guru dan Prediksi",
+          "rows": 60,
+          "columns": 11,
+          "headers": [
+            "ID Jawaban",
+            "Nilai Guru",
+            "Prediksi S1",
+            "Prediksi S2",
+            "Prediksi S3",
+            "Pembulatan S1"
+          ]
+        },
+        {
+          "name": "Prediksi Satu Jawaban",
+          "rows": 3,
+          "columns": 5,
+          "headers": [
+            "Skenario",
+            "Nilai Guru",
+            "Prediksi Skor",
+            "Skor Dibulatkan",
+            "Di Luar Rentang"
+          ]
+        },
+        {
+          "name": "Jawaban Contoh",
+          "rows": 1,
+          "columns": 1,
+          "headers": [
+            "Jawaban Siswa"
+          ]
+        },
+        {
+          "name": "Arti Metrik",
+          "rows": 4,
+          "columns": 3,
+          "headers": [
+            "Metrik",
+            "Cara Membaca",
+            "Catatan"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "05_Riwayat_Pelatihan.xlsx",
+      "sha256": "f29c1800df738b37f35c81c99ccd9ade2593d7c1e45c8f5f9ac5f9c2dc57e004",
+      "sheets": [
+        {
+          "name": "Panduan",
+          "rows": 8,
+          "columns": 2,
+          "headers": [
+            "Bagian",
+            "Cara Membaca"
+          ]
+        },
+        {
+          "name": "RoBERTa (S1)",
+          "rows": 127,
+          "columns": 8,
+          "headers": [
+            "Tahap",
+            "Fold",
+            "Epoch",
+            "Loss Training (MSE)",
+            "RMSE Validasi (poin)",
+            "Pearson Validasi"
+          ]
+        },
+        {
+          "name": "BGE-M3 (S2)",
+          "rows": 146,
+          "columns": 8,
+          "headers": [
+            "Tahap",
+            "Fold",
+            "Epoch",
+            "Loss Training (MSE)",
+            "RMSE Validasi (poin)",
+            "Pearson Validasi"
+          ]
+        },
+        {
+          "name": "Fusion (S3)",
+          "rows": 89,
+          "columns": 8,
+          "headers": [
+            "Tahap",
+            "Fold",
+            "Epoch",
+            "Loss Training (MSE)",
+            "RMSE Validasi (poin)",
+            "Pearson Validasi"
+          ]
+        },
+        {
+          "name": "Ringkasan Lima Fold",
+          "rows": 15,
+          "columns": 8,
+          "headers": [
+            "Skenario",
+            "Fold",
+            "Epoch Maksimal",
+            "Epoch Dijalankan",
+            "Epoch Terpilih",
+            "Berhenti Lebih Awal?"
+          ]
+        },
+        {
+          "name": "Model yang Dibandingkan",
+          "rows": 3,
+          "columns": 5,
+          "headers": [
+            "Skenario",
+            "Encoder",
+            "Panjang Vektor",
+            "Lapisan Prediksi",
+            "Jumlah Skor"
+          ]
+        },
+        {
+          "name": "Pengaturan Eksperimen",
+          "rows": 12,
+          "columns": 2,
+          "headers": [
+            "Pengaturan",
+            "Nilai"
+          ]
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Hasil satu run per versi; belum ada pengulangan seed atau uji signifikansi.",
+    "S1/S2 juga bergeser meskipun arsitekturnya tetap; selisih antar-run tidak membuktikan efek pembekuan saja.",
+    "Test telah dilihat pada eksperimen terdahulu. Pengembangan berikutnya bersifat eksploratif; pemilihan parameter tetap melalui CV."
+  ]
+}
