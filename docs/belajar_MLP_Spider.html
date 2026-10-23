@@ -188,6 +188,40 @@ body.reading-code-fullscreen{overflow:hidden;overflow-anchor:none}
 #codeDialog,#codeDialog .code-scroll{
   overscroll-behavior:contain;
 }
+
+/* Tombol konsisten di keempat ruang perbandingan. */
+.comparison-view-actions{display:flex;justify-content:flex-end;padding:7px 14px;background:#e9f5fb;border-bottom:1px solid #b9cddd}
+body.reading-comparison-fullscreen{overflow:hidden;overflow-anchor:none}
+#comparisonViewDialog{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;background:var(--paper);color:var(--ink);overscroll-behavior:contain}
+#comparisonViewDialog[open]{display:flex;flex-direction:column}
+#comparisonViewDialog::backdrop{background:#101f3c}
+.comparison-view-bar{display:flex;align-items:center;gap:12px;flex:0 0 42px;min-height:42px;padding:3px 10px;border-bottom:1px solid #95b2cb;background:#14264d;color:white;font-size:12px}
+.comparison-view-bar>span{margin-right:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.comparison-view-bar label{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.comparison-view-bar select{background:#fff;color:#142344;border:1px solid #83b9cf;border-radius:4px;padding:4px;font:inherit}
+.comparison-view-bar button{padding:5px 10px;white-space:nowrap;min-height:32px;background:#ffe86b}
+#comparisonViewDialog .comparison-expanded{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;min-width:0;width:100%;max-width:none;height:auto;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;overflow:hidden}
+#comparisonViewDialog .comparison-expanded>.experiment-sidebar,
+#comparisonViewDialog .comparison-heading,
+#comparisonViewDialog .metrics-heading,
+#comparisonViewDialog .frozen-heading,
+#comparisonViewDialog .comparison-controls,
+#comparisonViewDialog .frozen-control-row,
+#comparisonViewDialog .comparison-footer,
+#comparisonViewDialog .comparison-view-actions{display:none}
+#comparisonViewDialog .comparison-book{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;min-width:0;border:0;border-radius:0;overflow:hidden}
+#comparisonViewDialog .comparison-tabs{flex:0 0 auto;min-height:36px;padding:3px 8px;gap:5px;white-space:nowrap;overflow-x:auto}
+#comparisonViewDialog .comparison-tabs button{padding:7px 10px;min-height:30px;font-size:11px}
+#comparisonViewDialog :is(.comparison-scroll,.metrics-scroll,.frozen-scroll){flex:1 1 0;min-height:0;max-height:none;height:auto;width:100%;padding:12px 16px;overflow:auto;overscroll-behavior:contain;scroll-padding:12px}
+/* Satu gulir vertikal untuk isi; tabel tetap dapat digeser mendatar. */
+#comparisonViewDialog .compare-table-wrap{max-height:none;overscroll-behavior-x:contain;overscroll-behavior-y:auto}
+#comparisonViewDialog .experiment-matrix th,#comparisonViewDialog .experiment-matrix td{padding:9px 12px}
+#comparisonViewDialog .experiment-column strong{font-size:14px}
+#comparisonViewDialog .experiment-column span{font-size:11px;line-height:1.35}
+#comparisonViewDialog .compare-section-title{margin:8px 0 12px}
+#comparisonViewDialog .compare-section-title h3{font-size:23px;margin:5px 0}
+#comparisonViewDialog .compare-section-title p{margin:6px 0}
+@media(max-width:540px){.comparison-view-bar{gap:6px;padding:3px 6px;font-size:11px}.comparison-view-bar>span{max-width:34vw}.comparison-view-bar label{font-size:0}.comparison-view-bar select{font-size:12px}#comparisonViewDialog :is(.comparison-scroll,.metrics-scroll,.frozen-scroll){padding:10px}#comparisonViewDialog .experiment-matrix th,#comparisonViewDialog .experiment-matrix td{padding:8px 10px}}
 </style></head>
 <body><svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden"><defs>
   <!-- Original companion poses for the offline learning book. -->
@@ -802,7 +836,7 @@ function experimentTable(runs,fields,id,format){
 }
 function versionCard(v){const box=el('article',undefined,'version-card '+v.color);box.append(badge(v.short),el('h3',v.title),el('p',v.label),el('div',undefined,'version-tags'));const tags=box.lastChild;tags.append(badge('5 fold'),badge(v.epoch+' epoch maks.'),badge(v.patience?'Patience '+v.patience:'Tanpa early stopping'));box.append(el('p',v.norm?'LayerNorm tambahan RoBERTa pada S3.':'RoBERTa langsung menuju concat pada S3.','version-caption'));return box}
 function renderNav(){const root=$('experimentNav');root.replaceChildren();for(const id of ['E0','E1']){const v=versions[id],b=el('button',undefined,'experiment-step '+v.color);b.append(el('span',id),el('b',v.label),el('small',v.tag));b.setAttribute('aria-pressed',String(state.experiment===id));b.addEventListener('click',()=>setExperiment(id));root.append(b)}const frozen=el('button',undefined,'experiment-step new');frozen.append(el('span','E3'),el('b','Double frozen + MLP'),el('small','HASIL BARU · ZIP TERVERIFIKASI'));frozen.addEventListener('click',()=>setMode('frozen',true));root.append(frozen);const latest=el('button',undefined,'experiment-step new');latest.append(el('span','E5'),el('b','LoRA + MLP'),el('small','HASIL TEST & CV'));latest.addEventListener('click',()=>setMode('lora',true));root.append(latest)}
-function setMode(mode,scroll=false){state.mode=mode;$('loraRoom').hidden=mode!=='lora';$('openLora').setAttribute('aria-pressed',String(mode==='lora'));if(mode==='lora')window.MLPLora.render();$('frozenRoom').hidden=mode!=='frozen';$('openFrozen').setAttribute('aria-pressed',String(mode==='frozen'));if(mode==='frozen')window.MLPFrozen.render();$('metricsRoom').hidden=mode!=='metrics';$('openMetricGuide').setAttribute('aria-pressed',String(mode==='metrics'));if(mode==='metrics')window.MLPResults.render();$('reader').hidden=mode!=='book';$('comparison').hidden=mode!=='comparison';$('openStudy').setAttribute('aria-pressed',String(mode==='book'));$('openComparison').setAttribute('aria-pressed',String(mode==='comparison'));if(mode==='comparison')render();if(scroll)(mode==='book'?$('reader'):mode==='metrics'?$('metricsRoom'):mode==='frozen'?$('frozenRoom'):mode==='lora'?$('loraRoom'):$('comparison')).scrollIntoView({behavior:'instant',block:'start'})}
+function setMode(mode,scroll=false){window.MLPCompareView?.close();state.mode=mode;$('loraRoom').hidden=mode!=='lora';$('openLora').setAttribute('aria-pressed',String(mode==='lora'));if(mode==='lora')window.MLPLora.render();$('frozenRoom').hidden=mode!=='frozen';$('openFrozen').setAttribute('aria-pressed',String(mode==='frozen'));if(mode==='frozen')window.MLPFrozen.render();$('metricsRoom').hidden=mode!=='metrics';$('openMetricGuide').setAttribute('aria-pressed',String(mode==='metrics'));if(mode==='metrics')window.MLPResults.render();$('reader').hidden=mode!=='book';$('comparison').hidden=mode!=='comparison';$('openStudy').setAttribute('aria-pressed',String(mode==='book'));$('openComparison').setAttribute('aria-pressed',String(mode==='comparison'));if(mode==='comparison')render();if(scroll)(mode==='book'?$('reader'):mode==='metrics'?$('metricsRoom'):mode==='frozen'?$('frozenRoom'):mode==='lora'?$('loraRoom'):$('comparison')).scrollIntoView({behavior:'instant',block:'start'})}
 function setExperiment(id){if(!['E0','E1'].includes(id))return;state.experiment=id;renderNav();render()}
 function setScenario(id){if(!['S1','S2','S3'].includes(id))return;state.scenario=id;render()}
 function setTab(tab){if(!tabs.includes(tab))return;state.tab=tab;render()}
@@ -1065,6 +1099,47 @@ function render(){ticket++;const root=$('loraBody');root.replaceChildren();root.
 async function loadResults(raw){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',raw))).map(n=>n.toString(16).padStart(2,'0')).join('');if(hash!==E.zip_sha256)throw Error('ZIP bukan hasil E5 yang terverifikasi.');archive=await JSZip.loadAsync(raw);bytes=raw;cache.clear();$('loraStatus').textContent='E5 siap: 5 Excel asli, 60 prediksi test.';if(!$('loraRoom').hidden)render()}
 function setTab(tab){if(tabs.includes(tab)){state.tab=tab;state.page=0;render()}}document.querySelectorAll('[data-lora-tab]').forEach(b=>{b.addEventListener('click',()=>setTab(b.dataset.loraTab));b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const i=tabs.indexOf(state.tab),t=e.key==='Home'?tabs[0]:e.key==='End'?tabs.at(-1):tabs[(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];setTab(t);$('lora-'+t).focus()})});$('openLora').addEventListener('click',()=>window.MLPCompare.setMode('lora',true));$('loraFile').addEventListener('change',async e=>{try{if(e.target.files[0])await loadResults(await e.target.files[0].arrayBuffer())}catch(error){$('loraStatus').textContent=error.message}});
 window.MLPLora={render,loadResults,readSheet,getBytes:()=>bytes,getState:()=>({...state,loaded:Boolean(bytes)}),setTab,setScenario:s=>{if(['S1','S2','S3'].includes(s)){state.scenario=s;state.page=0;render()}}};
+})();
+
+// Perbandingan memakai ruang layar penuh tanpa membangun ulang tabel atau data.
+(()=>{'use strict';
+const specs=[
+ ['comparison','Perbandingan eksperimen','comparisonBody',()=>MLPCompare.getState().scenario,s=>MLPCompare.setScenario(s)],
+ ['metricsRoom','Tabel hasil & arti angka','metricsContent',()=>MLPResults.getState().scenario,s=>MLPResults.setScenario(s)],
+ ['frozenRoom','MLP vs double frozen','frozenBody',()=>MLPFrozen.getState().scenario,s=>MLPFrozen.setScenario(s)],
+ ['loraRoom','E5 · LoRA + MLP','loraBody',()=>MLPLora.getState().scenario,s=>MLPLora.setScenario(s)]
+];
+const dialog=document.createElement('dialog');dialog.id='comparisonViewDialog';dialog.setAttribute('aria-label','Perbandingan layar penuh');
+const bar=document.createElement('div');bar.className='comparison-view-bar';
+const caption=document.createElement('span');caption.id='comparisonViewTitle';dialog.setAttribute('aria-labelledby',caption.id);
+const label=document.createElement('label');label.textContent='Skenario ';const choice=document.createElement('select');choice.setAttribute('aria-label','Skenario layar penuh');
+for(const s of ['S1','S2','S3']){const o=document.createElement('option');o.value=s;o.textContent=s;choice.append(o)}label.append(choice);
+const closeButton=document.createElement('button');closeButton.type='button';closeButton.className='mini-button';closeButton.textContent='✕ Kembali';closeButton.setAttribute('aria-label','Keluar dari perbandingan layar penuh');
+bar.append(caption,label,closeButton);dialog.append(bar);document.body.append(dialog);
+let active=null,ownsFullscreen=false;
+function close(){
+ if(!active)return;const saved=active;active=null;const body=document.getElementById(saved.spec[2]);const position={top:body.scrollTop,left:body.scrollLeft};
+ if(dialog.open)dialog.close();saved.room.classList.remove('comparison-expanded');saved.placeholder.replaceWith(saved.room);document.body.classList.remove('reading-comparison-fullscreen');
+ body.scrollTop=position.top;body.scrollLeft=position.left;window.scrollTo({...saved.page,behavior:'instant'});saved.opener.focus({preventScroll:true});
+ const owned=ownsFullscreen;ownsFullscreen=false;if(owned&&document.fullscreenElement===document.documentElement)document.exitFullscreen().then(()=>{if(!active&&!saved.room.hidden)window.scrollTo({...saved.page,behavior:'instant'})}).catch(()=>{});
+}
+function open(id){
+ const spec=specs.find(s=>s[0]===id),room=document.getElementById(id);if(!spec||!room||room.hidden||active||document.querySelector('#codeDialog[open]'))return;
+ const page={left:scrollX,top:scrollY};
+ const body=document.getElementById(spec[2]),position={top:body.scrollTop,left:body.scrollLeft},placeholder=document.createElement('div');placeholder.style.height=room.getBoundingClientRect().height+'px';placeholder.setAttribute('aria-hidden','true');room.before(placeholder);
+ active={spec,room,placeholder,page,opener:room.querySelector('[data-expand-comparison]')};caption.textContent=spec[1];choice.value=spec[3]();room.classList.add('comparison-expanded');dialog.append(room);document.body.classList.add('reading-comparison-fullscreen');
+ const session=active;
+ try{dialog.showModal();body.scrollTop=position.top;body.scrollLeft=position.left;closeButton.focus({preventScroll:true});
+  if(!document.fullscreenElement&&document.documentElement.requestFullscreen){ownsFullscreen=true;document.documentElement.requestFullscreen().then(()=>{if(!active&&document.fullscreenElement===document.documentElement)document.exitFullscreen().catch(()=>{})}).catch(()=>{if(active===session)ownsFullscreen=false})}
+ }catch(error){close();throw error}
+}
+choice.addEventListener('change',()=>{if(active)active.spec[4](choice.value)});closeButton.addEventListener('click',close);
+dialog.addEventListener('cancel',event=>{event.preventDefault();close()});dialog.addEventListener('close',()=>{if(active)close()});
+document.addEventListener('fullscreenchange',()=>{if(ownsFullscreen&&!document.fullscreenElement){ownsFullscreen=false;close()}});
+for(const spec of specs){const room=document.getElementById(spec[0]),entry=document.createElement('div'),button=document.createElement('button');entry.className='comparison-view-actions';button.type='button';button.className='mini-button';button.dataset.expandComparison=spec[0];button.textContent='⛶ Layar penuh';button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-controls',dialog.id);button.setAttribute('aria-label','Layar penuh '+spec[1]);button.addEventListener('click',()=>open(spec[0]));entry.append(button);
+ const heading=room.querySelector('.comparison-heading,.metrics-heading,.frozen-heading');heading.after(entry);
+}
+window.MLPCompareView={open,close,getState:()=>({room:active?.spec[0]||null,nativeFullscreen:Boolean(document.fullscreenElement),open:dialog.open})};
 })();
 </script>
 </body></html>

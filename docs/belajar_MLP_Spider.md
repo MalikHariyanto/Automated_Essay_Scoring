@@ -56,6 +56,12 @@ Buka **E5 · LoRA + MLP** pada pemilih ruang atau tombol E5 di daftar eksperimen
 
 S3 E5 mempunyai RMSE test **6,5305**, lebih kecil daripada acuan **6,7085**, tetapi rata-rata RMSE CV **6,2509**, lebih besar daripada acuan **6,0516**. S1 tetap RMSE test terkecil. Sheet ringkasan metrik tidak ada dalam ZIP E5; HTML menjelaskan bahwa metrik test dihitung ulang dari 60 pasangan prediksi, sedangkan CV diambil dari epoch terpilih pada log. [Audit dan penjelasan lengkap](review_eksperimen5_lora.md).
 
+## Layar penuh untuk perbandingan
+
+Klik **⛶ Layar penuh** di ruang Bandingkan eksperimen, Tabel hasil & arti angka, MLP vs double frozen, atau E5 · LoRA + MLP. Header dekoratif, sidebar dan footer besar disembunyikan. Kontrol kecil di atas mempertahankan pilihan S1/S2/S3, tab pembahasan serta tombol **Kembali**; isi memakai sisa layar dengan satu area gulir vertikal. Tabel lebar tetap bisa digeser mendatar.
+
+Tekan **Esc** atau **Kembali** untuk keluar. Posisi halaman dan fokus dikembalikan; data, pilihan tab dan tabel tidak dibuat ulang. Browser yang menolak native fullscreen tetap mendapat modal seluas viewport. Fullscreen kode tetap terpisah, termasuk mode semua blok. [Preview](previews/mlp_study/19_perbandingan_layar_penuh.png) · [Bukti pengujian](verification_mlp_compare_fullscreen.md).
+
 ## Cara membaca
 
 Ada 16 bab. Mulai dari hasil, lalu ikuti setup → dataset → split → token → vektor → arsitektur → training → CV/refit/test → prediksi → lima laporan Excel.

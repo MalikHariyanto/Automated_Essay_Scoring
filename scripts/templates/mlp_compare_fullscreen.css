@@ -1,0 +1,33 @@
+/* Tombol konsisten di keempat ruang perbandingan. */
+.comparison-view-actions{display:flex;justify-content:flex-end;padding:7px 14px;background:#e9f5fb;border-bottom:1px solid #b9cddd}
+body.reading-comparison-fullscreen{overflow:hidden;overflow-anchor:none}
+#comparisonViewDialog{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;background:var(--paper);color:var(--ink);overscroll-behavior:contain}
+#comparisonViewDialog[open]{display:flex;flex-direction:column}
+#comparisonViewDialog::backdrop{background:#101f3c}
+.comparison-view-bar{display:flex;align-items:center;gap:12px;flex:0 0 42px;min-height:42px;padding:3px 10px;border-bottom:1px solid #95b2cb;background:#14264d;color:white;font-size:12px}
+.comparison-view-bar>span{margin-right:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.comparison-view-bar label{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.comparison-view-bar select{background:#fff;color:#142344;border:1px solid #83b9cf;border-radius:4px;padding:4px;font:inherit}
+.comparison-view-bar button{padding:5px 10px;white-space:nowrap;min-height:32px;background:#ffe86b}
+#comparisonViewDialog .comparison-expanded{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;min-width:0;width:100%;max-width:none;height:auto;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;overflow:hidden}
+#comparisonViewDialog .comparison-expanded>.experiment-sidebar,
+#comparisonViewDialog .comparison-heading,
+#comparisonViewDialog .metrics-heading,
+#comparisonViewDialog .frozen-heading,
+#comparisonViewDialog .comparison-controls,
+#comparisonViewDialog .frozen-control-row,
+#comparisonViewDialog .comparison-footer,
+#comparisonViewDialog .comparison-view-actions{display:none}
+#comparisonViewDialog .comparison-book{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;min-width:0;border:0;border-radius:0;overflow:hidden}
+#comparisonViewDialog .comparison-tabs{flex:0 0 auto;min-height:36px;padding:3px 8px;gap:5px;white-space:nowrap;overflow-x:auto}
+#comparisonViewDialog .comparison-tabs button{padding:7px 10px;min-height:30px;font-size:11px}
+#comparisonViewDialog :is(.comparison-scroll,.metrics-scroll,.frozen-scroll){flex:1 1 0;min-height:0;max-height:none;height:auto;width:100%;padding:12px 16px;overflow:auto;overscroll-behavior:contain;scroll-padding:12px}
+/* Satu gulir vertikal untuk isi; tabel tetap dapat digeser mendatar. */
+#comparisonViewDialog .compare-table-wrap{max-height:none;overscroll-behavior-x:contain;overscroll-behavior-y:auto}
+#comparisonViewDialog .experiment-matrix th,#comparisonViewDialog .experiment-matrix td{padding:9px 12px}
+#comparisonViewDialog .experiment-column strong{font-size:14px}
+#comparisonViewDialog .experiment-column span{font-size:11px;line-height:1.35}
+#comparisonViewDialog .compare-section-title{margin:8px 0 12px}
+#comparisonViewDialog .compare-section-title h3{font-size:23px;margin:5px 0}
+#comparisonViewDialog .compare-section-title p{margin:6px 0}
+@media(max-width:540px){.comparison-view-bar{gap:6px;padding:3px 6px;font-size:11px}.comparison-view-bar>span{max-width:34vw}.comparison-view-bar label{font-size:0}.comparison-view-bar select{font-size:12px}#comparisonViewDialog :is(.comparison-scroll,.metrics-scroll,.frozen-scroll){padding:10px}#comparisonViewDialog .experiment-matrix th,#comparisonViewDialog .experiment-matrix td{padding:8px 10px}}
