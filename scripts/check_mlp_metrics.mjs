@@ -7,12 +7,12 @@ page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.pus
 function ok(s){checks.push(s);console.log('OK:',s)}
 try{
  await page.goto('http://127.0.0.1:8765/docs/belajar_MLP_Spider.html');await page.locator('#openMetricGuide').click();assert.ok(await page.locator('#metricsRoom').isVisible());
- assert.equal(await page.locator('#completeTestMetrics tbody tr').count(),12);assert.equal(await page.locator('#completeTestMetrics thead .experiment-column').count(),2);assert.equal(await page.locator('#completeFoldMetrics tbody tr').count(),15);assert.equal(await page.locator('#completeTrainingMSE tbody tr').count(),6);
+ assert.equal(await page.locator('#completeTestMetrics tbody tr').count(),12);assert.equal(await page.locator('#completeTestMetrics thead .experiment-column').count(),4);assert.equal(await page.locator('#completeFoldMetrics tbody tr').count(),15);assert.equal(await page.locator('#completeTrainingMSE tbody tr').count(),6);
  assert.ok(await page.evaluate(()=>{
-  const data=MLPStudy.data,runs=[data.comparison.baseline,data.snapshot];
+  const data=MLPStudy.data,runs=[data.comparison.baseline,data.snapshot,data.frozen,data.lora];
   return [...document.querySelectorAll('#completeTestMetrics tbody tr')].every(row=>[...row.querySelectorAll('td')].every((td,i)=>Number(td.title)===runs[i].metrics.find(r=>r.Skenario===row.dataset.scenario)[row.dataset.metric]));
  }),'Every metric remains in the matching original experiment column');
- ok('Two experiment columns preserve all 24 test values, six refit metric rows and all 15 folds without private inputs');
+ ok('Four experiment columns preserve all 48 test values, six refit metric rows and all 15 folds without private inputs');
  for(const width of [1440,900,390,320]){await page.setViewportSize({width,height:1000});for(const s of ['S1','S2','S3'])for(const k of ['RMSE (poin)','MSE','Pearson','QWK','Gwet AC2']){await page.evaluate(([s,k])=>{MLPResults.setScenario(s);MLPResults.setMetric(k)},[s,k]);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}/${s}/${k}`);assert.ok(!/\b(?:NaN|undefined|Infinity)\b/.test(await page.locator('#metricsRoom').innerText()))}}
  ok('60 responsive metric/scenario combinations; no overflow or invalid values');
  await page.setViewportSize({width:1440,height:1000});await page.evaluate(()=>{MLPResults.setScenario('S3');MLPResults.setMetric('RMSE (poin)')});const criterion=page.locator('.criterion-demo select');assert.ok((await page.locator('.criterion-demo').innerText()).includes('belum memenuhi'));await criterion.selectOption('10');assert.ok(!(await page.locator('.criterion-demo p').innerText()).includes('belum memenuhi'));assert.ok((await page.locator('.criterion-demo').innerText()).includes('hanya ilustrasi'));

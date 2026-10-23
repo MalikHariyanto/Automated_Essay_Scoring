@@ -50,6 +50,12 @@ Semua 300 × 768 komponen RoBERTa mentah S3 baru sama persis dengan pretrained. 
 
 Berkas `Hasil_AES_Ringkas (3).zip` dibuka lokal melalui pemilih ZIP double frozen. Seluruh 41 sheet tersedia dengan paging baris dan delapan komponen; komponen terakhir tetap dapat dijangkau. Tabel 60 pasangan guru/prediksi/pembulatan/error untuk MLP dan frozen dicocokkan melalui ID. HTML pribadi terbaru memuat ZIP ini otomatis; tombol **Simpan HTML lengkap** mempertahankannya saat diekspor dan dibuka lagi. Teks, ID, skor individual dan vektor tetap berada pada file pribadi.
 
+## Pembanding E5 · LoRA + MLP
+
+Buka **E5 · LoRA + MLP** pada pemilih ruang atau tombol E5 di daftar eksperimen. Tabel sekarang menempatkan awal, MLP acuan, double frozen dan E5 sebagai kolom. Empat tab E5 menampilkan metode/layer, empat metrik test, kelima fold dan kurva training, pasangan nilai guru/prediksi/pembulatan, serta seluruh sheet dan unduhan Excel asli. Buku pribadi memuat ZIP E5 otomatis; Simpan HTML lengkap juga mempertahankannya.
+
+S3 E5 mempunyai RMSE test **6,5305**, lebih kecil daripada acuan **6,7085**, tetapi rata-rata RMSE CV **6,2509**, lebih besar daripada acuan **6,0516**. S1 tetap RMSE test terkecil. Sheet ringkasan metrik tidak ada dalam ZIP E5; HTML menjelaskan bahwa metrik test dihitung ulang dari 60 pasangan prediksi, sedangkan CV diambil dari epoch terpilih pada log. [Audit dan penjelasan lengkap](review_eksperimen5_lora.md).
+
 ## Cara membaca
 
 Ada 16 bab. Mulai dari hasil, lalu ikuti setup → dataset → split → token → vektor → arsitektur → training → CV/refit/test → prediksi → lima laporan Excel.

@@ -2,7 +2,7 @@
 const A=window.MLPStudy,F=A.data.frozen,S=A.data.snapshot,B=A.data.comparison.baseline,$=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e};
 const state={tab:'review',scenario:'S3',fold:1,curve:'RMSE Validasi (poin)',book:3,sheet:'Perbandingan Model',page:0,component:0,query:''};
-const tabs=['review','process','predictions','excel'],versions=[{label:'Awal · 5 epoch',data:B},{label:'MLP acuan',data:S},{label:'Double frozen + MLP',data:F}];
+const tabs=['review','process','predictions','excel'],versions=[{label:'Awal · 5 epoch',data:B},{label:'MLP acuan',data:S},{label:'Double frozen + MLP',data:F},{id:'E5',label:'LoRA + MLP',data:A.data.lora,heading:['E5 · LoRA + MLP','Adapter RoBERTa · BGE frozen','Head MLP · 25 epoch, patience 5']}];
 let original=null,zip=null,sheets=new Map(),ticket=0;
 const fmt=(v,d=4)=>v===undefined||v===null?'—':typeof v==='number'?Number.isInteger(v)?String(v):v.toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d}):String(v);
 function section(root,kicker,title,body){const h=el('header',undefined,'compare-section-title');h.append(el('small',kicker),el('h3',title));if(body)h.append(el('p',body));root.append(h)}
