@@ -4260,6 +4260,312 @@
       }
     ]
   },
+  "publicSheets": {
+    "0|Panduan": [
+      {
+        "Bagian": "Tentang file ini",
+        "Cara Membaca": "Data, pembagian data dan contoh token yang benar-benar masuk model."
+      },
+      {
+        "Bagian": "Asal angka",
+        "Cara Membaca": "Disalin dari hasil Colab yang sudah tersimpan. Tidak ada training, prediksi atau metrik yang dihitung ulang."
+      },
+      {
+        "Bagian": "ID Jawaban",
+        "Cara Membaca": "J001 berarti baris jawaban pertama. ID ini hanya penghubung antarfile, bukan fitur model."
+      },
+      {
+        "Bagian": "Angka kosong",
+        "Cara Membaca": "Berarti hasil tidak tersedia atau tidak dapat dihitung; bukan angka nol."
+      },
+      {
+        "Bagian": "Tokenisasi",
+        "Cara Membaca": "Token bukan selalu satu kata. ID Token adalah nomor token pada kosakata model."
+      },
+      {
+        "Bagian": "Bagian Teks",
+        "Cara Membaca": "Jawaban panjang dapat dibaca dalam beberapa bagian. Bagian bernomor mulai 1."
+      },
+      {
+        "Bagian": "Token yang ditampilkan",
+        "Cara Membaca": "Token dengan attention mask 1 ditampilkan. Padding diabaikan; special token tetap ditampilkan."
+      }
+    ],
+    "1|Panduan": [
+      {
+        "Bagian": "Tentang file ini",
+        "Cara Membaca": "Satu baris adalah vektor satu jawaban. Semua komponen angka disimpan."
+      },
+      {
+        "Bagian": "Asal angka",
+        "Cara Membaca": "Disalin dari hasil Colab yang sudah tersimpan. Tidak ada training, prediksi atau metrik yang dihitung ulang."
+      },
+      {
+        "Bagian": "ID Jawaban",
+        "Cara Membaca": "J001 berarti baris jawaban pertama. ID ini hanya penghubung antarfile, bukan fitur model."
+      },
+      {
+        "Bagian": "Angka kosong",
+        "Cara Membaca": "Berarti hasil tidak tersedia atau tidak dapat dihitung; bukan angka nol."
+      },
+      {
+        "Bagian": "Komponen 1, 2, ...",
+        "Cara Membaca": "Satu komponen adalah satu angka dalam vektor; tidak mempunyai arti tetap seperti isi atau tata bahasa."
+      },
+      {
+        "Bagian": "Nama kolom lama",
+        "Cara Membaca": "Komponen 1 adalah v_0000 pada file lama. Hanya namanya berubah, angkanya tetap."
+      },
+      {
+        "Bagian": "RoBERTa",
+        "Cara Membaca": "768 angka per jawaban. Bandingkan ID Jawaban yang sama sebelum dan sesudah latihan."
+      },
+      {
+        "Bagian": "BGE-M3",
+        "Cara Membaca": "1024 angka per jawaban. Bobot encoder tetap, sehingga tidak perlu disalin berulang untuk S2 dan S3."
+      },
+      {
+        "Bagian": "Fusion S3",
+        "Cara Membaca": "Gabungan 768 angka RoBERTa setelah LayerNorm tambahan dan 256 angka hasil proyeksi BGE. Hasilnya 1024 komponen."
+      },
+      {
+        "Bagian": "LayerNorm tambahan",
+        "Cara Membaca": "Sheet RoBERTa S3 Setelah Latihan menyimpan vektor asli; sheet Setelah LayerNorm menyimpan vektor yang masuk concat. Pada hasil versi lama, sheet tambahan ini belum ada."
+      },
+      {
+        "Bagian": "Batas perbandingan",
+        "Cara Membaca": "Jangan menghitung cosine langsung antarruang RoBERTa dan BGE. Vektor bukan skor siswa."
+      }
+    ],
+    "2|Panduan": [
+      {
+        "Bagian": "Tentang file ini",
+        "Cara Membaca": "Vektor kata dan kalimat untuk satu jawaban contoh yang sama."
+      },
+      {
+        "Bagian": "Asal angka",
+        "Cara Membaca": "Disalin dari hasil Colab yang sudah tersimpan. Tidak ada training, prediksi atau metrik yang dihitung ulang."
+      },
+      {
+        "Bagian": "ID Jawaban",
+        "Cara Membaca": "J001 berarti baris jawaban pertama. ID ini hanya penghubung antarfile, bukan fitur model."
+      },
+      {
+        "Bagian": "Angka kosong",
+        "Cara Membaca": "Berarti hasil tidak tersedia atau tidak dapat dihitung; bukan angka nol."
+      },
+      {
+        "Bagian": "Kata dan kalimat",
+        "Cara Membaca": "Sheet Kata berisi vektor setelah konteks. Sheet Kalimat berasal dari pembacaan kalimat secara terpisah."
+      },
+      {
+        "Bagian": "Sebelum Konteks",
+        "Cara Membaca": "Lookup embedding kata sebelum penambahan konteks; hanya perlu disajikan sekali untuk tiap encoder pretrained."
+      },
+      {
+        "Bagian": "Kata Berulang",
+        "Cara Membaca": "Bandingkan dua posisi kata di model yang sama. Kesamaan numerik memakai toleransi 0,000001."
+      },
+      {
+        "Bagian": "Tercakup",
+        "Cara Membaca": "Nilai 'Tidak' berarti kata melewati batas input; komponen kosong bukan vektor nol."
+      },
+      {
+        "Bagian": "BGE-M3",
+        "Cara Membaca": "Ditampilkan sekali karena encodernya frozen. Rincian internal tetap tersimpan pada hasil sumber."
+      }
+    ],
+    "3|Panduan": [
+      {
+        "Bagian": "Tentang file ini",
+        "Cara Membaca": "Buka Perbandingan Model untuk hasil akhir; buka Nilai Guru dan Prediksi untuk melihat setiap jawaban uji."
+      },
+      {
+        "Bagian": "Asal angka",
+        "Cara Membaca": "Disalin dari hasil Colab yang sudah tersimpan. Tidak ada training, prediksi atau metrik yang dihitung ulang."
+      },
+      {
+        "Bagian": "ID Jawaban",
+        "Cara Membaca": "J001 berarti baris jawaban pertama. ID ini hanya penghubung antarfile, bukan fitur model."
+      },
+      {
+        "Bagian": "Angka kosong",
+        "Cara Membaca": "Berarti hasil tidak tersedia atau tidak dapat dihitung; bukan angka nol."
+      },
+      {
+        "Bagian": "S1, S2, S3",
+        "Cara Membaca": "S1 = RoBERTa; S2 = BGE-M3; S3 = fusion keduanya."
+      },
+      {
+        "Bagian": "Data uji",
+        "Cara Membaca": "Angka test untuk laporan akhir. Pemilihan model/epoch memakai validasi silang, bukan tuning dari test."
+      },
+      {
+        "Bagian": "Skor mentah",
+        "Cara Membaca": "Disimpan persis dari hasil sumber. Tampilan empat desimal tidak mengubah angka yang tersimpan."
+      },
+      {
+        "Bagian": "Pembulatan",
+        "Cara Membaca": "Prediksi dibatasi ke 0–100, lalu dipilih integer terdekat. Tepat .5 ke bawah. Ini salinan untuk QWK/AC2; RMSE dan Pearson tetap memakai prediksi mentah."
+      },
+      {
+        "Bagian": "Ringkasan Validasi",
+        "Cara Membaca": "Rata-rata ± SD antar-fold; bukan interval kepercayaan. Nilai mentah tiap-fold ada di Hasil Tiap Fold."
+      }
+    ],
+    "3|Ringkasan Validasi": [
+      {
+        "Skenario": "S1",
+        "RMSE (rata-rata ± SD)": "7.3179 ± 1.7895 (n=5)",
+        "Pearson (rata-rata ± SD)": "0.4654 ± 0.1514 (n=5)",
+        "QWK (rata-rata ± SD)": "0.4462 ± 0.1425 (n=5)",
+        "Gwet AC2 (rata-rata ± SD)": "0.9745 ± 0.0126 (n=5)"
+      },
+      {
+        "Skenario": "S2",
+        "RMSE (rata-rata ± SD)": "6.4485 ± 0.5935 (n=5)",
+        "Pearson (rata-rata ± SD)": "0.4994 ± 0.1819 (n=5)",
+        "QWK (rata-rata ± SD)": "0.4201 ± 0.1909 (n=5)",
+        "Gwet AC2 (rata-rata ± SD)": "0.9809 ± 0.0027 (n=5)"
+      },
+      {
+        "Skenario": "S3",
+        "RMSE (rata-rata ± SD)": "6.0516 ± 0.8260 (n=5)",
+        "Pearson (rata-rata ± SD)": "0.5998 ± 0.1100 (n=5)",
+        "QWK (rata-rata ± SD)": "0.5852 ± 0.1195 (n=5)",
+        "Gwet AC2 (rata-rata ± SD)": "0.9824 ± 0.0047 (n=5)"
+      }
+    ],
+    "3|Arti Metrik": [
+      {
+        "Metrik": "RMSE",
+        "Cara Membaca": "Lebih kecil berarti kesalahan prediksi lebih kecil.",
+        "Catatan": "Satuannya poin skor, bukan dibatasi 0–1."
+      },
+      {
+        "Metrik": "Pearson",
+        "Cara Membaca": "Hubungan linear antara skor guru dan prediksi.",
+        "Catatan": "Tinggi belum menjamin nilai prediksi tepat."
+      },
+      {
+        "Metrik": "QWK",
+        "Cara Membaca": "Kesepakatan skor kategori dengan penalti kuadratik.",
+        "Catatan": "Dibaca bersama RMSE dan Pearson."
+      },
+      {
+        "Metrik": "Gwet AC2",
+        "Cara Membaca": "Kesepakatan kategori dengan koreksi peluang Gwet.",
+        "Catatan": "Dapat berbeda jauh dari QWK; daftar kategori memengaruhi hasil."
+      }
+    ],
+    "4|Panduan": [
+      {
+        "Bagian": "Tentang file ini",
+        "Cara Membaca": "Riwayat latihan per skenario. Lima fold digabung ke satu sheet untuk setiap model."
+      },
+      {
+        "Bagian": "Asal angka",
+        "Cara Membaca": "Disalin dari hasil Colab yang sudah tersimpan. Tidak ada training, prediksi atau metrik yang dihitung ulang."
+      },
+      {
+        "Bagian": "ID Jawaban",
+        "Cara Membaca": "J001 berarti baris jawaban pertama. ID ini hanya penghubung antarfile, bukan fitur model."
+      },
+      {
+        "Bagian": "Angka kosong",
+        "Cara Membaca": "Berarti hasil tidak tersedia atau tidak dapat dihitung; bukan angka nol."
+      },
+      {
+        "Bagian": "Validasi silang",
+        "Cara Membaca": "Model baru dilatih pada tiap fold, dengan satu fold untuk validasi."
+      },
+      {
+        "Bagian": "Latihan final",
+        "Cara Membaca": "Latihan ulang memakai seluruh development dengan jumlah epoch yang dipilih dari CV."
+      },
+      {
+        "Bagian": "Loss Training (MSE)",
+        "Cara Membaca": "Target dinormalisasi saat loss dihitung. Angka ini berbeda satuan dari RMSE dalam poin skor."
+      },
+      {
+        "Bagian": "Epoch",
+        "Cara Membaca": "Satu putaran seluruh data latih pada fold/tahap itu."
+      }
+    ],
+    "4|Model yang Dibandingkan": [
+      {
+        "Skenario": "S1",
+        "Encoder": "RoBERTa: bobot ikut dilatih",
+        "Panjang Vektor": 768,
+        "Lapisan Prediksi": "Linear: 768 angka → 1 skor",
+        "Jumlah Skor": 1
+      },
+      {
+        "Skenario": "S2",
+        "Encoder": "BGE-M3: bobot tetap",
+        "Panjang Vektor": 1024,
+        "Lapisan Prediksi": "MLP: 1024 → 256 → 1 skor",
+        "Jumlah Skor": 1
+      },
+      {
+        "Skenario": "S3",
+        "Encoder": "RoBERTa ikut dilatih; BGE-M3 tetap",
+        "Panjang Vektor": 1024,
+        "Lapisan Prediksi": "RoBERTa 768 → LayerNorm; BGE → proyeksi 256 + LayerNorm; concat 1024 → MLP: Linear 256 → GELU → dropout → Linear 1",
+        "Jumlah Skor": 1
+      }
+    ],
+    "4|Pengaturan Eksperimen": [
+      {
+        "Pengaturan": "Skor minimum",
+        "Nilai": 0
+      },
+      {
+        "Pengaturan": "Skor maksimum",
+        "Nilai": 100
+      },
+      {
+        "Pengaturan": "Jumlah fold",
+        "Nilai": 5
+      },
+      {
+        "Pengaturan": "Maksimum epoch per fold",
+        "Nilai": 25
+      },
+      {
+        "Pengaturan": "Batas epoch tanpa perbaikan",
+        "Nilai": 5
+      },
+      {
+        "Pengaturan": "Batch efektif",
+        "Nilai": 8
+      },
+      {
+        "Pengaturan": "Micro batch",
+        "Nilai": 1
+      },
+      {
+        "Pengaturan": "Learning rate encoder",
+        "Nilai": 1e-05
+      },
+      {
+        "Pengaturan": "Learning rate proyeksi BGE",
+        "Nilai": 0.0001
+      },
+      {
+        "Pengaturan": "Learning rate head",
+        "Nilai": 0.0001
+      },
+      {
+        "Pengaturan": "Batas token RoBERTa",
+        "Nilai": 512
+      },
+      {
+        "Pengaturan": "Batas token BGE-M3",
+        "Nilai": 1024
+      }
+    ]
+  },
   "books": [
     {
       "file": "01_Data_dan_Tokenisasi.xlsx",

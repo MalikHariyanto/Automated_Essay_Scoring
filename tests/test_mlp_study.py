@@ -60,6 +60,13 @@ class MLPBookIntegrity(unittest.TestCase):
         self.assertEqual(self.snapshot['saved_outputs'],34)
         self.assertNotIn('pairs',self.snapshot)
         self.assertNotIn('responses',self.snapshot)
+        self.assertEqual(set(self.snapshot['publicSheets']),{
+            '0|Panduan','1|Panduan','2|Panduan','3|Panduan','3|Ringkasan Validasi',
+            '3|Arti Metrik','4|Panduan','4|Model yang Dibandingkan','4|Pengaturan Eksperimen'})
+        for rows in self.snapshot['publicSheets'].values():
+            self.assertGreater(len(rows),0)
+            self.assertLessEqual(len(rows),12)
+            self.assertTrue(all('ID Jawaban' not in row and 'Jawaban Siswa' not in row for row in rows))
 
     def test_aggregate_matrices_preserve_all_test_observations(self):
         for scenario,matrix in self.snapshot['matrices'].items():

@@ -83,6 +83,13 @@ def extract_snapshot(notebook_bytes, zip_bytes):
     history = {s: table(blobs[BOOKS[4]], name) for s,name in
                [('S1','RoBERTa (S1)'),('S2','BGE-M3 (S2)'),('S3','Fusion (S3)')]}
     fold_summary = table(blobs[BOOKS[4]], 'Ringkasan Lima Fold')
+    # Whitelist laporan penjelasan/agregat; tidak menanam tabel siswa atau vektor ke GitHub.
+    public_sheets = {}
+    for index, names in {0:['Panduan'],1:['Panduan'],2:['Panduan'],
+                         3:['Panduan','Ringkasan Validasi','Arti Metrik'],
+                         4:['Panduan','Model yang Dibandingkan','Pengaturan Eksperimen']}.items():
+        for name in names:
+            public_sheets[f'{index}|{name}'] = table(blobs[BOOKS[index]], name)
     pairs = table(blobs[BOOKS[3]], 'Nilai Guru dan Prediksi')
     matrices = {}
     for scenario in ('S1','S2','S3'):
@@ -99,6 +106,7 @@ def extract_snapshot(notebook_bytes, zip_bytes):
         'source_notebook_sha256':sha(subprocess.check_output(['git','show',COMMIT+':'+NOTEBOOK_PATH],cwd=ROOT)),
         'rows':300,'development':240,'test':len(pairs),'metrics':metrics,'folds':folds,
         'history':history,'foldSummary':fold_summary,'matrices':matrices,'native':native,
+        'publicSheets':public_sheets,
         'books':[{'file':name,'sha256':sha(blobs[name]),'sheets':workbook_inventory(blobs[name])} for name in BOOKS],
         'saved_outputs':sum(len(c.get('outputs',[])) for c in original['cells']),
         'runtime_source_matches_commit':True,
@@ -182,10 +190,14 @@ def build(args):
     data=content(snapshot)
     template=(ROOT/'scripts/templates/mlp_study.html').read_text()
     js=(ROOT/'scripts/templates/mlp_study.js').read_text()
+    if js.count('/*__EXCEL_EXPLORER__*/') != 1:
+        raise ValueError('Anchor penjelajah Excel harus tersedia tepat satu kali.')
+    js=js.replace('/*__EXCEL_EXPLORER__*/',(ROOT/'scripts/templates/mlp_excel.js').read_text())
     js+='\n'+(ROOT/'scripts/templates/mlp_comparison.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_metrics.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_frozen.js').read_text()
     css=(ROOT/'scripts/templates/mlp_study.css').read_text()
+    css+='\n'+(ROOT/'scripts/templates/mlp_excel.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_comparison.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_metrics.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_frozen.css').read_text()
