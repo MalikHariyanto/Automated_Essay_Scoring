@@ -67,6 +67,8 @@ HTML pribadi siap pakai memuat notebook MLP asli, ZIP MLP, notebook/workbook awa
 
 Daftar bab, kode, catatan, output, dan tabel mempunyai area scroll agar halaman utama tidak memanjang mengikuti seluruh hasil. Ada navigasi keyboard, dialog istilah, tampilan HP, dan tombol jeda animasi.
 
+Scroll mengikuti area di bawah kursor. Saat tabel mencapai ujung, guliran diteruskan ke panel buku, lalu ke halaman; pola yang sama berlaku untuk kode biasa, daftar bab, hasil dan perbandingan. Swipe HP juga dapat melewati batas panel. Pada kode layar penuh, guliran tetap berada di kanvas bersama dan halaman belakang tetap diam. Keluar dari layar penuh mengembalikan scroll halaman. Perbaikan ini mempertahankan tampilan, kode, catatan dan hasil; [bukti pemeriksaan scroll](verification_mlp_scroll.md).
+
 ### Kode dan catatan dalam satu layar
 
 Di tab **Kode + sticky note**, klik **⛶ Layar penuh**. Browser masuk ke fullscreen bila mendukungnya; bila tidak, kanvas tetap memenuhi area halaman. Tidak ada header besar atau panel catatan terpisah. Kode dan sticky note menempati satu latar dan **satu area scroll**. Baris panjang dibungkus secara visual agar tidak memerlukan scrollbar mendatar; kode yang disalin tetap persis seperti sumber.

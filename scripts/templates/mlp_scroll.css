@@ -1,0 +1,26 @@
+/* Panel normal meneruskan gestur di batasnya; tidak menangkap wheel secara global. */
+#chapterNav,
+.panel-scroll,
+.code-scroll,
+.note-pane,
+.native-inner,
+.table-viewport,
+.comparison-scroll,
+.compare-table-wrap,
+.compare-source,
+.experiment-sidebar>nav,
+.layer-explainer,
+.metrics-scroll,
+.frozen-scroll,
+.output-evidence-preview,
+.cell-inspector{
+  overscroll-behavior-y:auto;
+}
+/* Geser tabel ke samping tanpa memicu navigasi histori browser. */
+.table-viewport,.compare-table-wrap,.output-evidence-preview{
+  overscroll-behavior-x:contain;
+}
+/* Kanvas modal tetap terisolasi dari halaman di belakangnya. */
+#codeDialog,#codeDialog .code-scroll{
+  overscroll-behavior:contain;
+}

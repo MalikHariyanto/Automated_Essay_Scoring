@@ -201,6 +201,7 @@ def build(args):
     css+='\n'+(ROOT/'scripts/templates/mlp_comparison.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_metrics.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_frozen.css').read_text()
+    css+='\n'+(ROOT/'scripts/templates/mlp_scroll.css').read_text()
     vendor=(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
         css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())

@@ -18,7 +18,10 @@ function panelScroll(){return ['codeScroll','notePane'].map(id=>({id,top:$(id).s
 function restorePanelScroll(positions){positions.forEach(p=>{$(p.id).scrollTop=p.top;$(p.id).scrollLeft=p.left})}
 function readingAnchor(){
   const top=$('codeScroll').getBoundingClientRect().top;
-  const line=Array.from($('codeLines').querySelectorAll('.code-line')).find(el=>el.getBoundingClientRect().bottom>top+2);
+  // Baris berurutan secara vertikal; pencarian biner menghindari ribuan baca layout per scroll.
+  const lines=$('codeLines').querySelectorAll('.code-line');let left=0,right=lines.length;
+  while(left<right){const mid=(left+right)>>>1;if(lines[mid].getBoundingClientRect().bottom>top+2)right=mid;else left=mid+1}
+  const line=lines[left];
   return line?{cell:Number(line.dataset.cell),line:line.dataset.line,offset:line.getBoundingClientRect().top-top}:null;
 }
 function restoreReadingAnchor(anchor){
