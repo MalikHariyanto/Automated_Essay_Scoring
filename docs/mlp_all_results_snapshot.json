@@ -133,5 +133,156 @@
     ]
   },
   "numeric_tie_tolerance_points": 1e-05,
-  "limits": "Tiap jawaban dihitung satu kali. Seri dipisahkan. Hitungan terdekat bukan RMSE atau bukti keunggulan statistik."
+  "limits": "Tiap jawaban dihitung satu kali. Seri dipisahkan. Hitungan terdekat bukan RMSE atau bukti keunggulan statistik.",
+  "across_experiments": {
+    "scope": "AGGREGATE ONLY; SAME TEST ANSWERS; RAW PREDICTIONS",
+    "tolerance_points": 1e-05,
+    "scenarios": {
+      "S1": {
+        "answers": 60,
+        "tie_answers": 17,
+        "entries": [
+          {
+            "id": "E0",
+            "unique": 24,
+            "tied": 0,
+            "share": 24.0,
+            "closest": 24
+          },
+          {
+            "id": "E2",
+            "unique": 0,
+            "tied": 17,
+            "share": 4.25,
+            "closest": 17
+          },
+          {
+            "id": "E3",
+            "unique": 19,
+            "tied": 0,
+            "share": 19.0,
+            "closest": 19
+          },
+          {
+            "id": "E4",
+            "unique": 0,
+            "tied": 17,
+            "share": 4.25,
+            "closest": 17
+          },
+          {
+            "id": "E5",
+            "unique": 0,
+            "tied": 17,
+            "share": 4.25,
+            "closest": 17
+          },
+          {
+            "id": "E6",
+            "unique": 0,
+            "tied": 17,
+            "share": 4.25,
+            "closest": 17
+          }
+        ]
+      },
+      "S2": {
+        "answers": 60,
+        "tie_answers": 18,
+        "entries": [
+          {
+            "id": "E0",
+            "unique": 26,
+            "tied": 0,
+            "share": 26.0,
+            "closest": 26
+          },
+          {
+            "id": "E2",
+            "unique": 0,
+            "tied": 18,
+            "share": 4.5,
+            "closest": 18
+          },
+          {
+            "id": "E3",
+            "unique": 16,
+            "tied": 0,
+            "share": 16.0,
+            "closest": 16
+          },
+          {
+            "id": "E4",
+            "unique": 0,
+            "tied": 18,
+            "share": 4.5,
+            "closest": 18
+          },
+          {
+            "id": "E5",
+            "unique": 0,
+            "tied": 18,
+            "share": 4.5,
+            "closest": 18
+          },
+          {
+            "id": "E6",
+            "unique": 0,
+            "tied": 18,
+            "share": 4.5,
+            "closest": 18
+          }
+        ]
+      },
+      "S3": {
+        "answers": 60,
+        "tie_answers": 0,
+        "entries": [
+          {
+            "id": "E0",
+            "unique": 8,
+            "tied": 0,
+            "share": 8.0,
+            "closest": 8
+          },
+          {
+            "id": "E2",
+            "unique": 4,
+            "tied": 0,
+            "share": 4.0,
+            "closest": 4
+          },
+          {
+            "id": "E3",
+            "unique": 11,
+            "tied": 0,
+            "share": 11.0,
+            "closest": 11
+          },
+          {
+            "id": "E4",
+            "unique": 15,
+            "tied": 0,
+            "share": 15.0,
+            "closest": 15
+          },
+          {
+            "id": "E5",
+            "unique": 4,
+            "tied": 0,
+            "share": 4.0,
+            "closest": 4
+          },
+          {
+            "id": "E6",
+            "unique": 18,
+            "tied": 0,
+            "share": 18.0,
+            "closest": 18
+          }
+        ]
+      }
+    },
+    "rule": "Satu jawaban memberi total satu poin peringkat. Pemenang tunggal mendapat 1; seri k eksperimen masing-masing 1/k. Tidak memakai pembulatan kategori atau batas toleransi penilaian AES."
+  }
 }

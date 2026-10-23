@@ -201,6 +201,7 @@ def build(args):
     js+='\n'+(ROOT/'scripts/templates/mlp_metrics.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_frozen.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_lora.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_predictions.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_dashboard.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.js').read_text()
     css=(ROOT/'scripts/templates/mlp_study.css').read_text()
@@ -211,6 +212,7 @@ def build(args):
     css+='\n'+(ROOT/'scripts/templates/mlp_scroll.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_dashboard.css').read_text()
+    css+='\n'+(ROOT/'scripts/templates/mlp_predictions.css').read_text()
     vendor=(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
         css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())

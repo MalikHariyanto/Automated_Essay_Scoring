@@ -1,0 +1,46 @@
+/* Satu daftar 60 jawaban, satu alur gulir vertikal. Nilai guru tetap di kanan. */
+.prediction-modes{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.prediction-modes button[aria-pressed=true]{background:#ffe76b;color:#14264d;border-color:#14264d;box-shadow:2px 2px 0 #14264d}
+.prediction-legend{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 20px}
+.prediction-legend-item{padding:5px 9px;border:1px solid var(--run-ink);border-left:5px solid var(--run-ink);background:var(--run-bg);color:var(--run-ink);font-size:11px;font-weight:750;border-radius:4px}
+.prediction-table-wrap{overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #adc5d6;border-radius:7px;margin:14px 0;max-width:100%;scrollbar-color:#43708a #e9f2f6;scrollbar-width:auto}
+.prediction-table-wrap table{width:100%;min-width:1160px;border-collapse:separate;border-spacing:0;table-layout:fixed;font-variant-numeric:tabular-nums}
+.prediction-table-wrap th,.prediction-table-wrap td{padding:13px 11px;border-bottom:1px solid #d6e3ec;vertical-align:top;text-align:left}
+.prediction-table-wrap thead th{background:var(--run-bg,#19365c);color:var(--run-ink,white);border-top:5px solid var(--run-ink,#19365c);font-size:12px;line-height:1.6}
+.prediction-table-wrap th:first-child{width:105px;background:#f4f8fc;color:#19365c}
+.prediction-table-wrap thead th:first-child{color:white;background:#19365c}
+.prediction-table-wrap .prediction-teacher{position:sticky;right:0;z-index:2;width:105px;background:#fff0a9;color:#273650;border-left:2px solid #d8b959;box-shadow:-5px 0 8px #14264d12;text-align:center;font-weight:850;font-size:23px}
+.prediction-table-wrap thead .prediction-teacher{font-size:12px;vertical-align:middle;border-top-color:#a18416}
+.prediction-score{background:var(--run-bg);color:var(--run-ink);border-right:1px solid #d6e3ec;position:relative;font-variant-numeric:tabular-nums}
+.prediction-score strong{display:block;font-size:18px;line-height:1.4}
+.prediction-score small{display:block;font-size:11px;color:#40556b;margin-top:4px;line-height:1.4}
+.prediction-score.is-closest{box-shadow:inset 0 0 0 2px var(--run-ink)}
+.prediction-best{display:inline-block;padding:2px 5px;margin-top:6px;border-radius:3px;background:#fff8cb;color:#354426;border:1px solid #aaa15d;font-size:10px;font-weight:800;white-space:nowrap}
+.prediction-answer-button{font:700 12px/1.5 system-ui;color:#214d77;padding:5px 0;background:none;border:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;overflow-wrap:anywhere;text-align:left}
+.prediction-count{font-size:12px;color:#48617b;line-height:1.7}
+.prediction-table-wrap:has(.prediction-only-best) table{min-width:650px}
+.prediction-only-best{background:#fff}
+.prediction-only-best .prediction-score{display:inline-block;max-width:100%;padding:9px 12px;border:1px solid var(--run-ink);border-radius:5px;margin:0 8px 7px 0}
+.prediction-only-best .prediction-score>b{display:block;font-size:11px;margin-bottom:6px}
+.prediction-ranking{display:grid;gap:12px;margin:18px 0}
+.prediction-rank-row{border:1px solid #b6c9d9;border-left:5px solid var(--run-ink);background:white;border-radius:6px;padding:14px 18px}
+.prediction-rank-heading{display:flex;align-items:center;gap:12px;font-size:14px;color:#19365c}
+.prediction-rank-number{background:var(--run-bg);border:1px solid var(--run-ink);color:var(--run-ink);font-size:14px;font-weight:850;min-width:35px;text-align:center;padding:4px;border-radius:5px}
+.prediction-rank-heading strong{margin-left:auto;color:var(--run-ink);font-size:21px;white-space:nowrap}
+.prediction-rank-track{height:15px;border-radius:4px;overflow:hidden;background:#edf2f7;display:flex;margin:12px 0}
+.prediction-rank-unique{height:100%;background:var(--run-ink)}
+.prediction-rank-tied{height:100%;background:repeating-linear-gradient(135deg,var(--run-ink) 0,var(--run-ink) 3px,var(--run-bg) 3px,var(--run-bg) 7px)}
+.prediction-rank-row p{display:flex;flex-wrap:wrap;gap:8px 22px;color:#4f667e;font-size:12px;line-height:1.6;margin:0}
+.prediction-answer-dialog{width:min(800px,calc(100vw - 28px));max-height:85vh;overflow-y:auto;border:2px solid #14264d;border-radius:10px;padding:24px;background:#fffdf5;color:#19365c}
+.prediction-answer-dialog::backdrop{background:#102041aa}
+.prediction-answer-dialog>button{float:right}
+.prediction-answer-dialog .student-answer{clear:both}
+@media(max-width:600px){.prediction-modes button{flex:1;min-width:130px}.prediction-legend-item{font-size:10px}.prediction-rank-row{padding:12px}.prediction-rank-heading{gap:8px;font-size:12px}.prediction-rank-heading strong{font-size:18px}.prediction-table-wrap table{min-width:1080px}.prediction-table-wrap th:first-child{width:85px}.prediction-table-wrap .prediction-teacher{width:85px}.prediction-table-wrap .prediction-teacher{font-size:21px}.prediction-table-wrap thead .prediction-teacher{font-size:11px}}
+
+.prediction-floating-head{position:sticky;top:0;height:0;z-index:5;max-width:100%;pointer-events:none}
+.prediction-floating-head>.prediction-table-wrap{margin:0;overflow:hidden;box-shadow:0 4px 8px #19365c22;pointer-events:none}
+
+.prediction-table-wrap th:first-child{position:sticky;left:0;z-index:3}
+.prediction-rank-row{padding:10px 14px}
+.prediction-rank-track{height:12px;margin:8px 0}
+.prediction-cards .dashboard-card{padding:14px;gap:6px}
