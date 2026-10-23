@@ -174,6 +174,8 @@ def content(snapshot):
             'comparison':json.loads((ROOT/'docs/mlp_comparison_snapshot.json').read_text()),
             'frozen':json.loads((ROOT/'docs/mlp_frozen_snapshot.json').read_text()),
             'lora':json.loads((ROOT/'docs/mlp_lora_snapshot.json').read_text()),
+            'context':json.loads((ROOT/'docs/mlp_context_snapshot.json').read_text()),
+            'allResults':json.loads((ROOT/'docs/mlp_all_results_snapshot.json').read_text()),
             'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
             'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),
                         'annotations':len(annotations),'manual_pins_found':len(PINS)-len(missing),
@@ -198,6 +200,7 @@ def build(args):
     js+='\n'+(ROOT/'scripts/templates/mlp_metrics.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_frozen.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_lora.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_dashboard.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.js').read_text()
     css=(ROOT/'scripts/templates/mlp_study.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_excel.css').read_text()
@@ -206,6 +209,7 @@ def build(args):
     css+='\n'+(ROOT/'scripts/templates/mlp_frozen.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_scroll.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.css').read_text()
+    css+='\n'+(ROOT/'scripts/templates/mlp_dashboard.css').read_text()
     vendor=(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
         css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())
@@ -237,6 +241,10 @@ def build(args):
                 latest=Path(args.experiment5_results).read_bytes()
                 if sha(latest)!=data['lora']['zip_sha256']:raise ValueError('ZIP E5 berbeda dari snapshot.')
                 z.writestr('experiment5_results.zip',latest,compress_type=zipfile.ZIP_STORED)
+            if getattr(args,'context_results',None):
+                context=Path(args.context_results).read_bytes()
+                if sha(context)!=data['context']['zip_sha256']:raise ValueError('ZIP konteks pair berbeda dari snapshot.')
+                z.writestr('context_results.zip',context,compress_type=zipfile.ZIP_STORED)
         private=ROOT/'outputs/mlp_study/belajar_MLP_Spider_Privat.html'
         private.parent.mkdir(parents=True,exist_ok=True)
         private.write_text(document.replace('__PRIVATE_PAYLOAD__',base64.b64encode(bundle.getvalue()).decode()))
@@ -245,5 +253,5 @@ def build(args):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--notebook');p.add_argument('--results');p.add_argument('--baseline');p.add_argument('--baseline-evaluation');p.add_argument('--frozen-results');p.add_argument('--experiment5-results')
+    p=argparse.ArgumentParser();p.add_argument('--notebook');p.add_argument('--results');p.add_argument('--baseline');p.add_argument('--baseline-evaluation');p.add_argument('--frozen-results');p.add_argument('--experiment5-results');p.add_argument('--context-results')
     build(p.parse_args())

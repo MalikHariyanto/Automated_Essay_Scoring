@@ -2,7 +2,7 @@
 const A=window.MLPStudy,F=A.data.frozen,S=A.data.snapshot,B=A.data.comparison.baseline,$=id=>document.getElementById(id);
 const el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e};
 const state={tab:'review',scenario:'S3',fold:1,curve:'RMSE Validasi (poin)',book:3,sheet:'Perbandingan Model',page:0,component:0,query:''};
-const tabs=['review','process','predictions','excel'],versions=[{label:'Awal · 5 epoch',data:B},{label:'MLP acuan',data:S},{label:'Double frozen + MLP',data:F},{id:'E5',label:'LoRA + MLP',data:A.data.lora,heading:['E5 · LoRA + MLP','Adapter RoBERTa · BGE frozen','Head MLP · 25 epoch, patience 5']}];
+const tabs=['review','process','predictions','excel'],versions=[{label:'Awal · 5 epoch',data:B},{label:'MLP acuan',data:S},{label:'Double frozen + MLP',data:F},{id:'E4',label:'Konteks pair + MLP',data:A.data.context,heading:['E4 · Konteks pair + MLP','Soal/referensi + jawaban → RoBERTa','Head MLP · 25 epoch, patience 5']},{id:'E5',label:'LoRA + MLP',data:A.data.lora,heading:['E5 · LoRA + MLP','Adapter RoBERTa · BGE frozen','Head MLP · 25 epoch, patience 5']}];
 let original=null,zip=null,sheets=new Map(),ticket=0;
 const fmt=(v,d=4)=>v===undefined||v===null?'—':typeof v==='number'?Number.isInteger(v)?String(v):v.toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d}):String(v);
 function section(root,kicker,title,body){const h=el('header',undefined,'compare-section-title');h.append(el('small',kicker),el('h3',title));if(body)h.append(el('p',body));root.append(h)}
@@ -26,7 +26,7 @@ function review(root){
  const delta=now['RMSE (poin)']-old['RMSE (poin)'];
  note(root,state.scenario+' · cara membaca hasil test','RMSE '+(delta>=0?'bertambah ':'berkurang ')+fmt(Math.abs(delta))+' poin. '+(delta>=0?'Kesalahan prediksi run baru lebih besar.':'Kesalahan prediksi run baru lebih kecil.')+' Baca Pearson, QWK dan AC2 bersama-sama; ini hasil run, bukan ukuran efek satu lapisan.');
  root.append(window.MLPCompare.experimentTable(versions,[['RMSE (poin)','RMSE ↓ · poin'],['Pearson','Pearson ↑'],['QWK','QWK ↑'],['Gwet AC2','Gwet AC2 ↑']].map(([key,label])=>({key,label,get:(d,s)=>metric(d,s)[key]})),'frozenAllTest',fmt));
- note(root,'Nama head pada kolom merujuk perubahan S3.','S1 tetap memakai head linear dan S2 tetap memakai MLP pada ketiga eksperimen. Pada eksperimen ketiga, double frozen berlaku pada kedua encoder S3. Semua head tetap menghasilkan prediksi skor regresi.');
+ note(root,'Nama head pada kolom merujuk perubahan S3.','S1 tetap memakai head linear dan S2 tetap memakai MLP pada kelima eksperimen. Pada versi double frozen, pembekuan berlaku pada kedua encoder S3. Semua head tetap menghasilkan prediksi skor regresi.');
  note(root,'Pemenang run baru berbeda dari pemenang keseluruhan.','Run double frozen: S2 RMSE 6,8435, S1 6,8829 dan S3 7,8611. Selisih S2–S1 hanya sekitar 0,039 poin; belum ada bukti keunggulan yang konsisten dari pengulangan seed. Dari hasil yang tersedia, S1 MLP acuan masih RMSE test terkecil: 6,3805.');
  section(root,'VALIDATION / LIMA FOLD',state.scenario+' · RMSE per pembagian yang sama.','CV dilakukan pada 240 development; tabel test di atas memakai 60 jawaban held-out. Keduanya dibaca terpisah.');
  root.append(table(['Fold',...versions.map(v=>v.label)],Array.from({length:5},(_,i)=>[i+1,...versions.map(v=>v.data.folds.find(r=>r.Skenario===state.scenario&&r.Fold===i+1)['RMSE (poin)'])]),'frozenFoldComparison'));

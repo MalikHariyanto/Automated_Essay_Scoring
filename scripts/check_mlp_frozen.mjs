@@ -7,12 +7,12 @@ const errors=[],requests=[],checks=[];p.on('pageerror',e=>errors.push(e.message)
 try{
  await p.goto(url);await p.locator('#openFrozen').click();assert.ok(await p.locator('#frozenRoom').isVisible());assert.ok(await p.locator('#reader').isHidden());assert.equal(await p.locator('#frozenAllTest tbody tr').count(),12);assert.equal(await p.locator('#frozenFinalLoss tbody tr').count(),6);assert.equal(await p.locator('#frozenAllFolds tbody tr').count(),15);
  const matrix=await p.evaluate(()=>{
-  const data=MLPStudy.data,runs=[data.comparison.baseline,data.snapshot,data.frozen,data.lora];
+  const data=MLPStudy.data,runs=[data.comparison.baseline,data.snapshot,data.frozen,data.context,data.lora];
   return [...document.querySelectorAll('#frozenAllTest tbody tr')].every(row=>[...row.querySelectorAll('td')].every((td,i)=>Number(td.title)===runs[i].metrics.find(r=>r.Skenario===row.dataset.scenario)[row.dataset.metric]));
  });assert.ok(matrix,'Every test metric must stay on its original scenario and experiment column');
- assert.equal(await p.locator('#frozenAllTest thead th.experiment-column').count(),4);assert.equal(await p.locator('#frozenAllTest th[scope=rowgroup]').count(),3);assert.equal(await p.locator('#frozenAllTest th[scope=row]').count(),12);
+ assert.equal(await p.locator('#frozenAllTest thead th.experiment-column').count(),5);assert.equal(await p.locator('#frozenAllTest th[scope=rowgroup]').count(),3);assert.equal(await p.locator('#frozenAllTest th[scope=row]').count(),12);
  assert.match(await p.locator('#frozenBody').innerText(),/7,8611/);assert.match(await p.locator('#frozenBody').innerText(),/belum ada bukti keunggulan/);assert.equal(await p.locator('#frozenPredictions').count(),0);
- ok('Four experiment columns preserve all 48 test values with scenario/metric row headers; six refit rows, 15 folds and no public individual predictions');
+ ok('Five experiment columns preserve all 60 test values with scenario/metric row headers; six refit rows, 15 folds and no public individual predictions');
  for(const width of [1440,900,390,320]){await p.setViewportSize({width,height:1000});for(const s of ['S1','S2','S3'])for(const tab of ['review','process','predictions','excel']){
   await p.evaluate(([s,t])=>{MLPFrozen.setScenario(s);MLPFrozen.setTab(t)},[s,tab]);assert.ok((await p.locator('#frozenBody').innerText()).length>60);assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}/${s}/${tab}`);assert.ok(!/\b(?:NaN|undefined|Infinity)\b/.test(await p.locator('#frozenBody').innerText()));
   if(width<=390&&tab==='review'){

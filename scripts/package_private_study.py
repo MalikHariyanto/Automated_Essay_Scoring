@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import secrets
+import zipfile
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -50,6 +51,7 @@ def main():
     parser.add_argument('--input',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--key-file',type=Path,required=True)
+    parser.add_argument('--archive',type=Path,help='ZIP satu HTML terenkripsi untuk unduhan besar.')
     args=parser.parse_args()
     if args.key_file.exists():
         password=json.loads(args.key_file.read_text())['password']
@@ -65,11 +67,21 @@ def main():
     document=TEMPLATE.replace('__PAYLOAD__',encode(ciphertext)).replace('__SALT__',encode(salt)).replace('__IV__',encode(iv)).replace('__SHA__',hashlib.sha256(original).hexdigest())
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(document,encoding='utf-8')
+    if args.archive:
+        args.archive.parent.mkdir(parents=True,exist_ok=True)
+        with zipfile.ZipFile(args.archive,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
+            archive.writestr('Belajar_AES_MLP_Lengkap.html',document.encode('utf-8'))
+        with zipfile.ZipFile(args.archive) as archive:
+            assert archive.read('Belajar_AES_MLP_Lengkap.html')==document.encode('utf-8')
+        if args.archive.stat().st_size>=100*1024**2:
+            raise ValueError('Arsip melebihi batas file GitHub 100 MiB; jangan dipublikasikan.')
     args.key_file.parent.mkdir(parents=True,exist_ok=True)
     args.key_file.write_text(json.dumps({'password':password,'plaintext_sha256':hashlib.sha256(original).hexdigest(),
         'download_sha256':hashlib.sha256(args.output.read_bytes()).hexdigest()},indent=2)+'\n')
     args.key_file.chmod(0o600)
     print(json.dumps({'file':str(args.output),'size_mib':round(args.output.stat().st_size/1024**2,2),'roundtrip_verified':True,'key_file':str(args.key_file)}))
+    if args.archive:
+        print(json.dumps({'archive':str(args.archive),'size_mib':round(args.archive.stat().st_size/1024**2,2),'sha256':hashlib.sha256(args.archive.read_bytes()).hexdigest(),'archive_roundtrip_verified':True}))
 
 
 if __name__=='__main__':

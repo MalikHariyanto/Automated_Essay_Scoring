@@ -1,12 +1,24 @@
 # Buku belajar hasil MLP
 
+**Unduhan lengkap terbaru:** [Belajar_AES_MLP_Lengkap.zip](../downloads/Belajar_AES_MLP_Lengkap.zip). Ekstrak, buka satu HTML di dalamnya, lalu gunakan kunci pembuka sebelumnya. Buku dapat dipakai offline; teks/nilai individual tetap terenkripsi di repo publik.
+
+## Papan perbandingan semua eksperimen
+
+Ruang **Semua eksperimen** kini menjadi tampilan awal: **Ringkasan hasil**, **Fold & kestabilan**, **Guru & prediksi**, dan **Excel eksperimen**. Lima hasil lengkap ditampilkan sebagai kolom: awal lima epoch, MLP acuan, double frozen, **E4 konteks pair**, dan E5 LoRA. E1/E6 yang belum memiliki hasil final lengkap tidak diberi peringkat.
+
+Tiga kartu membedakan **S1 terbaik di test (6,3805)**, **S3 MLP acuan terbaik pada rata-rata CV (6,0516)**, dan **S3 LoRA terbaik khusus fusion di test (6,5305)**. Pilih RMSE/Pearson/QWK/AC2 untuk membandingkan metrik yang sama. Nilai setara mendapat label bersama.
+
+Pada tabel fold, hijau berarti terbaik pada fold yang sama; bintang berarti fold terendah eksperimen itu. Mean/SD dan satu fold tidak dicampur. Pada tabel individual, pilih satu dari 60 jawaban untuk melihat teks, nilai guru dan seluruh 15 prediksi; sel paling dekat diberi label dan error absolut. Hitungan skenario terdekat per jawaban dipisahkan dari RMSE keseluruhan.
+
+Konteks pair kini lengkap: **47 sheet**, RMSE test S3 **6,7315** dan mean CV **6,0986**. Evaluasi awal serta lima Excel masing-masing MLP/frozen/konteks/LoRA dapat dibuka sesuai sumber. [Audit hasil dan pengujian UI](review_context_pair_dashboard.md) · [Preview ringkasan](previews/mlp_study/20_semua_eksperimen_fullscreen.png) · [Preview fold](previews/mlp_study/21_fold_terbaik.png).
+
 Unduh [belajar_MLP_Spider.html](belajar_MLP_Spider.html) dengan **Download raw file**, lalu buka di Chrome, Edge, atau Firefox. Halaman berjalan offline tanpa instalasi, CDN, atau training. Tampilan memakai tema Spider-Man full colour dari buku paper: splash warna, kota komik, pose di tepi halaman dan sticky note yang menimpa border.
 
 Source mengikuti [commit 15bc7bb](https://github.com/MalikHariyanto/Automated_Essay_Scoring/commit/15bc7bbb2aee91ecaf44fb91a0139a8c21f64a20). Seluruh 30 cell kode unggahan `AES_300_S3_MLP (1).ipynb` sama dengan source pada commit itu. Buku MLP tetap mengikuti run acuan tersebut. Hasil double frozen kini tersedia sebagai pembanding E3 tersendiri; notebook utama tidak diubah.
 
 ## Menu perbandingan eksperimen
 
-Klik **Bandingkan eksperimen** pada beranda atau pemilih ruang di atas buku. Menu ini memiliki lima pembahasan: **Peta perubahan**, **Layer & kode**, **Training & CV**, **Prediksi & metrik**, serta **Kenapa lanjut?**. Pilih S1/S2/S3 dan versi awal pembanding; run MLP terakhir tetap di sebelah kanan. Area pembahasan mempunyai scroll sendiri.
+Klik **Awal → MLP** pada pemilih ruang di atas buku untuk pembahasan perkembangan dua versi awal. Menu ini memiliki lima pembahasan: **Peta perubahan**, **Layer & kode**, **Training & CV**, **Prediksi & metrik**, serta **Kenapa lanjut?**. Pilih S1/S2/S3 dan versi awal pembanding; run MLP terakhir tetap di sebelah kanan. Area pembahasan mempunyai scroll sendiri.
 
 Jejak eksperimen dipisahkan berdasarkan bukti:
 
@@ -28,7 +40,7 @@ Salinan publik sudah memuat angka agregat perbandingan. Bila memiliki notebook a
 
 ## Tabel hasil & arti angka
 
-Tombol **Tabel hasil & arti angka** membuka meja hasil tersendiri dengan scroll. Versi awal dan MLP menjadi kolom berdampingan; S1/S2/S3 dan keempat metrik menjadi 12 baris, diikuti pilihan penjelasan RMSE, MSE training, Pearson, QWK, dan Gwet AC2. Tabel loss membandingkan epoch dan MSE refit per skenario secara mendatar. Seluruh 15 fold serta rata-rata RMSE CV dan simpangan baku tetap tersedia.
+Tombol **Tabel hasil & arti angka** membuka meja hasil tersendiri dengan scroll. Kelima eksperimen menjadi kolom berdampingan; S1/S2/S3 dan keempat metrik menjadi 12 baris, diikuti pilihan penjelasan RMSE, MSE training, Pearson, QWK, dan Gwet AC2. Tabel loss membandingkan epoch dan MSE refit per skenario secara mendatar. Seluruh 15 fold serta rata-rata RMSE CV dan simpangan baku tetap tersedia.
 
 Penjelasan mengikuti skenario yang dipilih. RMSE/MSE tidak diberi batas bagus/jelek universal. RMSE dibandingkan dengan prediktor sederhana yang selalu memakai rata-rata nilai guru development: RMSE test **8,1428 poin**. Rata-rata itu dihitung tanpa memakai label test untuk fitting. Contoh pilihan batas 5/10 poin diberi label ilustrasi, bukan standar AES. MSE memakai target latihan 0–1 tetapi tidak dibatasi maksimum 1; loss training dibedakan dari error test. Pearson/QWK/AC2 dijelaskan melalui titik acuan −1/0/1 yang relevan, serta contoh aktual. AC2 tinggi tidak disamakan dengan persen prediksi tepat.
 
@@ -38,7 +50,7 @@ HTML pribadi memuat workbook evaluasi awal asli. Tabel **60 pasangan prediksi aw
 
 ## Pembanding baru: double frozen + MLP
 
-Tombol **MLP vs double frozen** di pemilih ruang atau **E3** di daftar eksperimen membuka empat tab: **Hasil & kesimpulan**, **Proses, kode & latihan**, **Guru & prediksi**, serta **Excel run baru**. Tabel test menempatkan tiga eksperimen sebagai kolom: **Awal—5 epoch**, **MLP acuan—maksimal 25 epoch**, dan **Double frozen + MLP**. Tiap kelompok S1/S2/S3 memiliki empat baris RMSE, Pearson, QWK dan Gwet AC2; baca satu baris mendatar untuk membandingkan hasil. Ada perbandingan kelima fold, mean/SD, loss refit dan grafik seluruh epoch MLP versus double frozen. Tabel loss juga memakai eksperimen sebagai kolom. S1 tetap fine-tuned; istilah double frozen berlaku pada kedua encoder S3.
+Tombol **MLP vs double frozen** di pemilih ruang atau **E3** di daftar eksperimen membuka empat tab: **Hasil & kesimpulan**, **Proses, kode & latihan**, **Guru & prediksi**, serta **Excel run baru**. Tabel test menempatkan lima eksperimen sebagai kolom: awal, MLP acuan, double frozen, konteks pair dan LoRA. Tiap kelompok S1/S2/S3 memiliki empat baris RMSE, Pearson, QWK dan Gwet AC2; baca satu baris mendatar untuk membandingkan hasil. Ada perbandingan kelima fold, mean/SD, loss refit dan grafik seluruh epoch MLP versus double frozen. Tabel loss juga memakai eksperimen sebagai kolom. S1 tetap fine-tuned; istilah double frozen berlaku pada kedua encoder S3.
 
 Header menjelaskan head S3 dan aturan berhenti: lima epoch tanpa perbaikan RMSE validasi, bukan lima perbaikan. S1 tetap memakai head linear dan S2 memakai MLP pada ketiga eksperimen. Meja **Tabel hasil & arti angka** memakai susunan kolom yang sama untuk dua eksperimen awal/MLP. Kartu E2 yang sebelumnya hanya berupa penanda tetap dan tidak dapat diklik telah dihapus dari sidebar; hasil MLP tetap menjadi pembanding.
 
@@ -75,7 +87,7 @@ Setiap bab mempunyai empat tab:
 
 Penjelasan **Cara membaca tabel ini** dapat dibuka di bawah pilihan laporan/tabel. Tombol **Lihat kode tahap** dan **Output Colab** menghubungkan hasil ke proses penghasilnya. Tombol CSV telah dihapus. Navigasi baris disembunyikan bila tabel cukup satu halaman; unduhan file serta pengatur komponen tidak ditampilkan ketika datanya tidak tersedia atau kontrolnya tidak relevan. Tab yang aktif tetap terlihat saat strip tab digeser pada HP.
 
-HTML pribadi siap pakai memuat notebook MLP asli, ZIP MLP, notebook/workbook awal dan ZIP double frozen yang sudah dikirim. Tidak perlu memilih ulang file ketika membukanya. Versi publik hanya menawarkan tabel agregat dan penjelasan yang benar-benar tersedia; sembilan tabel panduan/pengaturan/arti metrik ditambahkan dari Excel asli, tanpa tabel siswa. Hasil konteks pair yang belum lengkap tidak dicampurkan ke run MLP acuan ini.
+HTML pribadi siap pakai memuat notebook MLP asli, ZIP MLP, notebook/workbook awal dan ZIP double frozen yang sudah dikirim. Tidak perlu memilih ulang file ketika membukanya. Versi publik hanya menawarkan tabel agregat dan penjelasan yang benar-benar tersedia; sembilan tabel panduan/pengaturan/arti metrik ditambahkan dari Excel asli, tanpa tabel siswa. Hasil konteks pair lengkap sekarang tersedia sebagai E4 pada ruang Semua eksperimen; run MLP acuan tetap terpisah.
 
 Daftar bab, kode, catatan, output, dan tabel mempunyai area scroll agar halaman utama tidak memanjang mengikuti seluruh hasil. Ada navigasi keyboard, dialog istilah, tampilan HP, dan tombol jeda animasi.
 

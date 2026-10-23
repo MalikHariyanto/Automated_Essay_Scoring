@@ -26,3 +26,6 @@ outputs/runs/
 *.zip
 .env
 .env.*
+
+# Hanya paket HTML terenkripsi yang diizinkan; ZIP hasil siswa tetap privat.
+!/downloads/Belajar_AES_MLP_Lengkap.zip

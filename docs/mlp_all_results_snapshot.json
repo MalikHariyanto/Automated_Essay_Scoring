@@ -1,0 +1,131 @@
+{
+  "scope": "AGGREGATE WIN COUNTS ONLY; NO STUDENT ROWS",
+  "prediction_winners": {
+    "E2": {
+      "S1": 19,
+      "S2": 20,
+      "S3": 21,
+      "Seri": 0
+    },
+    "E3": {
+      "S1": 17,
+      "S2": 19,
+      "S3": 24,
+      "Seri": 0
+    },
+    "E4": {
+      "S1": 21,
+      "S2": 17,
+      "S3": 22,
+      "Seri": 0
+    },
+    "E5": {
+      "S1": 20,
+      "S2": 19,
+      "S3": 21,
+      "Seri": 0
+    },
+    "E0": {
+      "S1": 21,
+      "S2": 25,
+      "S3": 14,
+      "Seri": 0
+    }
+  },
+  "baseline_eval_book": {
+    "file": "04_Prediksi_dan_Evaluasi.xlsx",
+    "sheets": [
+      {
+        "name": "Panduan",
+        "rows": 8,
+        "columns": 2,
+        "headers": [
+          "Bagian",
+          "Cara Membaca"
+        ]
+      },
+      {
+        "name": "Perbandingan Model",
+        "rows": 3,
+        "columns": 8,
+        "headers": [
+          "Skenario",
+          "Model",
+          "RMSE (poin)",
+          "Pearson",
+          "QWK",
+          "Gwet AC2"
+        ]
+      },
+      {
+        "name": "Hasil Tiap Fold",
+        "rows": 15,
+        "columns": 6,
+        "headers": [
+          "Skenario",
+          "Fold",
+          "RMSE (poin)",
+          "Pearson",
+          "QWK",
+          "Gwet AC2"
+        ]
+      },
+      {
+        "name": "Ringkasan Validasi",
+        "rows": 3,
+        "columns": 5,
+        "headers": [
+          "Skenario",
+          "RMSE (rata-rata ± SD)",
+          "Pearson (rata-rata ± SD)",
+          "QWK (rata-rata ± SD)",
+          "Gwet AC2 (rata-rata ± SD)"
+        ]
+      },
+      {
+        "name": "Nilai Guru dan Prediksi",
+        "rows": 60,
+        "columns": 8,
+        "headers": [
+          "ID Jawaban",
+          "Nilai Guru",
+          "Prediksi S1",
+          "Prediksi S2",
+          "Prediksi S3",
+          "Selisih S1"
+        ]
+      },
+      {
+        "name": "Prediksi Satu Jawaban",
+        "rows": 3,
+        "columns": 4,
+        "headers": [
+          "Skenario",
+          "Prediksi Skor",
+          "Skor Dibulatkan",
+          "Di Luar Rentang"
+        ]
+      },
+      {
+        "name": "Jawaban Contoh",
+        "rows": 1,
+        "columns": 1,
+        "headers": [
+          "Jawaban Siswa"
+        ]
+      },
+      {
+        "name": "Arti Metrik",
+        "rows": 4,
+        "columns": 3,
+        "headers": [
+          "Metrik",
+          "Cara Membaca",
+          "Catatan"
+        ]
+      }
+    ]
+  },
+  "numeric_tie_tolerance_points": 1e-05,
+  "limits": "Tiap jawaban dihitung satu kali. Seri dipisahkan. Hitungan terdekat bukan RMSE atau bukti keunggulan statistik."
+}

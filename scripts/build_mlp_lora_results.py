@@ -11,7 +11,7 @@ from build_mlp_study import ROOT, BOOKS, table, workbook_inventory
 from build_mlp_frozen import identity, validate_predictions
 
 
-def extract(path, mlp_path):
+def extract(path, mlp_path, method="lora"):
     import numpy as np
     sys.path.insert(0,str(ROOT/'src'))
     from aes.teacher_score.models import metrics as evaluate
@@ -35,8 +35,8 @@ def extract(path, mlp_path):
         if set(a)!=set(b) or any(a[k]['Nilai Guru']!=b[k]['Nilai Guru'] for k in a):
             raise ValueError('ID/nilai guru test berbeda.')
         models=table(blobs[BOOKS[4]],'Model yang Dibandingkan')
-        if 'LoRA' not in next(r for r in models if r['Skenario']=='S3')['Encoder']:
-            raise ValueError('Metode S3 bukan LoRA.')
+        if ('LoRA' if method=='lora' else 'context pair') not in next(r for r in models if r['Skenario']=='S3')['Encoder']:
+            raise ValueError('Metode S3 tidak cocok: '+method)
         history={s:table(blobs[BOOKS[4]],name) for s,name in [('S1','RoBERTa (S1)'),('S2','BGE-M3 (S2)'),('S3','Fusion (S3)')]}
         selected=table(blobs[BOOKS[4]],'Ringkasan Lima Fold')
         if len(selected)!=15:raise ValueError('Ringkasan harus 15 fold.')
@@ -58,11 +58,11 @@ def extract(path, mlp_path):
             changes=[(abs(a[k]['Prediksi '+s]-a[k]['Nilai Guru']),abs(b[k]['Prediksi '+s]-b[k]['Nilai Guru'])) for k in a]
             impact.append({'Skenario':s,'new_lower_error':sum(x<y-1e-5 for x,y in changes),'old_lower_error':sum(y<x-1e-5 for x,y in changes),'equal_error':sum(abs(x-y)<=1e-5 for x,y in changes),'numeric_tolerance':1e-5})
         validate_predictions(test,pairs)
-        return {'id':'E5','label':'LoRA + MLP','scope':'SAVED E5 WORKBOOKS; NO NEW TRAINING',
+        result={'id':'E5','label':'LoRA + MLP','scope':'SAVED E5 WORKBOOKS; NO NEW TRAINING',
             'zip_sha256':hashlib.sha256(raw).hexdigest(),'rows':300,'development':240,'test':60,
             'metrics':test,'folds':folds,'cvSummary':cv,'history':history,'foldSummary':selected,
             'models':models,'parameters':table(blobs[BOOKS[4]],'Pengaturan Eksperimen'),
-            'loraParameters':table(blobs[BOOKS[4]],'Parameter LoRA dan Fusion'),
+            'loraParameters':table(blobs[BOOKS[4]],'Parameter LoRA dan Fusion') if method=='lora' else [],
             'control_prediction_delta':{s:max(abs(a[k]['Prediksi '+s]-b[k]['Prediksi '+s]) for k in a) for s in ('S1','S2')},
             'pairing':pairing,'teacher_test_pairs_identical':True,'predictionImpact':impact,
             'metrics_origin':'Dihitung ulang dari 60 pasangan guru/prediksi mentah Excel; QWK/AC2 memakai kategori 0–100, tie .5 ke bawah. ZIP tidak memiliki sheet Perbandingan Model/Hasil Tiap Fold.',
@@ -72,6 +72,23 @@ def extract(path, mlp_path):
             'limits':['Satu run per metode, belum ada pengulangan seed atau uji signifikansi.',
                 'S1/S2 memiliki prediksi test praktis sama dengan MLP acuan (selisih maksimum di bawah 0,000004 poin). Notebook eksekusi E5 tidak disertakan; asal proses training tidak disimpulkan hanya dari kesamaan hasil.',
                 'Data uji sudah dilihat dalam pengembangan; pemilihan metode melalui CV, konfirmasi independen memerlukan data baru.']}
+
+        if method=='context':
+            reported=table(blobs[BOOKS[3]],'Perbandingan Model')
+            validate_predictions(reported,pairs)
+            reported_folds=table(blobs[BOOKS[3]],'Hasil Tiap Fold')
+            for row in folds:
+                other=next(r for r in reported_folds if r['Skenario']==row['Skenario'] and r['Fold']==row['Fold'])
+                if any(abs(row[k]-other[k])>1e-7 for k in ('RMSE (poin)','Pearson','QWK','Gwet AC2')):
+                    raise ValueError('Metrik fold berbeda dari riwayat.')
+            result.update(id='E4',label='Konteks pair + MLP',scope='SAVED E4 CONTEXT PAIR; NO NEW TRAINING',
+                metrics=reported,folds=reported_folds,
+                metrics_origin='Empat metrik dari sheet Perbandingan Model; dihitung ulang dari 60 pasangan guru/prediksi untuk verifikasi.',
+                folds_origin='Sheet Hasil Tiap Fold, dicocokkan dengan metrik epoch terpilih pada riwayat training.',
+                source_reference='Workbook menyatakan RoBERTa context pair + MLP, batas konteks 192 dan soal 64 token. Notebook eksekusi tidak diunggah bersama ZIP; source byte demi byte tidak diklaim.')
+            result['limits'][1]='S1/S2 memakai masukan jawaban saja; konteks pair mengubah cabang RoBERTa S3. Kesamaan kontrol diperiksa dari prediksi, tidak dipakai untuk menyimpulkan ulang proses training.'
+        return result
+
 
 
 if __name__=='__main__':

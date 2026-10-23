@@ -1,6 +1,7 @@
 // Perbandingan memakai ruang layar penuh tanpa membangun ulang tabel atau data.
 (()=>{'use strict';
 const specs=[
+ ['dashboardRoom','Semua eksperimen','dashboardBody',()=>MLPDashboard.getState().scenario,s=>MLPDashboard.setScenario(s)],
  ['comparison','Perbandingan eksperimen','comparisonBody',()=>MLPCompare.getState().scenario,s=>MLPCompare.setScenario(s)],
  ['metricsRoom','Tabel hasil & arti angka','metricsContent',()=>MLPResults.getState().scenario,s=>MLPResults.setScenario(s)],
  ['frozenRoom','MLP vs double frozen','frozenBody',()=>MLPFrozen.getState().scenario,s=>MLPFrozen.setScenario(s)],
@@ -24,7 +25,7 @@ function open(id){
  const spec=specs.find(s=>s[0]===id),room=document.getElementById(id);if(!spec||!room||room.hidden||active||document.querySelector('#codeDialog[open]'))return;
  const page={left:scrollX,top:scrollY};
  const body=document.getElementById(spec[2]),position={top:body.scrollTop,left:body.scrollLeft},placeholder=document.createElement('div');placeholder.style.height=room.getBoundingClientRect().height+'px';placeholder.setAttribute('aria-hidden','true');room.before(placeholder);
- active={spec,room,placeholder,page,opener:room.querySelector('[data-expand-comparison]')};caption.textContent=spec[1];choice.value=spec[3]();room.classList.add('comparison-expanded');dialog.append(room);document.body.classList.add('reading-comparison-fullscreen');
+ active={spec,room,placeholder,page,opener:room.querySelector('[data-expand-comparison]')};caption.textContent=spec[1];label.style.display=id==='dashboardRoom'?'none':'';choice.value=spec[3]();room.classList.add('comparison-expanded');dialog.append(room);document.body.classList.add('reading-comparison-fullscreen');
  const session=active;
  try{dialog.showModal();body.scrollTop=position.top;body.scrollLeft=position.left;closeButton.focus({preventScroll:true});
   if(!document.fullscreenElement&&document.documentElement.requestFullscreen){ownsFullscreen=true;document.documentElement.requestFullscreen().then(()=>{if(!active&&document.fullscreenElement===document.documentElement)document.exitFullscreen().catch(()=>{})}).catch(()=>{if(active===session)ownsFullscreen=false})}
