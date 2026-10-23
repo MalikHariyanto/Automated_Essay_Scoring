@@ -53,6 +53,7 @@ def main():
     parser.add_argument('--key-file',type=Path,required=True)
     parser.add_argument('--archive',type=Path,help='ZIP satu HTML terenkripsi untuk unduhan besar.')
     parser.add_argument('--parts-dir',type=Path,help='Pecah arsip besar menjadi bagian aman untuk batas GitHub; buat HTML pengunduh.')
+    parser.add_argument('--download-ref',default='codex/aes-learning',help='Commit/ref yang menyimpan bagian arsip agar pengunduh tetap cocok.')
     args=parser.parse_args()
     if args.key_file.exists():
         password=json.loads(args.key_file.read_text())['password']
@@ -84,7 +85,7 @@ def main():
             chunk=raw[start:start+80*1024**2];name=f'Belajar_AES_MLP_Lengkap.part{i}'
             (args.parts_dir/name).write_bytes(chunk)
             parts.append({'name':name,'size':len(chunk),'sha256':hashlib.sha256(chunk).hexdigest()})
-        manifest={'base':'https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/codex/aes-learning/downloads/','size':len(raw),'sha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
+        manifest={'base':f'https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/{args.download_ref}/downloads/','size':len(raw),'sha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
         template=(Path(__file__).parent/'templates/mlp_download.html').read_text()
         (args.parts_dir/'Belajar_AES_MLP_Lengkap.html').write_text(template.replace('__MANIFEST__',json.dumps(manifest)))
         assert b''.join((args.parts_dir/p['name']).read_bytes() for p in parts)==raw
