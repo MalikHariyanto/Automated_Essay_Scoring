@@ -62,6 +62,7 @@ show(pd.DataFrame([
             if complete.exists():""")
                 text=replace_once(text,"    dump(final_path, report)", """    report['reused_control_scenarios']=['S1','S2']
     report['control_source_run']=reused['source_run']
+    report['control_runtime_compatibility']=reused.get('runtime_compatibility',{})
     report['test_evaluations_this_run']={'S1':0,'S2':0,'S3':1}
     dump(final_path, report)""")
             if 'report=train_all(' in text:
@@ -70,6 +71,9 @@ show(pd.DataFrame([
         {'Skenario':'S1','Asal':'Hasil run lama, tidak dilatih/diuji ulang','Folder Sumber':reuse['source_run']},
         {'Skenario':'S2','Asal':'Hasil run lama, tidak dilatih/diuji ulang','Folder Sumber':reuse['source_run']},
         {'Skenario':'S3','Asal':'Kandidat B, dilatih dan diuji pada run ini','Folder Sumber':str(output)}])
+    runtime=reuse.get('runtime_compatibility',{})
+    origin['PyTorch Sumber']=[runtime.get('source',{}).get('torch','Tidak tercatat')]*2+[cfg['runtime_versions']['torch']]
+    origin['PyTorch Aktif']=cfg['runtime_versions']['torch']
     journal.save('08b_asal_model',{'Asal':origin},'Asal checkpoint dan hasil evaluasi setiap skenario')
     show(origin,'Asal model S1/S2/S3')
     export_completed_training(report,bundle,cfg,output,journal)""")
@@ -86,7 +90,7 @@ show(pd.DataFrame([
 
 **GPU:** Runtime → Change runtime type → T4 GPU, lalu jalankan dari atas. CPU tidak dipilih otomatis. Parameter S3 lain tetap: maksimal 25 epoch/fold, patience 5, lima fold dalam development 80%, test 20%, microbatch 1/batch efektif 8, warmup dan scheduler linear. Model S3 baru tidak melanjutkan optimizer/bobot S3 lama karena LR/metodenya berbeda. Checkpoint S3 dalam eksperimen ini tetap bisa dilanjutkan setelah runtime terputus dengan konfigurasi/perangkat yang cocok.
 
-**Sumber S1/S2:** REUSE_RUN kosong mencari run lengkap dalam MyDrive/AES_300_MLP_Privat, lalu AES_300_S3_LoRA_MLP_Privat. Di setiap folder, run terbaru dicoba dulu; sumber tidak dipilih berdasarkan skor. Pemeriksaan mencakup identitas kode sumber yang dikenal, dataset, split, konfigurasi S1/S2, versi numerik, lima fold, pilihan epoch, checksum model final/prediksi test dan keutuhan pemuatan model. Run yang tidak cocok ditolak. Jika folder berbeda, isi REUSE_RUN dengan folder hash run lama yang langsung berisi effective_config.json, final_report.json, S1 dan S2. Jika tidak ada sumber cocok, training berhenti dengan alasan dan tidak mengulang S1/S2 diam-diam.
+**Sumber S1/S2:** REUSE_RUN kosong mencari run lengkap dalam MyDrive/AES_300_MLP_Privat, lalu AES_300_S3_LoRA_MLP_Privat. Di setiap folder, run terbaru dicoba dulu; sumber tidak dipilih berdasarkan skor. Pemeriksaan mencakup identitas kode sumber yang dikenal, dataset, split, konfigurasi S1/S2, lima fold, pilihan epoch, checksum model final/prediksi test dan keutuhan pemuatan model. Transformers/NumPy harus sama; PyTorch stabil 2.x mulai 2.6 boleh berbeda versi/build untuk bobot final yang berhasil dimuat dengan layer persis cocok. Versi sumber dan aktif dicatat pada laporan. Ini bukan resume optimizer lintas versi, dan tidak menjamin hasil inferensi identik pada perangkat berbeda. Run yang tidak cocok ditolak. Jika folder berbeda, isi REUSE_RUN dengan folder hash run lama yang langsung berisi effective_config.json, final_report.json, S1 dan S2. Jika tidak ada sumber cocok, training berhenti dengan alasan dan tidak mengulang S1/S2 diam-diam.
 
 **Folder baru:** MyDrive/AES_300_E6_S3_LR5e6_GPU_Reuse_Privat. Hanya hasil CV S1/S2, model final dan hasil test yang diperlukan disalin ke run baru; checkpoint epoch lama dan seluruh S3 sumber tidak disalin. Sumber tidak ditulis/dihapus. Penyalinan model final memerlukan ruang Drive tambahan. Rencana sumber/checksum dikunci sebelum copy untuk pemulihan jika terputus. Tidak menyalin refit_locked.json atau final_report.json dari run lama yang mengunci ketiga skenario.
 

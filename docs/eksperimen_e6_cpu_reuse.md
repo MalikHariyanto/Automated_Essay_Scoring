@@ -25,7 +25,7 @@ Hasil baru berada di **MyDrive/AES_300_E6_S3_LR5e6_CPU_Reuse_Privat**. Autosave 
 
 ## GPU ke CPU dan pemulihan
 
-Sumber kontrol dimuat dengan `map_location='cpu'`. Dataset, split, konfigurasi S1/S2, versi numerik Torch/Transformers/NumPy, pilihan epoch, checksum dan arsitektur tetap diperiksa. Perangkat sumber boleh berbeda, tetapi ini tidak mengizinkan versi numerik yang berbeda. Jika versi pustaka tidak cocok, sumber ditolak sebelum training.
+Sumber kontrol dimuat dengan `map_location='cpu'`. Dataset, split, konfigurasi S1/S2, versi Transformers/NumPy, kompatibilitas PyTorch, pilihan epoch, checksum dan arsitektur tetap diperiksa. Perangkat sumber dan build/versi PyTorch stabil 2.x mulai 2.6 boleh berbeda untuk final state_dict yang berhasil dimuat dengan weights_only dan kecocokan layer strict. Transformers/NumPy tetap harus sama. Versi sumber/aktif dicatat dalam s1_s2_reuse.json, final_report.json dan sheet Asal Model. Jika pemuatan bobot atau pemeriksaan lain gagal, sumber ditolak sebelum training. Metrik S1/S2 tetap milik runtime sumber; inferensi baru di CPU tidak dijamin identik bit demi bit.
 
 Ini memakai **model final yang selesai**, bukan memaksa progres optimizer GPU berlanjut pada CPU. S3 GPU yang masih berjalan tetap di folder GPU; S3 CPU dimulai baru. Setelah versi CPU terputus, jalankan notebook CPU yang sama dari atas untuk melanjutkan progres CPU yang cocok. Pertahankan JSON progres serta snapshot yang dirujuknya dan model final; JSON bukan pengganti bobot.
 

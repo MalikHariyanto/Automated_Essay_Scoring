@@ -1,5 +1,7 @@
 # Verifikasi E6 CPU reuse S1/S2
 
+**Catatan versi:** bukti di bawah mencatat versi awal dengan pemeriksaan PyTorch identik. Perbaikan portabilitas model final dan hasil pengujian terbaru ada di [verifikasi lintas PyTorch](verification_e6_reuse_torch_portability.md).
+
 Notebook: `notebooks/experiments/AES_300_E6_S3_LR5e6_CPU_Reuse.ipynb`, mirror byte-identik. SHA-256 file: `c932093180f261d4ae1ec0d60104a4cf6d208ea9dbe0624aed8fbd9497c8bab6`. Fingerprint kode: `4b1a64dd6c5a8340acdc8d9dca9311a7d8c89cc5a119f93c567ed5f8e35fad02`.
 
 Dijalankan dari root repo:

@@ -1,5 +1,7 @@
 # Verifikasi E6 GPU dengan reuse S1/S2
 
+**Catatan versi:** bukti di bawah mencatat versi awal dengan pemeriksaan PyTorch identik. Perbaikan portabilitas model final dan hasil pengujian terbaru ada di [verifikasi lintas PyTorch](verification_e6_reuse_torch_portability.md).
+
 23 Oktober 2026. Dari HEAD `319088f1e649d642ca014b4048e73f79b475cb6f`, branch `codex/aes-learning`. Notebook GPU baru diturunkan dari E6 CPU tanpa menimpa notebook CPU, MLP acuan, LoRA, double frozen atau HTML. Builder `python scripts/build_s3_lr_gpu_reuse_notebook.py`; helper `src/aes/teacher_score/reuse_controls.py` ditanam langsung pada cell. Runtime tidak clone/import proyek.
 
 Notebook publik/mirror identik, 47 cell/30 code cell, output kosong. Fingerprint kode `b82810010670f313a3ad84e610d230dd3b664613e7af643a805984fd1a0b564e`, SHA-256 notebook `48416a85da986efd751b0c8820b972e77999eb4e0306026d2a2f867ebcd8e34e`. Metadata meminta GPU, konfigurasi memakai `device='cuda'` dan `REQUIRE_GPU=True`. LR S3 5e-6; proyeksi/head 1e-4. S1/S2 tetap menggunakan kontrol selesai yang konfigurasi/metodenya sama.

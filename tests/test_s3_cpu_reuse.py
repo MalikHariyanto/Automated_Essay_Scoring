@@ -82,6 +82,46 @@ def test_gpu_metadata_checkpoint_loaded_on_cpu(source_run,tmp_path):
     assert plan['source_device']=='cuda' and set(plan['selected_epochs'])=={'S1','S2'}
 
 
+@pytest.mark.parametrize('torch_version',['2.6.0+cu124','2.6.1+cpu','2.10.0+cu128'])
+def test_completed_controls_allow_torch_build_patch_minor_difference(source_run,tmp_path,torch_version):
+    # Simulated version metadata; actual execution remains Torch 2.6 CPU.
+    root,path,old,bundle,manifest,bge,source,report=source_run
+    ns=reuse.runtime(NOTEBOOK)
+    cfg=ns['config']({**old,'device':'cpu','s3_encoder_lr':5e-6,'reuse_run':str(source),
+        'runtime_versions':{**old['runtime_versions'],'torch':torch_version}})
+    dest=tmp_path/'destination';dest.mkdir()
+    before={str(p.relative_to(source)):ns['digest'](p) for p in source.rglob('*') if p.is_file()}
+    plan=ns['prepare_reused_controls'](bundle,manifest,cfg,dest)
+    assert plan['runtime_compatibility']['torch_changed'] is True
+    assert plan['runtime_compatibility']['source']==old['runtime_versions']
+    assert plan['runtime_compatibility']['current']==cfg['runtime_versions']
+    for scenario in ('S1','S2'):
+        assert ns['digest'](dest/scenario/'final.pt')==ns['digest'](source/scenario/'final.pt')
+        assert ns['digest'](dest/scenario/'test_predictions.csv')==ns['digest'](source/scenario/'test_predictions.csv')
+    assert not (dest/'S3').exists()
+    assert before=={str(p.relative_to(source)):ns['digest'](p) for p in source.rglob('*') if p.is_file()}
+
+
+@pytest.mark.parametrize('key,value',[
+    ('torch','different'),('torch','2.5.1'),('torch','3.0.0'),('torch','2.11.0.dev20261023'),
+    ('transformers','different'),('numpy','different')])
+def test_runtime_policy_rejects_unsupported_or_other_library_changes(key,value):
+    ns=reuse.runtime(NOTEBOOK)
+    old={'runtime_versions':{'torch':'2.6.0+cu124','transformers':'4.48.3','numpy':'2.2.6'}}
+    cfg={'runtime_versions':{**old['runtime_versions'],key:value}}
+    with pytest.raises(ValueError):ns['inspect_reuse_runtime'](old,cfg)
+
+
+def test_torch_difference_does_not_bypass_strict_model_loading(source_run,monkeypatch):
+    root,path,old,bundle,manifest,bge,source,report=source_run
+    ns=reuse.runtime(NOTEBOOK)
+    cfg={**old,'runtime_versions':{**old['runtime_versions'],'torch':'2.10.0+cu128'}}
+    def incompatible(*args,**kwargs):raise RuntimeError('TECHNICAL incompatible state_dict')
+    monkeypatch.setitem(ns,'load_model',incompatible)
+    with pytest.raises(RuntimeError,match='incompatible state_dict'):
+        ns['inspect_control_source'](source,bundle,manifest,cfg)
+
+
 def test_full_cpu_reuse_notebook_without_device_override(source_run,tmp_path,monkeypatch):
     monkeypatch.setattr(reuse,'NOTEBOOK',NOTEBOOK)
     # Existing execution harness substitutes only dataset/model/epoch fixtures.

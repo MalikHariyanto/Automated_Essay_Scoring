@@ -21,6 +21,28 @@ REUSE_SOURCE_PROFILES=[
      'code_sha256':'86bcfd7dff74cf2a47517244cadbc12b2c8e6b61e2345da27781f9bd2368b9f5'}]
 
 
+def inspect_reuse_runtime(old, cfg):
+    """Checkpoint final berisi state_dict; bukan resume optimizer lintas versi."""
+    from packaging.version import InvalidVersion, Version
+    source=old.get('runtime_versions',{})
+    current=cfg.get('runtime_versions',{})
+    for key in ('transformers','numpy'):
+        if not source.get(key) or source[key]!=current.get(key):
+            raise ValueError('Versi numerik sumber berbeda: '+key)
+    # Build CUDA/CPU, patch dan minor Torch boleh berbeda untuk final state_dict.
+    # Keutuhan dan kecocokan layer tetap wajib melalui weights_only + strict=True.
+    for label,versions in (('sumber',source),('aktif',current)):
+        try:
+            value=Version(versions.get('torch',''))
+        except (InvalidVersion,TypeError) as error:
+            raise ValueError('Versi PyTorch '+label+' tidak valid.') from error
+        if value.major!=2 or value.minor<6 or value.is_prerelease or value.is_devrelease:
+            raise ValueError('Reuse final memerlukan PyTorch stabil 2.x mulai 2.6: '+label)
+    return {'source':dict(source),'current':dict(current),
+            'torch_changed':source['torch']!=current['torch'],
+            'policy':'final_state_dict_cpu_strict_load; no_optimizer_resume'}
+
+
 def inspect_control_source(source, bundle, manifest, cfg):
     """Validasi metode/config, split, lima fold, final dan hasil uji S1/S2."""
     source=Path(source)
@@ -43,9 +65,7 @@ def inspect_control_source(source, bundle, manifest, cfg):
     for key in keys:
         if old.get(key)!=cfg.get(key):raise ValueError('Pengaturan sumber S1/S2 berbeda: '+key)
     # S3/LoRA/source lesson berbeda memang disengaja; metode S1/S2 kedua profile sama.
-    for key in ('torch','transformers','numpy'):
-        if old.get('runtime_versions',{}).get(key)!=cfg.get('runtime_versions',{}).get(key):
-            raise ValueError('Versi numerik sumber berbeda: '+key)
+    runtime=inspect_reuse_runtime(old,cfg)
     files={};epochs={};training={}
     for scenario in ('S1','S2'):
         best=[]
@@ -89,7 +109,8 @@ def inspect_control_source(source, bundle, manifest, cfg):
             files[relative]=digest(source/relative)
     return {'scope':SCOPE,'source_run':str(source),'profile':profile,'source_sha256':bundle.source_sha256,
             'split_sha256':manifest['split_sha256'],'files':files,'selected_epochs':epochs,
-            'training':training,'source_device':old['device'],'source_report_sha256':digest(source/'final_report.json')}
+            'training':training,'source_device':old['device'],'runtime_compatibility':runtime,
+            'source_report_sha256':digest(source/'final_report.json')}
 
 
 def prepare_reused_controls(bundle, manifest, cfg, output):
@@ -144,4 +165,9 @@ def prepare_reused_controls(bundle, manifest, cfg, output):
     plan['state']='complete';dump(plan_path,plan)
     print('S1/S2 memakai hasil selesai dari:',plan['source_run'],flush=True)
     print('S1/S2 tidak dilatih atau diuji ulang. Hanya S3 kandidat LR baru yang dilatih.',flush=True)
+    runtime=plan.get('runtime_compatibility',{})
+    if runtime.get('torch_changed'):
+        print('Model final S1/S2 berhasil dimuat di CPU dengan layer yang cocok. PyTorch sumber: '
+              +runtime['source']['torch']+'; aktif: '+runtime['current']['torch']+'. '
+              'Metrik S1/S2 tetap hasil run sumber; optimizer lama tidak dilanjutkan.',flush=True)
     return plan
