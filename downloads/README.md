@@ -1,11 +1,9 @@
 # Unduhan buku AES lengkap
 
-[Unduh Belajar_AES_MLP_Lengkap.html](https://github.com/MalikHariyanto/Automated_Essay_Scoring/raw/refs/heads/codex/aes-learning/downloads/Belajar_AES_MLP_Lengkap.html).
+[Unduh pengunduh HTML kecil](https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/downloads/Belajar_AES_MLP_Lengkap.html): pilih **Download raw file**, buka file HTML, lalu klik **Unduh buku lengkap**. Internet hanya diperlukan untuk pengunduhan. Pengunduh menyusun dua bagian paket secara otomatis dan memeriksa checksum, sehingga pengguna memperoleh **satu ZIP**.
 
-File sekitar 63 MB. Jika GitHub menampilkan bahwa file terlalu besar untuk dipratinjau, pilih **Download raw file**. Buka HTML yang sudah diunduh di Chrome, Edge atau Firefox terbaru, lalu masukkan kunci yang dikirim melalui chat. Jangan membukanya melalui pratinjau GitHub.
+Ekstrak ZIP, buka `Belajar_AES_MLP_Lengkap.html`, lalu gunakan kunci yang sama seperti sebelumnya. Isi pribadi terenkripsi; kunci tidak ada di GitHub. Buku memuat kode acuan, enam eksperimen, prediksi individual dan Excel asli. Setelah dibuka, buku berjalan offline.
 
-Setelah dibuka, buku memuat kode lengkap, 34 output notebook MLP, 41 tabel Excel MLP dan pembanding double frozen. ZIP/notebook tidak perlu dipilih ulang. Fungsi unduhan Excel asli dan penyimpanan HTML lengkap tetap tersedia dalam buku.
+Paket sudah melewati batas 100 MiB per file GitHub, sehingga bagian `.part1`/`.part2` disimpan terpisah. Jangan membuka bagian itu sebagai notebook atau model. Pengunduh menggabungkannya otomatis, tanpa terminal atau instalasi. Bila unduhan terputus, klik coba lagi; bagian yang sudah diperiksa tetap tersedia selama halaman belum ditutup.
 
-Versi terbaru memperbaiki perpindahan scroll tabel → panel → halaman serta swipe HP. Mode kode layar penuh tetap memakai satu scroll. Kunci pembuka sama dengan versi sebelumnya; unduh ulang file terbaru untuk memperoleh perbaikan.
-
-Isi lengkap dienkripsi karena memuat jawaban serta nilai individual siswa. Kunci tidak disimpan di GitHub. Pembukaan memakai AES-256-GCM, PBKDF2-SHA256 dan dekompresi lokal; tidak memerlukan jaringan. Checksum memastikan HTML setelah dibuka sama persis dengan buku pribadi yang sudah diverifikasi. Buku publik tanpa kunci tetap tersedia di [docs/belajar_MLP_Spider.html](../docs/belajar_MLP_Spider.html).
+[Versi agregat satu HTML tanpa kunci](../docs/belajar_MLP_Spider.html) dapat diunduh langsung untuk tabel perbandingan; jawaban dan skor individual tidak disertakan di versi publik tersebut.

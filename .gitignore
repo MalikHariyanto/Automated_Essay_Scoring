@@ -29,3 +29,6 @@ outputs/runs/
 
 # Hanya paket HTML terenkripsi yang diizinkan; ZIP hasil siswa tetap privat.
 !/downloads/Belajar_AES_MLP_Lengkap.zip
+# Dua bagian arsip HTML terenkripsi; diverifikasi sebelum publikasi.
+!/downloads/Belajar_AES_MLP_Lengkap.part1
+!/downloads/Belajar_AES_MLP_Lengkap.part2

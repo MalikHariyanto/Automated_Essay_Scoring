@@ -24,7 +24,7 @@ TEMPLATE = '''<!doctype html>
 (()=>{'use strict';
 const form=document.getElementById('unlock'),password=document.getElementById('password'),button=document.getElementById('open'),status=document.getElementById('status');
 const salt='__SALT__',iv='__IV__',expected='__SHA__';
-function decode(value){const binary=atob(value),result=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)result[i]=binary.charCodeAt(i);return result}
+function decode(value){const size=value.length*3/4-(value.endsWith('==')?2:value.endsWith('=')?1:0),result=new Uint8Array(size);let offset=0;for(let start=0;start<value.length;start+=1048576){const chunk=atob(value.slice(start,start+1048576));for(let i=0;i<chunk.length;i++)result[offset++]=chunk.charCodeAt(i)}return result}
 document.getElementById('show').addEventListener('click',event=>{const show=password.type==='password';password.type=show?'text':'password';event.currentTarget.textContent=show?'Sembunyikan kunci':'Tampilkan kunci';event.currentTarget.setAttribute('aria-pressed',String(show))});
 form.addEventListener('submit',async event=>{
  event.preventDefault();if(!password.value)return;
@@ -33,7 +33,7 @@ form.addEventListener('submit',async event=>{
   if(!crypto.subtle||!window.DecompressionStream)throw Error('Gunakan Chrome, Edge atau Firefox versi terbaru, lalu buka file yang sudah diunduh.');
   const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password.value),'PBKDF2',false,['deriveKey']);
   const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:decode(salt),iterations:600000,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,['decrypt']);
-  let compressed;try{compressed=await crypto.subtle.decrypt({name:'AES-GCM',iv:decode(iv)},key,decode(document.getElementById('encryptedBook').textContent.trim()))}catch{throw Error('Kunci tidak cocok atau file unduhan tidak lengkap. Salin kunci dari chat, lalu coba lagi.')}
+  const payload=document.getElementById('encryptedBook');let encrypted=decode(payload.textContent.trim());let compressed;try{compressed=await crypto.subtle.decrypt({name:'AES-GCM',iv:decode(iv)},key,encrypted);encrypted=null;payload.remove()}catch{throw Error('Kunci tidak cocok atau file unduhan tidak lengkap. Salin kunci dari chat, lalu coba lagi.')}
   const bytes=await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
   const actual=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('');
   if(actual!==expected)throw Error('Isi buku tidak cocok dengan checksum. Unduh file kembali.');
@@ -52,6 +52,7 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--key-file',type=Path,required=True)
     parser.add_argument('--archive',type=Path,help='ZIP satu HTML terenkripsi untuk unduhan besar.')
+    parser.add_argument('--parts-dir',type=Path,help='Pecah arsip besar menjadi bagian aman untuk batas GitHub; buat HTML pengunduh.')
     args=parser.parse_args()
     if args.key_file.exists():
         password=json.loads(args.key_file.read_text())['password']
@@ -73,8 +74,21 @@ def main():
             archive.writestr('Belajar_AES_MLP_Lengkap.html',document.encode('utf-8'))
         with zipfile.ZipFile(args.archive) as archive:
             assert archive.read('Belajar_AES_MLP_Lengkap.html')==document.encode('utf-8')
-        if args.archive.stat().st_size>=100*1024**2:
+        if not args.parts_dir and args.archive.stat().st_size>=100*1024**2:
             raise ValueError('Arsip melebihi batas file GitHub 100 MiB; jangan dipublikasikan.')
+    if args.parts_dir:
+        if not args.archive:raise ValueError('--parts-dir memerlukan --archive.')
+        args.parts_dir.mkdir(parents=True,exist_ok=True)
+        raw=args.archive.read_bytes();parts=[]
+        for i,start in enumerate(range(0,len(raw),80*1024**2),1):
+            chunk=raw[start:start+80*1024**2];name=f'Belajar_AES_MLP_Lengkap.part{i}'
+            (args.parts_dir/name).write_bytes(chunk)
+            parts.append({'name':name,'size':len(chunk),'sha256':hashlib.sha256(chunk).hexdigest()})
+        manifest={'base':'https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/codex/aes-learning/downloads/','size':len(raw),'sha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
+        template=(Path(__file__).parent/'templates/mlp_download.html').read_text()
+        (args.parts_dir/'Belajar_AES_MLP_Lengkap.html').write_text(template.replace('__MANIFEST__',json.dumps(manifest)))
+        assert b''.join((args.parts_dir/p['name']).read_bytes() for p in parts)==raw
+        print(json.dumps({'split_archive_verified':True,'parts':parts,'archive_sha256':manifest['sha256']}))
     args.key_file.parent.mkdir(parents=True,exist_ok=True)
     args.key_file.write_text(json.dumps({'password':password,'plaintext_sha256':hashlib.sha256(original).hexdigest(),
         'download_sha256':hashlib.sha256(args.output.read_bytes()).hexdigest()},indent=2)+'\n')

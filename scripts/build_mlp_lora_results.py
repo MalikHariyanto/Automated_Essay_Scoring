@@ -35,7 +35,8 @@ def extract(path, mlp_path, method="lora"):
         if set(a)!=set(b) or any(a[k]['Nilai Guru']!=b[k]['Nilai Guru'] for k in a):
             raise ValueError('ID/nilai guru test berbeda.')
         models=table(blobs[BOOKS[4]],'Model yang Dibandingkan')
-        if ('LoRA' if method=='lora' else 'context pair') not in next(r for r in models if r['Skenario']=='S3')['Encoder']:
+        if method not in ('lora','context','lr5e6'):raise ValueError('Metode tidak dikenal.')
+        if method in ('lora','context') and ('LoRA' if method=='lora' else 'context pair') not in next(r for r in models if r['Skenario']=='S3')['Encoder']:
             raise ValueError('Metode S3 tidak cocok: '+method)
         history={s:table(blobs[BOOKS[4]],name) for s,name in [('S1','RoBERTa (S1)'),('S2','BGE-M3 (S2)'),('S3','Fusion (S3)')]}
         selected=table(blobs[BOOKS[4]],'Ringkasan Lima Fold')
@@ -73,7 +74,7 @@ def extract(path, mlp_path, method="lora"):
                 'S1/S2 memiliki prediksi test praktis sama dengan MLP acuan (selisih maksimum di bawah 0,000004 poin). Notebook eksekusi E5 tidak disertakan; asal proses training tidak disimpulkan hanya dari kesamaan hasil.',
                 'Data uji sudah dilihat dalam pengembangan; pemilihan metode melalui CV, konfirmasi independen memerlukan data baru.']}
 
-        if method=='context':
+        if method in ('context','lr5e6'):
             reported=table(blobs[BOOKS[3]],'Perbandingan Model')
             validate_predictions(reported,pairs)
             reported_folds=table(blobs[BOOKS[3]],'Hasil Tiap Fold')
@@ -87,6 +88,17 @@ def extract(path, mlp_path, method="lora"):
                 folds_origin='Sheet Hasil Tiap Fold, dicocokkan dengan metrik epoch terpilih pada riwayat training.',
                 source_reference='Workbook menyatakan RoBERTa context pair + MLP, batas konteks 192 dan soal 64 token. Notebook eksekusi tidak diunggah bersama ZIP; source byte demi byte tidak diklaim.')
             result['limits'][1]='S1/S2 memakai masukan jawaban saja; konteks pair mengubah cabang RoBERTa S3. Kesamaan kontrol diperiksa dari prediksi, tidak dipakai untuk menyimpulkan ulang proses training.'
+        if method=='lr5e6':
+            encoder=next(r for r in models if r['Skenario']=='S3')['Encoder']
+            if encoder!='RoBERTa ikut dilatih; BGE-M3 tetap':raise ValueError('E6 bukan full fine-tuning RoBERTa + BGE frozen.')
+            parameters={r['Pengaturan']:r['Nilai'] for r in result['parameters']}
+            for key,value in [('Learning rate encoder RoBERTa S1',1e-5),('Learning rate encoder RoBERTa S3',5e-6),('Learning rate proyeksi BGE',1e-4),('Learning rate head',1e-4)]:
+                if parameters.get(key)!=value:raise ValueError('LR E6 berbeda: '+key)
+            if any(result['control_prediction_delta'][s]>1e-5 for s in ('S1','S2')):raise ValueError('Prediksi kontrol berubah.')
+            result.update(id='E6',label='MLP · LR S3 5e-6',scope='SAVED E6 LR WORKBOOKS; NO NEW TRAINING',
+                source_reference='Workbook menyatakan S3 full fine-tuning dengan LR encoder 5e-6, head/proyeksi 1e-4; bukan LoRA atau konteks pair. Asal Model mencatat reuse S1/S2. Notebook eksekusi tidak disertakan bersama ZIP.',
+                reused_controls=table(blobs[BOOKS[4]],'Asal Model'))
+            result['limits'][1]='S1/S2 adalah kontrol yang dipakai ulang, bukan training independen baru. LR S3 dan lingkungan komputasi berbeda dari acuan; perbedaan hasil belum mengisolasi efek LR saja.'
         return result
 
 

@@ -1,16 +1,16 @@
 # Buku belajar hasil MLP
 
-**Unduhan lengkap terbaru:** [Belajar_AES_MLP_Lengkap.zip](../downloads/Belajar_AES_MLP_Lengkap.zip). Ekstrak, buka satu HTML di dalamnya, lalu gunakan kunci pembuka sebelumnya. Buku dapat dipakai offline; teks/nilai individual tetap terenkripsi di repo publik.
+**Unduhan lengkap terbaru:** [Pengunduh buku lengkap](../downloads/Belajar_AES_MLP_Lengkap.html). Pilih **Download raw file**, buka HTML kecil itu, lalu klik **Unduh buku lengkap**. Ekstrak ZIP hasil unduhan dan gunakan kunci sebelumnya. Seluruh sumber tetap tersedia; unduhan dipecah otomatis karena batas ukuran GitHub.
 
 ## Papan perbandingan semua eksperimen
 
-Ruang **Semua eksperimen** kini menjadi tampilan awal: **Ringkasan hasil**, **Fold & kestabilan**, **Guru & prediksi**, dan **Excel eksperimen**. Lima hasil lengkap ditampilkan sebagai kolom: awal lima epoch, MLP acuan, double frozen, **E4 konteks pair**, dan E5 LoRA. E1/E6 yang belum memiliki hasil final lengkap tidak diberi peringkat.
+Enam hasil lengkap menjadi kolom: awal lima epoch, MLP acuan, double frozen, E4 konteks pair, E5 LoRA dan **E6 MLP dengan LR RoBERTa S3 5e-6**. E1 hanya memiliki source sehingga tidak diberi peringkat. Ruang Semua eksperimen tetap memiliki Ringkasan hasil, Fold & kestabilan, Guru & prediksi, serta Excel eksperimen.
 
-Tiga kartu membedakan **S1 terbaik di test (6,3805)**, **S3 MLP acuan terbaik pada rata-rata CV (6,0516)**, dan **S3 LoRA terbaik khusus fusion di test (6,5305)**. Pilih RMSE/Pearson/QWK/AC2 untuk membandingkan metrik yang sama. Nilai setara mendapat label bersama.
+**E6 S3 kini memiliki RMSE test numerik terkecil 6,3744 dan mean CV S3 terkecil 5,9915.** Selisih test terhadap S1 acuan 6,3805 hanya sekitar 0,0061 poin; S1 tetap lebih tinggi pada Pearson/QWK/AC2. S1/S2 E6 dipakai ulang dari acuan, bukan pelatihan independen. E6 bukan LoRA atau konteks pair. [Audit E6 dan batas kesimpulan](review_e6_lr_dashboard.md).
 
-Pada tabel fold, hijau berarti terbaik pada fold yang sama; bintang berarti fold terendah eksperimen itu. Mean/SD dan satu fold tidak dicampur. Pada tabel individual, pilih satu dari 60 jawaban untuk melihat teks, nilai guru dan seluruh 15 prediksi; sel paling dekat diberi label dan error absolut. Hitungan skenario terdekat per jawaban dipisahkan dari RMSE keseluruhan.
+Ringkasan E6 vs acuan memuat empat metrik test, mean CV, perubahan LR dan prediksi yang lebih dekat ke guru (38 jawaban E6, 22 acuan). Pilih metrik untuk membandingkan ukuran yang sama. Di tab fold, hijau berarti terbaik pada fold yang sama; bintang berarti fold terendah di eksperimen sendiri. Mean dan SD tetap terpisah. Di tab Guru & prediksi, 60 jawaban dapat dibaca bersama seluruh 18 kandidat prediksi; hanya tersedia dalam buku pribadi.
 
-Konteks pair kini lengkap: **47 sheet**, RMSE test S3 **6,7315** dan mean CV **6,0986**. Evaluasi awal serta lima Excel masing-masing MLP/frozen/konteks/LoRA dapat dibuka sesuai sumber. [Audit hasil dan pengujian UI](review_context_pair_dashboard.md) · [Preview ringkasan](previews/mlp_study/20_semua_eksperimen_fullscreen.png) · [Preview fold](previews/mlp_study/21_fold_terbaik.png).
+Excel awal, lima workbook tiap eksperimen lain, seluruh 42 sheet E6 dan 47 sheet konteks pair tersedia menurut sumbernya. [Preview ringkasan](previews/mlp_study/20_semua_eksperimen_fullscreen.png) · [Preview fold](previews/mlp_study/21_fold_terbaik.png).
 
 Unduh [belajar_MLP_Spider.html](belajar_MLP_Spider.html) dengan **Download raw file**, lalu buka di Chrome, Edge, atau Firefox. Halaman berjalan offline tanpa instalasi, CDN, atau training. Tampilan memakai tema Spider-Man full colour dari buku paper: splash warna, kota komik, pose di tepi halaman dan sticky note yang menimpa border.
 
