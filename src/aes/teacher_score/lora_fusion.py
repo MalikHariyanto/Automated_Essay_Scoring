@@ -2,6 +2,10 @@
 import math
 
 import torch
+
+from .lora_text_runtime import configure_text_only_transformers
+
+configure_text_only_transformers()
 from peft import LoraConfig, get_peft_model
 
 

@@ -37,3 +37,31 @@ Exit **0**; **14 passed, 0 failed, 0 skipped, 0 xfailed**, satu warning, 67,07 d
 - Notebook yang sama dijalankan lagi pada workspace runtime baru dengan penyimpanan permanen sama: hasil dipakai kembali, tidak ada epoch baru, dan seluruh hash final.pt sama. Tidak ada auto-delete maupun Drive API cleanup.
 
 Notebook terisi, bobot fixture, Excel dan log tetap di `outputs/` yang diabaikan Git. Commit publik hanya source, notebook kosong dan dokumentasi. Hasil penelitian baru perlu dinilai setelah eksperimen pretrained di GPU Colab dijalankan dengan dataset pengguna.
+
+## Perbaikan import torchvision dan preservasi torch runtime
+
+Revisi setelah `e62668093b70be1bfb044e71941813f8fa2b6363` menangani error pengguna `operator torchvision::nms does not exist` pada import PEFT → BloomPreTrainedModel → Transformers → torchvision. Penyebab langsung adalah operator gambar yang tidak tersedia; log pengguna tidak cukup untuk menyimpulkan nomor versi PyTorch/torchvision mana yang berbeda. Audit setup menemukan `--ignore-installed` dengan resolusi dependensi otomatis dapat menarik ulang torch dari dependensi PEFT. Preservasi torch tidak cukup dijamin hanya dengan tidak mencantumkannya sebagai paket utama.
+
+Perbaikan membatasi Transformers ke PyTorch teks, menonaktifkan flag ketersediaan torchvision sebelum import PEFT pada probe **dan worker**, serta menggunakan overlay baru. Flag internal yang dipakai ada pada versi Transformers terkunci 4.44.2/4.48.3; ketidakcocokan versi ditolak. Tidak membuat fake operator NMS dan tidak menghapus paket runtime. Instalasi `--no-deps` dibarengi pemeriksaan dependensi rekursif dan pemasangan paket yang belum cocok dalam maksimum delapan putaran. Permintaan mengganti torch ditolak dan versinya diperiksa ulang setelah pemasangan. Import gagal menampilkan tail traceback langsung.
+
+Perbandingan source notebook terhadap `e626680` setelah menormalkan fingerprint hanya menemukan perubahan pada **cell 5 (setup)** dan **cell 9 (impor worker)**, nomor zero-based. Seluruh konfigurasi LoRA, split, model, optimizer/training, evaluasi dan ekspor identik. Acuan MLP tetap byte-identik. Fingerprint baru `86bcfd7dff74cf2a47517244cadbc12b2c8e6b61e2345da27781f9bd2368b9f5`; SHA-256 notebook `f746fb6792d97b9cba2013d11d0da51a250b0503bbd06ad42dd5521fe22fd3ac`.
+
+Perintah pengujian terbaru, cwd yang sama:
+
+```bash
+HF_HOME=/workspace/Automated_Essay_Scoring/outputs/lora_hf_cache \
+PYTHONPATH=src OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+outputs/dataset300_env_py313/bin/python -m pytest \
+  tests/test_lora_setup.py tests/test_lora_notebook.py -q --disable-warnings \
+  --basetemp=outputs/lora_setup_fix \
+  --junitxml=outputs/lora_setup_fix_tests.xml
+```
+
+Exit **0**; **20 passed, 0 failed, 0 skipped, 0 xfailed**, satu warning, 76,30 detik. Log `outputs/lora_setup_fix_tests.log`. Enam pemeriksaan baru mencakup:
+
+- Reproduksi operator NMS hilang melalui paket torchvision fixture yang menjalankan registrasi fake pada dispatcher PyTorch nyata. Import PEFT sebelum perbaikan gagal dengan pesan yang sama; probe baru lolos, lalu forward/backward LoRA pada Transformer kecil acak berhasil tanpa mengimpor torchvision.
+- Instalasi dependensi beberapa putaran tidak memasang torch, dengan pemeriksaan argumen pip dan simulasi informasi CUDA runtime. Runtime tanpa torch atau permintaan perubahan torch ditolak, tanpa fallback CPU.
+- Pemasangan wheel lokal nyata dalam overlay baru secara offline, dengan dependensi `torch>=2.6.0`, menggunakan torch yang diwariskan. Tidak terbentuk `torch/` atau `torch-*.dist-info` di overlay; probe yang melihat torchvision fixture rusak tetap lolos melalui kebijakan teks.
+- Penyebab import asli muncul di SetupError, dan metadata ready tidak diterbitkan ketika pemeriksaan gagal.
+
+Seluruh 14 pemeriksaan sebelumnya, termasuk eksekusi 30 code cell hingga lima Excel dan reuse dari runtime baru, diulang dan lulus pada revisi ini. Tetap tidak ada GPU fisik atau training model pretrained penelitian di lingkungan pengujian; fixture ini membuktikan perbaikan jalur import/instalasi dan fungsi program, bukan RMSE penelitian.

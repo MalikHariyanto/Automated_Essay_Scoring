@@ -32,6 +32,8 @@ def build():
     old_hash = notebook['metadata']['aes_standalone']['code_sha256']
     helpers = definitions((ROOT/'src/aes/teacher_score/lora_fusion.py').read_text())
     manual = definitions((ROOT/'src/aes/teacher_score/manual_checkpoints.py').read_text())
+    text_backend = definitions((ROOT/'src/aes/teacher_score/lora_text_runtime.py').read_text())['configure_text_only_transformers']
+    bootstrap = text_backend+'\n\nconfigure_text_only_transformers()\n'
     for cell in notebook['cells']:
         text = source(cell)
         text = text.replace('AES_300_MLP_Privat', 'AES_300_S3_LoRA_MLP_Privat')
@@ -44,10 +46,51 @@ def build():
                 # PEFT memasang adapter resmi; versi dikunci dan diperiksa oleh setup acuan.
                 text = replace_once(text, 'openpyxl==3.1.5', 'openpyxl==3.1.5\npeft==0.14.0\naccelerate==1.3.0')
             if 'IMPORTS = ' in text:
+                # Setiap probe dan worker baru menerapkan kebijakan sebelum PEFT
+                # memuat model Transformers melalui import tidak langsung.
+                text = replace_once(text, "IMPORTS = r'''\n", "IMPORTS = r'''\n"+bootstrap)
                 text = replace_once(text, 'from transformers import AutoModel, AutoTokenizer\navailable=',
                                     'from transformers import AutoModel, AutoTokenizer\nfrom peft import LoraConfig, get_peft_model\navailable=')
+                text = text.replace("'imports_verified':True", "'imports_verified':True,'transformers_backend':'pytorch_text_only'")
+                # Pakai overlay baru agar torch yang terlanjur terpasang pada
+                # versi sebelumnya tidak menutupi torch bawaan Colab.
+                text = replace_once(text, "'dataset300_env' if version==(3,12) else 'dataset300_env_py313'", "'dataset300_env_text_lora' if version==(3,12) else 'dataset300_env_py313_text_lora'")
+                text = replace_once(text, 'queue=[Requirement(raw) for raw in roots];seen=set();issues=[]',
+                                    'queue=[Requirement(raw) for raw in roots];seen=set();issues=[];install_requirements=[]')
+                text = replace_once(text, "issues.append(str(req)+' belum tersedia');continue", "issues.append(str(req)+' belum tersedia');install_requirements.append(str(req));continue")
+                text = replace_once(text, "issues.append(str(req)+' diperlukan; tersedia '+dist.version)", "issues.append(str(req)+' diperlukan; tersedia '+dist.version);install_requirements.append(str(req))")
+                text = replace_once(text, "'dependency_issues':sorted(set(issues)),", "'dependency_issues':sorted(set(issues)),'install_requirements':sorted(set(install_requirements)),")
+                text = replace_once(text, "raise SetupError(stage+' gagal. Rincian lengkap: '+str(logfile))", """details='\\n'.join((process.stderr or process.stdout or 'Proses gagal tanpa rincian.').splitlines()[-18:])
+                raise SetupError(stage+' gagal.\\n'+details+'\\nRincian lengkap: '+str(logfile))""")
+                start=text.index('        installed=False\n')
+                end=text.index("        if after['dependency_issues']:",start)
+                text=text[:start]+'''        if not before['torch_present']:
+            raise SetupError('PyTorch bawaan runtime belum tersedia. Pilih runtime Colab GPU yang baru; setup ini tidak memasang wheel CPU.')
+        installed=False
+        after=before
+        if after['dependency_issues']:
+            if args.verify_python:
+                raise SetupError('Worker yang dipilih belum memenuhi kebutuhan AES. Rincian: '+str(logfile))
+            print('2/3 · Menyiapkan pustaka AES tanpa mengganti PyTorch runtime...',flush=True)
+            # --no-deps mencegah PEFT menarik ulang torch. Dependensi lain
+            # diperiksa ulang dari metadata dan dipasang hanya jika diperlukan.
+            pip=[sys.executable,'-m','pip','--python',python,'install','--ignore-installed','--no-deps','--no-input']
+            for attempt in range(8):
+                if not after['dependency_issues']:
+                    break
+                pending=after['install_requirements']
+                if not pending or any(Requirement(raw).name.lower().replace('_','-')=='torch' for raw in pending):
+                    raise SetupError('Dependensi meminta perubahan PyTorch. Gunakan runtime GPU yang kompatibel; torch bawaan tidak ditimpa.')
+                execute(pip+pending,'Pemasangan pustaka AES privat, putaran '+str(attempt+1))
+                installed=True
+                after=inspect(python)
+                if after['versions'].get('torch')!=torch_version:
+                    raise SetupError('Versi PyTorch berubah selama setup; training tidak dimulai.')
+        else:
+            print('2/3 · Versi pustaka sudah cocok; tidak perlu instalasi ulang.',flush=True)
+''' + text[end:]
             if 'from torch import nn' in text:
-                text = replace_once(text, 'from torch import nn', 'from torch import nn\nfrom peft import LoraConfig, get_peft_model')
+                text = replace_once(text, 'from torch import nn', 'from torch import nn\n'+bootstrap+'\nfrom peft import LoraConfig, get_peft_model')
             if 'DEFAULTS = {' in text:
                 text = replace_once(text, "    'vector_source': 'pretrained', 'trace_position': 0,", """    # Nilai awal eksperimen, bukan nilai optimal yang sudah dibuktikan.
     'lora_rank': 8, 'lora_alpha': 16, 'lora_dropout': 0.,
