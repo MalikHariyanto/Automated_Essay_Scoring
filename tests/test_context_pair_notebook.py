@@ -23,8 +23,9 @@ from aes.teacher_score.context_pair import (context_token_ids, contexts_from_bun
 from test_teacher_score import TechnicalTokenizer, make_book, encoders
 
 ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK = ROOT/'notebooks/experiments/AES_300_S3_ContextPair_MLP.ipynb'
-BASE = ROOT/'notebooks/experiments/AES_300_S3_MLP.ipynb'
+NOTEBOOK = ROOT/'notebooks/experiments'/os.environ.get('AES_CONTEXT_NOTEBOOK','AES_300_S3_ContextPair_MLP.ipynb')
+IS_E8 = NOTEBOOK.name == 'AES_300_E8_ContextPair_LR5e6_GPU.ipynb'
+BASE = ROOT/'notebooks/experiments'/('AES_300_S3_ContextPair_MLP.ipynb' if IS_E8 else 'AES_300_S3_MLP.ipynb')
 
 
 class PairTechnicalTokenizer(TechnicalTokenizer):
@@ -70,7 +71,7 @@ def test_clean_isolated_standalone_notebook_and_originals_unchanged():
     n = nbformat.read(NOTEBOOK, as_version=4)
     assert len(n.cells)==47 and sum(c.cell_type=='code' for c in n.cells)==30
     assert n.metadata.aes_experiment.base_sha256==hashlib.sha256(BASE.read_bytes()).hexdigest()
-    assert n.metadata.aes_experiment.name=='S3_CONTEXT_PAIR_MLP'
+    assert n.metadata.aes_experiment.name==('E8_CONTEXT_PAIR_LR5E6_GPU' if IS_E8 else 'S3_CONTEXT_PAIR_MLP')
     assert n.metadata.accelerator=='GPU'
     assert not n.metadata.aes_experiment.automatic_checkpoint_deletion
     assert (ROOT/'aes-learning/notebooks/experiments'/NOTEBOOK.name).read_bytes()==NOTEBOOK.read_bytes()
@@ -89,7 +90,8 @@ def test_clean_isolated_standalone_notebook_and_originals_unchanged():
 def test_builder_is_deterministic_across_python_versions():
     before=NOTEBOOK.read_bytes()
     for executable in ('python',sys.executable):
-        subprocess.run([executable,str(ROOT/'scripts/build_context_pair_notebook.py')],cwd=ROOT,check=True,capture_output=True)
+        script='build_e8_context_lr_notebook.py' if IS_E8 else 'build_context_pair_notebook.py'
+        subprocess.run([executable,str(ROOT/'scripts'/script)],cwd=ROOT,check=True,capture_output=True)
         assert NOTEBOOK.read_bytes()==before
 
 
@@ -260,7 +262,7 @@ def test_interrupted_fine_tuning_resumes_exactly_and_keeps_old_checkpoints(pair_
     assert expected==actual
     for key,value in state.items():torch.testing.assert_close(value,resumed.state_dict()[key],atol=0,rtol=0)
     np.testing.assert_array_equal(prediction,engine.predict([12,13]))
-    assert len(list(tmp_path.glob('progress_fold_1_epoch_*.pt')))==3
+    assert len(list(tmp_path.glob('progress_fold_1_slot_*.pt' if IS_E8 else 'progress_fold_1_epoch_*.pt')))==(2 if IS_E8 else 3)
     assert len(json.loads(checkpoint.read_text())['snapshots'])==2
 
 
@@ -361,7 +363,7 @@ def tokenizer(*args,**kwargs):return PairTechnicalTokenizer()
         payload=torch.load(run/scenario/'final.pt',map_location='cpu',weights_only=True)
         assert payload['training']['BGE_encoder_trained'] is False
         assert (run/scenario/'progress_refit.json').is_file()
-        assert len(list((run/scenario).glob('progress_fold_*_epoch_001.pt')))==5
+        assert len(list((run/scenario).glob('progress_fold_*_slot_A.pt' if IS_E8 else 'progress_fold_*_epoch_001.pt')))==5
     assert not list(workspace.rglob('*.py')) and not (workspace/'src').exists()
     proof={'scope':'TECHNICAL RANDOM TRANSFORMER FIXTURE ONLY; NO STUDENT RESULTS',
         'production_code_cells_executed':30,'cv_folds':15,'reports':5,'resume_fresh_runtime':True,
