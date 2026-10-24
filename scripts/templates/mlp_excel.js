@@ -41,8 +41,7 @@ function renderExcel(){
   }
   const availability=$('excelAvailability');availability.replaceChildren();availability.hidden=Boolean(resultZip);
   if(!resultZip){
-    availability.append(node('p','Ringkasan dan tabel agregat sudah terisi. Untuk token, jawaban dan seluruh vektor, buka ZIP MLP. HTML pribadi memuatnya langsung.'));
-    const load=node('button','Buka ZIP hasil MLP','mini-button');load.addEventListener('click',()=>$('resultsFile').click());availability.append(load);
+    availability.append(node('p','Salinan agregat memuat tabel hasil dan riwayat E6. Buku lengkap sudah menyertakan seluruh Excel; tidak perlu unggah ZIP.'));
   }
   const bs=$('bookSelect');bs.replaceChildren();
   S.books.forEach((book,i)=>{const label=EXCEL_ROUTES.find(r=>r.book===i).title,o=node('option',String(i+1).padStart(2,'0')+' · '+label);o.value=i;bs.append(o)});bs.value=state.book;
@@ -62,7 +61,7 @@ async function loadActiveSheet(){
   try{
     const sheet=resultZip?await readSheet(state.book,state.sheet):publicSheet(state.book,state.sheet);
     if(ticket!==tableTicket)return;
-    if(!sheet)throw Error('Tabel ini memerlukan ZIP hasil MLP. Gunakan tombol Buka ZIP hasil MLP.');
+    if(!sheet)throw Error('Tabel ini memerlukan buku lengkap yang sudah memuat hasil E6.');
     activeSheet=sheet;state.page=state.col=0;$('componentStart').value=1;$('rowSearch').value='';renderTable();
     $('tableViewport').scrollTop=$('tableViewport').scrollLeft=0;
   }catch(e){if(ticket===tableTicket){$('sheetStatus').textContent=e.message;error(e)}}
@@ -112,7 +111,7 @@ async function renderOutputEvidence(root,chapter){
   }
   box.append(actions);root.append(box);
   const name=chapter.sheets.find(name=>sheetAvailable(book,name));
-  if(!name){box.append(node('p','Buka ZIP hasil MLP untuk membaca tabel token, jawaban dan vektor. Pada HTML pribadi semuanya sudah dimuat.'));return}
+  if(!name){box.append(node('p','Buka ZIP hasil E6 untuk membaca tabel token, jawaban dan vektor. Pada HTML pribadi semuanya sudah dimuat.'));return}
   try{
     const sheet=resultZip?await readSheet(book,name):publicSheet(book,name);
     if(ticket!==outputEvidenceTicket||!box.isConnected||!sheet)return;

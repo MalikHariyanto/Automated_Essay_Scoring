@@ -28,7 +28,7 @@ class MLPBookIntegrity(unittest.TestCase):
         cls.data=builder.content(cls.snapshot)
 
     def test_every_code_cell_matches_pinned_source(self):
-        notebook=json.loads(subprocess.check_output(['git','show',builder.COMMIT+':'+builder.NOTEBOOK_PATH],cwd=ROOT))
+        notebook=json.loads(subprocess.check_output(['git','show',builder.STUDY_COMMIT+':'+builder.STUDY_PATH],cwd=ROOT))
         originals={i:builder.source(c) for i,c in enumerate(notebook['cells']) if c['cell_type']=='code'}
         self.assertEqual({c['index']:c['source'] for c in self.data['cells']},originals)
         self.assertEqual(len(originals),30)
@@ -50,8 +50,8 @@ class MLPBookIntegrity(unittest.TestCase):
             note=next(n for n in cell['notes'] if n['title']==title)
             self.assertIn(anchor,cell['source'].split('\n')[note['line']-1])
             found+=1
-        self.assertEqual(found,52)
-        self.assertEqual(self.data['coverage']['annotations'],120)
+        self.assertEqual(found,55)
+        self.assertEqual(self.data['coverage']['annotations'],126)
 
     def test_output_whitelist_and_full_workbook_inventory(self):
         self.assertEqual(set(self.snapshot['native']),{'12','18','32','39'})

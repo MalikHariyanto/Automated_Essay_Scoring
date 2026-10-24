@@ -1,0 +1,12 @@
+/* Satu navigasi berdasarkan tujuan; isi eksperimen tetap berada di dalam tabel. */
+.workspace-switch{gap:18px}.workspace-switch>div:first-child{flex:0 1 240px}.workspace-buttons{gap:8px;flex-wrap:wrap}
+.hero-actions{gap:20px}.hero-actions .btn{min-height:64px}.source-caption{max-width:760px}
+.method-source-card{background:#fff;border:1px solid #afc5dc;border-left:5px solid #ed1836;border-radius:8px;padding:24px;margin:18px 0;color:#142344}
+.method-source-card>small{font-weight:800;color:#a51a43;letter-spacing:1.4px}.method-source-card h3{margin:8px 0 14px}.method-paper{border-top:1px solid #d5e3ef;margin-top:18px;padding-top:12px}.method-paper h4{margin:6px 0 10px;line-height:1.5}
+.method-source-card>summary{font-weight:800;cursor:pointer;line-height:1.5}.method-source-card[open]>summary{margin-bottom:22px;border-bottom:1px solid #d5e3ef;padding-bottom:14px}
+.source-links{display:flex;gap:10px;flex-wrap:wrap}.source-link{display:inline-block;color:#064c84;background:#eaf7ff;border:1px solid #b8d9ee;border-radius:5px;padding:8px 12px;font-size:14px;font-weight:750;overflow-wrap:anywhere}.source-link:hover{background:#c5f6fc}.source-link:focus-visible{outline:3px solid #e02171;outline-offset:3px}
+.source-status,.source-limit{font-size:13px;color:#526580}.source-adaptation{background:#fff5c5;padding:12px;border-radius:5px}.method-paper details{font-size:13px;line-height:1.7}
+.pair-reference{background:#fff3a8;border:2px solid #142344;padding:12px;border-radius:7px;line-height:1.6}.pair-reference strong{display:block}.pair-code-label{font-size:13px;color:#526580}
+.paired-all-table{min-width:720px}.paired-all-table td:last-child{font-weight:800;background:#fff6bf}
+.comparison-chart svg{width:100%;height:auto}.comparison-chart .curve-legend{display:flex;gap:20px;flex-wrap:wrap}.comparison-chart .curve-legend .old{color:#c11c53}.comparison-chart .curve-legend .new{color:#00778c}
+@media(max-width:700px){.workspace-switch>div:first-child{flex:auto}.workspace-buttons{display:grid;grid-template-columns:1fr 1fr;width:100%}.workspace-buttons button{font-size:12px;padding:12px 8px}.hero-actions{display:grid}.hero-actions .btn{width:100%}.method-source-card{padding:16px}.source-link{font-size:12px}}

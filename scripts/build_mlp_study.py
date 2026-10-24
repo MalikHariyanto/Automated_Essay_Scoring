@@ -17,7 +17,10 @@ import tokenize
 import zipfile
 import xml.etree.ElementTree as ET
 
-from mlp_study_content import CHAPTERS, GLOSSARY, PINS, FUNCTION_HINTS
+from mlp_study_content import CHAPTERS as INITIAL_CHAPTERS, GLOSSARY as INITIAL_GLOSSARY, PINS as INITIAL_PINS, FUNCTION_HINTS
+from mlp_e6_curriculum import STUDY_COMMIT, STUDY_PATH, curriculum, FUNCTION_HINTS_E6
+CHAPTERS, GLOSSARY, PINS = curriculum(INITIAL_CHAPTERS, INITIAL_GLOSSARY, INITIAL_PINS)
+FUNCTION_HINTS = {**FUNCTION_HINTS, **FUNCTION_HINTS_E6}
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMIT = '15bc7bbb2aee91ecaf44fb91a0139a8c21f64a20'
@@ -140,7 +143,7 @@ def highlighted_lines(text):
 
 
 def content(snapshot):
-    notebook=json.loads(subprocess.check_output(['git','show',COMMIT+':'+NOTEBOOK_PATH],cwd=ROOT))
+    notebook=json.loads(subprocess.check_output(['git','show',STUDY_COMMIT+':'+STUDY_PATH],cwd=ROOT))
     cells=[];annotations=[];missing=[]
     for i,cell in enumerate(notebook['cells']):
         if cell['cell_type']!='code':continue
@@ -171,6 +174,9 @@ def content(snapshot):
     if missing:
         raise ValueError('Anchor belum ditemukan: '+json.dumps(missing))
     return {'chapters':CHAPTERS,'glossary':GLOSSARY,'cells':cells,'snapshot':snapshot,
+            'studySnapshot':json.loads((ROOT/'docs/mlp_e6_study_snapshot.json').read_text()),
+            'methodSources':json.loads((ROOT/'docs/mlp_method_sources.json').read_text()),
+            'studySource':{'commit':STUDY_COMMIT,'path':STUDY_PATH,'experiment':'E6','runtime_match':False,'note':'Source E6 di repo; notebook eksekusi tidak ikut ZIP. Pengaturan cocok workbook, bukan verifikasi source runtime byte demi byte.'},
             'comparison':json.loads((ROOT/'docs/mlp_comparison_snapshot.json').read_text()),
             'frozen':json.loads((ROOT/'docs/mlp_frozen_snapshot.json').read_text()),
             'lora':json.loads((ROOT/'docs/mlp_lora_snapshot.json').read_text()),
@@ -197,13 +203,14 @@ def build(args):
     if js.count('/*__EXCEL_EXPLORER__*/') != 1:
         raise ValueError('Anchor penjelajah Excel harus tersedia tepat satu kali.')
     js=js.replace('/*__EXCEL_EXPLORER__*/',(ROOT/'scripts/templates/mlp_excel.js').read_text())
-    js+='\n'+(ROOT/'scripts/templates/mlp_comparison.js').read_text()
-    js+='\n'+(ROOT/'scripts/templates/mlp_metrics.js').read_text()
-    js+='\n'+(ROOT/'scripts/templates/mlp_frozen.js').read_text()
-    js+='\n'+(ROOT/'scripts/templates/mlp_lora.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_comparison_e6.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_metrics_e6.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_result_archives.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_predictions.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_dashboard.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_sources.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_scroll_boundary.js').read_text()
     css=(ROOT/'scripts/templates/mlp_study.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_excel.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_comparison.css').read_text()
@@ -213,6 +220,7 @@ def build(args):
     css+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_dashboard.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_predictions.css').read_text()
+    css+='\n'+(ROOT/'scripts/templates/mlp_e6_refresh.css').read_text()
     vendor=(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
         css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())

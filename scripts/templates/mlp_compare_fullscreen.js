@@ -3,9 +3,7 @@
 const specs=[
  ['dashboardRoom','Semua eksperimen','dashboardBody',()=>MLPDashboard.getState().scenario,s=>MLPDashboard.setScenario(s)],
  ['comparison','Perbandingan eksperimen','comparisonBody',()=>MLPCompare.getState().scenario,s=>MLPCompare.setScenario(s)],
- ['metricsRoom','Tabel hasil & arti angka','metricsContent',()=>MLPResults.getState().scenario,s=>MLPResults.setScenario(s)],
- ['frozenRoom','MLP vs double frozen','frozenBody',()=>MLPFrozen.getState().scenario,s=>MLPFrozen.setScenario(s)],
- ['loraRoom','E5 · LoRA + MLP','loraBody',()=>MLPLora.getState().scenario,s=>MLPLora.setScenario(s)]
+ ['metricsRoom','Tabel hasil & arti angka','metricsContent',()=>MLPResults.getState().scenario,s=>MLPResults.setScenario(s)]
 ];
 const dialog=document.createElement('dialog');dialog.id='comparisonViewDialog';dialog.setAttribute('aria-label','Perbandingan layar penuh');
 const bar=document.createElement('div');bar.className='comparison-view-bar';

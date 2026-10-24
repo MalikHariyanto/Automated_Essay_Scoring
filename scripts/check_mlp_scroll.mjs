@@ -9,7 +9,7 @@ const page=await context.newPage(),errors=[],checks=[];page.on('pageerror',e=>er
 const url=process.env.AES_SCROLL_TEST_URL||'http://127.0.0.1:8765/docs/belajar_MLP_Spider.html';
 const pause=()=>page.waitForTimeout(180);
 async function prepare(chapter,tab){
-  await page.evaluate(([chapter,tab])=>{MLPStudy.openChapter(chapter);MLPStudy.setTab(tab);window.scrollTo({top:document.querySelector('#reader').offsetTop-70,behavior:'instant'})},[chapter,tab]);await pause();
+  await page.evaluate(([chapter,tab])=>{MLPCompare.setMode('book');MLPStudy.openChapter(chapter);MLPStudy.setTab(tab);window.scrollTo({top:document.querySelector('#reader').offsetTop-70,behavior:'instant'})},[chapter,tab]);await pause();
 }
 async function point(selector){
   const pt=await page.locator(selector).evaluate(e=>{
@@ -57,7 +57,7 @@ try{
   await page.keyboard.press('Escape');await pause();check('Closing fullscreen removes the body scroll lock',await page.evaluate(()=>!document.body.classList.contains('reading-code-fullscreen')));
   await page.mouse.move(5,500);before=await measure('html');await page.mouse.wheel(0,-250);await pause();after=await measure('html');check('Page wheel works immediately after closing fullscreen',after.page<before.page-50,{before,after});
   const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'}),touch=await mobile.newPage();touch.on('pageerror',e=>errors.push(e.message));await touch.goto(url);
-  await touch.evaluate(()=>{MLPStudy.openChapter(12);MLPStudy.setTab('guide');const pane=document.querySelector('#pane-guide');pane.scrollTop=pane.scrollHeight;window.scrollTo({top:pane.getBoundingClientRect().top+scrollY-100,behavior:'instant'})});
+  await touch.evaluate(()=>{MLPCompare.setMode('book');MLPStudy.openChapter(12);MLPStudy.setTab('guide');const pane=document.querySelector('#pane-guide');pane.scrollTop=pane.scrollHeight;window.scrollTo({top:pane.getBoundingClientRect().top+scrollY-100,behavior:'instant'})});
   const pt=await touch.locator('#pane-guide').evaluate(e=>{const r=e.getBoundingClientRect();return {x:r.left+r.width/2,y:Math.min(innerHeight-80,r.bottom-30)}}),mobileBefore=await touch.evaluate(()=>scrollY),cdp=await mobile.newCDPSession(touch);
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[pt]});
   for(let i=1;i<=6;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:pt.x,y:pt.y-i*35}]});await touch.waitForTimeout(20)}
