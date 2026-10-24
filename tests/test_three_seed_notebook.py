@@ -3,6 +3,7 @@ import ast
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -17,7 +18,7 @@ import test_lora_notebook as technical
 from test_teacher_score import TechnicalTokenizer,make_book
 
 ROOT=Path(__file__).resolve().parents[1]
-NOTEBOOK=ROOT/'notebooks/experiments/AES_300_E6_3Seed_GPU.ipynb'
+NOTEBOOK=ROOT/'notebooks/experiments'/os.environ.get('AES_THREE_SEED_NOTEBOOK','AES_300_E6_3Seed_GPU.ipynb')
 BASE=ROOT/'notebooks/experiments/AES_300_S3_MLP_LR5e6_CPU.ipynb'
 
 
@@ -64,7 +65,10 @@ def full_run(tmp_path_factory):
 
 def test_clean_gpu_notebook_mirror_fingerprint_and_reproducible_builder():
     n=nbformat.read(NOTEBOOK,as_version=4);nbformat.validate(n)
-    assert n.metadata.accelerator=='GPU' and n.metadata.aes_experiment.reused_controls==[]
+    cpu=n.metadata.aes_experiment.device=='cpu'
+    assert n.metadata.aes_experiment.reused_controls==[]
+    if cpu:assert 'accelerator' not in n.metadata
+    else:assert n.metadata.accelerator=='GPU'
     assert n.metadata.aes_experiment.base_sha256==hashlib.sha256(BASE.read_bytes()).hexdigest()
     assert (ROOT/'aes-learning/notebooks/experiments'/NOTEBOOK.name).read_bytes()==NOTEBOOK.read_bytes()
     codes=[]
@@ -74,9 +78,15 @@ def test_clean_gpu_notebook_mirror_fingerprint_and_reproducible_builder():
         code=cell.source.removeprefix('%%aes\n');ast.parse(code);codes.append(code.replace(n.metadata.aes_standalone.code_sha256,'__NOTEBOOK_CODE_SHA256__'))
         assert not any(word in code for word in ('googleapiclient','clear_training_progress','prepare_reused_controls','shutil.rmtree'))
     assert hashlib.sha256('\n'.join(codes).encode()).hexdigest()==n.metadata.aes_standalone.code_sha256
-    assert "device='cuda'" in n.cells[12].source and 'REQUIRE_GPU=True' in n.cells[12].source
-    assert 'CUBLAS_WORKSPACE_CONFIG' in n.cells[7].source
-    before=NOTEBOOK.read_bytes();subprocess.run([sys.executable,str(ROOT/'scripts/build_e6_three_seed_notebook.py')],check=True,capture_output=True)
+    if cpu:
+        assert "device='cpu'" in n.cells[12].source and 'REQUIRE_GPU=False' in n.cells[12].source
+        assert "'CUDA_VISIBLE_DEVICES':''" in n.cells[7].source
+        assert 'torch.set_num_threads(2)' in n.cells[12].source
+    else:
+        assert "device='cuda'" in n.cells[12].source and 'REQUIRE_GPU=True' in n.cells[12].source
+        assert 'CUBLAS_WORKSPACE_CONFIG' in n.cells[7].source
+    builder='build_e6_three_seed_cpu_notebook.py' if cpu else 'build_e6_three_seed_notebook.py'
+    before=NOTEBOOK.read_bytes();subprocess.run([sys.executable,str(ROOT/'scripts'/builder)],check=True,capture_output=True)
     assert NOTEBOOK.read_bytes()==before
 
 
@@ -200,3 +210,21 @@ def test_actual_code_fingerprint_survives_two_fresh_python_workers():
     env={**os.environ,'PYTHONPATH':str(ROOT/'tests')+os.pathsep+str(ROOT/'src'),'PYTHONHASHSEED':'0'}
     hashes=[subprocess.check_output(command,cwd=ROOT,env=env,text=True).splitlines()[-1] for _ in range(2)]
     assert len(hashes[0])==64 and hashes[0]==hashes[1]
+
+
+def test_published_configuration_selects_device_and_keeps_all_e6_rates(tmp_path,monkeypatch):
+    ns=runtime();checks=[]
+    monkeypatch.setenv('AES300_DATASET',str(tmp_path/'TECHNICAL_ONLY.xlsx'))
+    monkeypatch.setenv('AES300_RESULTS',str(tmp_path/'results'))
+    monkeypatch.delenv('AES300_AUDIT_ONLY',raising=False)
+    ns['check_gpu']=lambda require_gpu:checks.append(require_gpu) or {'name':'TECHNICAL DEVICE CHECK'}
+    ns['show']=lambda *args,**kwargs:None
+    notebook=nbformat.read(NOTEBOOK,as_version=4)
+    exec(compile(notebook.cells[12].source.removeprefix('%%aes\n'),'<published-configuration>','exec'),ns)
+    cfg=ns['cfg'];cpu=notebook.metadata.aes_experiment.device=='cpu'
+    assert cfg['device']==('cpu' if cpu else 'cuda')
+    assert checks==[not cpu]
+    assert cfg['encoder_lr']==1e-5 and cfg['s3_encoder_lr']==5e-6
+    assert cfg['projection_lr']==cfg['head_lr']==1e-4
+    assert cfg['training_seeds']==[42,123,2026] and cfg['split_seed']==2026
+    assert cfg['epochs']==25 and cfg['early_stopping_patience']==5
