@@ -197,7 +197,7 @@ def build():
     for row in guide.iter_rows(min_row=2):
         guide.row_dimensions[row[0].row].height=51
         for c in row:c.alignment=Alignment(vertical='top',wrap_text=True);c.font=Font(name='Calibri',size=11)
-    
+
     for row in guide.iter_rows(min_row=2):
         if row[0].value=='Source GitHub':row[1].hyperlink=URL;row[1].style='Hyperlink'
     for sheet,header in [(ws,5),(model,1),(guide,1)]:
