@@ -2,6 +2,7 @@
 import ast
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 import torch
@@ -11,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tests'))
 import test_context_pair_notebook as context
 
-NOTEBOOK=ROOT/'notebooks/experiments/AES_300_E8_ContextPair_LR5e6_GPU.ipynb'
+NOTEBOOK=ROOT/'notebooks/experiments'/os.environ.get('AES_CONTEXT_NOTEBOOK','AES_300_E8_ContextPair_LR5e6_GPU.ipynb')
 
 
 def runtime(monkeypatch):
@@ -56,3 +57,18 @@ def test_slot_corruption_falls_back_without_deleting_latest_good_file(monkeypatc
     metadata=json.loads(path.read_text());latest=tmp_path/metadata['snapshots'][0]['file'];latest.write_bytes(b'TECHNICAL INTERRUPTED WRITE')
     assert ns['load_training_progress'](path,contract)['epoch']==5
     assert len(list(tmp_path.glob('*.pt')))==2
+
+
+def test_published_device_configuration_and_gpu_source_preserved(monkeypatch,tmp_path):
+    cpu=NOTEBOOK.name.endswith('_CPU.ipynb')
+    ns=runtime(monkeypatch);checks=[]
+    monkeypatch.setenv('AES300_DATASET',str(tmp_path/'TECHNICAL_ONLY.xlsx'))
+    monkeypatch.setenv('AES300_RESULTS',str(tmp_path/'results'))
+    ns['check_gpu']=lambda require_gpu:checks.append(require_gpu) or {'name':'TECHNICAL DEVICE CHECK','cuda_available':not cpu,'is_t4':not cpu,'memory_gib':16}
+    n=json.loads(NOTEBOOK.read_text());exec(''.join(n['cells'][12]['source']).removeprefix('%%aes\n'),ns)
+    assert checks==[not cpu] and ns['cfg']['device']==('cpu' if cpu else 'auto')
+    assert ns['cfg']['s3_encoder_lr']==5e-6 and ns['cfg']['head_lr']==1e-4
+    if cpu:
+        assert "'CUDA_VISIBLE_DEVICES':''" in ''.join(n['cells'][7]['source'])
+        gpu=NOTEBOOK.with_name('AES_300_E8_ContextPair_LR5e6_GPU.ipynb')
+        assert hashlib.sha256(gpu.read_bytes()).hexdigest()==n['metadata']['aes_experiment']['gpu_notebook_sha256']

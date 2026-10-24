@@ -24,7 +24,8 @@ from test_teacher_score import TechnicalTokenizer, make_book, encoders
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOK = ROOT/'notebooks/experiments'/os.environ.get('AES_CONTEXT_NOTEBOOK','AES_300_S3_ContextPair_MLP.ipynb')
-IS_E8 = NOTEBOOK.name == 'AES_300_E8_ContextPair_LR5e6_GPU.ipynb'
+IS_E8 = NOTEBOOK.name.startswith('AES_300_E8_ContextPair_LR5e6_')
+IS_CPU = IS_E8 and NOTEBOOK.name.endswith('_CPU.ipynb')
 BASE = ROOT/'notebooks/experiments'/('AES_300_S3_ContextPair_MLP.ipynb' if IS_E8 else 'AES_300_S3_MLP.ipynb')
 
 
@@ -71,8 +72,9 @@ def test_clean_isolated_standalone_notebook_and_originals_unchanged():
     n = nbformat.read(NOTEBOOK, as_version=4)
     assert len(n.cells)==47 and sum(c.cell_type=='code' for c in n.cells)==30
     assert n.metadata.aes_experiment.base_sha256==hashlib.sha256(BASE.read_bytes()).hexdigest()
-    assert n.metadata.aes_experiment.name==('E8_CONTEXT_PAIR_LR5E6_GPU' if IS_E8 else 'S3_CONTEXT_PAIR_MLP')
-    assert n.metadata.accelerator=='GPU'
+    assert n.metadata.aes_experiment.name==('E8_CONTEXT_PAIR_LR5E6_CPU' if IS_CPU else 'E8_CONTEXT_PAIR_LR5E6_GPU' if IS_E8 else 'S3_CONTEXT_PAIR_MLP')
+    if IS_CPU:assert 'accelerator' not in n.metadata
+    else:assert n.metadata.accelerator=='GPU'
     assert not n.metadata.aes_experiment.automatic_checkpoint_deletion
     assert (ROOT/'aes-learning/notebooks/experiments'/NOTEBOOK.name).read_bytes()==NOTEBOOK.read_bytes()
     assert n.metadata.aes_standalone.code_sha256!=nbformat.read(BASE,as_version=4).metadata.aes_standalone.code_sha256
@@ -90,7 +92,7 @@ def test_clean_isolated_standalone_notebook_and_originals_unchanged():
 def test_builder_is_deterministic_across_python_versions():
     before=NOTEBOOK.read_bytes()
     for executable in ('python',sys.executable):
-        script='build_e8_context_lr_notebook.py' if IS_E8 else 'build_context_pair_notebook.py'
+        script='build_e8_context_lr_cpu_notebook.py' if IS_CPU else 'build_e8_context_lr_notebook.py' if IS_E8 else 'build_context_pair_notebook.py'
         subprocess.run([executable,str(ROOT/'scripts'/script)],cwd=ROOT,check=True,capture_output=True)
         assert NOTEBOOK.read_bytes()==before
 
@@ -298,7 +300,7 @@ def tokenizer(*args,**kwargs):return PairTechnicalTokenizer()
         if cell.cell_type!='code':continue
         if 'EPOCHS,FOLDS=25,5' in cell.source:
             # Fixture teknis berjalan di CPU; notebook pengguna tetap mewajibkan GPU.
-            assert 'REQUIRE_GPU=True' in cell.source
+            assert ('REQUIRE_GPU=False' if IS_CPU else 'REQUIRE_GPU=True') in cell.source
             cell.source=cell.source.replace('REQUIRE_GPU=True','REQUIRE_GPU=False')
             cell.source=cell.source.replace('EPOCHS,FOLDS=25,5','EPOCHS,FOLDS=1,5').replace('expected_rows=300','expected_rows=24')
             cell.source=cell.source.replace('CONTEXT_MAX_TOKENS,QUESTION_MAX_TOKENS=192,64','CONTEXT_MAX_TOKENS,QUESTION_MAX_TOKENS=12,4')
