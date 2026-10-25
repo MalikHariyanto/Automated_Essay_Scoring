@@ -182,6 +182,7 @@ def content(snapshot):
             'lora':json.loads((ROOT/'docs/mlp_lora_snapshot.json').read_text()),
             'context':json.loads((ROOT/'docs/mlp_context_snapshot.json').read_text()),
             'lrExperiment':json.loads((ROOT/'docs/mlp_lr_snapshot.json').read_text()),
+            'e8Experiment':json.loads((ROOT/'docs/mlp_e8_snapshot.json').read_text()),
             'allResults':json.loads((ROOT/'docs/mlp_all_results_snapshot.json').read_text()),
             'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
             'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),
@@ -260,6 +261,10 @@ def build(args):
                 latest=Path(args.experiment6_results).read_bytes()
                 if sha(latest)!=data['lrExperiment']['zip_sha256']:raise ValueError('ZIP E6 berbeda dari snapshot.')
                 z.writestr('experiment6_results.zip',latest,compress_type=zipfile.ZIP_STORED)
+            if getattr(args,'experiment8_results',None):
+                latest=Path(args.experiment8_results).read_bytes()
+                if sha(latest)!=data['e8Experiment']['zip_sha256']:raise ValueError('ZIP E8 berbeda dari snapshot.')
+                z.writestr('experiment8_results.zip',latest,compress_type=zipfile.ZIP_STORED)
         private=ROOT/'outputs/mlp_study/belajar_MLP_Spider_Privat.html'
         private.parent.mkdir(parents=True,exist_ok=True)
         private.write_text(document.replace('__PRIVATE_PAYLOAD__',base64.b64encode(bundle.getvalue()).decode()))
@@ -268,5 +273,5 @@ def build(args):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--notebook');p.add_argument('--results');p.add_argument('--baseline');p.add_argument('--baseline-evaluation');p.add_argument('--frozen-results');p.add_argument('--experiment5-results');p.add_argument('--context-results');p.add_argument('--experiment6-results')
+    p=argparse.ArgumentParser();p.add_argument('--notebook');p.add_argument('--results');p.add_argument('--baseline');p.add_argument('--baseline-evaluation');p.add_argument('--frozen-results');p.add_argument('--experiment5-results');p.add_argument('--context-results');p.add_argument('--experiment6-results');p.add_argument('--experiment8-results')
     build(p.parse_args())

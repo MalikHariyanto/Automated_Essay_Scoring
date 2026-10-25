@@ -36,6 +36,12 @@
       "S2": 15,
       "S3": 27,
       "Seri": 0
+    },
+    "E8": {
+      "S1": 17,
+      "S2": 12,
+      "S3": 31,
+      "Seri": 0
     }
   },
   "baseline_eval_book": {
@@ -140,55 +146,62 @@
     "scenarios": {
       "S1": {
         "answers": 60,
-        "tie_answers": 17,
+        "tie_answers": 14,
         "entries": [
           {
             "id": "E0",
-            "unique": 24,
+            "unique": 23,
             "tied": 0,
-            "share": 24.0,
-            "closest": 24
+            "share": 23.0,
+            "closest": 23
           },
           {
             "id": "E2",
             "unique": 0,
-            "tied": 17,
-            "share": 4.25,
-            "closest": 17
+            "tied": 14,
+            "share": 3.5,
+            "closest": 14
           },
           {
             "id": "E3",
-            "unique": 19,
+            "unique": 10,
             "tied": 0,
-            "share": 19.0,
-            "closest": 19
+            "share": 10.0,
+            "closest": 10
           },
           {
             "id": "E4",
             "unique": 0,
-            "tied": 17,
-            "share": 4.25,
-            "closest": 17
+            "tied": 14,
+            "share": 3.5,
+            "closest": 14
           },
           {
             "id": "E5",
             "unique": 0,
-            "tied": 17,
-            "share": 4.25,
-            "closest": 17
+            "tied": 14,
+            "share": 3.5,
+            "closest": 14
           },
           {
             "id": "E6",
             "unique": 0,
-            "tied": 17,
-            "share": 4.25,
-            "closest": 17
+            "tied": 14,
+            "share": 3.5,
+            "closest": 14
+          },
+          {
+            "id": "E8",
+            "unique": 13,
+            "tied": 0,
+            "share": 13.0,
+            "closest": 13
           }
         ]
       },
       "S2": {
         "answers": 60,
-        "tie_answers": 18,
+        "tie_answers": 29,
         "entries": [
           {
             "id": "E0",
@@ -206,10 +219,10 @@
           },
           {
             "id": "E3",
-            "unique": 16,
-            "tied": 0,
-            "share": 16.0,
-            "closest": 16
+            "unique": 2,
+            "tied": 11,
+            "share": 7.5,
+            "closest": 13
           },
           {
             "id": "E4",
@@ -231,6 +244,13 @@
             "tied": 18,
             "share": 4.5,
             "closest": 18
+          },
+          {
+            "id": "E8",
+            "unique": 3,
+            "tied": 11,
+            "share": 8.5,
+            "closest": 14
           }
         ]
       },
@@ -254,17 +274,17 @@
           },
           {
             "id": "E3",
-            "unique": 11,
+            "unique": 10,
             "tied": 0,
-            "share": 11.0,
-            "closest": 11
+            "share": 10.0,
+            "closest": 10
           },
           {
             "id": "E4",
-            "unique": 15,
+            "unique": 10,
             "tied": 0,
-            "share": 15.0,
-            "closest": 15
+            "share": 10.0,
+            "closest": 10
           },
           {
             "id": "E5",
@@ -275,10 +295,17 @@
           },
           {
             "id": "E6",
-            "unique": 18,
+            "unique": 16,
             "tied": 0,
-            "share": 18.0,
-            "closest": 18
+            "share": 16.0,
+            "closest": 16
+          },
+          {
+            "id": "E8",
+            "unique": 8,
+            "tied": 0,
+            "share": 8.0,
+            "closest": 8
           }
         ]
       }

@@ -44,7 +44,7 @@ def test_e6_metrics_history_and_public_preview_are_from_e6_not_initial_mlp():
 def test_each_experiment_source_evidence_matches_pinned_notebook_and_has_scoped_paper_links():
     d = data()
     catalog = d['methodSources']
-    assert {e['id'] for e in catalog['experiments']} == {'E0','E2','E3','E4','E5','E6'}
+    assert {e['id'] for e in catalog['experiments']} == {'E0','E2','E3','E4','E5','E6','E8'}
     for exp in catalog['experiments']:
         notebook = json.loads(subprocess.check_output(['git','show',exp['commit']+':'+exp['path']],cwd=ROOT))
         assert '/'+exp['commit']+'/' in exp['notebook']

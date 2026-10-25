@@ -6,5 +6,5 @@ function archiveReader(snapshot){let bytes=null,archive=null;const cache=new Map
  async readSheet(index,name){if(!archive)throw Error('Tabel individual tersedia pada buku lengkap.');const key=index+'|'+name;if(!cache.has(key))cache.set(key,A.readWorkbookSheet(await archive.file(snapshot.books[index].file).async('uint8array'),name));return cache.get(key)},
  getBytes:()=>bytes,getState:()=>({loaded:Boolean(bytes)})
 }}
-window.MLPFrozen=archiveReader(A.data.frozen);window.MLPLora=archiveReader(A.data.lora);
+window.MLPFrozen=archiveReader(A.data.frozen);window.MLPLora=archiveReader(A.data.lora);window.MLPE8=archiveReader(A.data.e8Experiment);
 })();
