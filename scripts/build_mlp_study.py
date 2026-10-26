@@ -184,6 +184,7 @@ def content(snapshot):
             'lrExperiment':json.loads((ROOT/'docs/mlp_lr_snapshot.json').read_text()),
             'e8Experiment':json.loads((ROOT/'docs/mlp_e8_snapshot.json').read_text()),
             'allResults':json.loads((ROOT/'docs/mlp_all_results_snapshot.json').read_text()),
+            'scoreMaps':json.loads((ROOT/'docs/mlp_score_maps_snapshot.json').read_text()),
             'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
             'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),
                         'annotations':len(annotations),'manual_pins_found':len(PINS)-len(missing),
@@ -207,6 +208,7 @@ def build(args):
     js+='\n'+(ROOT/'scripts/templates/mlp_comparison_e6.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_metrics_e6.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_result_archives.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_score_maps.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_predictions.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_dashboard.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.js').read_text()
@@ -221,6 +223,7 @@ def build(args):
     css+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_dashboard.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_predictions.css').read_text()
+    css+='\n'+(ROOT/'scripts/templates/mlp_score_maps.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_e6_refresh.css').read_text()
     vendor=(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
@@ -228,6 +231,7 @@ def build(args):
     document=(template.replace('__STYLE__',css).replace('__SYMBOLS__',(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text())
               .replace('__DATA__',json.dumps(data,ensure_ascii=False,allow_nan=False).replace('<',chr(92)+'u003c'))
               .replace('__VENDOR__',vendor).replace('__SCRIPT__',js))
+    document=document.replace('__EXPERIMENT_COUNT__',str(len(data['methodSources']['experiments'])))
     TARGET.write_text(document.replace('__PRIVATE_PAYLOAD__',''))
     private=None
     if notebook_bytes:

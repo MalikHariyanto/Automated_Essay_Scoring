@@ -1,0 +1,23 @@
+/* Peta skor memiliki satu alur vertikal; hanya tabel lebar yang bergeser mendatar. */
+.score-map-controls button[aria-pressed=true]{background:#ffe76b;color:#14264d;border-color:#14264d}
+.score-map-grid{display:grid;grid-template-columns:1fr;gap:20px;margin:15px 0}
+.score-map-card{min-width:0;padding:20px;border:1px solid #afc6d7;background:#fff;border-radius:8px}
+.score-map-card>header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#19365c;font-size:15px;line-height:1.5}
+.score-map-card>header span{font-size:12px;color:#587089}
+.score-map-stats{display:flex;gap:12px 24px;flex-wrap:wrap;font-size:11px;color:#4a637b;margin:15px 0}
+.score-map-stats strong{font-size:18px;color:#19365c;margin-right:4px}
+.score-map-axis{font-weight:750;font-size:11px;margin:12px 0 6px;color:#284c6d}
+.score-map-viewport{overflow-x:auto;overscroll-behavior-x:contain;max-width:100%;border:1px solid #d5e4ed;border-radius:5px}
+.score-map-table{width:100%;min-width:630px;table-layout:fixed;border-collapse:separate;border-spacing:2px;font-variant-numeric:tabular-nums}
+.score-map-table caption{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.score-map-table th{font-size:10px;color:#19365c;text-align:center;font-weight:650;background:white;padding:8px 2px;border:0;line-height:1.5}
+.score-map-table th:first-child{width:56px;position:sticky;left:0;z-index:1;background:#fff}
+.score-map-table td{padding:0;height:34px;text-align:center;color:#19365c;font-size:12px;border:0;border-radius:2px}
+.score-map-table td.same-band{box-shadow:inset 0 0 0 1px #428ba16b}
+.score-map-table td.is-selected{outline:2px solid #c21c4b;outline-offset:-2px}
+.score-map-table td button{border:0;background:transparent;color:inherit;font:inherit;font-weight:750;width:100%;height:34px;cursor:pointer;padding:0}
+.score-map-table td button:focus-visible{outline:3px solid #c21c4b;outline-offset:-3px}
+.score-map-legend,.score-map-detail{font-size:11px;line-height:1.75;color:#4d6981;margin:9px 0 0}
+.score-map-detail{min-height:38px}
+.score-map-grid.all-maps{grid-template-columns:repeat(auto-fit,minmax(min(100%,620px),1fr))}
+@media(max-width:600px){.score-map-card{padding:13px}.score-map-stats{gap:10px;font-size:10px}.score-map-card>header{font-size:13px}.score-map-table{min-width:610px}.score-map-controls button{flex:1}}
