@@ -1,0 +1,9 @@
+{
+  "sha256": "a48d601cbb61dfb553c4702319e71653aca5681ddf3bb0368bac7c6f1b7f904b",
+  "rows": 300,
+  "prompt_pairs": 12,
+  "dataset_sha256": "2c5ac98a62fec303dbde60b9daa28289b126b45da63b0741ef3b0ee55c36122e",
+  "e6_results_sha256": "06b898f882e0ec6e9de2896d7567fa9fecef5bb33c1b151afddff1b84d9a7af2",
+  "all_ids_answers_labels_match": true,
+  "e6_input_policy": "response_text only"
+}

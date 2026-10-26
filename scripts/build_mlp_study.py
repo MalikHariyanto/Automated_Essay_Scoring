@@ -185,6 +185,8 @@ def content(snapshot):
             'e8Experiment':json.loads((ROOT/'docs/mlp_e8_snapshot.json').read_text()),
             'allResults':json.loads((ROOT/'docs/mlp_all_results_snapshot.json').read_text()),
             'scoreMaps':json.loads((ROOT/'docs/mlp_score_maps_snapshot.json').read_text()),
+            'answerContextInfo':json.loads((ROOT/'docs/mlp_answer_context_snapshot.json').read_text()) if (ROOT/'docs/mlp_answer_context_snapshot.json').exists() else None,
+            'multiSeed':json.loads((ROOT/'docs/mlp_multiseed_snapshot.json').read_text()) if (ROOT/'docs/mlp_multiseed_snapshot.json').exists() else None,
             'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
             'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),
                         'annotations':len(annotations),'manual_pins_found':len(PINS)-len(missing),
@@ -200,6 +202,17 @@ def build(args):
         SNAPSHOT.write_text(json.dumps(snapshot,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     else:snapshot=json.loads(SNAPSHOT.read_text())
     data=content(snapshot)
+    context_blob=None
+    context_cache=ROOT/'outputs/mlp_study/answer_context.json'
+    if getattr(args,'dataset',None):
+        from mlp_answer_context import build_context
+        context_blob,info=build_context(Path(args.dataset),Path(args.experiment6_results))
+        context_cache.parent.mkdir(parents=True,exist_ok=True);context_cache.write_bytes(context_blob)
+        (ROOT/'docs/mlp_answer_context_snapshot.json').write_text(json.dumps(info,indent=2)+'\n')
+        data['answerContextInfo']=info
+    elif context_cache.exists() and data['answerContextInfo']:
+        context_blob=context_cache.read_bytes()
+        if sha(context_blob)!=data['answerContextInfo']['sha256']:raise ValueError('Konteks privat E6 berubah.')
     template=(ROOT/'scripts/templates/mlp_study.html').read_text()
     js=(ROOT/'scripts/templates/mlp_study.js').read_text()
     if js.count('/*__EXCEL_EXPLORER__*/') != 1:
@@ -209,7 +222,9 @@ def build(args):
     js+='\n'+(ROOT/'scripts/templates/mlp_metrics_e6.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_result_archives.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_score_maps.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_answers.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_predictions.js').read_text()
+    js+='\n'+(ROOT/'scripts/templates/mlp_multiseed.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_dashboard.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_compare_fullscreen.js').read_text()
     js+='\n'+(ROOT/'scripts/templates/mlp_sources.js').read_text()
@@ -224,6 +239,7 @@ def build(args):
     css+='\n'+(ROOT/'scripts/templates/mlp_dashboard.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_predictions.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_score_maps.css').read_text()
+    css+='\n'+(ROOT/'scripts/templates/mlp_ui_refinement.css').read_text()
     css+='\n'+(ROOT/'scripts/templates/mlp_e6_refresh.css').read_text()
     vendor=(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
@@ -231,12 +247,21 @@ def build(args):
     document=(template.replace('__STYLE__',css).replace('__SYMBOLS__',(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text())
               .replace('__DATA__',json.dumps(data,ensure_ascii=False,allow_nan=False).replace('<',chr(92)+'u003c'))
               .replace('__VENDOR__',vendor).replace('__SCRIPT__',js))
-    document=document.replace('__EXPERIMENT_COUNT__',str(len(data['methodSources']['experiments'])))
+    document=document.replace('__EXPERIMENT_COUNT__',str(len(data['methodSources']['experiments'])+bool(data['multiSeed'])))
     TARGET.write_text(document.replace('__PRIVATE_PAYLOAD__',''))
     private=None
     if notebook_bytes:
         bundle=io.BytesIO()
         with zipfile.ZipFile(bundle,'w') as z:
+            seed_manifest=ROOT/'outputs/mlp_study/e62_sources/manifest.json'
+            if data['multiSeed'] and seed_manifest.exists():
+                manifest=json.loads(seed_manifest.read_text())
+                z.write(manifest['summary'],'e62_summary.xlsx',compress_type=zipfile.ZIP_STORED)
+                for seed,info in data['multiSeed']['archives'].items():
+                    path=ROOT/f'outputs/mlp_study/e62_sources/seed_{seed}.zip'
+                    if sha(path.read_bytes())!=info['sha256']:raise ValueError('Arsip seed berubah: '+seed)
+                    z.write(path,f'e62_seed_{seed}.zip',compress_type=zipfile.ZIP_STORED)
+            if context_blob:z.writestr('answer_context.json',context_blob,compress_type=zipfile.ZIP_DEFLATED)
             z.writestr('notebook.ipynb',notebook_bytes,compress_type=zipfile.ZIP_DEFLATED)
             z.writestr('results.zip',zip_bytes,compress_type=zipfile.ZIP_STORED)
             if args.baseline:
@@ -277,5 +302,5 @@ def build(args):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--notebook');p.add_argument('--results');p.add_argument('--baseline');p.add_argument('--baseline-evaluation');p.add_argument('--frozen-results');p.add_argument('--experiment5-results');p.add_argument('--context-results');p.add_argument('--experiment6-results');p.add_argument('--experiment8-results')
+    p=argparse.ArgumentParser();p.add_argument('--notebook');p.add_argument('--results');p.add_argument('--baseline');p.add_argument('--baseline-evaluation');p.add_argument('--frozen-results');p.add_argument('--experiment5-results');p.add_argument('--context-results');p.add_argument('--experiment6-results');p.add_argument('--experiment8-results');p.add_argument('--dataset')
     build(p.parse_args())
