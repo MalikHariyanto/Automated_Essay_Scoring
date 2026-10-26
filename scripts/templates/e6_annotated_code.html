@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Seluruh kode E6 dengan catatan di samping, padanan screenshot, dan pencarian lokasi kode.">
+  <title>Kode E6 · Belajar di pinggir kode</title>
+  <style>__CSS__</style>
+</head>
+<body>
+<a class="skip" href="#workspace">Langsung ke kode</a>
+<header class="topbar">
+  <a class="brand" href="#top" aria-label="Kembali ke atas"><span class="brand-mark" aria-hidden="true">⌘</span><span>KODE E6 <small>CATATAN BELAJAR</small></span></a>
+  <nav class="views" aria-label="Cara belajar">
+    <button data-view="code" aria-pressed="true">Kode + catatan</button>
+    <button data-view="map" aria-pressed="false">Dari screenshot</button>
+    <button data-view="find" aria-pressed="false">Cari bagian</button>
+  </nav>
+</header>
+<main id="top">
+  <section class="intro">
+    <div>
+      <p class="eyebrow">BELAJAR LANGSUNG DI KODE ASLI</p>
+      <h1>Kodenya utuh.<br><span>Penjelasannya di sebelahnya.</span></h1>
+      <p class="lead">Baca baris yang disorot, lalu catatan di sampingnya. Tiap catatan memberi tahu bagian ini buat apa dan letaknya di notebook lo.</p>
+      <div class="pills"><span>E6 · jawaban saja</span><span>S3 · LR 5e-6 + MLP</span><span>S1/S2 dipakai ulang</span></div>
+    </div>
+    <aside class="start-note">
+      <span class="tape" aria-hidden="true"></span><p class="eyebrow">MULAI DARI YANG LO CARI</p>
+      <h2>“Di kode gw, yang ini ada di mana?”</h2>
+      <div class="quick-links">
+        <button data-quick="config">Pengaturan & LR <span>↗</span></button>
+        <button data-quick="features">Ekstraksi fitur <span>↗</span></button>
+        <button data-quick="head">Head linear / MLP <span>↗</span></button>
+        <button data-quick="training">Training & validasi <span>↗</span></button>
+      </div>
+    </aside>
+  </section>
+  <section id="workspace" class="workspace" aria-label="Ruang belajar E6">
+    <div id="workspaceTools" class="workspace-tools">
+      <label id="blockPickerLabel">Lompat ke blok <select id="blockPicker" aria-label="Lompat ke blok kode"></select></label>
+      <label id="codeSearchLabel">Cari dalam kode <input id="codeSearch" type="search" placeholder="Misal: self.head, bundle.y…"></label>
+      <div class="tool-actions"><button id="searchNext" class="quiet">Cari berikutnya ↓</button><button id="fullscreen" class="dark-button">⛶ Layar penuh</button><button id="exitFullscreen" class="dark-button" hidden>× Kembali</button></div>
+    </div>
+    <div class="workspace-context"><p id="viewSummary"></p><span id="liveStatus" role="status" aria-live="polite"></span></div>
+    <div id="codeView">
+      <div class="reading-key"><span><i class="line-key"></i> Baris penting</span><span><i class="note-key"></i> Catatan tentang baris itu</span><span>Satu scroll untuk kode dan catatan</span></div>
+      <div id="codeBlocks"></div>
+    </div>
+    <section id="mapView" class="paper-view" hidden>
+      <p class="eyebrow">SCREENSHOT KODE LAIN → PADANAN DI E6</p>
+      <h2>Nama boleh beda. Pahami perannya.</h2>
+      <p>Screenshot lo memakai mDeBERTa. E6 memakai RoBERTa dan BGE-M3. Beberapa bagian punya peran setara; konteks pair dan pooling-nya berbeda.</p>
+      <div id="mappingCards" class="mapping-cards"></div>
+      <section class="model-map" aria-labelledby="modelMapTitle">
+        <p class="eyebrow">SETELAH TEKS MENJADI FITUR</p><h2 id="modelMapTitle">Lihat posisi encoder dan head.</h2>
+        <div class="model-path"><b>S1</b><span>RoBERTa</span><i>→</i><span>CLS + rata-rata window · 768</span><i>→</i><button data-quick="head">Dropout + linear → 1 skor</button></div>
+        <div class="model-path"><b>S2</b><span>BGE-M3 frozen · 1024</span><i>→</i><button data-jump="s2">MLP → 1 skor</button></div>
+        <div class="fusion-map"><b>S3 · fusion</b><div class="branches"><span>RoBERTa → CLS/window → LayerNorm · 768</span><span>BGE frozen → proyeksi + LayerNorm · 256</span></div><span class="join">↓ concat: 768 + 256 = 1024 fitur</span><button data-jump="s3">Head MLP → 1 skor</button></div>
+        <p class="small-note">Diagram adalah alur arsitektur. Di run E6, S1/S2 memakai hasil yang sudah selesai; S3 dilatih baru. Keluaran head dikembalikan ke skala 0–100 saat prediksi.</p>
+      </section>
+    </section>
+    <section id="findView" class="paper-view" hidden>
+      <p class="eyebrow">99 BAGIAN · URUTAN NOTEBOOK</p><h2>Cari tanpa membaca tabel panjang.</h2>
+      <label class="catalog-search">Nama bagian, fungsi, atau kode <input id="catalogSearch" type="search" placeholder="Coba: fitur, learning rate, loss, prediksi…"></label>
+      <p id="catalogCount" role="status"></p><div id="catalogResults"></div>
+    </section>
+    <footer class="source-footer">
+      <p><b>Semua 30 blok kode E6.</b> Catatan adalah panduan baca; halaman ini tidak menjalankan training.</p>
+      <a id="openNotebook" target="_blank" rel="noopener noreferrer">Buka notebook E6 di Colab ↗</a>
+      <details><summary>Versi sumber & cara mencari di Colab</summary><p>Nomor blok 1–30 hanya menghitung code cell. Nomor cell notebook juga menghitung Markdown. Nomor baris dimulai dari baris pertama tiap blok, termasuk <code>%%aes</code>. Salin kata pencarian dari catatan lalu gunakan Ctrl+F di Colab.</p><p id="sourceIdentity"></p></details>
+    </footer>
+  </section>
+</main>
+<div id="toast" class="toast" role="status" hidden></div>
+<script id="guideData" type="application/json">__DATA__</script>
+<script>__JS__</script>
+</body></html>
