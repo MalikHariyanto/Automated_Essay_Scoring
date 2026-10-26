@@ -23,7 +23,8 @@ sys.path.insert(0,str(ROOT/'tests'))
 import test_context_pair_notebook as context
 from test_teacher_score import TechnicalTokenizer,make_book,encoders
 
-NOTEBOOK=ROOT/'notebooks/experiments/AES_300_E6_Tiga_Input_CPU.ipynb'
+NOTEBOOK=ROOT/'notebooks/experiments'/os.environ.get('AES_THREE_INPUT_NOTEBOOK','AES_300_E6_Tiga_Input_CPU.ipynb')
+IS_E4=NOTEBOOK.name.startswith('AES_300_E4_')
 
 
 class ThreeTechnicalTokenizer(context.PairTechnicalTokenizer):
@@ -59,7 +60,8 @@ def test_clean_standalone_source_identity_and_deterministic_builder():
         assert not any(x in s for x in ['googleapiclient','prepare_reused_controls','DriveCheckpointCleaner'])
     assert len(codes)==30 and len(identities)==2 and all(v==fingerprint for v in identities)
     assert hashlib.sha256('\n'.join(codes).encode()).hexdigest()==fingerprint
-    subprocess.run([sys.executable,str(ROOT/'scripts/build_e6_three_input_notebook.py')],check=True,cwd=ROOT,capture_output=True)
+    builder='build_e4_three_input_notebook.py' if IS_E4 else 'build_e6_three_input_notebook.py'
+    subprocess.run([sys.executable,str(ROOT/'scripts'/builder)],check=True,cwd=ROOT,capture_output=True)
     assert NOTEBOOK.read_bytes()==raw
 
 
