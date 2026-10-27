@@ -12,21 +12,25 @@ from build_e21_study import ROOT,build
 from build_mlp_study import BOOKS,table
 
 
-def build_family(e21,e22):
+def build_family(e21,e22,e24=None):
     documents={};snapshots={};pairs={};data={};zips={}
-    for experiment,path in [('E21',e21),('E22',e22)]:
+    inputs=[('E21',e21),('E22',e22)]+([('E24',e24)] if e24 else [])
+    for experiment,path in inputs:
         documents[experiment],snapshots[experiment]=build(path,experiment,family=True)
         zips[experiment]=Path(path).read_bytes()
         with ZipFile(io.BytesIO(zips[experiment])) as z:
             pairs[experiment]=table(z.read(BOOKS[3]),'Nilai Guru dan Prediksi')
             data[experiment]=table(z.read(BOOKS[0]),'Data dan Nilai Guru')
-    assert data['E21']==data['E22'],'Data/teks/label E21/E22 berbeda.'
-    with ZipFile(io.BytesIO(zips['E21'])) as a,ZipFile(io.BytesIO(zips['E22'])) as b:
-        for name in ['Pembagian Data','Pembagian Lima Fold']:
-            assert table(a.read(BOOKS[0]),name)==table(b.read(BOOKS[0]),name),'Split/fold berbeda.'
+    assert all(data['E21']==v for v in data.values()),'Data/teks/label eksperimen berbeda.'
+    with ZipFile(io.BytesIO(zips['E21'])) as a:
+        for e in zips:
+            with ZipFile(io.BytesIO(zips[e])) as b:
+                for name in ['Pembagian Data','Pembagian Lima Fold']:
+                    assert table(a.read(BOOKS[0]),name)==table(b.read(BOOKS[0]),name),'Split/fold berbeda.'
     lookup={e:{r['ID Jawaban']:r for r in rows} for e,rows in pairs.items()}
-    assert set(lookup['E21'])==set(lookup['E22']) and len(lookup['E21'])==60
-    assert all(r['Nilai Guru']==lookup['E22'][i]['Nilai Guru'] for i,r in lookup['E21'].items())
+    assert len(lookup['E21'])==60
+    assert all(set(v)==set(lookup['E21']) for v in lookup.values())
+    assert all(r['Nilai Guru']==v[i]['Nilai Guru'] for i,r in lookup['E21'].items() for v in lookup.values())
     keys=[e+'_'+s for e in snapshots for s in ['S1','S2','S3']]
     nearest={};impact=[]
     for scenario in ['S1','S2','S3','all']:
@@ -59,8 +63,18 @@ def build_family(e21,e22):
         'E21':sum(r['E21 lebih dekat'] for r in impact),
         'E22':sum(r['E22 lebih dekat'] for r in impact),
         'ties':sum(r['Seri'] for r in impact)}
+    pairwise=[]
+    from itertools import combinations
+    for left,right in combinations(snapshots,2):
+        impacts=[]
+        for scenario in ['S1','S2','S3']:
+            diff=[abs(lookup[right][i]['Prediksi '+scenario]-r['Nilai Guru'])-abs(lookup[left][i]['Prediksi '+scenario]-r['Nilai Guru']) for i,r in lookup[left].items()]
+            impacts.append({'scenario':scenario,'left':sum(v>1e-5 for v in diff),'right':sum(v< -1e-5 for v in diff),'ties':sum(abs(v)<=1e-5 for v in diff)})
+        pairwise.append({'left':left,'right':right,'impact':impacts,'overall':{k:sum(r[k] for r in impacts) for k in ['left','right','ties']}})
+    if e24:
+        assert all(parameters['E21'][k]==parameters['E24'][k] for k in parameters['E21'])
     comparison={'experiments':snapshots,'nearest':nearest,'impact':impact,
-        'predictionAudit':prediction_audit,'pairedOverall':paired_overall,
+        'predictionAudit':prediction_audit,'pairedOverall':paired_overall,'pairwise':pairwise,
         'same_300_texts_labels':True,'same_60_test_ids_labels':True,'same_folds':True,'recorded_parameters_equal_except_format':True}
     (ROOT/'docs/three_input_comparison_snapshot.json').write_text(json.dumps(comparison,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     # Child books keep independent source/curriculum/state. No original data in public srcdoc.
@@ -71,6 +85,8 @@ def build_family(e21,e22):
     symbols=(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text()
     family_data={'comparison':comparison,'documents':documents}
     template=(ROOT/'scripts/templates/three_input_study.html').read_text()
+    if e24:
+        template=template.replace('E21 × E22','E21 × E22 × E24').replace('E21–E22','E21–E22–E24').replace('DUA EKSPERIMEN','TIGA EKSPERIMEN').replace('dua eksperimen','tiga eksperimen').replace('Hasil dua run','Hasil tiga run').replace('keenam model','sembilan model').replace('SATU BUKU, DUA FORMAT','TIGA INPUT, TIGA EKSPERIMEN').replace('Format <em>berbeda.</em>','Ringkasan <em>berbeda.</em>').replace('E22 membaca pasangan konteks dan jawaban.', 'E22 membaca pasangan konteks dan jawaban. E24 menambahkan attention pooling pada S3 dari E21.').replace('E22 context pair.', 'E22 context pair · E24 attention pooling.').replace('</select></label><span id="familyStudyStatus"','<option value="E24">E24 · attention pooling S3</option></select></label><span id="familyStudyStatus"')
     document=(template.replace('__STYLE__',stylesheet).replace('__SYMBOLS__',symbols)
         .replace('__DATA__',json.dumps(family_data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
         .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text())
@@ -85,4 +101,4 @@ def build_family(e21,e22):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--e21',type=Path,required=True);p.add_argument('--e22',type=Path,required=True);a=p.parse_args();build_family(a.e21,a.e22)
+    p=argparse.ArgumentParser();p.add_argument('--e21',type=Path,required=True);p.add_argument('--e22',type=Path,required=True);p.add_argument('--e24',type=Path);a=p.parse_args();build_family(a.e21,a.e22,a.e24)

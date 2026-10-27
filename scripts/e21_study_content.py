@@ -101,6 +101,20 @@ def curriculum(snapshot):
         g['learning rate']=(g['learning rate'][0],g['learning rate'][1].replace('E21','E22'))
         g['special']=('Separator pasangan','E22 memakai empat special token pada pasangan konteks/jawaban. Keduanya tetap saling memperhatikan melalui self-attention; label guru tidak disisipkan.')
     c[3]['terms']=['X','y','learning rate','head'];c[4]['terms']=['X','y','tokenizer']
+    if snapshot.get('id')=='E24':
+        for chapter in c:
+            for key in ('title','goal'):chapter[key]=chapter[key].replace('E21','E24')
+            for key in ('flow','read'):chapter[key]=[v.replace('E21','E24') for v in chapter[key]]
+        c[3]['read'][2]='E24 memakai single_sequence E21. Hanya S3 mendapat attention pooling token jawaban; S1/S2 mengikuti acuan E21.'
+        c[6]['read'][2]='Dua special aktual pada single sequence; cadangan empat posisi menjaga anggaran token sama. answer_positions mencatat posisi respons yang boleh dipool.'
+        c[10]['flow']=['Token RoBERTa','Mask token jawaban','Attention →768','Concat BGE256 → MLP']
+        c[10]['read'].append('AnswerAttentionPool mempelajari bobot token jawaban dengan jaringan768→64→1; weighted sum tetap768. Token konteks/special/padding dikecualikan dari pooling, bukan dihilangkan dari self-attention encoder.')
+        c[14]['flow']=['Model final','Pooling768','Bobot per token','Fusion1024 dan prediksi']
+        c[14]['read'].append('Pooling Jawaban S3 menyimpan vektor aktual. Bobot Attention S3 memuat bobot token tiap jawaban/window; totalnya satu. Bobot besar bukan bukti sebab-akibat skor.')
+        c[14]['sheets']=['Pooling Jawaban S3','Bobot Attention S3','Fusion S3']
+        g['attention pooling']=('Ringkasan token berbobot','E24 memberi bobot hanya pada token respons. RoBERTa tetap membaca soal/referensi; bobot pooling dinormalisasi pada sumbu token, bukan768fitur.')
+        g['learning rate']=(g['learning rate'][0],g['learning rate'][1].replace('E21','E24')+' Layer pooling baru ikut kelompok head1e-4.')
+        c[10]['terms'].append('attention pooling')
     return c,g
 
 

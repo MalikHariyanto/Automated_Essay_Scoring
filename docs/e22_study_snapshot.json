@@ -5,6 +5,7 @@
   "development": 240,
   "test": 60,
   "input_format": "context_pair",
+  "s3_pooling": "cls",
   "metric_recompute_max_delta": 4.095713537211054e-07,
   "metric_recompute_tolerance": 1e-06,
   "zip_sha256": "896f646dad89cb494131db2f40adc36beacfa7445f7d6dabbd5759ca3d06fdf2",

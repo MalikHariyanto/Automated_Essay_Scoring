@@ -1,4 +1,6 @@
-# Buku tiga input — E21 dan E22
+# Buku tiga input — audit versi E21 dan E22
+
+Versi terbaru juga memuat E24; lihat [audit E24 dan sorotan tabel](review_e24_study.md). Dokumen ini mencatat versi awal dua eksperimen.
 
 `docs/belajar_Tiga_Input_Spider.html` memuat agregat aman dan dua meja belajar kode. Paket `Belajar_AES_Tiga_Input_Lengkap` menambahkan seluruh isi kedua ZIP unggahan secara terenkripsi, dengan kunci buku yang sudah ada. Buku eksperimen lama dan paket E21 terpisah tetap tersedia.
 

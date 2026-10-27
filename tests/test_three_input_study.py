@@ -100,3 +100,25 @@ def test_actual_inline_scripts_parse_without_closing_tag_injection(tmp_path):
         script.write_text(text)
         r = subprocess.run(['node', '--check', str(script)], capture_output=True, text=True)
         assert r.returncode == 0, r.stderr[-400:]
+
+
+def test_e24_attention_results_and_comparisons_are_real_and_consistent():
+    _, data = family()
+    c = data['comparison']
+    assert set(c['experiments']) == set(data['documents']) == {'E21','E22','E24'}
+    e = c['experiments']['E24']
+    assert e['input_format'] == 'single_sequence' and e['s3_pooling'] == 'attention'
+    assert e['attention_audit']['rows'] == 16946
+    assert e['attention_audit']['answer_windows'] == 300
+    assert e['attention_audit']['max_sum_error'] < 1e-5
+    assert 'AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb' in e['source_path']
+    e21=c['experiments']['E21']
+    for scenario in ['S1','S2']:
+        assert next(r for r in e['metrics'] if r['Skenario']==scenario) == next(r for r in e21['metrics'] if r['Skenario']==scenario)
+    assert abs(next(r for r in e['metrics'] if r['Skenario']=='S3')['RMSE (poin)'] - 5.981825270792521)<1e-10
+    assert len(c['pairwise']) == 3
+    for p in c['pairwise']:
+        assert all(r['left']+r['right']+r['ties']==60 for r in p['impact'])
+        assert sum(p['overall'].values())==180
+    assert sum(v['share'] for v in c['nearest']['all'].values()) == 60
+    assert len(c['nearest']['all']) == 9

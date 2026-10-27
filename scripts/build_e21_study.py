@@ -18,6 +18,8 @@ from e21_study_content import curriculum,PINS,HINTS
 
 PIN='ef712b4c035d96178d9baa67caa7453ac9fd8738'
 NOTEBOOK='notebooks/experiments/AES_300_E21_Tiga_Input_GPU.ipynb'
+E24_PIN='f3d25c4'  # Source notebook yang dikirim sebelum ZIP hasil E24.
+E24_NOTEBOOK='notebooks/experiments/AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb'
 
 
 def audit(path, experiment='E21'):
@@ -35,7 +37,17 @@ def audit(path, experiment='E21'):
     summary=table(blobs[BOOKS[4]],'Ringkasan Lima Fold')
     parameters=table(blobs[BOOKS[4]],'Pengaturan Eksperimen');p={r['Pengaturan']:r['Nilai'] for r in parameters}
     assert len(data)==300 and len(pairs)==60 and len(folds)==15
-    assert p['Format input tiga teks']==('single_sequence' if experiment=='E21' else 'context_pair')
+    assert p['Format input tiga teks']==('context_pair' if experiment=='E22' else 'single_sequence')
+    if experiment=='E24':
+        assert p['Pooling jawaban S3']=='attention' and p['Hidden pooling S3']==64
+        weights=table(blobs[BOOKS[1]],'Bobot Attention S3')
+        from collections import defaultdict
+        sums=defaultdict(float)
+        assert all(np.isfinite(r['Bobot Attention']) and 0<=r['Bobot Attention']<=1 for r in weights)
+        for r in weights:sums[(r['ID Jawaban'],r['Bagian Teks'])]+=r['Bobot Attention']
+        assert {k[0] for k in sums}=={r['ID Jawaban'] for r in data}
+        assert all(abs(v-1)<1e-5 for v in sums.values())
+        attention_audit={'rows':len(weights),'answer_windows':len(sums),'max_sum_error':max(abs(v-1) for v in sums.values()),'weights_finite_nonnegative':True}
     assert p['Learning rate encoder RoBERTa S1']==p['Learning rate encoder RoBERTa S3']==5e-6
     assert p['Learning rate head']==p['Learning rate proyeksi BGE']==1e-4
     assert p['Skor minimum']==0 and p['Skor maksimum']==100
@@ -101,19 +113,21 @@ def audit(path, experiment='E21'):
     public={}
     for i,names in {0:['Panduan'],1:['Panduan'],2:['Panduan'],3:['Panduan','Ringkasan Validasi','Arti Metrik'],4:['Panduan','Model yang Dibandingkan','Pengaturan Eksperimen']}.items():
         for name in names:public[str(i)+'|'+name]=table(blobs[BOOKS[i]],name)
-    notebook_path=NOTEBOOK if experiment=='E21' else NOTEBOOK.replace('E21_Tiga_Input','E22_Tiga_Input_ContextPair')
+    notebook_path=E24_NOTEBOOK if experiment=='E24' else NOTEBOOK if experiment=='E21' else NOTEBOOK.replace('E21_Tiga_Input','E22_Tiga_Input_ContextPair')
+    pin=E24_PIN if experiment=='E24' else PIN
     snapshot={'id':experiment,'scope':'UPLOADED '+experiment+' RESULTS; NO NEW TRAINING','rows':300,'development':240,'test':60,
-        'input_format':p['Format input tiga teks'],'metric_recompute_max_delta':max(metric_deltas),'metric_recompute_tolerance':1e-6,'zip_sha256':hashlib.sha256(raw).hexdigest(),'source_commit':PIN,'source_path':notebook_path,
+        'input_format':p['Format input tiga teks'],'s3_pooling':p.get('Pooling jawaban S3','cls'),'metric_recompute_max_delta':max(metric_deltas),'metric_recompute_tolerance':1e-6,'zip_sha256':hashlib.sha256(raw).hexdigest(),'source_commit':pin,'source_path':notebook_path,
         'runtime_source_matches_commit':False,'source_note':'Source rujukan repo cocok pengaturan workbook; notebook eksekusi tidak disertakan sehingga kecocokan byte runtime/perangkat belum dibuktikan.',
         'metrics':reported,'folds':folds,'history':history,'foldSummary':summary,'cvSummary':cv,'selected_epochs':selected,
         'matrices':maps,'native':{},'publicSheets':public,'parameters':parameters,'coverage':coverage_summary,
         'errorSummary':extra,'nearest':wins,'books':[{'file':n,'sha256':hashlib.sha256(blobs[n]).hexdigest(),'sheets':workbook_inventory(blobs[n])} for n in BOOKS]}
+    if experiment=='E24':snapshot['attention_audit']=attention_audit
     return snapshot
 
 
 def content(snapshot):
     experiment=snapshot.get('id','E21');notebook_path=snapshot.get('source_path',NOTEBOOK)
-    raw=subprocess.check_output(['git','show',PIN+':'+notebook_path],cwd=ROOT);notebook=json.loads(raw)
+    raw=subprocess.check_output(['git','show',snapshot.get('source_commit',PIN)+':'+notebook_path],cwd=ROOT);notebook=json.loads(raw)
     chapters,glossary=curriculum(snapshot);cells=[];missing=[]
     for i,cell in enumerate(notebook['cells']):
         if cell['cell_type']!='code':continue
@@ -129,6 +143,17 @@ def content(snapshot):
             line=next((j+1 for j,l in enumerate(lines) if anchor in l),None)
             if line is None:missing.append((i,anchor));continue
             notes.append({'line':line,'title':title,'body':body,'term':None,'kind':'fundamental'})
+        if experiment=='E24' and i==30:
+            for anchor,title,body in [
+                ('def answer_token_mask','Mask posisi jawaban','Memakai answer_positions, bukan kecocokan ID token. Konteks, prefix, special dan padding tidak ikut pooling; konteks tetap tersedia melalui encoder.'),
+                ('self.hidden = nn.Linear','Attention 768 → 64','Lapisan kecil belajar menilai tiap token jawaban. Sumbu urutan adalah token, bukan768koordinat.'),
+                ('weights = torch.softmax','Softmax bertopeng','Logit non-jawaban dibuat minus tak hingga; bobotnya nol. Bobot token jawaban dalam setiap window berjumlah satu, dihitung FP32.'),
+                ('weights.unsqueeze(-1)','Jumlah berbobot768','Kalikan setiap vektor token dengan bobotnya dan jumlahkan pada sumbu token. Keluaran tetap768, bukan satu skor.'),
+                ('self.sequence_pool =','Pooling tambahan hanya S3','S1 tetap CLS dan linear, S2 tetap BGE+MLP. S3 mengganti ringkasan CLS dengan pooling token jawaban sebelum LayerNorm/fusion.'),
+                ("features['answer_pool768']",'Fitur pooling aktual','Vektor768 yang masuk fusion disimpan untuk inspeksi setelah training; bobot attention terpisah di Excel.'),
+            ]:
+                line=next(j+1 for j,l in enumerate(lines) if anchor in l)
+                notes.append({'line':line,'title':title,'body':body,'term':None,'kind':'fundamental'})
         tree=ast.parse(text.removeprefix('%%aes\n'));offset=int(text.startswith('%%aes\n'))
         defs=[n for n in tree.body if isinstance(n,(ast.FunctionDef,ast.ClassDef))]
         for n in defs:
@@ -145,7 +170,7 @@ def content(snapshot):
     if missing:raise ValueError('Anchor E21 tidak ditemukan: '+str(missing))
     return {'chapters':chapters,'glossary':glossary,'cells':cells,'studySnapshot':snapshot,'snapshot':snapshot,
         'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
-        'studySource':{'commit':PIN,'path':notebook_path,'experiment':experiment,'runtime_match':False},
+        'studySource':{'commit':snapshot.get('source_commit',PIN),'path':notebook_path,'experiment':experiment,'runtime_match':False},
         'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),'annotations':sum(len(c['notes']) for c in cells)}}
 
 
@@ -177,6 +202,7 @@ def build(results=None, experiment='E21', family=False):
         (ROOT/('docs/'+experiment.lower()+'_study_snapshot.json')).write_text(json.dumps(snapshot,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     else:snapshot=json.loads((ROOT/('docs/'+experiment.lower()+'_study_snapshot.json')).read_text())
     data=content(snapshot)
+    pin=snapshot.get('source_commit',PIN)
     template=(ROOT/'scripts/templates/mlp_study.html').read_text()
     a=template.index('<nav class="workspace-switch"');b=template.index('<section id="reader"',a)
     template=template[:a]+(ROOT/'scripts/templates/e21_results.html').read_text()+template[b:]
@@ -184,18 +210,21 @@ def build(results=None, experiment='E21', family=False):
     template=template.replace('Dari satu esai.<br>Jadi <em>satu skor.</em>','Tiga teks masuk.<br>Satu <em>skor keluar.</em>')
     template=template.replace('Bongkar RoBERTa, BGE-M3 dan fusion MLP pelan-pelan. Kode aslinya ada. Hasilnya ada. Catatan pinggirnya bantu lo menyambungkan keduanya.',
         'Soal, kunci jawaban dan respons siswa dibaca oleh seluruh skenario. Pelajari kode E21, telusuri hasil aktual, lalu bandingkan prediksi dengan skor guru.')
-    template=re.sub(r'<p class="source-caption">.*?</p>', '<p class="source-caption">Source E21 pada commit '+PIN[:7]+'. Hasil dibaca dari lima Excel unggahan; notebook eksekusi tidak disertakan.</p>',template)
+    template=re.sub(r'<p class="source-caption">.*?</p>', '<p class="source-caption">Source E21 pada commit '+pin[:7]+'. Hasil dibaca dari lima Excel unggahan; notebook eksekusi tidak disertakan.</p>',template)
     template=template.replace('E21 / LR S3 5e-6','E21 / LR S1/S3 5e-6')
     template=template.replace('Ringkasan semua eksperimen →','Hasil E21 →').replace('__EXPERIMENT_COUNT__ eksperimen','1 eksperimen').replace('hasil tersimpan yang dibandingkan','E21 · tiga skenario')
-    template=re.sub(r'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/[^" ]+\.ipynb',f'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/{PIN}/'+snapshot['source_path'],template)
+    template=re.sub(r'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/[^" ]+\.ipynb',f'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/{pin}/'+snapshot['source_path'],template)
     template=template.replace('<section id="reader" class="study-layout"','<section id="reader" hidden class="study-layout"')
     css='\n'.join((ROOT/'scripts/templates'/p).read_text() for p in ['mlp_study.css','mlp_excel.css','mlp_comparison.css','mlp_metrics.css','mlp_frozen.css','mlp_scroll.css','mlp_compare_fullscreen.css','mlp_dashboard.css','mlp_predictions.css','mlp_score_maps.css','mlp_ui_refinement.css','mlp_e6_refresh.css','e21_study.css'])
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
         css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())
     script=reader_script()+'\n'+(ROOT/'scripts/templates/e21_study.js').read_text()+'\n'+(ROOT/'scripts/templates/mlp_scroll_boundary.js').read_text()
-    if experiment=='E22':
-        template=template.replace('E21','E22').replace('EKSPERIMEN 21','EKSPERIMEN 22').replace('eksperimen 21','eksperimen 22')
-        script=script.replace('E21','E22')
+    if experiment!='E21':
+        template=template.replace('E21',experiment).replace('EKSPERIMEN 21','EKSPERIMEN '+experiment[1:]).replace('eksperimen 21','eksperimen '+experiment[1:])
+        script=script.replace('E21',experiment)
+    if experiment=='E24':
+        script=script.replace('cls = self.roberta','hidden = self.roberta')
+        script=script.replace("['LayerNorm RoBERTa 768','self.roberta_norm =']", "['Attention token jawaban','self.sequence_pool ='],['LayerNorm RoBERTa 768','self.roberta_norm =']")
     document=(template.replace('__STYLE__',css).replace('__SYMBOLS__',(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text())
         .replace('__DATA__',json.dumps(data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
         .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()).replace('__SCRIPT__',script))
@@ -210,4 +239,4 @@ def build(results=None, experiment='E21', family=False):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--results',type=Path);p.add_argument('--experiment',choices=['E21','E22'],default='E21');a=p.parse_args();build(a.results,a.experiment)
+    p=argparse.ArgumentParser();p.add_argument('--results',type=Path);p.add_argument('--experiment',choices=['E21','E22','E24'],default='E21');a=p.parse_args();build(a.results,a.experiment)
