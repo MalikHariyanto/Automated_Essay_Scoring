@@ -4,6 +4,7 @@
   "rows": 300,
   "development": 240,
   "test": 60,
+  "input_format": "single_sequence",
   "metric_recompute_max_delta": 2.400250771472656e-07,
   "metric_recompute_tolerance": 1e-06,
   "zip_sha256": "893adfd620d6693d9eb3e993a5f3c2defdb6e647300fbb8a76ec69782e34f18d",

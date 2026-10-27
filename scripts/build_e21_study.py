@@ -20,7 +20,7 @@ PIN='ef712b4c035d96178d9baa67caa7453ac9fd8738'
 NOTEBOOK='notebooks/experiments/AES_300_E21_Tiga_Input_GPU.ipynb'
 
 
-def audit(path):
+def audit(path, experiment='E21'):
     sys.path.insert(0,str(ROOT/'src'))
     from aes.teacher_score.models import metrics
     raw=Path(path).read_bytes()
@@ -35,7 +35,7 @@ def audit(path):
     summary=table(blobs[BOOKS[4]],'Ringkasan Lima Fold')
     parameters=table(blobs[BOOKS[4]],'Pengaturan Eksperimen');p={r['Pengaturan']:r['Nilai'] for r in parameters}
     assert len(data)==300 and len(pairs)==60 and len(folds)==15
-    assert p['Format input tiga teks']=='single_sequence'
+    assert p['Format input tiga teks']==('single_sequence' if experiment=='E21' else 'context_pair')
     assert p['Learning rate encoder RoBERTa S1']==p['Learning rate encoder RoBERTa S3']==5e-6
     assert p['Learning rate head']==p['Learning rate proyeksi BGE']==1e-4
     assert p['Skor minimum']==0 and p['Skor maksimum']==100
@@ -93,7 +93,7 @@ def audit(path):
     coverage_summary=[]
     for role in ('roberta','bge'):
         rows=[r for r in coverage if r['model']==role+' tiga input'];assert len(rows)==300
-        assert all(r['Format Input']=='single_sequence' and r['Token Jawaban Tidak Tercakup']==0 for r in rows)
+        assert all(r['Format Input']==p['Format input tiga teks'] and r['Token Jawaban Tidak Tercakup']==0 for r in rows)
         coverage_summary.append({'Encoder':role,'Jawaban':len(rows),'Soal terpotong':sum(r['Soal Terpotong?']=='Ya' for r in rows),
             'Referensi terpotong':sum(r['Referensi Terpotong?']=='Ya' for r in rows),
             'Window total':sum(r['Jumlah Window'] for r in rows),'Token jawaban tak tercakup':0,
@@ -101,8 +101,9 @@ def audit(path):
     public={}
     for i,names in {0:['Panduan'],1:['Panduan'],2:['Panduan'],3:['Panduan','Ringkasan Validasi','Arti Metrik'],4:['Panduan','Model yang Dibandingkan','Pengaturan Eksperimen']}.items():
         for name in names:public[str(i)+'|'+name]=table(blobs[BOOKS[i]],name)
-    snapshot={'id':'E21','scope':'UPLOADED E21 RESULTS; NO NEW TRAINING','rows':300,'development':240,'test':60,
-        'metric_recompute_max_delta':max(metric_deltas),'metric_recompute_tolerance':1e-6,'zip_sha256':hashlib.sha256(raw).hexdigest(),'source_commit':PIN,'source_path':NOTEBOOK,
+    notebook_path=NOTEBOOK if experiment=='E21' else NOTEBOOK.replace('E21_Tiga_Input','E22_Tiga_Input_ContextPair')
+    snapshot={'id':experiment,'scope':'UPLOADED '+experiment+' RESULTS; NO NEW TRAINING','rows':300,'development':240,'test':60,
+        'input_format':p['Format input tiga teks'],'metric_recompute_max_delta':max(metric_deltas),'metric_recompute_tolerance':1e-6,'zip_sha256':hashlib.sha256(raw).hexdigest(),'source_commit':PIN,'source_path':notebook_path,
         'runtime_source_matches_commit':False,'source_note':'Source rujukan repo cocok pengaturan workbook; notebook eksekusi tidak disertakan sehingga kecocokan byte runtime/perangkat belum dibuktikan.',
         'metrics':reported,'folds':folds,'history':history,'foldSummary':summary,'cvSummary':cv,'selected_epochs':selected,
         'matrices':maps,'native':{},'publicSheets':public,'parameters':parameters,'coverage':coverage_summary,
@@ -111,13 +112,20 @@ def audit(path):
 
 
 def content(snapshot):
-    raw=subprocess.check_output(['git','show',PIN+':'+NOTEBOOK],cwd=ROOT);notebook=json.loads(raw)
+    experiment=snapshot.get('id','E21');notebook_path=snapshot.get('source_path',NOTEBOOK)
+    raw=subprocess.check_output(['git','show',PIN+':'+notebook_path],cwd=ROOT);notebook=json.loads(raw)
     chapters,glossary=curriculum(snapshot);cells=[];missing=[]
     for i,cell in enumerate(notebook['cells']):
         if cell['cell_type']!='code':continue
         text=source(cell);lines=text.splitlines();notes=[]
         for index,anchor,title,body in PINS:
             if index!=i:continue
+            if experiment=='E22':
+                if 'build_inputs_with_special_tokens(context_ids+second)' in anchor:
+                    anchor=anchor.replace('context_ids+second','context_ids, second')
+                    title='Pasangan konteks dan jawaban';body='E22 memasukkan konteks sebagai teks A dan penanda/jawaban sebagai teks B. Tokenizer menambahkan separator pasangan; label guru tetap di luar encoder.'
+                if title=='Single sequence E21':
+                    title='Context pair E22';body='Tiga kolom tetap sama. E22 memakai pasangan (soal + referensi, jawaban), bukan menambah informasi baru di luar E21.'
             line=next((j+1 for j,l in enumerate(lines) if anchor in l),None)
             if line is None:missing.append((i,anchor));continue
             notes.append({'line':line,'title':title,'body':body,'term':None,'kind':'fundamental'})
@@ -137,7 +145,7 @@ def content(snapshot):
     if missing:raise ValueError('Anchor E21 tidak ditemukan: '+str(missing))
     return {'chapters':chapters,'glossary':glossary,'cells':cells,'studySnapshot':snapshot,'snapshot':snapshot,
         'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
-        'studySource':{'commit':PIN,'path':NOTEBOOK,'experiment':'E21','runtime_match':False},
+        'studySource':{'commit':PIN,'path':notebook_path,'experiment':experiment,'runtime_match':False},
         'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),'annotations':sum(len(c['notes']) for c in cells)}}
 
 
@@ -163,11 +171,11 @@ def reader_script():
     return js
 
 
-def build(results=None):
+def build(results=None, experiment='E21', family=False):
     if results:
-        snapshot=audit(results)
-        (ROOT/'docs/e21_study_snapshot.json').write_text(json.dumps(snapshot,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
-    else:snapshot=json.loads((ROOT/'docs/e21_study_snapshot.json').read_text())
+        snapshot=audit(results,experiment)
+        (ROOT/('docs/'+experiment.lower()+'_study_snapshot.json')).write_text(json.dumps(snapshot,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    else:snapshot=json.loads((ROOT/('docs/'+experiment.lower()+'_study_snapshot.json')).read_text())
     data=content(snapshot)
     template=(ROOT/'scripts/templates/mlp_study.html').read_text()
     a=template.index('<nav class="workspace-switch"');b=template.index('<section id="reader"',a)
@@ -179,21 +187,27 @@ def build(results=None):
     template=re.sub(r'<p class="source-caption">.*?</p>', '<p class="source-caption">Source E21 pada commit '+PIN[:7]+'. Hasil dibaca dari lima Excel unggahan; notebook eksekusi tidak disertakan.</p>',template)
     template=template.replace('E21 / LR S3 5e-6','E21 / LR S1/S3 5e-6')
     template=template.replace('Ringkasan semua eksperimen →','Hasil E21 →').replace('__EXPERIMENT_COUNT__ eksperimen','1 eksperimen').replace('hasil tersimpan yang dibandingkan','E21 · tiga skenario')
-    template=re.sub(r'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/[^" ]+\.ipynb',f'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/{PIN}/{NOTEBOOK}',template)
+    template=re.sub(r'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/[^" ]+\.ipynb',f'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/{PIN}/'+snapshot['source_path'],template)
     template=template.replace('<section id="reader" class="study-layout"','<section id="reader" hidden class="study-layout"')
     css='\n'.join((ROOT/'scripts/templates'/p).read_text() for p in ['mlp_study.css','mlp_excel.css','mlp_comparison.css','mlp_metrics.css','mlp_frozen.css','mlp_scroll.css','mlp_compare_fullscreen.css','mlp_dashboard.css','mlp_predictions.css','mlp_score_maps.css','mlp_ui_refinement.css','mlp_e6_refresh.css','e21_study.css'])
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
         css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())
     script=reader_script()+'\n'+(ROOT/'scripts/templates/e21_study.js').read_text()+'\n'+(ROOT/'scripts/templates/mlp_scroll_boundary.js').read_text()
+    if experiment=='E22':
+        template=template.replace('E21','E22').replace('EKSPERIMEN 21','EKSPERIMEN 22').replace('eksperimen 21','eksperimen 22')
+        script=script.replace('E21','E22')
     document=(template.replace('__STYLE__',css).replace('__SYMBOLS__',(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text())
         .replace('__DATA__',json.dumps(data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
         .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()).replace('__SCRIPT__',script))
-    public=ROOT/'docs/belajar_E21_Spider.html';public.write_text(document.replace('__PRIVATE_PAYLOAD__',''))
+    if family:
+        document=document.replace('<span class="e21-pending">E22 menunggu hasil</span>','<span class="e21-pending">E21 / E22 · hasil tersedia</span>')
+    public=ROOT/('docs/belajar_'+experiment+'_Spider.html');public.write_text(document.replace('__PRIVATE_PAYLOAD__',''))
     if results:
-        target=ROOT/'outputs/e21_study/belajar_E21_Privat.html';target.parent.mkdir(parents=True,exist_ok=True)
+        target=ROOT/('outputs/e21_study/belajar_'+experiment+'_Privat.html');target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text(document.replace('__PRIVATE_PAYLOAD__',base64.b64encode(Path(results).read_bytes()).decode()))
     print(json.dumps({'public':str(public),'private':str(target) if results else None,'coverage':data['coverage'],'test_metrics':snapshot['metrics']}))
+    return document.replace('__PRIVATE_PAYLOAD__',''),snapshot
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--results',type=Path);a=p.parse_args();build(a.results)
+    p=argparse.ArgumentParser();p.add_argument('--results',type=Path);p.add_argument('--experiment',choices=['E21','E22'],default='E21');a=p.parse_args();build(a.results,a.experiment)

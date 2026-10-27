@@ -1,0 +1,87 @@
+"""Provenance dua eksperimen dan kode yang dibaca pengguna, bukan training baru."""
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def family():
+    raw = (ROOT / 'docs/belajar_Tiga_Input_Spider.html').read_text()
+    data = json.loads(re.search(r'<script id="familyData" type="application/json">(.*?)</script>', raw, re.S)[1])
+    return raw, data
+
+
+def test_same_data_labels_folds_and_only_recorded_format_changes():
+    _, data = family()
+    c = data['comparison']
+    for key in ('same_300_texts_labels', 'same_60_test_ids_labels', 'same_folds', 'recorded_parameters_equal_except_format'):
+        assert c[key] is True
+    for experiment, format_ in [('E21', 'single_sequence'), ('E22', 'context_pair')]:
+        x = c['experiments'][experiment]
+        assert x['input_format'] == format_
+        p = {r['Pengaturan']: r['Nilai'] for r in x['parameters']}
+        assert p['Learning rate encoder RoBERTa S1'] == p['Learning rate encoder RoBERTa S3'] == 5e-6
+        assert x['rows'] == 300 and x['test'] == 60
+        assert x['runtime_source_matches_commit'] is False
+        assert x['metric_recompute_max_delta'] < 1e-6
+
+
+def test_nearest_counts_do_not_replace_rmse_comparison():
+    _, d = family()
+    c = d['comparison']
+    for counts in c['nearest'].values():
+        assert abs(sum(r['share'] for r in counts.values()) - 60) < 1e-8
+    assert c['impact'][2] == {'Skenario': 'S3', 'E21 lebih dekat': 30, 'E22 lebih dekat': 30, 'Seri': 0}
+    m = {e: next(r for r in x['metrics'] if r['Skenario'] == 'S3') for e, x in c['experiments'].items()}
+    assert m['E21']['RMSE (poin)'] < m['E22']['RMSE (poin)']
+    assert m['E21']['Pearson'] < m['E22']['Pearson']
+
+
+def test_both_embedded_code_books_are_exact_pinned_notebooks():
+    _, family_data = family()
+    for e, html in family_data['documents'].items():
+        # Child code JSON is escaped, parsed as the browser reads it.
+        m = re.search(r'<script id="studyData" type="application/json">(.*?)</script>', html, re.S)
+        assert m, e
+        data = json.loads(m[1])
+        snap = family_data['comparison']['experiments'][e]
+        source = json.loads(subprocess.check_output(['git', 'show', snap['source_commit'] + ':' + snap['source_path']], cwd=ROOT))
+        assert len(data['cells']) == 30
+        for cell in data['cells']:
+            raw = source['cells'][cell['index']]['source']
+            raw = raw if isinstance(raw, str) else ''.join(raw)
+            assert cell['source'] == raw, (e, cell['index'])
+            assert cell['sha256'] == hashlib.sha256(raw.encode()).hexdigest()
+            assert all(1 <= n['line'] <= len(cell['htmlLines']) for n in cell['notes'])
+        if e == 'E22':
+            token = next(c for c in data['cells'] if c['index'] == 20)
+            note = next(n for n in token['notes'] if n['title'] == 'Pasangan konteks dan jawaban')
+            assert 'build_inputs_with_special_tokens(context_ids, second)' in token['source'].splitlines()[note['line'] - 1]
+        assert '<script id="privatePayload" type="application/octet-stream"></script>' in html
+
+
+def test_public_books_do_not_embed_individual_payloads():
+    raw, d = family()
+    assert '<script id="familyPrivate" type="application/octet-stream"></script>' in raw
+    forbidden = {'ID Jawaban', 'Jawaban Siswa', 'Nilai Guru', 'Prediksi S1', 'Prediksi S2', 'Prediksi S3', 'pairs'}
+    def scan(v):
+        if isinstance(v, dict):
+            assert not forbidden.intersection(v)
+            for x in v.values(): scan(x)
+        elif isinstance(v, list):
+            for x in v: scan(x)
+    scan(d['comparison'])
+
+
+def test_actual_inline_scripts_parse_without_closing_tag_injection(tmp_path):
+    raw, _ = family()
+    scripts = re.findall(r'<script>(.*?)</script>', raw, re.S)
+    assert len(scripts) == 2
+    for i, text in enumerate(scripts):
+        script = tmp_path / f'inline_{i}.js'
+        script.write_text(text)
+        r = subprocess.run(['node', '--check', str(script)], capture_output=True, text=True)
+        assert r.returncode == 0, r.stderr[-400:]

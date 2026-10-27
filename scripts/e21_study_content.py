@@ -82,6 +82,14 @@ def curriculum(snapshot):
           'Klik sel untuk nilai/teks lengkap. Unduhan XLSX dan ZIP mengembalikan byte sumber asli, tanpa menghitung ulang prediksi.',
           'Output per tahap berasal dari Excel yang tersedia. Notebook eksekusi/log mentah tidak disertakan; buku tidak mengarang output cell atau training baru.'])]
     for chapter,(title,goal,flow,read) in zip(c,lessons):chapter.update(title=title,goal=goal,flow=flow,read=read)
+    c[0]['read'][2]='Baca hasil run eksperimen yang dipilih. Jumlah skenario berbeda dari jumlah eksperimen; setiap run memiliki S1/S2/S3.'
+    if snapshot.get('id')=='E22':
+        for chapter in c:
+            for key in ('title','goal'):chapter[key]=chapter[key].replace('E21','E22')
+            for key in ('flow','read'):chapter[key]=[v.replace('E21','E22') for v in chapter[key]]
+        c[3]['read'][2]='E22 memakai context_pair: teks A = soal + referensi, teks B = penanda jawaban + respons siswa. E21 memakai satu urutan teks; jumlah informasi input tetap sama.'
+        c[6]['read'][0]='E22 memasangkan token konteks dan jawaban dengan separator resmi tokenizer. RoBERTa/XLM-R tidak menambahkan token-type embedding A/B seperti BERT.'
+        c[6]['read'][2]='Overhead pasangan empat special token dicadangkan pada kedua format. E22 memakai empat special aktual; konteks dan starts/cakupan jawaban tetap sebanding dengan single sequence E21.'
     c[4]['sheets']=['Data dan Nilai Guru'];c[6]['sheets']=['Token RoBERTa','Token BGE-M3','Cakupan Token dan Konteks']
     c[3]['sheets']=['Pengaturan Eksperimen'];c[3]['book']=5
     g.update({'learning rate':('Ukuran langkah pembaruan','E21: encoder RoBERTa S1/S3 5e-6; proyeksi/head 1e-4. BGE frozen tidak mempunyai LR encoder.'),
@@ -89,6 +97,9 @@ def curriculum(snapshot):
               'window':('Potongan input tiga teks','Konteks soal/referensi diulang; kapasitas jawaban memperhitungkan konteks, penanda jawaban dan overhead. Jumlah window tidak mengubah hidden_size768/1024.'),
               'X':('Fitur input','Soal, jawaban referensi dan jawaban siswa masuk kedua encoder pada seluruh skenario.'),
               'y':('Target supervised','rater adalah satu skor guru0–100. Label ini tidak dimasukkan ke tokenizer atau cache BGE.')})
+    if snapshot.get('id')=='E22':
+        g['learning rate']=(g['learning rate'][0],g['learning rate'][1].replace('E21','E22'))
+        g['special']=('Separator pasangan','E22 memakai empat special token pada pasangan konteks/jawaban. Keduanya tetap saling memperhatikan melalui self-attention; label guru tidak disisipkan.')
     c[3]['terms']=['X','y','learning rate','head'];c[4]['terms']=['X','y','tokenizer']
     return c,g
 
@@ -131,9 +142,9 @@ PINS=[
  (46,'files.download','Unduh laporan','ZIP berisi lima Excel, bukan bobot model. Buku membaca laporan tanpa menjalankan training.')]
 
 HINTS={
- 'train_all':'Menjalankan15foldCV, menetapkan epoch, refit ketiga skenario, lalu mengevaluasi60test. Seluruh S1/S2/S3 dilatih baru pada E21.',
+ 'train_all':'Menjalankan15foldCV, menetapkan epoch, refit ketiga skenario, lalu mengevaluasi60test. Seluruh S1/S2/S3 dilatih baru pada eksperimen ini.',
  'fit':'Melatih satu fold/refit memakai MSE target0–1 dan optimizer sesuai kelompok LR. Test tidak dipakai early stopping.',
  'Engine':'Menyelaraskan tiga teks dengan indeks jawaban dan fitur BGE, lalu mengembalikan skor ke poin0–100 saat predict.',
  'contexts_from_bundle':'Mengambil soal dan jawaban referensi dalam urutan yang sama dengan jawaban siswa.',
  'bge_features':'Menghitung/cache fitur BGE tiga teks tanpa label guru. Format dan tokenisasi ikut menentukan identitas cache.',
- 'token_vectors':'Mengambil lookup dan fitur contextual subtoken jawaban dengan konteks soal/referensi sesuai jalur input E21.'}
+ 'token_vectors':'Mengambil lookup dan fitur contextual subtoken jawaban dengan konteks soal/referensi sesuai format input eksperimen.'}
