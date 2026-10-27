@@ -42,3 +42,11 @@ Cell terakhir mengunduh ZIP lima Excel seperti E21. `02_Vektor_Jawaban.xlsx` men
 [PaSTO-GNN, Alhothali2026](https://doi.org/10.3389/frai.2026.1842542) menggabungkan RoBERTa yang diadaptasi dan embedding semantik frozen, BiGRU dan temporal attention pada kalimat (§3.6 dan Tabel6). [Dong, Zhang & Yang2017](https://aclanthology.org/K17-1017/) mendukung pembobotan kata/kalimat untuk AES. Penggunaan pada token jawaban S3, pilihan hidden64, serta proyeksi state BiGRU ke768 adalah adaptasi eksperimen ini. Tidak mengadopsi GNN, LoRA atau head CORAL dari PaSTO. Tidak ada jaminan tambahan layer menurunkan RMSE.
 
 Pilih konfigurasi dari CV dengan seed/fold yang sama; nilai test lama yang sudah dilihat bersifat eksploratif. S1/S2 sama secara source/init/forward bila seed dan perangkat sama, tetapi identitas runtime/perangkat/numerik tetap perlu dicatat. Notebook bukan bukti bahwa hasil penelitian baru telah diperoleh.
+
+## Validasi implementasi
+
+15 pengujian lulus (0 failed, 0 errors, 0 skipped, 0 xfailed; satu warning deprecation Jupyter). Pemeriksaan mencakup builder deterministik/source mandiri, hash/dua salinan notebook, S1/S2 dengan state/forward identik E21 pada seed yang sama, dimensi/gradien/LR, frozen BGE, state_dict reload, urutan token BiGRU, mask/padding kanan-kiri, bobot attention bernilai nol pada posisi non-jawaban dan berjumlah satu.
+
+Kedua notebook menjalankan seluruh30codecell,15fitCV+3refit, scoring, ekspor fitur baru dan lima Excel. Kernel baru menjalankan notebook lagi, memakai progres/hasil tersimpan dan mempertahankan hash checkpoint. Laporan memuat pooling768, stateBiGRU128 atau bobot token attention yang jumlahnya satu per jawaban/window.
+
+Eksekusi tersebut memakai Transformer kecil berbobot acak pada CPU dengan guard/perangkat diubah hanya pada fixture. Ini bukan training300jawaban dengan pretrained RoBERTa/BGE, bukan pengujian GPU/CUDA/AMP asli dan bukan bukti peningkatan RMSE penelitian. Source publik tetap meminta GPU. Bukti command, versi, hash, XML dan eksekusi lokal ada di `outputs/e23_e24_verification/`.
