@@ -1,0 +1,199 @@
+"""Buku E21 baru; audit Excel, agregat publik dan isi lengkap privat terpisah."""
+import argparse
+import ast
+import base64
+import copy
+import hashlib
+import io
+import json
+from pathlib import Path
+import re
+import statistics
+import subprocess
+import sys
+from zipfile import ZipFile
+import numpy as np
+from build_mlp_study import ROOT,BOOKS,table,workbook_inventory,highlighted_lines,source
+from e21_study_content import curriculum,PINS,HINTS
+
+PIN='ef712b4c035d96178d9baa67caa7453ac9fd8738'
+NOTEBOOK='notebooks/experiments/AES_300_E21_Tiga_Input_GPU.ipynb'
+
+
+def audit(path):
+    sys.path.insert(0,str(ROOT/'src'))
+    from aes.teacher_score.models import metrics
+    raw=Path(path).read_bytes()
+    with ZipFile(io.BytesIO(raw)) as z:
+        if set(z.namelist())!=set(BOOKS):raise ValueError('E21 memerlukan lima workbook asli.')
+        blobs={n:z.read(n) for n in BOOKS}
+    data=table(blobs[BOOKS[0]],'Data dan Nilai Guru')
+    pairs=table(blobs[BOOKS[3]],'Nilai Guru dan Prediksi')
+    reported=table(blobs[BOOKS[3]],'Perbandingan Model')
+    folds=table(blobs[BOOKS[3]],'Hasil Tiap Fold')
+    history={s:table(blobs[BOOKS[4]],name) for s,name in [('S1','RoBERTa (S1)'),('S2','BGE-M3 (S2)'),('S3','Fusion (S3)')]}
+    summary=table(blobs[BOOKS[4]],'Ringkasan Lima Fold')
+    parameters=table(blobs[BOOKS[4]],'Pengaturan Eksperimen');p={r['Pengaturan']:r['Nilai'] for r in parameters}
+    assert len(data)==300 and len(pairs)==60 and len(folds)==15
+    assert p['Format input tiga teks']=='single_sequence'
+    assert p['Learning rate encoder RoBERTa S1']==p['Learning rate encoder RoBERTa S3']==5e-6
+    assert p['Learning rate head']==p['Learning rate proyeksi BGE']==1e-4
+    assert p['Skor minimum']==0 and p['Skor maksimum']==100
+    by_id={r['ID Jawaban']:r for r in data};assert len(by_id)==300
+    assert len({r['ID Jawaban'] for r in pairs})==60
+    assert all(all(isinstance(r[k],str) and r[k].strip() for k in ('Soal','Jawaban Siswa','jawaban referensi')) for r in data)
+    assert all(by_id[r['ID Jawaban']]['Nilai Guru']==r['Nilai Guru'] for r in pairs)
+    split=table(blobs[BOOKS[0]],'Pembagian Data')
+    test_ids={r['ID Jawaban'] for r in split if r['Penggunaan Data']=='Data uji'}
+    assert len(split)==300 and test_ids=={r['ID Jawaban'] for r in pairs}
+    assignments=table(blobs[BOOKS[0]],'Pembagian Lima Fold')
+    validation_sets=[]
+    for fold in range(1,6):
+        valid={r['ID Jawaban'] for r in assignments if r['Fold']==fold and r['Penggunaan Data']=='Validasi'}
+        train={r['ID Jawaban'] for r in assignments if r['Fold']==fold and r['Penggunaan Data']=='Latih'}
+        assert valid and train and not valid&train and not (valid|train)&test_ids
+        assert len(valid|train)==240;validation_sets.append(valid)
+    assert set.union(*validation_sets)==set(by_id)-test_ids and sum(map(len,validation_sets))==240
+    maps={};extra=[];cv=[];selected={};metric_deltas=[]
+    wins={s:{'unique':0,'tied':0,'share':0.} for s in ('S1','S2','S3')}
+    for r in pairs:
+        errors={s:abs(r['Prediksi '+s]-r['Nilai Guru']) for s in wins};minimum=min(errors.values())
+        best=[s for s in wins if abs(errors[s]-minimum)<=1e-5]
+        for s in best:wins[s]['unique' if len(best)==1 else 'tied']+=1;wins[s]['share']+=1/len(best)
+    for scenario in ('S1','S2','S3'):
+        y=np.array([r['Nilai Guru'] for r in pairs]);pred=np.array([r['Prediksi '+scenario] for r in pairs])
+        actual=metrics(y,pred,{'score_min':0,'score_max':100})
+        report=next(r for r in reported if r['Skenario']==scenario)
+        for k,label in [('RMSE','RMSE (poin)'),('Pearson','Pearson'),('QWK','QWK'),('AC2','Gwet AC2')]:
+            delta=abs(actual[k]-report[label]);metric_deltas.append(delta)
+            assert delta<1e-6,(scenario,label)
+        matrix=[[0]*11 for _ in range(11)]
+        for r in pairs:
+            rounded=min(range(101),key=lambda n:abs(n-min(100,max(0,r['Prediksi '+scenario]))))
+            assert r['Pembulatan '+scenario]==rounded
+            matrix[min(10,int(r['Nilai Guru'])//10)][min(10,rounded//10)]+=1
+        maps[scenario]=matrix
+        rows=[r for r in folds if r['Skenario']==scenario];assert sorted(r['Fold'] for r in rows)==[1,2,3,4,5]
+        for r in summary:
+            if r['Skenario']!=scenario:continue
+            trace=[h for h in history[scenario] if h['Fold']==r['Fold'] and h['Tahap']=='Validasi silang']
+            chosen=next(h for h in trace if h['Epoch']==r['Epoch Terpilih'])
+            assert len(trace)==r['Epoch Dijalankan']
+            assert chosen['RMSE Validasi (poin)']==min(h['RMSE Validasi (poin)'] for h in trace)
+            foldrow=next(h for h in rows if h['Fold']==r['Fold'])
+            assert abs(chosen['RMSE Validasi (poin)']-foldrow['RMSE (poin)'])<1e-7
+        selected[scenario]=int(np.ceil(np.median([r['Epoch Terpilih'] for r in summary if r['Skenario']==scenario])))
+        refit=[r for r in history[scenario] if r['Tahap']=='Latihan final']
+        assert len(refit)==selected[scenario]
+        cv.append({'Skenario':scenario,'mean':statistics.mean(r['RMSE (poin)'] for r in rows),'sd':statistics.stdev(r['RMSE (poin)'] for r in rows)})
+        extra.append({'Skenario':scenario,'MSE (poin²)':float(np.mean((pred-y)**2)),
+            'MAE (poin)':float(np.mean(abs(pred-y))),'Bias (prediksi−guru)':float(np.mean(pred-y)),
+            'Dalam ±5 poin (%)':float(np.mean(abs(pred-y)<=5)*100),'Dalam ±10 poin (%)':float(np.mean(abs(pred-y)<=10)*100)})
+    coverage=table(blobs[BOOKS[0]],'Cakupan Token dan Konteks');assert len(coverage)==600
+    coverage_summary=[]
+    for role in ('roberta','bge'):
+        rows=[r for r in coverage if r['model']==role+' tiga input'];assert len(rows)==300
+        assert all(r['Format Input']=='single_sequence' and r['Token Jawaban Tidak Tercakup']==0 for r in rows)
+        coverage_summary.append({'Encoder':role,'Jawaban':len(rows),'Soal terpotong':sum(r['Soal Terpotong?']=='Ya' for r in rows),
+            'Referensi terpotong':sum(r['Referensi Terpotong?']=='Ya' for r in rows),
+            'Window total':sum(r['Jumlah Window'] for r in rows),'Token jawaban tak tercakup':0,
+            'Kapasitas jawaban minimum':min(r['Kapasitas Jawaban per Window'] for r in rows)})
+    public={}
+    for i,names in {0:['Panduan'],1:['Panduan'],2:['Panduan'],3:['Panduan','Ringkasan Validasi','Arti Metrik'],4:['Panduan','Model yang Dibandingkan','Pengaturan Eksperimen']}.items():
+        for name in names:public[str(i)+'|'+name]=table(blobs[BOOKS[i]],name)
+    snapshot={'id':'E21','scope':'UPLOADED E21 RESULTS; NO NEW TRAINING','rows':300,'development':240,'test':60,
+        'metric_recompute_max_delta':max(metric_deltas),'metric_recompute_tolerance':1e-6,'zip_sha256':hashlib.sha256(raw).hexdigest(),'source_commit':PIN,'source_path':NOTEBOOK,
+        'runtime_source_matches_commit':False,'source_note':'Source rujukan repo cocok pengaturan workbook; notebook eksekusi tidak disertakan sehingga kecocokan byte runtime/perangkat belum dibuktikan.',
+        'metrics':reported,'folds':folds,'history':history,'foldSummary':summary,'cvSummary':cv,'selected_epochs':selected,
+        'matrices':maps,'native':{},'publicSheets':public,'parameters':parameters,'coverage':coverage_summary,
+        'errorSummary':extra,'nearest':wins,'books':[{'file':n,'sha256':hashlib.sha256(blobs[n]).hexdigest(),'sheets':workbook_inventory(blobs[n])} for n in BOOKS]}
+    return snapshot
+
+
+def content(snapshot):
+    raw=subprocess.check_output(['git','show',PIN+':'+NOTEBOOK],cwd=ROOT);notebook=json.loads(raw)
+    chapters,glossary=curriculum(snapshot);cells=[];missing=[]
+    for i,cell in enumerate(notebook['cells']):
+        if cell['cell_type']!='code':continue
+        text=source(cell);lines=text.splitlines();notes=[]
+        for index,anchor,title,body in PINS:
+            if index!=i:continue
+            line=next((j+1 for j,l in enumerate(lines) if anchor in l),None)
+            if line is None:missing.append((i,anchor));continue
+            notes.append({'line':line,'title':title,'body':body,'term':None,'kind':'fundamental'})
+        tree=ast.parse(text.removeprefix('%%aes\n'));offset=int(text.startswith('%%aes\n'))
+        defs=[n for n in tree.body if isinstance(n,(ast.FunctionDef,ast.ClassDef))]
+        for n in defs:
+            line=n.lineno+offset
+            if any(abs(x['line']-line)<=1 for x in notes):continue
+            doc=ast.get_docstring(n)
+            body=HINTS.get(n.name) or (doc.split('\n')[0] if doc else 'Definisi '+n.name+' menyiapkan bagian proses; pemanggilan fungsi di cell ini atau berikutnya menjalankannya. Baca bersama alur dan hasil Excel tahap ini.')
+            notes.append({'line':line,'title':n.name+'()','body':body,'term':None,'kind':'function'})
+        notes.sort(key=lambda n:n['line'])
+        for j,n in enumerate(notes):n['id']=f'c{i}-n{j}'
+        chapter=next((j for j,c in enumerate(chapters) if i in c['cells'] and j!=0),0)
+        cells.append({'index':i,'ordinal':len(cells)+1,'source':text,'htmlLines':highlighted_lines(text),
+            'title':defs[0].name if defs else 'Pengaturan & eksekusi','chapter':chapter,'notes':notes,'sha256':hashlib.sha256(text.encode()).hexdigest()})
+    if missing:raise ValueError('Anchor E21 tidak ditemukan: '+str(missing))
+    return {'chapters':chapters,'glossary':glossary,'cells':cells,'studySnapshot':snapshot,'snapshot':snapshot,
+        'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
+        'studySource':{'commit':PIN,'path':NOTEBOOK,'experiment':'E21','runtime_match':False},
+        'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),'annotations':sum(len(c['notes']) for c in cells)}}
+
+
+def reader_script():
+    js=(ROOT/'scripts/templates/mlp_study.js').read_text()
+    js=js.replace('/*__EXCEL_EXPLORER__*/',(ROOT/'scripts/templates/mlp_excel.js').read_text())
+    js=js.replace('E6','E21').replace('MLP awal','E21')
+    js=js.replace('readWorkbookSheet};','readWorkbookSheet,historyChart};')
+    js=js.replace('l.append(s);selects.append(l);return s','s.setAttribute("aria-label",label);l.append(s);selects.append(l);return s')
+    js=js.replace('Buku lengkap sudah menyertakan seluruh Excel; tidak perlu unggah ZIP.','Buku lengkap sudah menyertakan seluruh Excel E21; tidak perlu unggah ZIP.')
+    js=js.replace('E21 · tabel aktual dari Excel pada tahap ini. Notebook eksekusi E21 tidak disertakan; log E21 tidak ditampilkan sebagai output E21.', 'E21 · hasil tahap ini berasal dari Excel unggahan. Notebook eksekusi/log mentah tidak disertakan; tidak ada output cell yang dikarang.')
+    js=js.replace('Bandingkan peta semua eksperimen →','Buka peta S1/S2/S3 E21 →')
+    js=js.replace("MLPCompare.setMode('dashboard',true);MLPDashboard.setTab('predictions');MLPPredictions.setView('heatmap')", "E21Book.setMode('results');E21Book.setTab('maps')")
+    a=js.index('function windowDemo(){');b=js.index('// Pembaca XLSX',a)
+    js=js[:a]+"function windowDemo(){return E21Book.windowDemo()}\n\n"+js[b:]
+    a=js.index('function modelDiagram(){');b=js.index('function populateCells',a)
+    js=js[:a]+"function modelDiagram(){return E21Book.modelDiagram()}\n"+js[b:]
+    js=js.replace('Notebook sumber E21 tidak cocok arsip terverifikasi.','Notebook sumber E21 tidak cocok arsip terverifikasi.')
+    a=js.index('(async()=>{try{if(!embeddedPayload)')
+    js=js[:a]+'''(async()=>{try{if(!embeddedPayload)return;status('Membuka lima Excel E21…');const bytes=Uint8Array.from(atob(embeddedPayload),c=>c.charCodeAt(0));embeddedPayload=null;await loadResults(bytes);status('E21 siap: lima Excel asli, 60 jawaban test dan seluruh vektor.')}catch(e){error(e)}})();
+})();
+'''
+    return js
+
+
+def build(results=None):
+    if results:
+        snapshot=audit(results)
+        (ROOT/'docs/e21_study_snapshot.json').write_text(json.dumps(snapshot,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    else:snapshot=json.loads((ROOT/'docs/e21_study_snapshot.json').read_text())
+    data=content(snapshot)
+    template=(ROOT/'scripts/templates/mlp_study.html').read_text()
+    a=template.index('<nav class="workspace-switch"');b=template.index('<section id="reader"',a)
+    template=template[:a]+(ROOT/'scripts/templates/e21_results.html').read_text()+template[b:]
+    template=template.replace('E6','E21').replace('EKSPERIMEN 6','EKSPERIMEN 21').replace('eksperimen 6','eksperimen 21')
+    template=template.replace('Dari satu esai.<br>Jadi <em>satu skor.</em>','Tiga teks masuk.<br>Satu <em>skor keluar.</em>')
+    template=template.replace('Bongkar RoBERTa, BGE-M3 dan fusion MLP pelan-pelan. Kode aslinya ada. Hasilnya ada. Catatan pinggirnya bantu lo menyambungkan keduanya.',
+        'Soal, kunci jawaban dan respons siswa dibaca oleh seluruh skenario. Pelajari kode E21, telusuri hasil aktual, lalu bandingkan prediksi dengan skor guru.')
+    template=re.sub(r'<p class="source-caption">.*?</p>', '<p class="source-caption">Source E21 pada commit '+PIN[:7]+'. Hasil dibaca dari lima Excel unggahan; notebook eksekusi tidak disertakan.</p>',template)
+    template=template.replace('E21 / LR S3 5e-6','E21 / LR S1/S3 5e-6')
+    template=template.replace('Ringkasan semua eksperimen →','Hasil E21 →').replace('__EXPERIMENT_COUNT__ eksperimen','1 eksperimen').replace('hasil tersimpan yang dibandingkan','E21 · tiga skenario')
+    template=re.sub(r'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/[^" ]+\.ipynb',f'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/{PIN}/{NOTEBOOK}',template)
+    template=template.replace('<section id="reader" class="study-layout"','<section id="reader" hidden class="study-layout"')
+    css='\n'.join((ROOT/'scripts/templates'/p).read_text() for p in ['mlp_study.css','mlp_excel.css','mlp_comparison.css','mlp_metrics.css','mlp_frozen.css','mlp_scroll.css','mlp_compare_fullscreen.css','mlp_dashboard.css','mlp_predictions.css','mlp_score_maps.css','mlp_ui_refinement.css','mlp_e6_refresh.css','e21_study.css'])
+    for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
+        css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())
+    script=reader_script()+'\n'+(ROOT/'scripts/templates/e21_study.js').read_text()+'\n'+(ROOT/'scripts/templates/mlp_scroll_boundary.js').read_text()
+    document=(template.replace('__STYLE__',css).replace('__SYMBOLS__',(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text())
+        .replace('__DATA__',json.dumps(data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
+        .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()).replace('__SCRIPT__',script))
+    public=ROOT/'docs/belajar_E21_Spider.html';public.write_text(document.replace('__PRIVATE_PAYLOAD__',''))
+    if results:
+        target=ROOT/'outputs/e21_study/belajar_E21_Privat.html';target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_text(document.replace('__PRIVATE_PAYLOAD__',base64.b64encode(Path(results).read_bytes()).decode()))
+    print(json.dumps({'public':str(public),'private':str(target) if results else None,'coverage':data['coverage'],'test_metrics':snapshot['metrics']}))
+
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--results',type=Path);a=p.parse_args();build(a.results)

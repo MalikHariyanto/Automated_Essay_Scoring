@@ -4,6 +4,7 @@ import base64
 import gzip
 import hashlib
 import json
+import re
 from pathlib import Path
 import secrets
 import zipfile
@@ -54,7 +55,10 @@ def main():
     parser.add_argument('--archive',type=Path,help='ZIP satu HTML terenkripsi untuk unduhan besar.')
     parser.add_argument('--parts-dir',type=Path,help='Pecah arsip besar menjadi bagian aman untuk batas GitHub; buat HTML pengunduh.')
     parser.add_argument('--download-ref',default='codex/aes-learning',help='Commit/ref yang menyimpan bagian arsip agar pengunduh tetap cocok.')
+    parser.add_argument('--artifact-name',default='Belajar_AES_MLP_Lengkap',help='Nama dasar paket/HTML; memungkinkan buku terpisah tanpa menimpa buku lama.')
+    parser.add_argument('--download-template',type=Path,help='Template HTML pengunduh khusus buku ini.')
     args=parser.parse_args()
+    if not re.fullmatch(r'[A-Za-z0-9_]+',args.artifact_name):raise ValueError('Nama artifact tidak sah.')
     if args.key_file.exists():
         password=json.loads(args.key_file.read_text())['password']
     else:
@@ -72,9 +76,9 @@ def main():
     if args.archive:
         args.archive.parent.mkdir(parents=True,exist_ok=True)
         with zipfile.ZipFile(args.archive,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
-            archive.writestr('Belajar_AES_MLP_Lengkap.html',document.encode('utf-8'))
+            archive.writestr(args.artifact_name+'.html',document.encode('utf-8'))
         with zipfile.ZipFile(args.archive) as archive:
-            assert archive.read('Belajar_AES_MLP_Lengkap.html')==document.encode('utf-8')
+            assert archive.read(args.artifact_name+'.html')==document.encode('utf-8')
         if not args.parts_dir and args.archive.stat().st_size>=100*1024**2:
             raise ValueError('Arsip melebihi batas file GitHub 100 MiB; jangan dipublikasikan.')
     if args.parts_dir:
@@ -82,12 +86,12 @@ def main():
         args.parts_dir.mkdir(parents=True,exist_ok=True)
         raw=args.archive.read_bytes();parts=[]
         for i,start in enumerate(range(0,len(raw),80*1024**2),1):
-            chunk=raw[start:start+80*1024**2];name=f'Belajar_AES_MLP_Lengkap.part{i}'
+            chunk=raw[start:start+80*1024**2];name=f'{args.artifact_name}.part{i}'
             (args.parts_dir/name).write_bytes(chunk)
             parts.append({'name':name,'size':len(chunk),'sha256':hashlib.sha256(chunk).hexdigest()})
         manifest={'base':f'https://raw.githubusercontent.com/MalikHariyanto/Automated_Essay_Scoring/{args.download_ref}/downloads/','size':len(raw),'sha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
-        template=(Path(__file__).parent/'templates/mlp_download.html').read_text()
-        (args.parts_dir/'Belajar_AES_MLP_Lengkap.html').write_text(template.replace('__MANIFEST__',json.dumps(manifest)))
+        template=(args.download_template or Path(__file__).parent/'templates/mlp_download.html').read_text()
+        (args.parts_dir/(args.artifact_name+'.html')).write_text(template.replace('__MANIFEST__',json.dumps(manifest)))
         assert b''.join((args.parts_dir/p['name']).read_bytes() for p in parts)==raw
         print(json.dumps({'split_archive_verified':True,'parts':parts,'archive_sha256':manifest['sha256']}))
     args.key_file.parent.mkdir(parents=True,exist_ok=True)
