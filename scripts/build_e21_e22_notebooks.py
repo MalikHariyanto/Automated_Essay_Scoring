@@ -45,8 +45,8 @@ def build(experiment):
                     "print('Checkpoint hanya lokal. Bisa dilanjutkan selama folder runtime masih ada; runtime dihapus berarti file lokal hilang. Unduh hasil sebelum menutup sesi.')")
                 start=s.index("DATASET_NAME='fix_dataset_300.xlsx'")
                 end=s.index('def display_aes_table(event):',start)
-                s=s[:start]+'''# Unggah lewat Explorer → Upload to Colab, atau panel Files pada web Colab.
-DATA_PATH=resolve_dataset_upload(PERSISTENT_ROOT,DATASET_FILE or os.environ.get('AES300_DATASET',''))
+                s=s[:start]+'''# Web Colab biasa: Choose Files muncul jika dataset belum diunggah.
+DATA_PATH=resolve_dataset_upload(PERSISTENT_ROOT,DATASET_FILE or os.environ.get('AES300_DATASET',''),browser_upload=IN_COLAB)
 '''+s[end:]
                 s="DATASET_FILE=''  # Biasanya otomatis dari /content; isi path lengkap jika berbeda.\n"+s
             if index==10:
@@ -87,9 +87,8 @@ DATA_PATH=resolve_dataset_upload(PERSISTENT_ROOT,DATASET_FILE or os.environ.get(
             if index==46:
                 s=replace_once(s,"if IN_COLAB:\n    from google.colab import files\n    files.download(download['archive'])\nelse:print('Lokasi file:',download['archive'])",
                     """print('Lokasi ZIP pada runtime:',download['archive'])
-print('Antigravity/VS Code: panel Colab → Contents → cari ZIP pada lokasi di atas → klik kanan → Download.')
 print('Web Colab: panel Files/Berkas → cari ZIP tersebut → menu tiga titik → Download.')
-DOWNLOAD_WITH_COLAB_BROWSER=False  # Opsional: True hanya bila memakai web Colab.
+DOWNLOAD_WITH_COLAB_BROWSER=True  # Unduh ZIP hasil otomatis pada web Colab.
 if IN_COLAB and DOWNLOAD_WITH_COLAB_BROWSER:
     from google.colab import files
     files.download(download['archive'])""")
@@ -145,7 +144,7 @@ def intro(experiment,mode,name):
 
 **Tanpa Google Drive:** tidak mount, autentikasi, Drive API atau autosave Drive. Dataset, model, checkpoint dua slot dan Excel disimpan HANYA di folder lokal `{name}`. Jalankan ulang dari atas untuk melanjutkan jika folder lokal masih ada. Runtime Colab dihapus/diganti berarti file lokal hilang; unduh hasil sebelum sesi berakhir. Notebook tidak menghapus hasil eksperimen lain dan tidak memulihkan otomatis dari Drive.
 
-**Upload terlebih dahulu:** di Antigravity/VS Code, klik kanan `fix_dataset_300.xlsx` pada Explorer → **Upload to Colab**. Di web Colab gunakan panel **Files/Berkas → Upload**. Setelah upload selesai, jalankan dari atas. File `/content/fix_dataset_300.xlsx` dideteksi otomatis; jika berbeda isi DATASET_FILE di cell setup. Tidak memakai widget Choose Files/files.upload. Cell terakhir menyiapkan ZIP lima Excel lengkap. Untuk prediksi baru isi NEW_QUESTION/NEW_REFERENCE/NEW_ANSWER; `rater` baru tidak diperlukan. ZIP laporan tidak berisi bobot model: `S1/final.pt`, `S2/final.pt`, `S3/final.pt` tersedia di folder run lokal dan dapat diunduh manual jika dibutuhkan lagi.
+**Web Colab biasa:** buka notebook lalu **Runtime → Run all**. Pada cell setup klik **Choose Files**, pilih `fix_dataset_300.xlsx` dari komputer dan tunggu upload selesai. Jika file sudah ada di runtime, notebook langsung memakainya. Cell terakhir mengunduh ZIP lima Excel lengkap. Tidak perlu ekstensi/editor lain atau menghubungkan Drive. Jika tombol upload terlihat abu-abu dari output sesi lama, jalankan ulang cell setup di sesi browser saat ini. Untuk prediksi baru isi NEW_QUESTION/NEW_REFERENCE/NEW_ANSWER; `rater` baru tidak diperlukan. ZIP laporan tidak berisi bobot model: `S1/final.pt`, `S2/final.pt`, `S3/final.pt` tersedia di folder run lokal dan dapat diunduh manual jika dibutuhkan lagi.
 
 Pemotongan soal/referensi dicatat; seluruh token jawaban mendapat window. Batas sama menjaga perbandingan format. Ini generalisasi jawaban pada soal yang tersedia, bukan uji soal baru. Data uji lama sudah pernah dilihat selama pengembangan; hasil lanjutan bersifat eksploratif, pemilihan metode tetap melalui development/CV. Notebook publik tidak menyertakan data/skor individual atau hasil penelitian pengganti.
 '''

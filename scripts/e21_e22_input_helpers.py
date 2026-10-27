@@ -1,10 +1,11 @@
 """Dua format tiga input; kode ini dibenamkan, tidak diimpor notebook."""
 
 
-def resolve_dataset_upload(workspace, configured='', search_paths=None):
-    """Baca upload native editor/web dari filesystem; tidak memakai widget JS."""
+def resolve_dataset_upload(workspace, configured='', search_paths=None, browser_upload=False):
+    """Web Colab: pakai file yang ada, atau tampilkan Choose Files pada cell ini."""
     from pathlib import Path
     import hashlib
+    import os
     import shutil
     workspace=Path(workspace).expanduser().resolve()
     destination=workspace/'data/dataset300/fix_dataset_300.xlsx'
@@ -21,13 +22,25 @@ def resolve_dataset_upload(workspace, configured='', search_paths=None):
                 candidates.append(path)
         if not candidates and destination.is_file():
             candidates=[destination]
+    if not candidates and browser_upload:
+        from google.colab import files
+        destination.parent.mkdir(parents=True,exist_ok=True)
+        print('Klik Choose Files, lalu pilih fix_dataset_300.xlsx dari komputer.',flush=True)
+        previous=Path.cwd()
+        try:
+            os.chdir(destination.parent)
+            uploaded=files.upload()
+        finally:
+            os.chdir(previous)
+        if 'fix_dataset_300.xlsx' not in uploaded:
+            raise ValueError('Pilih fix_dataset_300.xlsx. Jika dibatalkan, jalankan ulang cell setup ini.')
+        candidates=[destination]
+        del uploaded
     if not candidates:
         raise FileNotFoundError(
-            'Dataset belum ada di runtime. Di Antigravity/VS Code: klik kanan '
-            'fix_dataset_300.xlsx pada Explorer komputer → Upload to Colab. '
-            'Di web Colab: panel Files/Berkas kiri → Upload. Tunggu selesai, '
-            'lalu jalankan ulang cell setup ini. File biasanya berada di '
-            '/content/fix_dataset_300.xlsx. Jika lokasinya berbeda, isi DATASET_FILE pada awal cell ini.')
+            'Dataset belum ada. Di web Colab, jalankan cell setup ini dan pilih '
+            'fix_dataset_300.xlsx melalui Choose Files. Alternatif: panel Files/Berkas kiri '
+            '→ Upload, lalu jalankan ulang cell ini. Jika lokasinya berbeda, isi DATASET_FILE.')
     hashes={hashlib.sha256(p.read_bytes()).hexdigest() for p in candidates}
     if len(hashes)>1:
         raise ValueError('Ada beberapa dataset berbeda: '+', '.join(map(str,candidates))+

@@ -8,6 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+import types
 
 import nbformat
 from nbclient import NotebookClient
@@ -25,6 +26,8 @@ from test_teacher_score import TechnicalTokenizer,make_book,encoders
 
 NAMES={'single_sequence':'AES_300_E21_Tiga_Input_CPU.ipynb',
        'context_pair':'AES_300_E22_Tiga_Input_ContextPair_CPU.ipynb'}
+GPU=os.environ.get('AES_E21_E22_DEVICE')=='GPU'
+if GPU:NAMES={mode:name.replace('_CPU','_GPU') for mode,name in NAMES.items()}
 
 
 @pytest.fixture(params=NAMES)
@@ -55,13 +58,13 @@ def test_both_sources_are_standalone_deterministic_and_differ_only_by_format_and
             assert c['execution_count'] is None and c['outputs']==[]
             s=''.join(c['source']).removeprefix('%%aes\n');ast.parse(s)
             assert 'drive.mount' not in s and 'googleapiclient' not in s and 'AES300_PERSISTENT_DIR' not in s
-            assert 'files.upload(' not in s
             codes.append(s.replace(fingerprint,'__NOTEBOOK_CODE_SHA256__'))
         assert len(codes)==30
         assert hashlib.sha256('\n'.join(codes).encode()).hexdigest()==fingerprint
         normalized.append('\n'.join(codes).replace(name.removesuffix('.ipynb'),'EXPERIMENT').replace("'input_format':'"+mode+"'","'input_format':'FORMAT'").replace("INPUT_FORMAT='"+mode+"'","INPUT_FORMAT='FORMAT'"))
     assert normalized[0]==normalized[1]
-    subprocess.run([sys.executable,'scripts/build_e21_e22_notebooks.py'],cwd=ROOT,check=True,capture_output=True)
+    builder='scripts/build_e21_e22_gpu_notebooks.py' if GPU else 'scripts/build_e21_e22_notebooks.py'
+    subprocess.run([sys.executable,builder],cwd=ROOT,check=True,capture_output=True)
     assert all((ROOT/'notebooks/experiments'/name).read_bytes()==raw for name,raw in original.items())
 
 
@@ -92,7 +95,7 @@ def test_native_editor_upload_is_found_copied_and_explicit_path_resolves_conflic
 
 def test_missing_native_upload_explains_retry_without_widget_and_rejects_empty_file(runtime,tmp_path):
     ns,_,_=runtime;workspace=tmp_path/'empty_workspace';native=tmp_path/'incoming';native.mkdir()
-    with pytest.raises(FileNotFoundError,match='Upload to Colab'):
+    with pytest.raises(FileNotFoundError,match='Choose Files'):
         ns['resolve_dataset_upload'](workspace,search_paths=[native])
     with pytest.raises(FileNotFoundError,match='DATASET_FILE'):
         ns['resolve_dataset_upload'](workspace,configured=str(native/'missing.xlsx'))
@@ -101,6 +104,38 @@ def test_missing_native_upload_explains_retry_without_widget_and_rejects_empty_f
         ns['resolve_dataset_upload'](workspace,search_paths=[native])
     make_book(source)
     assert ns['resolve_dataset_upload'](workspace,search_paths=[native]).read_bytes()==source.read_bytes()
+
+
+def test_colab_browser_upload_writes_file_restores_cwd_and_handles_cancel(runtime,tmp_path,monkeypatch):
+    ns,_,_=runtime;module=types.ModuleType('google.colab');called=[]
+    def upload():
+        called.append(Path.cwd());make_book(Path('fix_dataset_300.xlsx'))
+        return {'fix_dataset_300.xlsx':Path('fix_dataset_300.xlsx').read_bytes()}
+    module.files=types.SimpleNamespace(upload=upload)
+    monkeypatch.setitem(sys.modules,'google.colab',module)
+    before=Path.cwd();workspace=tmp_path/'web_colab_runtime'
+    dest=ns['resolve_dataset_upload'](workspace,search_paths=[],browser_upload=True)
+    assert dest.is_file() and Path.cwd()==before and called==[dest.parent]
+    assert ns['resolve_dataset_upload'](workspace,search_paths=[],browser_upload=True)==dest
+    assert len(called)==1  # Tidak meminta upload lagi bila file sudah ada.
+    module.files.upload=lambda:{}
+    with pytest.raises(ValueError,match='dibatalkan'):
+        ns['resolve_dataset_upload'](tmp_path/'cancelled',search_paths=[],browser_upload=True)
+    assert Path.cwd()==before
+
+
+def test_published_device_guard_requires_cuda_for_gpu_variant(runtime,tmp_path,monkeypatch):
+    ns,_,_=runtime;n=json.loads(context.NOTEBOOK.read_text());calls=[]
+    monkeypatch.setenv('AES300_DATASET',str(tmp_path/'fixture.xlsx'))
+    monkeypatch.setenv('AES300_RESULTS',str(tmp_path/'results'))
+    original=ns['check_gpu']
+    # Periksa permintaan perangkat pada cell konfigurasi.
+    ns['check_gpu']=lambda require_gpu:calls.append(require_gpu) or {'name':'TECHNICAL CUDA CHECK','cuda_available':GPU,'is_t4':GPU,'memory_gib':16}
+    exec(''.join(n['cells'][12]['source']).removeprefix('%%aes\n'),ns)
+    assert calls==[GPU] and ns['cfg']['device']==('cuda' if GPU else 'cpu')
+    ns['torch']=types.SimpleNamespace(cuda=types.SimpleNamespace(is_available=lambda:False))
+    with pytest.raises(RuntimeError,match='GPU belum aktif'):original(require_gpu=True)
+    assert ('CUDA_VISIBLE_DEVICES' not in ''.join(n['cells'][7]['source'])) if GPU else True
 
 
 def test_single_and_pair_preserve_identical_information_answer_windows_and_coverage(runtime):
@@ -209,6 +244,10 @@ def tokenizer(*a,**k):return ThreeTechnicalTokenizer()
             cell.source=cell.source.replace('CONTEXT_MAX_TOKENS,QUESTION_MAX_TOKENS=192,64','CONTEXT_MAX_TOKENS,QUESTION_MAX_TOKENS=12,4')
             cell.source=cell.source.replace('context_max_tokens=CONTEXT_MAX_TOKENS,question_max_tokens=QUESTION_MAX_TOKENS,',
                 'context_max_tokens=CONTEXT_MAX_TOKENS,question_max_tokens=QUESTION_MAX_TOKENS,roberta_max_length=32,roberta_overlap=4,bge_max_length=32,bge_overlap=4,')
+            if GPU:
+                # Fixture dijalankan di CPU; guard CUDA versi publik diuji terpisah.
+                cell.source=cell.source.replace("device='cuda',new_answer=", "device='cpu',new_answer=")
+                cell.source=cell.source.replace('gpu=check_gpu(require_gpu=True)','gpu=check_gpu(require_gpu=False)')
         if 'def encoder(cfg, role):' in cell.source:
             cell.source+='\n'+inspect.getsource(TechnicalTokenizer)+'\n'+inspect.getsource(context.PairTechnicalTokenizer)+'\n'+inspect.getsource(ThreeTechnicalTokenizer)+tiny
             cell.source=cell.source.replace('context.PairTechnicalTokenizer','PairTechnicalTokenizer')
@@ -247,5 +286,5 @@ def tokenizer(*a,**k):return ThreeTechnicalTokenizer()
     assert not list(workspace.rglob('*.py'))
     proof={'scope':'TECHNICAL RANDOM TRANSFORMER FIXTURE ONLY','format':mode,'code_cells':30,
         'cv_fits':15,'refits':3,'reports':5,'resume_fresh_kernel_same_local_folder':True,
-        'drive_not_used':True,'elapsed_seconds':round(time.time()-started,2)}
+        'drive_not_used':True,'execution_device':'cpu','published_gpu_variant':GPU,'elapsed_seconds':round(time.time()-started,2)}
     (isolated/'execution_proof.json').write_text(json.dumps(proof,indent=2));print(json.dumps(proof))
