@@ -18,7 +18,8 @@ def build(experiment):
     n=copy.deepcopy(json.loads(raw));previous=n['metadata']['aes_standalone']['code_sha256']
     mode='single_sequence' if experiment=='E21' else 'context_pair'
     name=NAMES[experiment]
-    helper=definitions((ROOT/'scripts/e21_e22_input_helpers.py').read_text())['pair_content_windows']
+    helpers=definitions((ROOT/'scripts/e21_e22_input_helpers.py').read_text())
+    helper=helpers['pair_content_windows']
     for index,cell in enumerate(n['cells']):
         s=source(cell).replace(previous,'__NOTEBOOK_CODE_SHA256__')
         s=s.replace('AES_300_E6_Tiga_Input_CPU',name)
@@ -37,10 +38,17 @@ def build(experiment):
 ''')
                 s=replace_once(s,'ROOT.mkdir(parents=True,exist_ok=True)',
                     "ROOT=ROOT.resolve()\nif ROOT==Path('/content/drive') or Path('/content/drive') in ROOT.parents:\n    raise ValueError('Workspace harus lokal; E21/E22 tidak menulis Google Drive.')\nROOT.mkdir(parents=True,exist_ok=True)")
+                s+='\n'+helpers['resolve_dataset_upload']+'\n'
             if index==7:
                 s=s.replace('prepare_persistent_storage(ROOT,IN_COLAB)','prepare_local_storage(ROOT,IN_COLAB)')
                 s=s.replace("print('Progres disimpan otomatis setiap epoch. Saat sesi terputus, jalankan kembali notebook yang sama dari atas.')",
                     "print('Checkpoint hanya lokal. Bisa dilanjutkan selama folder runtime masih ada; runtime dihapus berarti file lokal hilang. Unduh hasil sebelum menutup sesi.')")
+                start=s.index("DATASET_NAME='fix_dataset_300.xlsx'")
+                end=s.index('def display_aes_table(event):',start)
+                s=s[:start]+'''# Unggah lewat Explorer → Upload to Colab, atau panel Files pada web Colab.
+DATA_PATH=resolve_dataset_upload(PERSISTENT_ROOT,DATASET_FILE or os.environ.get('AES300_DATASET',''))
+'''+s[end:]
+                s="DATASET_FILE=''  # Biasanya otomatis dari /content; isi path lengkap jika berbeda.\n"+s
             if index==10:
                 s=s.replace("'encoder_lr': 1e-5", "'encoder_lr': 5e-6")
                 s=replace_once(s,"'input_policy':'three_texts_all_scenarios_v1',",
@@ -76,6 +84,15 @@ def build(experiment):
             if index==45:
                 s=replace_once(s,"settings={'epochs':'Maksimum epoch per fold'",
                     "settings={'input_format':'Format input tiga teks','epochs':'Maksimum epoch per fold'")
+            if index==46:
+                s=replace_once(s,"if IN_COLAB:\n    from google.colab import files\n    files.download(download['archive'])\nelse:print('Lokasi file:',download['archive'])",
+                    """print('Lokasi ZIP pada runtime:',download['archive'])
+print('Antigravity/VS Code: panel Colab → Contents → cari ZIP pada lokasi di atas → klik kanan → Download.')
+print('Web Colab: panel Files/Berkas → cari ZIP tersebut → menu tiga titik → Download.')
+DOWNLOAD_WITH_COLAB_BROWSER=False  # Opsional: True hanya bila memakai web Colab.
+if IN_COLAB and DOWNLOAD_WITH_COLAB_BROWSER:
+    from google.colab import files
+    files.download(download['archive'])""")
             s=s.replace('Token pasangan aktual: soal/referensi + jawaban untuk seluruh skenario',
                         'Token aktual tiga input seluruh skenario; lihat kolom input_format pada cakupan')
             s=s.replace('input sama untuk S1 dan S3','input sama untuk S1 dan S3; format mengikuti konfigurasi')
@@ -128,7 +145,7 @@ def intro(experiment,mode,name):
 
 **Tanpa Google Drive:** tidak mount, autentikasi, Drive API atau autosave Drive. Dataset, model, checkpoint dua slot dan Excel disimpan HANYA di folder lokal `{name}`. Jalankan ulang dari atas untuk melanjutkan jika folder lokal masih ada. Runtime Colab dihapus/diganti berarti file lokal hilang; unduh hasil sebelum sesi berakhir. Notebook tidak menghapus hasil eksperimen lain dan tidak memulihkan otomatis dari Drive.
 
-**Jalankan dari atas**, unggah `fix_dataset_300.xlsx`. Cell terakhir mengunduh ZIP lima Excel lengkap. Untuk prediksi baru isi NEW_QUESTION/NEW_REFERENCE/NEW_ANSWER; `rater` baru tidak diperlukan. ZIP laporan tidak berisi bobot model: `S1/final.pt`, `S2/final.pt`, `S3/final.pt` tersedia di folder run lokal dan dapat diunduh manual jika dibutuhkan lagi.
+**Upload terlebih dahulu:** di Antigravity/VS Code, klik kanan `fix_dataset_300.xlsx` pada Explorer → **Upload to Colab**. Di web Colab gunakan panel **Files/Berkas → Upload**. Setelah upload selesai, jalankan dari atas. File `/content/fix_dataset_300.xlsx` dideteksi otomatis; jika berbeda isi DATASET_FILE di cell setup. Tidak memakai widget Choose Files/files.upload. Cell terakhir menyiapkan ZIP lima Excel lengkap. Untuk prediksi baru isi NEW_QUESTION/NEW_REFERENCE/NEW_ANSWER; `rater` baru tidak diperlukan. ZIP laporan tidak berisi bobot model: `S1/final.pt`, `S2/final.pt`, `S3/final.pt` tersedia di folder run lokal dan dapat diunduh manual jika dibutuhkan lagi.
 
 Pemotongan soal/referensi dicatat; seluruh token jawaban mendapat window. Batas sama menjaga perbandingan format. Ini generalisasi jawaban pada soal yang tersedia, bukan uji soal baru. Data uji lama sudah pernah dilihat selama pengembangan; hasil lanjutan bersifat eksploratif, pemilihan metode tetap melalui development/CV. Notebook publik tidak menyertakan data/skor individual atau hasil penelitian pengganti.
 '''

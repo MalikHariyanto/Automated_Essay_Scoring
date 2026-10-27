@@ -1,6 +1,47 @@
 """Dua format tiga input; kode ini dibenamkan, tidak diimpor notebook."""
 
 
+def resolve_dataset_upload(workspace, configured='', search_paths=None):
+    """Baca upload native editor/web dari filesystem; tidak memakai widget JS."""
+    from pathlib import Path
+    import hashlib
+    import shutil
+    workspace=Path(workspace).expanduser().resolve()
+    destination=workspace/'data/dataset300/fix_dataset_300.xlsx'
+    if configured:
+        candidates=[Path(configured).expanduser().resolve()]
+        if not candidates[0].is_file():
+            raise FileNotFoundError('DATASET_FILE/AES300_DATASET belum ditemukan: '+str(candidates[0]))
+    else:
+        places=search_paths if search_paths is not None else [Path('/content'),Path.cwd(),workspace]
+        candidates=[]
+        for place in places:
+            path=(Path(place)/'fix_dataset_300.xlsx').resolve()
+            if path.is_file() and path not in candidates and path!=destination:
+                candidates.append(path)
+        if not candidates and destination.is_file():
+            candidates=[destination]
+    if not candidates:
+        raise FileNotFoundError(
+            'Dataset belum ada di runtime. Di Antigravity/VS Code: klik kanan '
+            'fix_dataset_300.xlsx pada Explorer komputer → Upload to Colab. '
+            'Di web Colab: panel Files/Berkas kiri → Upload. Tunggu selesai, '
+            'lalu jalankan ulang cell setup ini. File biasanya berada di '
+            '/content/fix_dataset_300.xlsx. Jika lokasinya berbeda, isi DATASET_FILE pada awal cell ini.')
+    hashes={hashlib.sha256(p.read_bytes()).hexdigest() for p in candidates}
+    if len(hashes)>1:
+        raise ValueError('Ada beberapa dataset berbeda: '+', '.join(map(str,candidates))+
+                         '. Isi DATASET_FILE dengan path file yang ingin dipakai.')
+    source=candidates[0]
+    if not source.stat().st_size:
+        raise ValueError('File upload masih kosong; tunggu upload selesai lalu jalankan ulang cell ini.')
+    destination.parent.mkdir(parents=True,exist_ok=True)
+    if source!=destination:
+        shutil.copy2(source,destination)
+    print('Dataset dari upload lokal:',source,'→',destination,flush=True)
+    return destination
+
+
 def pair_content_windows(text, context, tokenizer, maximum=512, overlap=128, cfg=None):
     """Informasi dan window sama; E22 menambah separator resmi pasangan."""
     if cfg is None or cfg.get('input_format') not in ('single_sequence', 'context_pair'):

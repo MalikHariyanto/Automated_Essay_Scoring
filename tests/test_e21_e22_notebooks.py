@@ -55,6 +55,7 @@ def test_both_sources_are_standalone_deterministic_and_differ_only_by_format_and
             assert c['execution_count'] is None and c['outputs']==[]
             s=''.join(c['source']).removeprefix('%%aes\n');ast.parse(s)
             assert 'drive.mount' not in s and 'googleapiclient' not in s and 'AES300_PERSISTENT_DIR' not in s
+            assert 'files.upload(' not in s
             codes.append(s.replace(fingerprint,'__NOTEBOOK_CODE_SHA256__'))
         assert len(codes)==30
         assert hashlib.sha256('\n'.join(codes).encode()).hexdigest()==fingerprint
@@ -71,6 +72,35 @@ def test_local_storage_ignores_persistent_drive_override_and_blocks_drive_path(r
     assert ns['prepare_local_storage'](local,True)==local.resolve()
     with pytest.raises(ValueError,match='lokal'):
         ns['prepare_local_storage'](Path('/content/drive/MyDrive/DO_NOT_WRITE'),True)
+
+
+def test_native_editor_upload_is_found_copied_and_explicit_path_resolves_conflicts(runtime,tmp_path):
+    ns,_,_=runtime;folder=tmp_path/'native_content';folder.mkdir()
+    source=folder/'fix_dataset_300.xlsx';make_book(source)
+    workspace=tmp_path/'local_workspace'
+    dest=ns['resolve_dataset_upload'](workspace,search_paths=[folder])
+    assert dest==workspace/'data/dataset300/fix_dataset_300.xlsx'
+    assert dest.read_bytes()==source.read_bytes()
+    # Dua upload berbeda tidak boleh dipilih diam-diam.
+    other=tmp_path/'other_upload';other.mkdir();make_book(other/source.name,rows=12)
+    with pytest.raises(ValueError,match='DATASET_FILE'):
+        ns['resolve_dataset_upload'](workspace,search_paths=[folder,other])
+    assert ns['resolve_dataset_upload'](workspace,configured=str(source)).read_bytes()==source.read_bytes()
+    source.unlink()
+    assert ns['resolve_dataset_upload'](workspace,search_paths=[]).is_file()
+
+
+def test_missing_native_upload_explains_retry_without_widget_and_rejects_empty_file(runtime,tmp_path):
+    ns,_,_=runtime;workspace=tmp_path/'empty_workspace';native=tmp_path/'incoming';native.mkdir()
+    with pytest.raises(FileNotFoundError,match='Upload to Colab'):
+        ns['resolve_dataset_upload'](workspace,search_paths=[native])
+    with pytest.raises(FileNotFoundError,match='DATASET_FILE'):
+        ns['resolve_dataset_upload'](workspace,configured=str(native/'missing.xlsx'))
+    source=native/'fix_dataset_300.xlsx';source.touch()
+    with pytest.raises(ValueError,match='kosong'):
+        ns['resolve_dataset_upload'](workspace,search_paths=[native])
+    make_book(source)
+    assert ns['resolve_dataset_upload'](workspace,search_paths=[native]).read_bytes()==source.read_bytes()
 
 
 def test_single_and_pair_preserve_identical_information_answer_windows_and_coverage(runtime):
