@@ -1,5 +1,7 @@
 # Panduan kode E6 dengan catatan di samping
 
+> Catatan historis: HTML terpisah pada dokumen ini telah digantikan oleh [dua buku terbaru](../downloads/README.md). Kode utama buku tiga variabel sekarang E24; file lama dapat ditelusuri pada commit versi asal.
+
 `downloads/Belajar_Kode_E6.html` adalah satu HTML offline ringan, terpisah dari buku hasil eksperimen. Memuat seluruh 30 code cell E6 (2.695 baris), 153 catatan, sepuluh padanan screenshot mDeBERTa ke E6, dan pencarian 99 bagian dari panduan Excel. Tidak memuat output notebook, dataset, nilai individual, atau arsip hasil.
 
 Source dipin pada `2257cb0f601148764d7844fc6ffca925a9b2ab95`, path `notebooks/experiments/AES_300_E6_S3_LR5e6_CPU_Reuse.ipynb`, SHA256 `ddaf09d78d962ea3a15dabb5d43fcaead5ca3c96e9ec4bc01c0b241d37dc8232`. Source sama dengan meja belajar E6 dan Excel panduan sebelumnya. Notebook dan metode tidak diubah.

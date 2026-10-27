@@ -230,11 +230,12 @@ def build(results=None, experiment='E21', family=False):
         .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()).replace('__SCRIPT__',script))
     if family:
         document=document.replace('<span class="e21-pending">E22 menunggu hasil</span>','<span class="e21-pending">E21 / E22 · hasil tersedia</span>')
-    public=ROOT/('docs/belajar_'+experiment+'_Spider.html');public.write_text(document.replace('__PRIVATE_PAYLOAD__',''))
+    public=ROOT/('docs/belajar_'+experiment+'_Spider.html')
+    if not family: public.write_text(document.replace('__PRIVATE_PAYLOAD__',''))
     if results:
         target=ROOT/('outputs/e21_study/belajar_'+experiment+'_Privat.html');target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text(document.replace('__PRIVATE_PAYLOAD__',base64.b64encode(Path(results).read_bytes()).decode()))
-    print(json.dumps({'public':str(public),'private':str(target) if results else None,'coverage':data['coverage'],'test_metrics':snapshot['metrics']}))
+    print(json.dumps({'public':None if family else str(public),'private':str(target) if results else None,'coverage':data['coverage'],'test_metrics':snapshot['metrics']}))
     return document.replace('__PRIVATE_PAYLOAD__',''),snapshot
 
 

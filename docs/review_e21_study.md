@@ -1,5 +1,7 @@
 # Buku E21 tiga input — terpisah dari buku eksperimen lama
 
+> Catatan historis: HTML terpisah pada dokumen ini telah digantikan oleh [dua buku terbaru](../downloads/README.md). Kode utama buku tiga variabel sekarang E24; file lama dapat ditelusuri pada commit versi asal.
+
 `docs/belajar_E21_Spider.html` adalah salinan agregat aman. Buku lengkap berisi kode dan seluruh lima Excel E21 di dalam paket terenkripsi yang terpisah. Buku lama beserta hasil E0–E8/E6 2.0 tetap tersedia dan tidak ditimpa. E22 kemudian tersedia dalam [buku gabungan E21/E22](review_three_input_study.md); paket E21 terpisah tetap dapat dipakai.
 
 Variabel input E21 adalah `soal`, `jawaban_referensi`, `response_text` pada seluruh S1/S2/S3. Label tetap `rater`, satu skor guru0–100. Perubahan jumlah input tidak menghasilkan tiga label. S1 memakai RoBERTa fine-tuned + linear; S2 BGE frozen + MLP; S3 fusion + MLP. LR encoder S1/S3 sama-sama5e-6; proyeksi/head1e-4. Input E21 adalah single sequence. Soal, referensi, penanda jawaban dan jawaban masuk urutan yang sama; E22 kelak menguji format pasangan.

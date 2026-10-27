@@ -87,6 +87,10 @@ def build_family(e21,e22,e24=None):
     template=(ROOT/'scripts/templates/three_input_study.html').read_text()
     if e24:
         template=template.replace('E21 × E22','E21 × E22 × E24').replace('E21–E22','E21–E22–E24').replace('DUA EKSPERIMEN','TIGA EKSPERIMEN').replace('dua eksperimen','tiga eksperimen').replace('Hasil dua run','Hasil tiga run').replace('keenam model','sembilan model').replace('SATU BUKU, DUA FORMAT','TIGA INPUT, TIGA EKSPERIMEN').replace('Format <em>berbeda.</em>','Ringkasan <em>berbeda.</em>').replace('E22 membaca pasangan konteks dan jawaban.', 'E22 membaca pasangan konteks dan jawaban. E24 menambahkan attention pooling pada S3 dari E21.').replace('E22 context pair.', 'E22 context pair · E24 attention pooling.').replace('</select></label><span id="familyStudyStatus"','<option value="E24">E24 · attention pooling S3</option></select></label><span id="familyStudyStatus"')
+    if e24:
+        template=template.replace('<option value="E24">','<option value="E24" selected>')
+        template=template.replace('Meja belajar →','Pelajari kode E24 →').replace('>Meja belajar</button>','>Meja belajar E24</button>')
+        template=template.replace('Kode lengkap, sticky note, output tahap dan semua sheet.', 'E24 · attention pooling S3 · kode utama, sticky note dan lima Excel.')
     document=(template.replace('__STYLE__',stylesheet).replace('__SYMBOLS__',symbols)
         .replace('__DATA__',json.dumps(family_data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
         .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text())

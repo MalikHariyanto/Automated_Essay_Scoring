@@ -1,5 +1,7 @@
 # Hosting statis code belajar paper
 
+> Catatan historis: HTML terpisah pada dokumen ini telah digantikan oleh [dua buku terbaru](../downloads/README.md). Kode utama buku tiga variabel sekarang E24; file lama dapat ditelusuri pada commit versi asal.
+
 Web menampilkan versi HTML yang sudah disetujui. Tab, navigasi, gambar, dan catatan berjalan di browser; tidak ada database, komentar, formulir unggahan, atau layanan penilaian model. Login email ditempatkan di depan web melalui Cloudflare Access.
 
 Cloudflare Workers Static Assets menyediakan hosting gratis dan alamat `code-belajar-paper.<nama-akun>.workers.dev`, sehingga domain berbayar tidak diperlukan. Pilih Workers Free dan Zero Trust Free. Menurut panduan resmi Cloudflare, aktivasi Zero Trust Free tetap meminta data pembayaran, walaupun paket Free tidak dikenai biaya. Jika data pembayaran tidak boleh diminta, pilihan penyedia perlu diganti sebelum deployment.

@@ -1,6 +1,7 @@
 """Integritas buku E21, provenance dan pemisahan data privat."""
 import hashlib
 import json
+import re
 from pathlib import Path
 import statistics
 import subprocess
@@ -64,7 +65,8 @@ def test_public_snapshot_has_no_individual_rows_and_no_older_results(snapshot):
     scan(snapshot)
     d=content(snapshot)
     assert not {'comparison','multiSeed','lrExperiment','e8Experiment'}.intersection(d)
-    raw=(ROOT/'docs/belajar_E21_Spider.html').read_text()
+    parent=(ROOT/'docs/belajar_Tiga_Input_Spider.html').read_text()
+    raw=json.loads(re.search(r'<script id="familyData" type="application/json">(.*?)</script>',parent,re.S)[1])['documents']['E21']
     assert '<script id="privatePayload" type="application/octet-stream"></script>' in raw
 
 

@@ -1,5 +1,7 @@
 # Buku belajar Colab terakhir
 
+> Catatan historis: HTML terpisah pada dokumen ini telah digantikan oleh [dua buku terbaru](../downloads/README.md). Kode utama buku tiga variabel sekarang E24; file lama dapat ditelusuri pada commit versi asal.
+
 File **belajar_colab_AI_interaktif.html** dapat dibuka sendiri di Chrome/Edge/Firefox, tanpa Colab, Python, instalasi atau CDN. Tampilan memakai warna kertas pastel, header gelap, dan sticky note di pinggir baris kode penting. Setiap tab proses memiliki **Meja belajar** dengan scroll sendiri dan pilihan **Kode + catatan**, **Output aktual**, **Colab lo**, serta **Kode lengkap**. Pilihan Santai / Dua bahasa / Teknis tetap tersedia. Fitur cetak PDF dihapus.
 
 ## Membuka

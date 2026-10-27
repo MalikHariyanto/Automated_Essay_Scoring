@@ -1,9 +1,16 @@
-# Unduhan buku AES lengkap
+# Dua buku AES terbaru
 
-[Unduh pengunduh HTML kecil](https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/downloads/Belajar_AES_MLP_Lengkap.html): pilih **Download raw file**, buka file HTML, lalu klik **Unduh buku lengkap**. Internet hanya diperlukan untuk pengunduhan. Pengunduh menyusun dua bagian paket secara otomatis dan memeriksa checksum, sehingga pengguna memperoleh **satu ZIP**.
+| Buku | Isi | Unduh |
+| --- | --- | --- |
+| **Tiga variabel · E21, E22, E24** | Meja belajar utama E24, tiga eksperimen, sembilan model, 60 jawaban test, 15 Excel | [Buku tiga variabel](Belajar_AES_Tiga_Input_Lengkap.html) |
+| **Eksperimen awal sampai E8 / E6 2.0** | Kumpulan eksperimen sebelum tiga variabel; meja belajar E6, hasil dan Excel lama | [Buku eksperimen terdahulu](Belajar_AES_MLP_Lengkap.html) |
 
-Ekstrak ZIP, buka `Belajar_AES_MLP_Lengkap.html`, lalu gunakan kunci yang sama seperti sebelumnya. Isi pribadi terenkripsi; kunci tidak ada di GitHub. Buku memuat kode acuan, enam eksperimen, prediksi individual dan Excel asli. Setelah dibuka, buku berjalan offline.
+1. Di halaman file GitHub, pilih **Download raw file**.
+2. Buka HTML pengunduh yang tersimpan, lalu klik **Unduh buku**.
+3. Ekstrak ZIP, buka HTML di dalamnya, dan gunakan **kunci yang sama** seperti sebelumnya.
 
-Paket sudah melewati batas 100 MiB per file GitHub, sehingga bagian `.part1`/`.part2` disimpan terpisah. Jangan membuka bagian itu sebagai notebook atau model. Pengunduh menggabungkannya otomatis, tanpa terminal atau instalasi. Bila unduhan terputus, klik coba lagi; bagian yang sudah diperiksa tetap tersedia selama halaman belum ditutup.
+Internet diperlukan saat mengunduh. Setelah dibuka, buku lengkap bekerja offline. Berkas `.part1`/`.part2`/`.part3` adalah bagian paket terenkripsi yang otomatis digabung pengunduh; tidak perlu dibuka satu per satu. Isi pribadi dan kunci tidak ditampilkan dalam repo publik.
 
-[Versi agregat satu HTML tanpa kunci](../docs/belajar_MLP_Spider.html) dapat diunduh langsung untuk tabel perbandingan; jawaban dan skor individual tidak disertakan di versi publik tersebut.
+[Ringkasan publik tiga variabel](../docs/belajar_Tiga_Input_Spider.html) · [Ringkasan publik eksperimen lama](../docs/belajar_MLP_Spider.html) · [Katalog notebook eksperimen](../notebooks/experiments/README.md).
+
+HTML terpisah dan duplikat lama telah digantikan oleh dua buku ini. Versi historis tetap tercatat di riwayat commit Git; jangan gunakan pengunduh E21 terpisah untuk pembaruan terbaru.
