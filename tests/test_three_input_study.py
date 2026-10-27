@@ -63,6 +63,21 @@ def test_both_embedded_code_books_are_exact_pinned_notebooks():
         assert '<script id="privatePayload" type="application/octet-stream"></script>' in html
 
 
+def test_prediction_accuracy_keeps_scopes_and_raw_vs_rounded_distinct():
+    _, d = family()
+    c = d['comparison']
+    assert c['pairedOverall'] == {'answers': 60, 'comparisons': 180, 'E21': 88, 'E22': 92, 'ties': 0}
+    for e in ['E21', 'E22']:
+        a = c['predictionAudit'][e]['S3']
+        assert a['n'] == 60 and a['raw_exact'] == 0 and a['rounded_exact'] == 5
+        assert a['within']['1'] == 10
+        assert all(a['within'][str(x)] <= a['within'][str(y)] for x, y in [(1,2),(2,5),(5,10)])
+        original = next(r for r in c['experiments'][e]['metrics'] if r['Skenario'] == 'S3')
+        assert abs(a['rmse'] - original['RMSE (poin)']) < 1e-6
+    assert c['predictionAudit']['E21']['S3']['within']['5'] == 32
+    assert c['predictionAudit']['E22']['S3']['within']['5'] == 27
+
+
 def test_public_books_do_not_embed_individual_payloads():
     raw, d = family()
     assert '<script id="familyPrivate" type="application/octet-stream"></script>' in raw

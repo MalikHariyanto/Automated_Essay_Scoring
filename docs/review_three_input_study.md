@@ -24,12 +24,15 @@ Empat metrik test dihitung ulang dari prediksi tersimpan, dalam toleransi 1e-6 t
 
 ## Isi dan UI
 
+- Panel **Ketepatan prediksi** memisahkan kecocokan mentah, kecocokan setelah pembulatan, toleransi ±1/±2/±5/±10, MAE dan RMSE untuk masing-masing skenario atau enam model. Pembulatan mengikuti nearest integer 0–100 dengan tie ke bawah; prediksi mentah tidak diubah.
+- Kartu ringkasan menyebut ukuran dan cakupannya: CV S3 E22 lebih rendah, RMSE test S3 E21 lebih rendah, dan hitungan berpasangan seluruh skenario E22 92 vs E21 88. Angka 180 adalah 60 jawaban × tiga skenario. Pada S3 saja hitungannya seri 30–30. Persaingan enam model sekaligus memberi total bagian E21 34/60 dan E22 26/60; ukuran ini berbeda dari 180 pasangan dan tidak menyatakan E22 unggul jauh pada semua prediksi.
 - Perbandingan memakai eksperimen sebagai kolom: tiga skenario, lima metrik, CV, epoch refit, dan jumlah prediksi terdekat.
 - Semua 60 jawaban tersedia bersama, dengan dua prediksi per skenario atau enam model sekaligus. Nilai guru di kanan; penanda terdekat, pencarian, dialog tiga teks, buka semua teks, dan ranking tersedia.
 - Riwayat E21/E22 berbagi sumbu grafik; 15 pasangan fold dan epoch pilihan tersedia. Peta skor memakai skala warna bersama.
 - Kedua meja belajar mempertahankan tema Spider-Man, 16 bab, 30 blok/2699 baris kode, catatan pada baris penting, dan fullscreen per blok/semua blok. Pergantian eksperimen mempertahankan bab/tab.
 - Seluruh 86 sheet dari sepuluh Excel tersedia, dengan pagination, rentang komponen, inspeksi sel dan unduhan XLSX asli. Output tahap berasal dari Excel aktual.
 - Fullscreen hasil menyembunyikan header besar dan memberi ruang scroll pada isi. Navigasi keyboard, HP/tablet/desktop, dan pembacaan offline diperiksa.
+- Fullscreen kode memperbesar iframe ke seluruh viewport induk, menyembunyikan heading/pemilih eksperimen dan mengunci scroll induk. Kode dan sticky note tetap dalam satu kanvas. Fallback ini juga bekerja jika Fullscreen API tidak tersedia; tombol ×/Esc memulihkan ukuran dan posisi halaman.
 
 ## Asal kode dan batas bukti
 
@@ -44,6 +47,8 @@ Semua blok kode di buku dicocokkan byte demi byte dengan source rujukan masing-m
 
 HTML/snapshot/preview publik hanya menyimpan agregat, kode dan inventaris. Teks, ID, nilai individu, vektor dan ZIP asli ada dalam payload terenkripsi; kunci tidak diterbitkan. Dua ZIP dan sepuluh workbook dalam buku lengkap byte-identik dengan unggahan. Pemeriksaan prefix teks privat terhadap HTML publik tidak menemukan kecocokan.
 
-Validasi: 12 pengujian integritas/unit lulus (0 failed/skipped/xfailed); sembilan kelompok browser meliputi 360 prediksi, semua teks, ranking, 15 kurva, peta, unduhan sepuluh XLSX, kode/notes/fullscreen, pergantian eksperimen dan viewport 390/768/1440. Dua pemeriksaan paket menguji rekonstruksi ZIP dan pembukaan buku/iframe E22 dengan kunci lama setelah jaringan diblokir. Bukti lokal di `outputs/e21_study/family_*`. Ini audit hasil tersimpan serta pengujian buku, bukan eksekusi ulang eksperimen.
+Validasi: 13 pengujian integritas/unit lulus (0 failed/skipped/xfailed); sembilan kelompok browser meliputi 360 prediksi, semua teks, ranking, 15 kurva, peta, unduhan sepuluh XLSX, kode/notes/fullscreen, pergantian eksperimen dan viewport 390/768/1440. Dua pemeriksaan paket menguji rekonstruksi ZIP dan pembukaan buku/iframe E22 dengan kunci lama setelah jaringan diblokir. Bukti lokal di `outputs/e21_study/family_*`. Ini audit hasil tersimpan serta pengujian buku, bukan eksekusi ulang eksperimen.
 
 Pemeriksaan pembukaan dilakukan pada HTTP localhost, lalu seluruh permintaan jaringan diblokir. Navigasi langsung `file://` ditolak kebijakan browser lingkungan pengujian (`ERR_BLOCKED_BY_ADMINISTRATOR`); jalur tersebut tidak diklaim telah diuji di lingkungan ini.
+
+Pembaruan ketepatan/fullscreen: empat kelompok browser memeriksa delapan ukuran pada enam model, denominasi perbandingan, seluruh 360 prediksi yang tetap sama, ranking S3 seri 30–30, fullscreen dan viewport. Dua kasus tambahan memeriksa kode menutupi viewport induk pada desktop E21 dan mobile E22 dengan Fullscreen API tidak tersedia, 30 blok/2699 baris, notes dalam satu scroll, serta pemulihan lewat ×/Esc. Pemeriksaan paket juga membuka/menutup fullscreen kode setelah dekripsi.

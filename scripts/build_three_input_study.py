@@ -4,6 +4,7 @@ import base64
 import hashlib
 import io
 import json
+import math
 from pathlib import Path
 import re
 from zipfile import ZipFile,ZIP_STORED
@@ -41,7 +42,26 @@ def build_family(e21,e22):
         impact.append({'Skenario':s,'E21 lebih dekat':sum(x>1e-5 for x in lower),'E22 lebih dekat':sum(x< -1e-5 for x in lower),'Seri':sum(abs(x)<=1e-5 for x in lower)})
     parameters={e:{r['Pengaturan']:r['Nilai'] for r in s['parameters']} for e,s in snapshots.items()}
     assert all(parameters['E21'][k]==parameters['E22'][k] for k in parameters['E21'] if k!='Format input tiga teks')
-    comparison={'experiments':snapshots,'nearest':nearest,'impact':impact,'same_300_texts_labels':True,'same_60_test_ids_labels':True,'same_folds':True,'recorded_parameters_equal_except_format':True}
+    prediction_audit={}
+    for experiment,rows in pairs.items():
+        prediction_audit[experiment]={}
+        for scenario in ['S1','S2','S3']:
+            errors=[r['Prediksi '+scenario]-r['Nilai Guru'] for r in rows]
+            # Same nearest-category rule as the evaluator: ties choose the lower integer.
+            rounded=[math.ceil(min(100,max(0,r['Prediksi '+scenario]))-.5) for r in rows]
+            prediction_audit[experiment][scenario]={
+                'n':len(rows),'raw_exact':sum(e==0 for e in errors),
+                'rounded_exact':sum(v==r['Nilai Guru'] for v,r in zip(rounded,rows)),
+                'within':{str(t):sum(abs(e)<=t for e in errors) for t in [1,2,5,10]},
+                'mae':sum(abs(e) for e in errors)/len(rows),
+                'rmse':math.sqrt(sum(e*e for e in errors)/len(rows))}
+    paired_overall={'answers':60,'comparisons':180,
+        'E21':sum(r['E21 lebih dekat'] for r in impact),
+        'E22':sum(r['E22 lebih dekat'] for r in impact),
+        'ties':sum(r['Seri'] for r in impact)}
+    comparison={'experiments':snapshots,'nearest':nearest,'impact':impact,
+        'predictionAudit':prediction_audit,'pairedOverall':paired_overall,
+        'same_300_texts_labels':True,'same_60_test_ids_labels':True,'same_folds':True,'recorded_parameters_equal_except_format':True}
     (ROOT/'docs/three_input_comparison_snapshot.json').write_text(json.dumps(comparison,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     # Child books keep independent source/curriculum/state. No original data in public srcdoc.
     child_style='<style>.topbar,.hero,.stats-strip,.site-footer,.closing-note,.workspace-switch,#status{display:none!important}main{padding:0!important}.study-layout{margin:0!important;max-width:none!important;width:100%!important}.sticky-note h3{overflow-wrap:anywhere;word-break:break-word}html{scroll-padding-top:0}body{background:#14264d!important}</style>'
