@@ -246,8 +246,8 @@ def reader_script():
 def build(results=None, experiment='E21', family=False):
     if results:
         snapshot=audit(results,experiment)
-        (ROOT/('docs/'+experiment.lower()+'_study_snapshot.json')).write_text(json.dumps(snapshot,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
-    else:snapshot=json.loads((ROOT/('docs/'+experiment.lower()+'_study_snapshot.json')).read_text())
+        (ROOT/('docs/snapshots/'+experiment.lower()+'_study_snapshot.json')).write_text(json.dumps(snapshot,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    else:snapshot=json.loads((ROOT/('docs/snapshots/'+experiment.lower()+'_study_snapshot.json')).read_text())
     data=content(snapshot)
     pin=snapshot.get('source_commit',PIN)
     template=(ROOT/'scripts/templates/mlp_study.html').read_text()

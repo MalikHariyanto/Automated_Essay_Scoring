@@ -27,8 +27,11 @@ outputs/runs/
 .env
 .env.*
 
-# Hanya paket HTML terenkripsi yang diizinkan; ZIP hasil siswa tetap privat.
-!/downloads/Belajar_AES_MLP_Lengkap.zip
-# Dua bagian arsip HTML terenkripsi; diverifikasi sebelum publikasi.
-!/downloads/Belajar_AES_MLP_Lengkap.part1
-!/downloads/Belajar_AES_MLP_Lengkap.part2
+# Workbook dan salinan privat tetap lokal; notebook sumber tetap boleh di-commit.
+*.xlsx
+*.xls
+*.xlsm
+*download_key.json
+
+# downloads/ memuat bagian paket HTML terenkripsi yang diverifikasi sebelum publikasi.
+# ZIP hasil/dataset asli tetap diabaikan oleh aturan *.zip dan /outputs/ di atas.

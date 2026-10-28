@@ -44,7 +44,7 @@ def build(sources):
     compare_predictions(predictions)  # Verifikasi 60 ID unik, skor guru dan sumber sama.
     matrices = {run: {s: matrix_for(rows, s) for s in ('S1','S2','S3')}
                 for run, rows in predictions.items()}
-    for run, path in [('E2','docs/mlp_study_snapshot.json'),('E6','docs/mlp_e6_study_snapshot.json')]:
+    for run, path in [('E2','docs/snapshots/mlp_study_snapshot.json'),('E6','docs/snapshots/mlp_e6_study_snapshot.json')]:
         old = json.loads((ROOT/path).read_text())
         if matrices[run] != old['matrices']:
             raise ValueError('Matriks lama berubah: '+run)
@@ -53,7 +53,7 @@ def build(sources):
                   source_sha256=hashes, matrices=matrices,
                   category_origin='E0 dihitung dari prediksi mentah (nearest 0–100, tie .5 ke bawah); E2–E8 memakai kategori Excel, diverifikasi dengan aturan yang sama.',
                   rule='Baris = rentang nilai guru. Kolom = rentang salinan kategori prediksi dari Excel. Diagonal = rentang sama, bukan nilai persis sama. Kategori 0–100 tetap dipakai evaluator; kelompok 10 poin hanya untuk visualisasi.')
-    (ROOT/'docs/mlp_score_maps_snapshot.json').write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
+    (ROOT/'docs/snapshots/mlp_score_maps_snapshot.json').write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'experiments': len(matrices), 'matrices': 21, 'answers_each': 60,
                       'previous_E2_E6_matrices_unchanged': True}))
 

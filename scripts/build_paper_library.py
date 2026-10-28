@@ -11,7 +11,7 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "docs/paper_library_data.json"
+DATA = ROOT / "docs/snapshots/paper_library_data.json"
 TEMPLATE = ROOT / "scripts/templates/paper_library.html"
 OUTPUT = ROOT / "docs/paper_library_interaktif.html"
 NAMED_OUTPUT = ROOT / "docs/code belajar paper.html"

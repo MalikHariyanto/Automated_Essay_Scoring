@@ -15,7 +15,7 @@ from build_e21_study import content,PIN,NOTEBOOK
 
 
 @pytest.fixture
-def snapshot():return json.loads((ROOT/'docs/e21_study_snapshot.json').read_text())
+def snapshot():return json.loads((ROOT/'docs/snapshots/e21_study_snapshot.json').read_text())
 
 
 def test_three_inputs_one_label_and_matching_e21_recipe(snapshot):

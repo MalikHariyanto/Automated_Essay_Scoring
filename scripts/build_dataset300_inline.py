@@ -150,7 +150,7 @@ def assignments(path,names):
 
 
 def references_markdown():
-    papers=json.loads((ROOT/'docs/aes_dataset300_references.json').read_text())
+    papers=json.loads((ROOT/'docs/snapshots/aes_dataset300_references.json').read_text())
     lines=['<details><summary>Rujukan metode — catatan bacaan, bukan input program</summary>','',
            'Rujukan ini mendukung penjelasan metode. Notebook tidak mengunduh atau membaca daftar pustaka untuk menghitung skor.','']
     for paper in papers:

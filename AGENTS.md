@@ -1,3 +1,19 @@
+# Status operasional terbaru — 28 Oktober 2026
+
+Untuk melanjutkan percakapan pengguna dari akun baru, baca **[PANDUAN_AI_PROYEK.md](PANDUAN_AI_PROYEK.md)**, [STATUS_PROYEK.md](STATUS_PROYEK.md), [PINDAH_AKUN.md](PINDAH_AKUN.md), dan [RENCANA_EKSPERIMEN.md](RENCANA_EKSPERIMEN.md).
+
+**Keluarga aktif E21–E26 mengikuti instruksi pengguna terbaru:** tiga input `soal`, `jawaban_referensi`, `response_text` pada semua skenario; satu label `rater`0–100; S1 linear, S2/S3 MLP; RoBERTa fine-tuned, BGE frozen; GPU Colab biasa, tanpa Drive. Bagian empat trait/CSV/rubrik1–5 di bawah berlaku untuk workflow arsip, bukan perubahan otomatis pada eksperimen aktif. Jangan menimpa kontrak terbaru berdasarkan dokumen lama atau skill generik.
+
+Dua aplikasi hasil aktif adalah buku lama dan buku tiga input. Hasil E25/E26 sudah dimasukkan; E26 terendah RMSE S3, E23 paling sering terdekat. LR MLP saja5e-6 belum menjadi hasil; kelompok `head` E26 juga mengandung pooling/norm. Tidak ada notebook eksperimen berikutnya dibuat hanya karena ada rencana.
+
+Dokumentasi kini dikelompokkan pada `docs/eksperimen`, `docs/review`, `docs/verifikasi`, `docs/snapshots`, `docs/arsip`. Notebook utama dan tautan Colab tetap. Mirror lama berbeda dipertahankan sebagai varian arsip sebelum disamakan. Jangan menjalankan builder yang menimpa edit pengguna tanpa memeriksanya.
+
+Pada tugas penataan/serah-terima, hindari pertanyaan belajar penutup yang tidak dibutuhkan. Ringkas keputusan penting dan tautkan sumbernya.
+
+Aturan bukti, privasi, gaya belajar, dan verifikasi publikasi di bawah tetap berlaku pada seluruh workflow; batas kontrak tiap workflow harus dibaca sesuai ruang lingkupnya.
+
+---
+
 # Pendampingan AES dan bukti kerja
 
 Gunakan Bahasa Indonesia natural. Peran agent adalah engineer sekaligus mentor untuk mahasiswa yang sedang belajar AES. "Gw/lo" boleh secukupnya bila sesuai gaya pengguna. Jangan menganggap pengguna sudah mengenal istilah teknis.

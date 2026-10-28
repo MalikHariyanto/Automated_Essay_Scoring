@@ -16,7 +16,7 @@ def extract(path, mlp_path, method="lora"):
     sys.path.insert(0,str(ROOT/'src'))
     from aes.teacher_score.models import metrics as evaluate
     raw=Path(path).read_bytes()
-    reference=json.loads((ROOT/'docs/mlp_study_snapshot.json').read_text())
+    reference=json.loads((ROOT/'docs/snapshots/mlp_study_snapshot.json').read_text())
     if hashlib.sha256(Path(mlp_path).read_bytes()).hexdigest()!=reference['zip_sha256']:
         raise ValueError('ZIP acuan berbeda dari buku MLP.')
     with ZipFile(path) as z,ZipFile(mlp_path) as old:
@@ -106,5 +106,5 @@ def extract(path, mlp_path, method="lora"):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--results',required=True);p.add_argument('--mlp',required=True);args=p.parse_args()
     result=extract(args.results,args.mlp)
-    (ROOT/'docs/mlp_lora_snapshot.json').write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    (ROOT/'docs/snapshots/mlp_lora_snapshot.json').write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     print(json.dumps({'metrics':result['metrics'],'cv':result['cvSummary'],'matched':result['pairing']},ensure_ascii=False))

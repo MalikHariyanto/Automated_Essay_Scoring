@@ -1,6 +1,6 @@
 // Bukti browser atas buku hasil tersimpan; tidak mencetak data individual.
 import{createRequire}from'node:module';import fs from'node:fs';import assert from'node:assert/strict';import crypto from'node:crypto';
-const require=createRequire(import.meta.url),{chromium}=require('playwright'),base='http://127.0.0.1:8765/',folder='outputs/e21_study/',meta=JSON.parse(fs.readFileSync('docs/three_input_comparison_snapshot.json')),checks=[];
+const require=createRequire(import.meta.url),{chromium}=require('playwright'),base='http://127.0.0.1:8765/',folder='outputs/e21_study/',meta=JSON.parse(fs.readFileSync('docs/snapshots/three_input_comparison_snapshot.json')),checks=[];
 const b=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});const ok=t=>{checks.push(t);console.log('PASS',t)};
 try{const p=await b.newPage({viewport:{width:1440,height:1000},acceptDownloads:true});p.setDefaultTimeout(90000);const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(base+folder+'belajar_Tiga_Input_Privat.html');await p.waitForFunction(()=>window.ThreeInputBook?.ready());await p.route('**/*',r=>r.abort());
 for(const s of ['S1','S2','S3'])assert.equal(await p.locator('#familyMetrics'+s+' tbody tr').count(),5);assert.equal(await p.locator('#familyMetricsS3 td.best').count(),5);assert.match(await p.locator('#familyMetricsS3').innerText(),/6,7231/);assert.match(await p.locator('#familyMetricsS3').innerText(),/7,1943/);ok('Metrik asli dua eksperimen dan penanda nilai lebih baik tampil pada tiga skenario.');

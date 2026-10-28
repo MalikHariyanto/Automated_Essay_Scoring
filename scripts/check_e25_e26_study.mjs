@@ -1,6 +1,6 @@
 // Memeriksa hasil unggahan dan catatan; tidak menjalankan model.
 import{createRequire}from'node:module';import fs from'node:fs';import assert from'node:assert/strict';import crypto from'node:crypto';
-const{chromium}=createRequire(import.meta.url)('playwright'),base='http://127.0.0.1:8765/',out='outputs/e25_e26_study/',checks=[],meta=JSON.parse(fs.readFileSync('docs/three_input_comparison_snapshot.json'));
+const{chromium}=createRequire(import.meta.url)('playwright'),base='http://127.0.0.1:8765/',out='outputs/e25_e26_study/',checks=[],meta=JSON.parse(fs.readFileSync('docs/snapshots/three_input_comparison_snapshot.json'));
 const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']}),ok=t=>{checks.push(t);console.log('PASS',t)};
 try{
  let p=await browser.newPage({viewport:{width:1440,height:1000},acceptDownloads:true});p.setDefaultTimeout(120000);const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(base+'outputs/e21_study/belajar_Tiga_Input_Privat.html');await p.waitForFunction(()=>ThreeInputBook.ready());await p.route('**/*',r=>r.abort());

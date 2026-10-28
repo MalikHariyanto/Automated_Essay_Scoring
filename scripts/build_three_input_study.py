@@ -18,7 +18,7 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None):
     for experiment,path in inputs:
         zips[experiment]=Path(path).read_bytes()
         if reuse_audit:
-            cached=json.loads((ROOT/('docs/'+experiment.lower()+'_study_snapshot.json')).read_text())
+            cached=json.loads((ROOT/('docs/snapshots/'+experiment.lower()+'_study_snapshot.json')).read_text())
             assert cached['zip_sha256']==hashlib.sha256(zips[experiment]).hexdigest(),'ZIP berbeda dari audit tersimpan.'
         documents[experiment],snapshots[experiment]=build(None if reuse_audit else path,experiment,family=True)
         with ZipFile(io.BytesIO(zips[experiment])) as z:
@@ -86,7 +86,7 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None):
     comparison={'studyRecommendation':recommendation,'experiments':snapshots,'nearest':nearest,'impact':impact,
         'predictionAudit':prediction_audit,'pairedOverall':paired_overall,'pairwise':pairwise,
         'same_300_texts_labels':True,'same_60_test_ids_labels':True,'same_folds':True,'recorded_parameters_equal_except_format':True}
-    (ROOT/'docs/three_input_comparison_snapshot.json').write_text(json.dumps(comparison,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    (ROOT/'docs/snapshots/three_input_comparison_snapshot.json').write_text(json.dumps(comparison,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     # Child books keep independent source/curriculum/state. No original data in public srcdoc.
     child_style='<style>.topbar,.hero,.stats-strip,.site-footer,.closing-note,.workspace-switch,#status{display:none!important}main{padding:0!important}.study-layout{margin:0!important;max-width:none!important;width:100%!important}.sticky-note h3{overflow-wrap:anywhere;word-break:break-word}html{scroll-padding-top:0}body{background:#14264d!important}</style>'
     documents={e:d.replace('</head>',child_style+'</head>') for e,d in documents.items()}

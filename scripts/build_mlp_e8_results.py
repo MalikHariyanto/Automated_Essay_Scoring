@@ -57,13 +57,13 @@ def audit(sources):
                            'old_lower_error': sum(x > 1e-5 for x in delta),
                            'equal_error': sum(abs(x) <= 1e-5 for x in delta)})
         data.setdefault('comparisonImpact', {})[run] = impact
-    (ROOT/'docs/mlp_e8_snapshot.json').write_text(json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False)+'\n')
-    target = ROOT/'docs/mlp_all_results_snapshot.json'
+    (ROOT/'docs/snapshots/mlp_e8_snapshot.json').write_text(json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False)+'\n')
+    target = ROOT/'docs/snapshots/mlp_all_results_snapshot.json'
     all_results = json.loads(target.read_text())
     all_results['prediction_winners']['E8'] = winner_counts(predictions['E8'])
     all_results['across_experiments'] = ranking
     target.write_text(json.dumps(all_results, ensure_ascii=False, indent=2, allow_nan=False)+'\n')
-    target = ROOT/'docs/mlp_method_sources.json'
+    target = ROOT/'docs/snapshots/mlp_method_sources.json'
     catalog = json.loads(target.read_text())
     notebook = json.loads(subprocess.check_output(['git', 'show', COMMIT+':'+NOTEBOOK], cwd=ROOT))
     entry = dict(id='E8', name='Konteks pair · LR S3 5e-6', commit=COMMIT, path=NOTEBOOK,

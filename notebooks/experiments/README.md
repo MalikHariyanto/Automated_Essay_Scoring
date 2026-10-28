@@ -1,33 +1,41 @@
 # Katalog eksperimen AES
 
-**Buku terbaru memuat E21–E26. Kode utama E23 paling sering terdekat; E26 mempunyai RMSE S3 terkecil.** Seluruh notebook publik tidak berisi output siswa. Hasil penelitian dibaca dari buku, bukan dibuat ulang oleh HTML.
+**Mulai dari E26 untuk acuan RMSE; E23 untuk mempelajari prediksi yang paling sering terdekat.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
-## Tiga variabel: soal, jawaban referensi, jawaban siswa
+## Tiga input · hasil tersedia
 
-Label seluruh skenario adalah **rater**, skor 0–100. LR encoder S1/S3 5e-6; proyeksi/head 1e-4. S1 memakai head linear, S2/S3 MLP. E21–E26 memakai folder output lokal, tanpa autosave Drive.
+X pada seluruh skenario: `soal`, `jawaban_referensi`, `response_text`. y: satu `rater` 0–100. S1 linear; S2/S3 MLP. RoBERTa S1/S3 LR5e-6; proyeksi/head/layer tambahan1e-4. Maksimal25epoch, patience5, lima fold. Folder output lokal, tanpa Drive.
 
-| Eksperimen | Perubahan | GPU Colab | CPU |
-| --- | --- | --- | --- |
-| E21 | Tiga teks sebagai satu urutan, pooling CLS | [GPU](AES_300_E21_Tiga_Input_GPU.ipynb) | [CPU](AES_300_E21_Tiga_Input_CPU.ipynb) |
-| E22 | Konteks soal + referensi dipasangkan dengan jawaban | [GPU](AES_300_E22_Tiga_Input_ContextPair_GPU.ipynb) | [CPU](AES_300_E22_Tiga_Input_ContextPair_CPU.ipynb) |
-| E23 | E21 + BiGRU hanya pada S3 | [GPU](AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb) | — |
-| **E24** | **E21 + attention pooling token jawaban hanya pada S3** | **[GPU](AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb)** | — |
+| Eksperimen | S3 | GPU | CPU | RMSE test S3 |
+| --- | --- | --- | --- | ---: |
+| E21 | CLS → concat → MLP | [Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E21_Tiga_Input_GPU.ipynb) · [Source](AES_300_E21_Tiga_Input_GPU.ipynb) | [Notebook](AES_300_E21_Tiga_Input_CPU.ipynb) | 6,7231 |
+| E22 | E21 dengan format context pair | [Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E22_Tiga_Input_ContextPair_GPU.ipynb) · [Source](AES_300_E22_Tiga_Input_ContextPair_GPU.ipynb) | [Notebook](AES_300_E22_Tiga_Input_ContextPair_CPU.ipynb) | 7,1943 |
+| **E23** | BiGRU → state akhir → proyeksi | [Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb) · [Source](AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb) | — | 6,0439 |
+| E24 | Attention pooling token respons | [Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb) · [Source](AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb) | — | 5,9818 |
+| E25 | E24 + gated fusion | [Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb) · [Source](AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb) | — | 6,1053 |
+| **E26** | BiGRU → attention → proyeksi | **[Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb)** · [Source](AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb) | — | **5,7435** |
 
-**Notebook lanjutan, GPU:** [E25 · E24 + gated fusion](AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb) dan [E26 · BiGRU + attention](AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb). Hasil E25/E26 sudah tersedia di buku. Kode utama dipilih menurut jumlah terdekat; peringkat RMSE ditampilkan terpisah. [Metode dan cara menjalankan](../../docs/eksperimen_e25_e26_gpu.md).
+Untuk menjalankan: buka notebook di Colab melalui menu **File → Open notebook → GitHub**, atau ganti alamat GitHub dengan format `https://colab.research.google.com/github/OWNER/REPO/blob/REF/PATH.ipynb`. Pilih **T4 GPU → Run all → unggah dataset**. Seluruh setup ada dalam notebook. Varian CPU adalah pilihan perangkat; hasil tabel berasal dari ZIP unggahan, bukan bukti hasil identik pada setiap perangkat.
 
-[Buku tiga variabel terbaru](../../downloads/Belajar_AES_Tiga_Input_Lengkap.html) · [Metode E23/E24](../../docs/eksperimen_e23_e24_sequence_pooling_gpu.md). Seluruh hasil E21–E26 tersedia di buku. [Audit perbandingan terbaru](../../docs/review_e25_e26_study.md). CPU/GPU adalah pilihan perangkat, bukan dua hasil eksperimen pengganti.
+Metode: [E21/E22](../../docs/eksperimen/eksperimen_e21_e22_web_colab_gpu.md), [E23/E24](../../docs/eksperimen/eksperimen_e23_e24_sequence_pooling_gpu.md), [E25/E26](../../docs/eksperimen/eksperimen_e25_e26_gpu.md). [Audit hasil](../../docs/review/review_e25_e26_study.md).
 
-## Eksperimen sebelum tiga variabel
+## Sebelum keluarga tiga input
 
-| Metode | Notebook yang digunakan |
-| --- | --- |
-| MLP awal | [Notebook utama](../03_AES_dataset_guru_300.ipynb) |
-| Double frozen + MLP, hapus checkpoint manual | [Manual](AES_300_S3_DoubleFrozen_MLP_Manual.ipynb) |
-| Konteks pair E4 | [Notebook](AES_300_S3_ContextPair_MLP.ipynb) |
-| LoRA S3 + MLP E5 | [GPU](AES_300_S3_LoRA_MLP_GPU.ipynb) |
-| E6 · S3 LR5e-6, ulang semua skenario | [CPU](AES_300_S3_MLP_LR5e6_CPU.ipynb) |
-| E6 · memakai hasil S1/S2 lama | [GPU](AES_300_E6_S3_LR5e6_GPU_Reuse.ipynb) · [CPU](AES_300_E6_S3_LR5e6_CPU_Reuse.ipynb) |
-| E6 2.0 / tiga seed | [GPU](AES_300_E6_3Seed_GPU.ipynb) · [CPU](AES_300_E6_3Seed_CPU.ipynb) |
-| E8 · konteks pair + S3 LR5e-6 | [GPU](AES_300_E8_ContextPair_LR5e6_GPU.ipynb) · [CPU](AES_300_E8_ContextPair_LR5e6_CPU.ipynb) |
+Nomor eksperimen lama mengikuti penamaan pada buku. Tabel ini tidak menyamakan input versi lama dengan E21–E26.
 
-[Buku eksperimen terdahulu terbaru](../../downloads/Belajar_AES_MLP_Lengkap.html). Notebook pembentuk versi hasil lama tetap ada agar metode dapat diperiksa; katalog ini mengutamakan varian terbaru yang digunakan. Salinan pada `aes-learning/notebooks` dipertahankan untuk tautan Colab lama yang masih digunakan.
+| Metode | Notebook | Catatan |
+| --- | --- | --- |
+| Linear awal | [Source](AES_300_S3_Linear.ipynb) | Acuan awal |
+| MLP awal | [Utama](../03_AES_dataset_guru_300.ipynb), [varian eksperimen](AES_300_S3_MLP.ipynb) | Acuan sebelum tiga input |
+| Double frozen + MLP | [Manual](AES_300_S3_DoubleFrozen_MLP_Manual.ipynb) | Pilihan penyimpanan manual |
+| Double frozen dengan auto-cleanup lama | [Historis](AES_300_S3_DoubleFrozen_MLP.ipynb) | Tidak dipilih untuk workflow terbaru |
+| E4 · context pair | [Notebook](AES_300_S3_ContextPair_MLP.ipynb) | Input sesuai versi E4 |
+| E5 · LoRA S3 + MLP | [GPU](AES_300_S3_LoRA_MLP_GPU.ipynb) | Bukan full fine-tuning S3 acuan |
+| E6 · S3 LR5e-6, ulang seluruh skenario | [CPU](AES_300_S3_MLP_LR5e6_CPU.ipynb) | S1 tetap resep E6 |
+| E6 · reuse S1/S2 | [GPU](AES_300_E6_S3_LR5e6_GPU_Reuse.ipynb), [CPU](AES_300_E6_S3_LR5e6_CPU_Reuse.ipynb) | Kontrol bukan training independen |
+| E6 2.0 / tiga seed | [GPU](AES_300_E6_3Seed_GPU.ipynb), [CPU](AES_300_E6_3Seed_CPU.ipynb) | Berbeda dari uji tiga seed E26 yang belum ada |
+| E6 · tiga input CPU terdahulu | [Notebook](AES_300_E6_Tiga_Input_CPU.ipynb) | Varian sebelum E21; punya edit Colab |
+| E4 · tiga input CPU terdahulu | [Notebook](AES_300_E4_Tiga_Input_CPU.ipynb) | Varian sebelum E22 |
+| E8 · context pair + S3 LR5e-6 | [GPU](AES_300_E8_ContextPair_LR5e6_GPU.ipynb), [CPU](AES_300_E8_ContextPair_LR5e6_CPU.ipynb) | Bukan E22 |
+
+[Buku hasil terdahulu](../../downloads/Belajar_AES_MLP_Lengkap.html). Varian mirror lama yang berbeda dipertahankan di [arsip](../archive/README.md). Source jalur utama tidak diganti dengan builder saat penataan, sehingga edit pengguna tidak tertimpa.

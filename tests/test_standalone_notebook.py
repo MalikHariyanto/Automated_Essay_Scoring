@@ -52,7 +52,7 @@ def test_notebook_has_no_project_imports_or_git_commands():
                 assert not any(a.name=='aes' or a.name.startswith('aes.') for a in node.names)
             if isinstance(node,ast.Constant) and isinstance(node.value,str):
                 assert node.value!='git' and '__file__' not in node.value
-        assert 'docs/aes_dataset300_references.json' not in source
+        assert 'docs/snapshots/aes_dataset300_references.json' not in source
     requirements=next(c.source for c in notebook.cells if c.cell_type=='code' and 'REQUIREMENTS_TEXT=' in c.source)
     assert 'pytest==' not in requirements and 'nbclient==' not in requirements and 'nbformat==' not in requirements
 

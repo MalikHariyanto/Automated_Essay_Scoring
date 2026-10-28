@@ -25,7 +25,7 @@ FUNCTION_HINTS = {**FUNCTION_HINTS, **FUNCTION_HINTS_E6}
 ROOT = Path(__file__).resolve().parents[1]
 COMMIT = '15bc7bbb2aee91ecaf44fb91a0139a8c21f64a20'
 NOTEBOOK_PATH = 'notebooks/03_AES_dataset_guru_300.ipynb'
-SNAPSHOT = ROOT/'docs/mlp_study_snapshot.json'
+SNAPSHOT = ROOT/'docs/snapshots/mlp_study_snapshot.json'
 TARGET = ROOT/'docs/belajar_MLP_Spider.html'
 BOOKS = ['01_Data_dan_Tokenisasi.xlsx','02_Vektor_Jawaban.xlsx','03_Vektor_Kata_dan_Kalimat.xlsx',
          '04_Prediksi_dan_Evaluasi.xlsx','05_Riwayat_Pelatihan.xlsx']
@@ -174,19 +174,19 @@ def content(snapshot):
     if missing:
         raise ValueError('Anchor belum ditemukan: '+json.dumps(missing))
     return {'chapters':CHAPTERS,'glossary':GLOSSARY,'cells':cells,'snapshot':snapshot,
-            'studySnapshot':json.loads((ROOT/'docs/mlp_e6_study_snapshot.json').read_text()),
-            'methodSources':json.loads((ROOT/'docs/mlp_method_sources.json').read_text()),
+            'studySnapshot':json.loads((ROOT/'docs/snapshots/mlp_e6_study_snapshot.json').read_text()),
+            'methodSources':json.loads((ROOT/'docs/snapshots/mlp_method_sources.json').read_text()),
             'studySource':{'commit':STUDY_COMMIT,'path':STUDY_PATH,'experiment':'E6','runtime_match':False,'note':'Source E6 di repo; notebook eksekusi tidak ikut ZIP. Pengaturan cocok workbook, bukan verifikasi source runtime byte demi byte.'},
-            'comparison':json.loads((ROOT/'docs/mlp_comparison_snapshot.json').read_text()),
-            'frozen':json.loads((ROOT/'docs/mlp_frozen_snapshot.json').read_text()),
-            'lora':json.loads((ROOT/'docs/mlp_lora_snapshot.json').read_text()),
-            'context':json.loads((ROOT/'docs/mlp_context_snapshot.json').read_text()),
-            'lrExperiment':json.loads((ROOT/'docs/mlp_lr_snapshot.json').read_text()),
-            'e8Experiment':json.loads((ROOT/'docs/mlp_e8_snapshot.json').read_text()),
-            'allResults':json.loads((ROOT/'docs/mlp_all_results_snapshot.json').read_text()),
-            'scoreMaps':json.loads((ROOT/'docs/mlp_score_maps_snapshot.json').read_text()),
-            'answerContextInfo':json.loads((ROOT/'docs/mlp_answer_context_snapshot.json').read_text()) if (ROOT/'docs/mlp_answer_context_snapshot.json').exists() else None,
-            'multiSeed':json.loads((ROOT/'docs/mlp_multiseed_snapshot.json').read_text()) if (ROOT/'docs/mlp_multiseed_snapshot.json').exists() else None,
+            'comparison':json.loads((ROOT/'docs/snapshots/mlp_comparison_snapshot.json').read_text()),
+            'frozen':json.loads((ROOT/'docs/snapshots/mlp_frozen_snapshot.json').read_text()),
+            'lora':json.loads((ROOT/'docs/snapshots/mlp_lora_snapshot.json').read_text()),
+            'context':json.loads((ROOT/'docs/snapshots/mlp_context_snapshot.json').read_text()),
+            'lrExperiment':json.loads((ROOT/'docs/snapshots/mlp_lr_snapshot.json').read_text()),
+            'e8Experiment':json.loads((ROOT/'docs/snapshots/mlp_e8_snapshot.json').read_text()),
+            'allResults':json.loads((ROOT/'docs/snapshots/mlp_all_results_snapshot.json').read_text()),
+            'scoreMaps':json.loads((ROOT/'docs/snapshots/mlp_score_maps_snapshot.json').read_text()),
+            'answerContextInfo':json.loads((ROOT/'docs/snapshots/mlp_answer_context_snapshot.json').read_text()) if (ROOT/'docs/snapshots/mlp_answer_context_snapshot.json').exists() else None,
+            'multiSeed':json.loads((ROOT/'docs/snapshots/mlp_multiseed_snapshot.json').read_text()) if (ROOT/'docs/snapshots/mlp_multiseed_snapshot.json').exists() else None,
             'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
             'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),
                         'annotations':len(annotations),'manual_pins_found':len(PINS)-len(missing),
@@ -208,7 +208,7 @@ def build(args):
         from mlp_answer_context import build_context
         context_blob,info=build_context(Path(args.dataset),Path(args.experiment6_results))
         context_cache.parent.mkdir(parents=True,exist_ok=True);context_cache.write_bytes(context_blob)
-        (ROOT/'docs/mlp_answer_context_snapshot.json').write_text(json.dumps(info,indent=2)+'\n')
+        (ROOT/'docs/snapshots/mlp_answer_context_snapshot.json').write_text(json.dumps(info,indent=2)+'\n')
         data['answerContextInfo']=info
     elif context_cache.exists() and data['answerContextInfo']:
         context_blob=context_cache.read_bytes()

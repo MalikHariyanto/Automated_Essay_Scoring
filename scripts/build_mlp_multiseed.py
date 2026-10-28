@@ -92,7 +92,7 @@ def build(manifest):
             'notebook':'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/d8c21accc6e0bbff7a9d95c02a553b8bfeed8340/notebooks/experiments/AES_300_E6_3Seed_CPU.ipynb',
             'input_policy':'Jawaban saja; semua S1/S2/S3 dilatih ulang per seed. Soal/kunci ditampilkan sebagai rujukan.',
             'limits':'Rerata dan SD dari tiga metrik per seed, bukan ensemble. Jangan memilih seed terbaik dari test. Source runtime byte demi byte belum dibuktikan dari workbook saja.'}
-    (ROOT/'docs/mlp_multiseed_snapshot.json').write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    (ROOT/'docs/snapshots/mlp_multiseed_snapshot.json').write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     print(json.dumps({'seeds':result['seeds'],'folds':45,'models':9,'test_answers':60,'predictions':540,'all_uploaded_workbooks_matched':True}))
 
 

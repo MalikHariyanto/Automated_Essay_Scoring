@@ -12,7 +12,7 @@ import zipfile
 
 from build_mlp_study import BOOKS, ROOT, table, workbook_inventory, source
 
-TARGET = ROOT/'docs/mlp_frozen_snapshot.json'
+TARGET = ROOT/'docs/snapshots/mlp_frozen_snapshot.json'
 REFERENCE = '0c79d655898f967e855922be3c5fad1865efb1aa'
 NOTEBOOK = 'notebooks/experiments/AES_300_S3_DoubleFrozen_MLP_Manual.ipynb'
 
@@ -55,7 +55,7 @@ def identity(rows, keys):
 
 def extract(frozen_path, mlp_path):
     raw=Path(frozen_path).read_bytes()
-    expected=json.loads((ROOT/'docs/mlp_study_snapshot.json').read_text())['zip_sha256']
+    expected=json.loads((ROOT/'docs/snapshots/mlp_study_snapshot.json').read_text())['zip_sha256']
     if hashlib.sha256(Path(mlp_path).read_bytes()).hexdigest()!=expected:
         raise ValueError('ZIP MLP acuan berbeda dari sumber buku.')
     with zipfile.ZipFile(io.BytesIO(raw)) as z, zipfile.ZipFile(mlp_path) as old:

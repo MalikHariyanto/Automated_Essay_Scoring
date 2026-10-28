@@ -15,7 +15,7 @@ import zipfile
 import math
 
 ROOT=Path(__file__).resolve().parents[1]
-TARGET=ROOT/'docs/mlp_comparison_snapshot.json'
+TARGET=ROOT/'docs/snapshots/mlp_comparison_snapshot.json'
 BASE='3afad79'
 MID='312f394'
 LATEST='15bc7bb'

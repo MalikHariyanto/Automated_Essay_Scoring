@@ -22,7 +22,7 @@ DESCRIPTIONS.update({
 })
 
 ROOT = Path(__file__).resolve().parents[1]
-SNAPSHOT = ROOT / 'docs/learning_snapshot_AI.json'
+SNAPSHOT = ROOT / 'docs/snapshots/learning_snapshot_AI.json'
 TARGET = ROOT / 'docs/belajar_colab_AI_interaktif.html'
 SOURCE_PATHS = [
     'src/aes/io.py', 'src/aes/workbook.py', 'src/aes/audit.py',

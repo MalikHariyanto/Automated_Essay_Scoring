@@ -20,7 +20,7 @@ def winner_counts(rows):
 
 def audit(context, mlp, frozen, lora, baseline_eval):
     result=extract(context,mlp,method='context')
-    (ROOT/'docs/mlp_context_snapshot.json').write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    (ROOT/'docs/snapshots/mlp_context_snapshot.json').write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     entries={}
     for id,path in [('E2',mlp),('E3',frozen),('E4',context),('E5',lora)]:
         with ZipFile(path) as z:
@@ -31,7 +31,7 @@ def audit(context, mlp, frozen, lora, baseline_eval):
           'baseline_eval_book':{'file':'04_Prediksi_dan_Evaluasi.xlsx','sheets':workbook_inventory(Path(baseline_eval).read_bytes())},
           'numeric_tie_tolerance_points':1e-5,
           'limits':'Tiap jawaban dihitung satu kali. Seri dipisahkan. Hitungan terdekat bukan RMSE atau bukti keunggulan statistik.'}
-    (ROOT/'docs/mlp_all_results_snapshot.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+    (ROOT/'docs/snapshots/mlp_all_results_snapshot.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'metrics':result['metrics'],'CV':result['cvSummary'],'prediction_winners':entries},ensure_ascii=False))
 
 

@@ -28,7 +28,7 @@ def test_invalid_teacher_prediction_or_saved_category_is_rejected(row):
 
 
 def test_public_matrices_preserve_old_counts_and_contain_all_twenty_one_maps():
-    data = json.loads((ROOT/'docs/mlp_score_maps_snapshot.json').read_text())
+    data = json.loads((ROOT/'docs/snapshots/mlp_score_maps_snapshot.json').read_text())
     assert set(data['matrices']) == {'E0','E2','E3','E4','E5','E6','E8'}
     for run,maps in data['matrices'].items():
         assert set(maps) == {'S1','S2','S3'}
@@ -37,4 +37,4 @@ def test_public_matrices_preserve_old_counts_and_contain_all_twenty_one_maps():
             assert sum(map(sum,matrix)) == 60
             assert all(isinstance(n,int) and n >= 0 for row in matrix for n in row)
     for run,path in [('E2','mlp_study_snapshot.json'),('E6','mlp_e6_study_snapshot.json')]:
-        assert data['matrices'][run] == json.loads((ROOT/'docs'/path).read_text())['matrices']
+        assert data['matrices'][run] == json.loads((ROOT/'docs/snapshots'/path).read_text())['matrices']

@@ -136,7 +136,7 @@ def build():
         elif cell['cell_type']=='code':cells.append({'number':len(cells)+1,'title':title,'source':source})
     payload={'version':version,'files':files,'cells':cells,
              'config':json.loads((ROOT/'configs/default.json').read_text()),
-             'evidence':json.loads((ROOT/'docs/verification/full_learning.json').read_text())['notebook']}
+             'evidence':json.loads((ROOT/'docs/verifikasi/full_learning.json').read_text())['notebook']}
     encoded=json.dumps(payload,ensure_ascii=False).replace('<','\\u003c')
     html=TARGET.read_text()
     html=re.sub(r'<!-- SOURCE_PAYLOAD_BEGIN -->.*?<!-- SOURCE_PAYLOAD_END -->',

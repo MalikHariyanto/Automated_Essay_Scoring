@@ -48,7 +48,7 @@ def main():
             with ZipFile(path) as z:raw=z.read('04_Prediksi_dan_Evaluasi.xlsx')
         predictions[run]=table(raw,'Nilai Guru dan Prediksi')
     ranking=compare_predictions(predictions)
-    target=ROOT/'docs/mlp_all_results_snapshot.json';data=json.loads(target.read_text());data['across_experiments']=ranking
+    target=ROOT/'docs/snapshots/mlp_all_results_snapshot.json';data=json.loads(target.read_text());data['across_experiments']=ranking
     target.write_text(json.dumps(data,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     print(json.dumps(ranking,ensure_ascii=False))
 

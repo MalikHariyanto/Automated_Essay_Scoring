@@ -12,7 +12,7 @@ try{
  await page.goto(base+folder+'belajar_MLP_Spider_Privat.html',{timeout:180000});
  await page.waitForFunction(()=>window.MLPE8?.getState().loaded&&window.MLPDashboard?.getLRBytes());
  await page.route('**/*',route=>route.abort());
- const expected=JSON.parse(fs.readFileSync('docs/mlp_e8_snapshot.json'));
+ const expected=JSON.parse(fs.readFileSync('docs/snapshots/mlp_e8_snapshot.json'));
  assert.equal(await page.evaluate(()=>MLPDashboard.runs.length),7);
  await page.evaluate(()=>MLPDashboard.setTab('overview'));
  assert.equal(await page.locator('#dashboardE8Comparison tbody tr').count(),6);

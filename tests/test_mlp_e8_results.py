@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_e8_history_selection_and_cv_are_complete_and_distinct_from_e6():
-    data = json.loads((ROOT/'docs/mlp_e8_snapshot.json').read_text())
+    data = json.loads((ROOT/'docs/snapshots/mlp_e8_snapshot.json').read_text())
     assert data['id'] == 'E8' and data['teacher_test_pairs_identical']
     assert len(data['books']) == 5 and len(data['folds']) == 15
     for scenario in ('S1', 'S2', 'S3'):
@@ -27,7 +27,7 @@ def test_e8_history_selection_and_cv_are_complete_and_distinct_from_e6():
 
 
 def test_e8_ranking_recomputed_over_all_seven_runs_and_same_sixty_answers():
-    data = json.loads((ROOT/'docs/mlp_all_results_snapshot.json').read_text())
+    data = json.loads((ROOT/'docs/snapshots/mlp_all_results_snapshot.json').read_text())
     for scenario in ('S1', 'S2', 'S3'):
         summary = data['across_experiments']['scenarios'][scenario]
         assert summary['answers'] == 60
@@ -38,7 +38,7 @@ def test_e8_ranking_recomputed_over_all_seven_runs_and_same_sixty_answers():
 
 
 def test_e8_snapshot_contains_aggregates_only():
-    data = json.loads((ROOT/'docs/mlp_e8_snapshot.json').read_text())
+    data = json.loads((ROOT/'docs/snapshots/mlp_e8_snapshot.json').read_text())
     forbidden = {'ID Jawaban', 'Jawaban Siswa', 'Nilai Guru', 'pairs', 'responses'}
     def check(value):
         if isinstance(value, dict):

@@ -1,7 +1,7 @@
 // Data agregat dan akses peta skor pada browser; tanpa training model.
 import {createRequire} from 'node:module';import fs from 'node:fs';import assert from 'node:assert/strict';
 const require=createRequire(import.meta.url),{chromium}=require('playwright'),base='http://127.0.0.1:8765/',folder='outputs/mlp_study/',checks=[];
-const expected=JSON.parse(fs.readFileSync('docs/mlp_score_maps_snapshot.json'));
+const expected=JSON.parse(fs.readFileSync('docs/snapshots/mlp_score_maps_snapshot.json'));
 const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});
 try{const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(base+'docs/belajar_MLP_Spider.html');await page.waitForFunction(()=>window.MLPScoreMaps);await page.route('**/*',r=>r.abort());
  await page.locator('#openDashboard').click();await page.locator('#dashboard-predictions').click();await page.getByRole('button',{name:'Peta guru × prediksi',exact:true}).click();assert.equal(await page.locator('.score-map-card').count(),1);assert.equal(await page.getByLabel('Eksperimen peta skor').inputValue(),'E6');checks.push('Peta dapat ditemukan dari Guru & prediksi, tanpa membuka meja belajar.');

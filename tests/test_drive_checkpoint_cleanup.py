@@ -557,7 +557,7 @@ def test_documented_kernel_repair_replaces_strict_cleaner_without_touching_worke
         legacy(request(s))
     root = Path(__file__).resolve().parents[1]
     module = (root/'src/aes/teacher_score/drive_checkpoint_cleanup.py').read_bytes()
-    doc = (root/'docs/perbaikan_sinkronisasi_checkpoint_drive.md').read_text()
+    doc = (root/'docs/arsip/perbaikan_sinkronisasi_checkpoint_drive.md').read_text()
     code = doc.split('```python\n', 1)[1].split('```', 1)[0]
     requests = []
     def public_code_only(url, timeout):

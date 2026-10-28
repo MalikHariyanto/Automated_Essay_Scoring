@@ -1,6 +1,6 @@
 // Audit browser E21 tanpa menulis teks/skor individual ke log publik.
 import {createRequire}from'node:module';import fs from'node:fs';import assert from'node:assert/strict';import crypto from'node:crypto';
-const require=createRequire(import.meta.url),{chromium}=require('playwright'),base='http://127.0.0.1:8765/',folder='outputs/e21_study/',checks=[],meta=JSON.parse(fs.readFileSync('docs/e21_study_snapshot.json'));
+const require=createRequire(import.meta.url),{chromium}=require('playwright'),base='http://127.0.0.1:8765/',folder='outputs/e21_study/',checks=[],meta=JSON.parse(fs.readFileSync('docs/snapshots/e21_study_snapshot.json'));
 const b=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});const ok=t=>{checks.push(t);console.log('PASS',t)};
 try{const p=await b.newPage({viewport:{width:1440,height:1000},acceptDownloads:true});p.setDefaultTimeout(90000);const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(base+folder+'belajar_E21_Privat.html');await p.waitForFunction(()=>window.E21Book&&MLPStudy.getState().resultsLoaded);await p.route('**/*',r=>r.abort());
  assert.equal(await p.locator('#e21MetricCompare tbody tr').count(),5);assert.equal(await p.locator('#e21MetricCompare td.best').count(),5);assert.equal(await p.locator('[data-e21-tab]').count(),8);assert.match(await p.locator('#dashboardBody').innerText(),/6,7231/);assert.equal(await p.evaluate(()=>Object.hasOwn(MLPStudy.data,'multiSeed')),false);ok('Ringkasan hanya E21, lima baris metrik dan penanda terbaik benar.');

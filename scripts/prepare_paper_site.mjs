@@ -6,7 +6,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-// Hanya dua aplikasi hasil terbaru; default buku tiga variabel E24.
+// Hanya dua aplikasi hasil terbaru; default buku tiga variabel E21–E26.
 const sourceName = process.argv.includes('--earlier') ? 'docs/belajar_MLP_Spider.html' : 'docs/belajar_Tiga_Input_Spider.html';
 const source = join(root, sourceName);
 const output = join(root, 'outputs', 'paper_site', 'public');
