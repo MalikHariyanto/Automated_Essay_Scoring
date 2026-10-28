@@ -14,7 +14,7 @@ Untuk menjelaskan kode, pengguna menyukai kalimat singkat sekitar 5–10 kata di
 
 ## 2. Kontrak yang berlaku sekarang
 
-Keluarga aktif **E21–E26** memakai tiga fitur teks pada **seluruh S1/S2/S3**:
+Keluarga aktif **E21–E28** memakai tiga fitur teks pada **seluruh S1/S2/S3**; hasil penelitian tersedia sampai E26, sementara E27/E28 adalah notebook lanjutan:
 
 - `soal`: pertanyaan;
 - `jawaban_referensi`: kunci/acuan jawaban;
@@ -202,9 +202,9 @@ Tidak menjanjikan layer, LoRA, konteks pair, LR lebih kecil, atau Huber pasti me
 
 Minat terbaru pengguna adalah **LR head MLP `5e-6`**, bukan LR encoder. Encoder sudah menggunakan5e-6; MLP masih1e-4. Uji MLP saja memerlukan pemisahan optimizer: kelompok `head` sekarang juga mengandung GRU/attention/proyeksi ringkasan/norm. Jangan mengubah semuanya lalu menamakannya uji LR MLP.
 
-Dua jalur usulan: A=E26 dengan LR MLP yang berbeda, B=E26 dengan co-attention respons–referensi. Uji terpisah; kombinasi keduanya belum otomatis lebih baik. Tiga seed untuk acuan dan kandidat terpilih diperlukan sebelum klaim konsistensi. Gate tambahan belum prioritas berdasarkan hasil E25. Huber tetap uji loss terpisah bersyarat analisis residual.
+Dua jalur awal diusulkan dari E26: perubahan LR MLP dan co-attention respons–referensi. **Pilihan pengguna berikutnya mengganti dasar keduanya ke E23**, seperti dijelaskan di bawah. Uji terpisah; kombinasi keduanya belum otomatis lebih baik. Tiga seed untuk acuan dan kandidat terpilih diperlukan sebelum klaim konsistensi. Gate tambahan belum prioritas berdasarkan hasil E25. Huber tetap uji loss terpisah bersyarat analisis residual.
 
-**Belum ada kode/hasil baru E27/E28/E29 pada serah-terima ini.** Pengguna baru meminta penataan GitHub, ringkasan konteks untuk AI, dan rekomendasi combo; bukan menjalankan training baru.
+**Pembaruan sesudah serah-terima:** pengguna meminta kode dua jalur tersebut, lalu secara eksplisit mengganti dasar ke **E23**, karena prioritasnya banyaknya prediksi mendekati guru. Draf turunan E26 belum dipublikasikan dan digantikan; keputusan ini bukan klaim E26 hanya bagus saat training—RMSE/MAE test E26 tetap lebih rendah. **E27 = E23 + co-attention respons–referensi**, **E28 = E23 + LR MLP S3 saja5e-6**. Keduanya dibuat sebagai notebook GPU biasa, tanpa Drive, seluruh S1/S2/S3 dilatih baru, dengan sumber E23 dipin. [Metode dan source](docs/eksperimen/eksperimen_e27_e28_gpu.md). E28 tidak menambahkan co-attention; arsitektur E23 tetap. E27 MLP/layer baru tetap1e-4. Kedua optimizer memisahkan `head.*` dari pooling/norm; S1/S2 tetap kontrol. Belum ada hasil penelitian E27/E28, belum dimasukkan ke buku hasil. Jangan menyebut E29 sudah dibuat atau training pretrained sudah dijalankan oleh tes fixture.
 
 ## 11. Berkas, akun baru, dan sumber kebenaran
 

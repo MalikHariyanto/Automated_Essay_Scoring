@@ -6,6 +6,7 @@ Tes fungsi, fixture, browser, dan training penelitian adalah tingkat bukti berbe
 
 | Dokumen | Isi |
 | --- | --- |
+| [verification_e27_e28.md](verification_e27_e28.md) | E27 co-attention, E28 LR MLP S3, eksekusi notebook dengan fixture teknis |
 | [ai_reference_learning.json](ai_reference_learning.json) | Snapshot ai reference learning |
 | [audit_summary.json](audit_summary.json) | Snapshot audit summary |
 | [colab_classy_palettes.json](colab_classy_palettes.json) | Snapshot colab classy palettes |

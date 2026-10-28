@@ -55,10 +55,10 @@ Kode dalam HTML cocok dengan notebook rujukan. ZIP hasil tidak menyertakan execu
 
 Pembaruan hasil terakhir lulus 18 tes integritas/unit, 8 kelompok browser dan 2 pemeriksaan paket. Ini bukti kode/HTML/unduhan, bukan ukuran akurasi model. Fixture CPU tidak membuktikan pretrained training GPU telah dijalankan oleh pemeriksaan tersebut.
 
-## Belum dikerjakan
+## Notebook lanjutan · hasil belum tersedia
 
-LR **MLP saja `5e-6`**, Huber, dan co-attention respons–referensi belum menjadi hasil E21–E26. [Rencana berikutnya](RENCANA_EKSPERIMEN.md) adalah usulan, bukan kode atau hasil baru.
+Pengguna memilih **E23** sebagai acuan untuk memprioritaskan jumlah prediksi mendekati guru, lalu meminta dua resep: **E27 = E23 + co-attention respons–referensi**, **E28 = E23 dengan LR MLP S3 saja `5e-6`**. Keduanya tersedia sebagai notebook GPU mandiri tanpa Drive, seluruh S1/S2/S3 dilatih baru. [Source dan metode](docs/eksperimen/eksperimen_e27_e28_gpu.md). Belum ada hasil penelitian atau penambahan hasil E27/E28 ke HTML. Huber dan pengukuhan E26/kandidat tiga seed masih rencana.
 
-Penting: kelompok `head` pada optimizer E26 juga menampung BiGRU, attention, proyeksi ringkasan dan LayerNorm. Mengganti `HEAD_LR` langsung mengubah semua itu. Uji LR MLP saja memerlukan kelompok parameter tersendiri.
+Penting: kelompok `head` pada optimizer **E23 asal** juga menampung BiGRU, proyeksi ringkasan dan LayerNorm. **E27/E28 sudah memisahkan** `head.*` dari `pooling_norm`. Pada E28 hanya MLP S3 berubah5e-6; S1/S2 head serta pooling/norm/proyeksi tetap1e-4. `s3_mlp_lr` dan `s3_layers_lr` dicatat terpisah pada config, checkpoint dan Excel.
 
 Untuk akun baru, ikuti [serah-terima](PINDAH_AKUN.md). Chat, lampiran privat, runtime Colab dan `outputs/` tidak otomatis tersedia di akun baru.

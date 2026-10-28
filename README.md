@@ -10,6 +10,8 @@ Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **s
 | Menentukan combo berikutnya | **[Rencana eksperimen](RENCANA_EKSPERIMEN.md)** |
 | Mencari metode, review, atau bukti | **[Daftar dokumentasi](docs/README.md)** |
 
+Notebook baru yang diminta: **[E27 · E23 + co-attention](notebooks/experiments/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb)** dan **[E28 · E23 + LR MLP S3 5e-6](notebooks/experiments/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb)**. GPU, tanpa Drive; [rincian metode](docs/eksperimen/eksperimen_e27_e28_gpu.md). Belum ada hasil penelitian baru; buku masih memakai hasil E21–E26.
+
 ## Hasil terbaru: E21–E26
 
 Enam eksperimen, 18 model, 60 jawaban test yang sama, 30 Excel/270 sheet.

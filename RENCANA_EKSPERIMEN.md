@@ -1,34 +1,34 @@
-# Combo berikutnya setelah E26
+# Eksperimen berikutnya · dasar E23 sesuai pilihan pengguna
 
-**Usulan; belum dibuat notebook baru atau dijalankan.** Acuan E26: mean RMSE CV S3 **5,9245**, test **5,7435** pada hasil yang tersedia. Belum ada pengukuhan lintas seed. Tetap tiga input, label `rater`, RoBERTa fine-tuned, BGE frozen, serta kontrol S1/S2.
+**E27/E28 kini dibuat dari E23 atas pilihan eksplisit pengguna; hasil penelitian belum tersedia.** Prioritas pengguna ialah banyaknya prediksi mendekati guru: E23 paling sering terdekat13/60 dan selisih≤5poin39/60 pada enam eksperimen. RMSE test E23 **6,0439**, MAE **4,8576**, mean CV **6,4143**. E26 tetap lebih rendah RMSE/MAE **test** (5,7435/4,4797), bukan hanya bagus saat training. Perbedaan ukuran menjelaskan pilihan dasar; satu run belum membuktikan konsistensi. Tetap tiga input, label `rater`, RoBERTa fine-tuned, BGE frozen, kontrol S1/S2. [Notebook dan metode](docs/eksperimen/eksperimen_e27_e28_gpu.md).
 
 ## Jalur yang dapat dibandingkan
 
 | Jalur | Combo | Yang diuji | Yang dipertahankan |
 | --- | --- | --- | --- |
-| A · parameter | **E26 + LR MLP saja `5e-6`** | Apakah langkah MLP lebih kecil memperbaiki validasi? | Encoder `5e-6`; proyeksi/pooling/norm `1e-4`, MSE |
-| B · layer | **E26 + co-attention respons–referensi** | Apakah pencocokan eksplisit dengan kunci membantu? | MLP/proyeksi/layer baru `1e-4`, encoder `5e-6`, MSE |
+| A · parameter | **E23 + LR MLP saja `5e-6`** | Apakah langkah MLP lebih kecil memperbaiki validasi dan kedekatan prediksi? | Encoder `5e-6`; BiGRU/proyeksi/norm `1e-4`, MSE |
+| B · layer | **E23 + co-attention respons–referensi** | Apakah pencocokan eksplisit dengan kunci membantu? | MLP/proyeksi/layer baru `1e-4`, encoder `5e-6`, MSE |
 | C · pengukuhan | **Acuan dan kandidat × 3 seed** | Apakah peningkatan konsisten pada 42, 123, 2026? | Split/fold tetap; resep kandidat dikunci |
 
-A dan B diuji terpisah dahulu. Gabungan keduanya baru layak setelah CV memberi dukungan masing-masing. Nomor eksperimen baru ditetapkan saat implementasi; tabel ini tidak berarti E27/E28 sudah tersedia.
+A dan B diuji terpisah dahulu: **A menjadi E28**, **B menjadi E27**. Gabungan keduanya baru layak setelah CV memberi dukungan masing-masing. Jalur C masih rencana; tidak ada nomor baru atau hasil tambahan yang dibuat otomatis.
 
 ## A: LR MLP yang dimaksud pengguna
 
 Head MLP sampai E26 tetap `1e-4`. **`5e-6` turun 20 kali**, bukan kenaikan. Head baru diinisialisasi sehingga LR terlalu kecil dapat membuatnya kurang belajar dalam anggaran 25 epoch. Kandidat lebih moderat `5e-5` dapat direncanakan melalui CV sebelum test, bukan dipilih setelah melihat test.
 
-Pada `optimizer_groups()` E26, seluruh parameter yang bukan `roberta.*` atau `projection.*` masuk kelompok `head`, termasuk:
+Pada `optimizer_groups()` E23 asal, seluruh parameter yang bukan `roberta.*` atau `projection.*` masuk kelompok `head`, termasuk:
 
 - `head.*`: MLP regresi;
-- `sequence_pool.*`: BiGRU, attention dan proyeksi ringkasan128→768;
+- `sequence_pool.*`: BiGRU dan proyeksi ringkasan128→768;
 - `roberta_norm.*`: LayerNorm tambahan.
 
-Jangan sekadar mengubah `HEAD_LR` untuk uji **MLP saja**. Pisahkan `model.head.*` ke kelompok LR baru; pooling/norm tetap `1e-4`. Setiap parameter trainable masuk tepat satu kelompok. Bila perlakuan khusus S3, kontrol S1/S2 tetap memakai resep asal.
+Jangan sekadar mengubah `HEAD_LR` untuk uji **MLP saja**. E28 sudah memisahkan `model.head.*` ke kelompok LR sendiri; pooling/norm tetap `1e-4`. Setiap parameter trainable masuk tepat satu kelompok. Perlakuan khusus S3; kontrol S1/S2 tetap memakai resep asal.
 
 ## B: combo layer yang paling relevan
 
-**E26 + co-attention respons–referensi** menguji hubungan jawaban dengan kunci secara eksplisit. RoBERTa saat ini sudah membaca ketiga teks melalui self-attention; tambahan ini bukan memperkenalkan referensi yang sebelumnya tidak dibaca.
+**E23 + co-attention respons–referensi** menguji hubungan jawaban dengan kunci secara eksplisit. RoBERTa saat ini sudah membaca ketiga teks melalui self-attention; tambahan ini bukan memperkenalkan referensi yang sebelumnya tidak dibaca. Draf dasar E26 diganti sebelum publikasi; E27 tidak menambahkan additive attention pooling E26.
 
-Rancangan yang perlu diimplementasikan dan diperiksa:
+Rancangan yang diimplementasikan pada E27 dan diperiksa melalui fixture teknis:
 
 ```text
 RoBERTa membaca soal + referensi + respons
@@ -42,7 +42,7 @@ RoBERTa membaca soal + referensi + respons
                  │
  fitur pencocokan → proyeksi128
                  │
-       attention pooling E26
+  ujung maju64 + ujung mundur64
                  │
  ringkasan128 →768 → LayerNorm → concat BGE256 → MLP
 ```
@@ -63,4 +63,4 @@ Huber menjadi uji loss terpisah bila residual development menunjukkan beberapa e
 
 Gunakan split/fold sama. Catat konfigurasi sebelum membuka test, bandingkan RMSE lima fold, biaya/epoch dan residual. Kunci kandidat/refit melalui development; test yang telah berulang kali dilihat bersifat eksploratif. Tiga seed melatih acuan dan kandidat pada seed yang sama, bukan memilih seed paling bagus. Bedakan mean/SD metrik per seed dari metrik prediksi yang dirata-ratakan.
 
-Acuan: [E26 GPU](notebooks/experiments/AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb), [metode E25/E26](docs/eksperimen/eksperimen_e25_e26_gpu.md), [review hasil](docs/review/review_e25_e26_study.md).
+Acuan implementasi: [E23 GPU](notebooks/experiments/AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb), [metode E27/E28](docs/eksperimen/eksperimen_e27_e28_gpu.md). Pembanding hasil: [review E25/E26](docs/review/review_e25_e26_study.md).

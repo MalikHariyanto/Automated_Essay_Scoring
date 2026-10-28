@@ -2,6 +2,15 @@
 
 **Mulai dari E26 untuk acuan RMSE; E23 untuk mempelajari prediksi yang paling sering terdekat.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
+## Notebook baru · hasil penelitian belum tersedia
+
+Keduanya turunan E23, GPU Colab biasa, tiga input dan satu label `rater`, tanpa Drive. Perubahan khusus S3; seluruh S1/S2/S3 dilatih baru. [Metode dan LR](../../docs/eksperimen/eksperimen_e27_e28_gpu.md).
+
+| Eksperimen | Perubahan dari E23 | Jalankan |
+| --- | --- | --- |
+| **E27** | E23 BiGRU + **co-attention respons–referensi**; MLP tetap1e-4 | **[Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb)** · [Source](AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb) |
+| **E28** | Arsitektur E23 sama; **LR MLP S3 saja5e-6**, pooling/norm/proyeksi tetap1e-4 | **[Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb)** · [Source](AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb) |
+
 ## Tiga input · hasil tersedia
 
 X pada seluruh skenario: `soal`, `jawaban_referensi`, `response_text`. y: satu `rater` 0–100. S1 linear; S2/S3 MLP. RoBERTa S1/S3 LR5e-6; proyeksi/head/layer tambahan1e-4. Maksimal25epoch, patience5, lima fold. Folder output lokal, tanpa Drive.
