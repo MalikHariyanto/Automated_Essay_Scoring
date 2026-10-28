@@ -1,10 +1,10 @@
 # Katalog eksperimen AES
 
-**Kode belajar utama sekarang E24.** Seluruh notebook publik tidak berisi output siswa. Hasil penelitian dibaca dari buku, bukan dibuat ulang oleh HTML.
+**Buku terbaru memuat E21–E26. Kode utama E23 paling sering terdekat; E26 mempunyai RMSE S3 terkecil.** Seluruh notebook publik tidak berisi output siswa. Hasil penelitian dibaca dari buku, bukan dibuat ulang oleh HTML.
 
 ## Tiga variabel: soal, jawaban referensi, jawaban siswa
 
-Label seluruh skenario adalah **rater**, skor 0–100. LR encoder S1/S3 5e-6; proyeksi/head 1e-4. S1 memakai head linear, S2/S3 MLP. E21–E24 memakai folder output lokal, tanpa autosave Drive.
+Label seluruh skenario adalah **rater**, skor 0–100. LR encoder S1/S3 5e-6; proyeksi/head 1e-4. S1 memakai head linear, S2/S3 MLP. E21–E26 memakai folder output lokal, tanpa autosave Drive.
 
 | Eksperimen | Perubahan | GPU Colab | CPU |
 | --- | --- | --- | --- |
@@ -13,9 +13,9 @@ Label seluruh skenario adalah **rater**, skor 0–100. LR encoder S1/S3 5e-6; pr
 | E23 | E21 + BiGRU hanya pada S3 | [GPU](AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb) | — |
 | **E24** | **E21 + attention pooling token jawaban hanya pada S3** | **[GPU](AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb)** | — |
 
-**Notebook lanjutan, GPU:** [E25 · E24 + gated fusion](AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb) dan [E26 · BiGRU + attention](AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb). Hasil belum tersedia; kode belajar utama hasil terverifikasi tetap E24. [Metode dan cara menjalankan](../../docs/eksperimen_e25_e26_gpu.md).
+**Notebook lanjutan, GPU:** [E25 · E24 + gated fusion](AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb) dan [E26 · BiGRU + attention](AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb). Hasil E25/E26 sudah tersedia di buku. Kode utama dipilih menurut jumlah terdekat; peringkat RMSE ditampilkan terpisah. [Metode dan cara menjalankan](../../docs/eksperimen_e25_e26_gpu.md).
 
-[Buku tiga variabel terbaru](../../downloads/Belajar_AES_Tiga_Input_Lengkap.html) · [Metode E23/E24](../../docs/eksperimen_e23_e24_sequence_pooling_gpu.md). Hasil E23 dan E24 sudah tersedia di buku; E24 tetap kode utama berdasarkan kriteria yang dijelaskan pada perbandingan. CPU/GPU adalah pilihan perangkat, bukan dua hasil eksperimen pengganti.
+[Buku tiga variabel terbaru](../../downloads/Belajar_AES_Tiga_Input_Lengkap.html) · [Metode E23/E24](../../docs/eksperimen_e23_e24_sequence_pooling_gpu.md). Seluruh hasil E21–E26 tersedia di buku. [Audit perbandingan terbaru](../../docs/review_e25_e26_study.md). CPU/GPU adalah pilihan perangkat, bukan dua hasil eksperimen pengganti.
 
 ## Eksperimen sebelum tiga variabel
 

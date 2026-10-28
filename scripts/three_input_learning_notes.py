@@ -69,6 +69,9 @@ def enrich_learning_notes(cells, experiment):
     required=[]
     for spec in CORE:
         index,anchor,title,short,body,*occ=spec
+        if experiment=='E25' and anchor=="features['concat'] =":
+            anchor="features['concat'], gate ="
+            body='Gate menghasilkan g dari kedua fitur per jawaban. Concat aktual [2g×RoBERTa768, 2(1−g)×BGE256] tetap1024. Ini bukan penjumlahan skor S1 dan S2; kedua cabang masuk head S3 yang dilatih bersama.'
         c=by_index[index];hits=[j+1 for j,line in enumerate(c['source'].splitlines()) if anchor in line]
         if not hits:
             # Some runtime/export anchors differ between historical notebook variants.
@@ -80,7 +83,7 @@ def enrich_learning_notes(cells, experiment):
         if note:note.update(data)
         else:c['notes'].append(data)
         required.append((index,line,title))
-    if experiment in ('E23','E24'):
+    if experiment in ('E23','E24','E25','E26'):
         extra=[('def answer_token_mask','Mask token jawaban','Memilih posisi respons tanpa memasukkan konteks atau padding.','RoBERTa tetap membaca ketiga teks. Pooling tambahan S3 hanya memakai posisi token jawaban dari answer_positions. Mask bukan pemeriksaan apakah ID kata sama dengan kata pada konteks.'),
           ('hidden = self.roberta','Fitur token contextual','Mengambil representasi semua token dari backbone RoBERTa.','Tensor hidden berbentuk [window,token,768]. Pada S3 ringkasan jawaban berasal dari pooling tambahan. CLS tetap dihitung untuk kontrol/referensi; jangan menyebut CLS sebagai input prediksi S3 varian ini.'),
           ('self.sequence_pool =','Pooling tambahan khusus S3','Membentuk peringkas token sebelum normalisasi dan fusion.','S1 tetap CLS dan head linear. S2 tetap BGE frozen dan MLP. Layer tambahan hanya dijalankan pada S3; encoder RoBERTa tetap ikut fine-tuning.'),
@@ -93,10 +96,31 @@ def enrich_learning_notes(cells, experiment):
           ('summary = torch.cat([states[-2]','State akhir dua arah','Menyambung dua hidden 64 menjadi 128 fitur.','states[-2] dan states[-1] adalah state akhir arah maju dan mundur. Ini ringkasan BiGRU, berbeda dari CLS dan berbeda dari fusion RoBERTa–BGE.'),
           ('self.output = nn.Linear','Proyeksi ringkasan BiGRU','Mengembalikan 128 fitur ringkasan menjadi 768 komponen.','Linear 128→768 memetakan gabungan state maju/mundur. Ini proyeksi tambahan pada cabang RoBERTa E23, berbeda dari proyeksi BGE 1024→256. Dimensi 768 menjaga alur LayerNorm dan fusion berikutnya sesuai acuan.'),
         ]
-        else:extra += [
+        elif experiment in ('E24','E25'):extra += [
           ('self.hidden = nn.Linear','Jaringan attention token','Menghitung penilaian token melalui fitur hidden enam puluh empat.','Jaringan 768→64→1 menghasilkan satu logit per token. Attention bekerja di sumbu token, bukan memilih satu dari 768 koordinat sebagai jawaban.'),
           ('weights = torch.softmax','Bobot attention bertopeng','Membagi bobot hanya kepada token respons yang sah.','Logit non-jawaban dibuat minus tak hingga, lalu softmax FP32 menghasilkan bobot nonnegatif berjumlah satu per window. Bobot ini tidak sama dengan nilai guru.'),
           ('weights.unsqueeze(-1)','Ringkasan berbobot attention','Menjumlahkan vektor token setelah dikalikan bobotnya.','Setiap token mempunyai vektor 768 komponen. Weighted sum menghasilkan satu vektor 768, yang kemudian masuk normalisasi dan fusion. Bobot attention bukan bukti sebab-akibat skor.'),
+        ]
+        if experiment=='E25':extra += [
+          ('class AnswerFusionGate','Gate dua encoder','Mempelajari kontribusi kedua cabang untuk setiap jawaban.','Gate menerima RoBERTa768 setelah LayerNorm dan proyeksi BGE256. Jaringan1024→32→1 menghasilkan satu g per jawaban; bukan satu bobot per token atau per koordinat.'),
+          ('self.hidden = nn.Linear(1024','Jaringan gate 1024→32','Meringkas dua cabang sebelum menentukan koefisien fusion.','Hidden32 memakai tanh, lalu satu keluaran sigmoid. Gate berbeda dari head MLP1024→256→1 yang memprediksi nilai guru.'),
+          ('nn.init.zeros_(self.score.weight)','Awal sama dengan concat E24','Mengawali gate setengah sehingga kedua pengali bernilai satu.','Bobot/bias akhir gate nol menghasilkan sigmoid(0)=0,5. Faktor2 membuat 2g=1 dan 2(1−g)=1; concat awal sama dengan acuan, bukan membagi dua fitur secara tidak sengaja.'),
+          ('gate = torch.sigmoid','Koefisien gate per jawaban','Membatasi koefisien antara nol dan satu.','g mengatur pengali cabang RoBERTa; 1−g mengatur pengali BGE. g tinggi tidak membuktikan encoder tertentu lebih benar atau menjelaskan sebab skor.'),
+          ('fused = torch.cat','Concat aktual berbobot','Menyambung dua cabang yang telah dikalikan gate.','[2g×RoBERTa768, 2(1−g)×BGE256] menghasilkan1024 fitur. g=0,5 identik acuan; ukuran g bukan persentase akurasi.'),
+          ('self.fusion_gate =','Gate khusus fusion S3','Membentuk gate hanya pada cabang skenario tiga.','S1/S2 tidak menjalankan gate. Parameter gate masuk kelompok head1e-4; bobot BGE pretrained tetap frozen.'),
+          ("features['fusion_gate'] =",'Ekspor gate final','Menyimpan koefisien dan pengali aktual untuk inspeksi.','Excel Gate Fusion S3, Pengali RoBERTa S3 dan Pengali BGE S3 berasal dari forward checkpoint final. Baris300jawaban untuk inspeksi fitur, bukan300test.'),
+        ]
+        if experiment=='E26':extra += [
+          ('class AnswerBiGRUAttention','BiGRU dilanjutkan attention','Membaca urutan token lalu memilih ringkasan berbobot.','Ini kombinasi E23/E24 dengan implementasi berbeda: attention menerima semua output token BiGRU128, bukan satu state akhir. Tidak memakai gated fusion E25.'),
+          ('self.gru = nn.GRU','GRU dua arah pada respons','Menghasilkan seratus dua puluh delapan fitur per token.','Input token768 dibaca GRU hidden64 per arah. Keluarannya urutan [window,token,128], sehingga attention masih mempunyai beberapa token untuk dibandingkan.'),
+          ('packed = torch.nn.utils.rnn.pack_padded_sequence','Packing token aktual','Menghindari token padding masuk urutan GRU.','Mask memilih posisi jawaban saja dan packing memakai panjang sebenarnya. Konteks/special/padding tidak dipool; RoBERTa tetap membaca konteks.'),
+          ('packed_outputs, _ = self.gru','Semua output BiGRU','Mempertahankan urutan keluaran untuk tahap attention.','Berbeda dari E23 yang menyambung state akhir dua arah. E26 mempertahankan representasi128 setiap token; underscore berarti state akhir tidak dipakai sebagai ringkasan utama.'),
+          ('self.attention_hidden =','Attention atas output GRU','Menghitung logit token melalui jaringan128→64→1.','Attention bekerja setelah BiGRU. Lebar masukan attention128, bukan768 pada E24. Keluaran akhirnya masih bobot token, belum skor guru.'),
+          ('weights = torch.softmax','Bobot attention bertopeng','Membagi bobot kepada token respons yang sebenarnya.','Softmax FP32 pada logit nonpadding menghasilkan bobot nonnegatif yang berjumlah satu per window. Padding hasil unpacking mendapat bobot nol.'),
+          ('summary = (weights.unsqueeze','Ringkasan BiGRU attention128','Menjumlahkan output token128 memakai bobot attention.','Ringkasan ini mempunyai128 komponen. Ini berbeda dari state akhir E23 dan berbeda dari prediksi regresi1komponen.'),
+          ('self.output = nn.Linear','Proyeksi ringkasan attention','Mengubah128 fitur ringkasan menjadi768 sebelum fusion.','Linear128→768 menjaga ukuran LayerNorm RoBERTa dan concat berikutnya. Proyeksi ini terpisah dari proyeksi BGE1024→256.'),
+          ('self.last_weights = torch.zeros_like','Bobot kembali ke posisi asli','Menyelaraskan bobot GRU dengan token pada Excel.','masked_scatter menempatkan bobot pada posisi respons asli. Konteks/special/padding tetap nol; tanpa pemetaan ini penjelasan token bisa bergeser.'),
+          ('self.last_summary = summary.detach','Salinan ringkasan untuk inspeksi','Menyimpan fitur tanpa memutus jalur prediksi model.','detach dipakai pada salinan last_summary untuk ekspor. Keluaran aktual tetap self.output(summary), sehingga gradien mengalir melalui attention dan BiGRU saat training.'),
         ]
         c=by_index[30]
         for anchor,title,short,body in extra:
@@ -111,7 +135,7 @@ def enrich_learning_notes(cells, experiment):
       ('Konstruksi konteks / text pair','Soal + kunci jawaban dipasangkan dengan jawaban siswa',20,'def context_token_ids','Ketiga teks masuk semua skenario. E22 memakai context_pair; E21/E23/E24 memakai single_sequence. Informasi sama, susunan token berbeda.'),
       ('Dataset PyTorch / X dan y','Dataset berisi teks dan skor guru',14,'class Bundle','Peran Dataset tersebar: Bundle menyimpan tiga teks dan target rater, Engine menyiapkan batch tensor. Tidak harus ada variabel bernama X.'),
       ('Inisialisasi model pretrained','AutoModelForSequenceClassification(..., num_labels=1)',21,'AutoModel.from_pretrained(','Backbone dimuat melalui AutoModel; head regresi dibuat sendiri dalam SingleScoreModel, bukan classifier bawaan AutoModelForSequenceClassification.'),
-      ('Pooling / ContextPooler','CLS → Dense → GELU → Dropout',30,'self.sequence_pool =' if experiment in ('E23','E24') else 'essay = mean_by_essay','S1 tetap CLS. S3 '+('E23 memakai BiGRU token jawaban, state128 → proyeksi768.' if experiment=='E23' else 'E24 memakai attention berbobot pada token jawaban.' if experiment=='E24' else 'acuan memakai CLS lalu mean antar-window.')+' Ini berbeda dari ContextPooler pada screenshot.'),
+      ('Pooling / ContextPooler','CLS → Dense → GELU → Dropout',30,'self.sequence_pool =' if experiment in ('E23','E24','E25','E26') else 'essay = mean_by_essay','S1 tetap CLS. S3 '+('memakai BiGRU token jawaban, state128 → proyeksi768.' if experiment=='E23' else 'memakai attention berbobot pada token jawaban.' if experiment in ('E24','E25') else 'memakai urutan output BiGRU128 → attention → ringkasan128 → proyeksi768.' if experiment=='E26' else 'acuan memakai CLS lalu mean antar-window.')+' Ini berbeda dari ContextPooler pada screenshot.'),
       ('Regression head / classifier','classifier: Linear(768, 1)',30,'self.head = nn.Linear(768, 1)','S1 memakai head linear. S2/S3 memakai MLP 1024→256→1. Layer terakhir MLP tetap linear; keseluruhan head mempunyai hidden nonlinier.'),
       ('Ekstraksi fitur sebelum training','last_hidden_state[:, 0, :] menghasilkan vektor768',24,'def roberta_pretrained_vectors(','Fitur awal dibaca di roberta_pretrained_vectors. Fitur aktual saat model berjalan ada pada forward; fitur checkpoint final diekspor sesudah training.'),
       ('Pelatihan lima fold','for fold_idx ... model baru ... train/validation',38,'def train_all(','make_split menentukan anggota; train_all mengatur fold/refit/test; fit memperbarui bobot satu model. Semua skenario memakai development/test yang sama.'),

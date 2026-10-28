@@ -1,6 +1,6 @@
 # E25 dan E26: eksperimen lanjutan S3, Colab GPU
 
-Dua notebook mandiri diturunkan dari E24 pada commit `f3d25c4`. E23/E24 dan buku hasil sebelumnya tetap utuh. Hasil E25/E26 belum tersedia; notebook baru bukan bukti peningkatan RMSE.
+Dua notebook mandiri diturunkan dari E24 pada commit `f3d25c4`. Source E23/E24 tetap tersedia. Hasil E25/E26 sudah ditambahkan ke buku tiga variabel; [audit hasil](review_e25_e26_study.md) memisahkan RMSE, jumlah prediksi terdekat dan variasi fold.
 
 | Komponen | E25 | E26 |
 | --- | --- | --- |

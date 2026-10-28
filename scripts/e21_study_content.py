@@ -129,6 +129,36 @@ def curriculum(snapshot):
         g['attention pooling']=('Ringkasan token berbobot','E24 memberi bobot hanya pada token respons. RoBERTa tetap membaca soal/referensi; bobot pooling dinormalisasi pada sumbu token, bukan768fitur.')
         g['learning rate']=(g['learning rate'][0],g['learning rate'][1].replace('E21','E24')+' Layer pooling baru ikut kelompok head1e-4.')
         c[10]['terms'].append('attention pooling')
+    if snapshot.get('id') in ('E25','E26'):
+        experiment=snapshot['id']
+        for chapter in c:
+            for key in ('title','goal'):chapter[key]=chapter[key].replace('E21',experiment)
+            for key in ('flow','read'):chapter[key]=[v.replace('E21',experiment) for v in chapter[key]]
+        c[3]['read'][2]=experiment+' memakai single_sequence, mengikuti E24. Perubahan layer hanya pada S3; seluruh S1/S2/S3 tetap dilatih baru. Head1e-4, bukan5e-6; angka5e-6 milik encoder RoBERTa.'
+        c[6]['read'][2]='Dua special aktual dan cadangan empat posisi menjaga anggaran token. answer_positions menentukan token respons; konteks tetap tersedia melalui self-attention RoBERTa.'
+        if experiment=='E25':
+            c[10]['flow']=['Attention jawaban768','BGE1024 →256','Gate1024→32→1','Concat berbobot →MLP']
+            c[10]['read'].extend(['AnswerAttentionPool tetap mengikuti E24. AnswerFusionGate menghasilkan g skalar per jawaban dari RoBERTa768 dan BGE256 setelah normalisasi/proyeksi.',
+                'Concat aktual=[2g×RoBERTa768, 2(1−g)×BGE256]. Lapisan akhir gate diinisialisasi nol sehingga g=0,5 dan kedua pengali=1 saat awal; dimensi concat tetap1024.',
+                'Gate berbeda dari attention token dan berbeda dari head regresi. Bobot gate bukan bukti encoder mana yang benar atau penyebab nilai guru.'])
+            c[14]['flow']=['Pooling768','Bobot token','Gate + pengali','Concat1024 dan skor']
+            c[14]['read'].append('Gate Fusion S3 menyimpan g; dua sheet pengali menyimpan2g dan2(1−g). Semuanya fitur aktual checkpoint final pada300jawaban; test tetap60jawaban.')
+            c[14]['sheets']=['Pooling Jawaban S3','Bobot Attention S3','Gate Fusion S3','Pengali RoBERTa S3','Pengali BGE S3','Fusion S3']
+            g['gated fusion']=('Koefisien dua cabang per jawaban','E25 mempelajari satu g melalui sigmoid. Concat berbobot tetap1024; saat awal g=0,5 mempertahankan concat E24. Gate bukan ukuran akurasi atau pembuktian kausal.')
+            c[10]['terms'].append('gated fusion')
+        else:
+            c[10]['flow']=['Token jawaban768','BiGRU64/arah →128','Attention →ringkasan128','Proyeksi768 →fusion →MLP']
+            c[10]['read'].extend(['AnswerBiGRUAttention mempertahankan semua output token GRU128 sebelum attention128→64→1. Ini berbeda dari E23 yang mengambil state akhir dan dari E24 yang melakukan attention langsung atas token768.',
+                'Weighted sum128 diproyeksikan ke768 sebelum LayerNorm dan concat BGE256. Tidak ada gated fusion E25 pada E26.',
+                'Mask dan packing mengecualikan konteks/special/padding dari pooling. Bobot attention dipetakan kembali ke posisi token asli untuk ekspor Excel.'])
+            c[14]['flow']=['Output token GRU128','Bobot attention','Ringkasan128 →768','Concat1024 dan skor']
+            c[14]['read'].append('Ringkasan BiGRU Attention S3 menyimpan128 komponen weighted sum, bukan state akhir E23. Pooling Jawaban S3 menyimpan768 komponen setelah proyeksi; bobot token ada di sheet tersendiri.')
+            c[14]['sheets']=['Pooling Jawaban S3','Bobot Attention S3','Ringkasan BiGRU Attention S3','Fusion S3']
+            g['BiGRU']=('Urutan token dua arah','E26 menghasilkan128 fitur pada setiap token melalui GRU64 per arah. Seluruh output token diteruskan ke attention; state akhir tidak menjadi ringkasan utama.')
+            c[10]['terms'].append('BiGRU')
+        g['attention pooling']=('Ringkasan token berbobot',experiment+' memberi bobot token respons yang berjumlah satu per window. Konteks tetap tersedia melalui encoder. Bobot bukan penjelasan sebab-akibat nilai.')
+        g['learning rate']=(g['learning rate'][0],g['learning rate'][1].replace('E21',experiment)+' Layer tambahan ikut kelompok head1e-4.')
+        c[10]['terms'].append('attention pooling')
     return c,g
 
 

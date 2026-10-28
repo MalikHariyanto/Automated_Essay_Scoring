@@ -12,9 +12,9 @@ from build_e21_study import ROOT,build
 from build_mlp_study import BOOKS,table
 
 
-def build_family(e21,e22,e24=None,e23=None,reuse_audit=False):
+def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None):
     documents={};snapshots={};pairs={};data={};zips={}
-    inputs=[('E21',e21),('E22',e22)]+([('E23',e23)] if e23 else [])+([('E24',e24)] if e24 else [])
+    inputs=[('E21',e21),('E22',e22)]+[(e,p) for e,p in [('E23',e23),('E24',e24),('E25',e25),('E26',e26)] if p]
     for experiment,path in inputs:
         zips[experiment]=Path(path).read_bytes()
         if reuse_audit:
@@ -74,7 +74,7 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False):
             diff=[abs(lookup[right][i]['Prediksi '+scenario]-r['Nilai Guru'])-abs(lookup[left][i]['Prediksi '+scenario]-r['Nilai Guru']) for i,r in lookup[left].items()]
             impacts.append({'scenario':scenario,'left':sum(v>1e-5 for v in diff),'right':sum(v< -1e-5 for v in diff),'ties':sum(abs(v)<=1e-5 for v in diff)})
         pairwise.append({'left':left,'right':right,'impact':impacts,'overall':{k:sum(r[k] for r in impacts) for k in ['left','right','ties']}})
-    for e in ('E23','E24'):
+    for e in ('E23','E24','E25','E26'):
         if e in snapshots:assert all(parameters['E21'][k]==parameters[e][k] for k in parameters['E21'])
     most=max(v['share'] for v in nearest['S3'].values())
     candidates=[e for e in snapshots if abs(nearest['S3'][e+'_S3']['share']-most)<1e-8]
@@ -95,15 +95,16 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False):
     symbols=(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text()
     family_data={'comparison':comparison,'documents':documents}
     template=(ROOT/'scripts/templates/three_input_study.html').read_text()
-    names={'E21':'single sequence','E22':'context pair','E23':'BiGRU S3','E24':'attention pooling S3'}
+    names={'E21':'single sequence','E22':'context pair','E23':'BiGRU S3','E24':'attention pooling S3',
+           'E25':'attention + gated fusion S3','E26':'BiGRU + attention S3'}
     run_ids=list(snapshots);joined=' × '.join(run_ids);dash='–'.join(run_ids)
-    word={2:'DUA',3:'TIGA',4:'EMPAT'}[len(run_ids)]
+    word={2:'DUA',3:'TIGA',4:'EMPAT',5:'LIMA',6:'ENAM'}[len(run_ids)]
     template=template.replace('E21 × E22',joined).replace('E21–E22',dash)
     template=template.replace('DUA EKSPERIMEN',word+' EKSPERIMEN').replace('dua eksperimen',str(len(run_ids))+' eksperimen')
     template=template.replace('SATU BUKU, DUA FORMAT','TIGA INPUT, '+word+' EKSPERIMEN')
     template=template.replace('Hasil dua run','Hasil '+str(len(run_ids))+' run').replace('keenam model',str(len(run_ids)*3)+' model')
     template=template.replace('Format <em>berbeda.</em>','Ringkasan <em>berbeda.</em>')
-    desc='E21 satu urutan teks; E22 konteks pair.'+(' E23 menambah BiGRU S3.' if e23 else '')+(' E24 menambah attention pooling S3.' if e24 else '')
+    desc='E21 acuan; E22 konteks pair.'+(' E23 BiGRU;' if e23 else '')+(' E24 attention;' if e24 else '')+(' E25 attention + gate;' if e25 else '')+(' E26 BiGRU + attention.' if e26 else '')
     template=template.replace('E21 membaca satu urutan teks. E22 membaca pasangan konteks dan jawaban.',desc)
     template=template.replace('E21 single sequence · E22 context pair.',desc)
     options=''.join('<option value="'+e+'"'+(' selected' if e==primary else '')+'>'+e+' · '+names[e]+'</option>' for e in run_ids)
@@ -124,4 +125,4 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--e21',type=Path,required=True);p.add_argument('--e22',type=Path,required=True);p.add_argument('--e24',type=Path);p.add_argument('--e23',type=Path);p.add_argument('--reuse-audit',action='store_true');a=p.parse_args();build_family(a.e21,a.e22,a.e24,a.e23,a.reuse_audit)
+    p=argparse.ArgumentParser();p.add_argument('--e21',type=Path,required=True);p.add_argument('--e22',type=Path,required=True);p.add_argument('--e24',type=Path);p.add_argument('--e23',type=Path);p.add_argument('--e25',type=Path);p.add_argument('--e26',type=Path);p.add_argument('--reuse-audit',action='store_true');a=p.parse_args();build_family(a.e21,a.e22,a.e24,a.e23,a.reuse_audit,a.e25,a.e26)
