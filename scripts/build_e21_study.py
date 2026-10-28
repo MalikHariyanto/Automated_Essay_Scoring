@@ -15,11 +15,13 @@ from zipfile import ZipFile
 import numpy as np
 from build_mlp_study import ROOT,BOOKS,table,workbook_inventory,highlighted_lines,source
 from e21_study_content import curriculum,PINS,HINTS
+from three_input_learning_notes import enrich_learning_notes
 
 PIN='ef712b4c035d96178d9baa67caa7453ac9fd8738'
 NOTEBOOK='notebooks/experiments/AES_300_E21_Tiga_Input_GPU.ipynb'
 E24_PIN='f3d25c4'  # Source notebook yang dikirim sebelum ZIP hasil E24.
 E24_NOTEBOOK='notebooks/experiments/AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb'
+E23_NOTEBOOK='notebooks/experiments/AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb'
 
 
 def audit(path, experiment='E21'):
@@ -48,6 +50,15 @@ def audit(path, experiment='E21'):
         assert {k[0] for k in sums}=={r['ID Jawaban'] for r in data}
         assert all(abs(v-1)<1e-5 for v in sums.values())
         attention_audit={'rows':len(weights),'answer_windows':len(sums),'max_sum_error':max(abs(v-1) for v in sums.values()),'weights_finite_nonnegative':True}
+    if experiment=='E23':
+        assert p['Pooling jawaban S3']=='bigru' and p['Hidden pooling S3']==64
+        vectors=table(blobs[BOOKS[1]],'BiGRU S3 State Akhir')
+        pooled=table(blobs[BOOKS[1]],'Pooling Jawaban S3')
+        assert len(vectors)==len(pooled)==300
+        assert {r['ID Jawaban'] for r in vectors}=={r['ID Jawaban'] for r in data}
+        assert all(len(r)==129 for r in vectors) and all(len(r)==769 for r in pooled)
+        assert all(np.isfinite(v) for r in vectors+pooled for k,v in r.items() if k!='ID Jawaban')
+        bigru_audit={'answers':300,'final_state_dimensions':128,'pooling_dimensions':768,'finite':True}
     assert p['Learning rate encoder RoBERTa S1']==p['Learning rate encoder RoBERTa S3']==5e-6
     assert p['Learning rate head']==p['Learning rate proyeksi BGE']==1e-4
     assert p['Skor minimum']==0 and p['Skor maksimum']==100
@@ -113,8 +124,8 @@ def audit(path, experiment='E21'):
     public={}
     for i,names in {0:['Panduan'],1:['Panduan'],2:['Panduan'],3:['Panduan','Ringkasan Validasi','Arti Metrik'],4:['Panduan','Model yang Dibandingkan','Pengaturan Eksperimen']}.items():
         for name in names:public[str(i)+'|'+name]=table(blobs[BOOKS[i]],name)
-    notebook_path=E24_NOTEBOOK if experiment=='E24' else NOTEBOOK if experiment=='E21' else NOTEBOOK.replace('E21_Tiga_Input','E22_Tiga_Input_ContextPair')
-    pin=E24_PIN if experiment=='E24' else PIN
+    notebook_path={'E21':NOTEBOOK,'E22':NOTEBOOK.replace('E21_Tiga_Input','E22_Tiga_Input_ContextPair'),'E23':E23_NOTEBOOK,'E24':E24_NOTEBOOK}[experiment]
+    pin=E24_PIN if experiment in ('E23','E24') else PIN
     snapshot={'id':experiment,'scope':'UPLOADED '+experiment+' RESULTS; NO NEW TRAINING','rows':300,'development':240,'test':60,
         'input_format':p['Format input tiga teks'],'s3_pooling':p.get('Pooling jawaban S3','cls'),'metric_recompute_max_delta':max(metric_deltas),'metric_recompute_tolerance':1e-6,'zip_sha256':hashlib.sha256(raw).hexdigest(),'source_commit':pin,'source_path':notebook_path,
         'runtime_source_matches_commit':False,'source_note':'Source rujukan repo cocok pengaturan workbook; notebook eksekusi tidak disertakan sehingga kecocokan byte runtime/perangkat belum dibuktikan.',
@@ -122,6 +133,7 @@ def audit(path, experiment='E21'):
         'matrices':maps,'native':{},'publicSheets':public,'parameters':parameters,'coverage':coverage_summary,
         'errorSummary':extra,'nearest':wins,'books':[{'file':n,'sha256':hashlib.sha256(blobs[n]).hexdigest(),'sheets':workbook_inventory(blobs[n])} for n in BOOKS]}
     if experiment=='E24':snapshot['attention_audit']=attention_audit
+    if experiment=='E23':snapshot['bigru_audit']=bigru_audit
     return snapshot
 
 
@@ -168,7 +180,9 @@ def content(snapshot):
         cells.append({'index':i,'ordinal':len(cells)+1,'source':text,'htmlLines':highlighted_lines(text),
             'title':defs[0].name if defs else 'Pengaturan & eksekusi','chapter':chapter,'notes':notes,'sha256':hashlib.sha256(text.encode()).hexdigest()})
     if missing:raise ValueError('Anchor E21 tidak ditemukan: '+str(missing))
+    mappings,catalog=enrich_learning_notes(cells,experiment)
     return {'chapters':chapters,'glossary':glossary,'cells':cells,'studySnapshot':snapshot,'snapshot':snapshot,
+        'screenshotMappings':mappings,'learningCatalog':catalog,'learningLayout':'margin',
         'markdown':[{'index':i,'source':source(c)} for i,c in enumerate(notebook['cells']) if c['cell_type']=='markdown'],
         'studySource':{'commit':snapshot.get('source_commit',PIN),'path':notebook_path,'experiment':experiment,'runtime_match':False},
         'coverage':{'code_cells':len(cells),'code_lines':sum(len(c['htmlLines']) for c in cells),'annotations':sum(len(c['notes']) for c in cells)}}
@@ -176,6 +190,7 @@ def content(snapshot):
 
 def reader_script():
     js=(ROOT/'scripts/templates/mlp_study.js').read_text()
+    js=js.replace('/*__THREE_INPUT_NOTES__*/',(ROOT/'scripts/templates/three_input_learning.js').read_text())
     js=js.replace('/*__EXCEL_EXPLORER__*/',(ROOT/'scripts/templates/mlp_excel.js').read_text())
     js=js.replace('E6','E21').replace('MLP awal','E21')
     js=js.replace('readWorkbookSheet};','readWorkbookSheet,historyChart};')
@@ -215,16 +230,19 @@ def build(results=None, experiment='E21', family=False):
     template=template.replace('Ringkasan semua eksperimen →','Hasil E21 →').replace('__EXPERIMENT_COUNT__ eksperimen','1 eksperimen').replace('hasil tersimpan yang dibandingkan','E21 · tiga skenario')
     template=re.sub(r'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/[^" ]+\.ipynb',f'https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/{pin}/'+snapshot['source_path'],template)
     template=template.replace('<section id="reader" class="study-layout"','<section id="reader" hidden class="study-layout"')
-    css='\n'.join((ROOT/'scripts/templates'/p).read_text() for p in ['mlp_study.css','mlp_excel.css','mlp_comparison.css','mlp_metrics.css','mlp_frozen.css','mlp_scroll.css','mlp_compare_fullscreen.css','mlp_dashboard.css','mlp_predictions.css','mlp_score_maps.css','mlp_ui_refinement.css','mlp_e6_refresh.css','e21_study.css'])
+    css='\n'.join((ROOT/'scripts/templates'/p).read_text() for p in ['mlp_study.css','mlp_excel.css','mlp_comparison.css','mlp_metrics.css','mlp_frozen.css','mlp_scroll.css','mlp_compare_fullscreen.css','mlp_dashboard.css','mlp_predictions.css','mlp_score_maps.css','mlp_ui_refinement.css','mlp_e6_refresh.css','e21_study.css','three_input_learning.css'])
     for name,marker in [('paper_splash.svg','__SPLASH__'),('paper_city.svg','__CITY__')]:
         css=css.replace(marker,'data:image/svg+xml;base64,'+base64.b64encode((ROOT/'scripts/assets'/name).read_bytes()).decode())
     script=reader_script()+'\n'+(ROOT/'scripts/templates/e21_study.js').read_text()+'\n'+(ROOT/'scripts/templates/mlp_scroll_boundary.js').read_text()
     if experiment!='E21':
         template=template.replace('E21',experiment).replace('EKSPERIMEN 21','EKSPERIMEN '+experiment[1:]).replace('eksperimen 21','eksperimen '+experiment[1:])
         script=script.replace('E21',experiment)
-    if experiment=='E24':
+    if experiment in ('E23','E24'):
         script=script.replace('cls = self.roberta','hidden = self.roberta')
+    if experiment=='E24':
         script=script.replace("['LayerNorm RoBERTa 768','self.roberta_norm =']", "['Attention token jawaban','self.sequence_pool ='],['LayerNorm RoBERTa 768','self.roberta_norm =']")
+    if experiment=='E23':
+        script=script.replace("['LayerNorm RoBERTa 768','self.roberta_norm =']", "['BiGRU token jawaban','self.sequence_pool ='],['LayerNorm RoBERTa 768','self.roberta_norm =']")
     document=(template.replace('__STYLE__',css).replace('__SYMBOLS__',(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text())
         .replace('__DATA__',json.dumps(data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
         .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text()).replace('__SCRIPT__',script))

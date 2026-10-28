@@ -105,7 +105,7 @@ def test_actual_inline_scripts_parse_without_closing_tag_injection(tmp_path):
 def test_e24_attention_results_and_comparisons_are_real_and_consistent():
     _, data = family()
     c = data['comparison']
-    assert set(c['experiments']) == set(data['documents']) == {'E21','E22','E24'}
+    assert set(c['experiments']) == set(data['documents']) == {'E21','E22','E23','E24'}
     e = c['experiments']['E24']
     assert e['input_format'] == 'single_sequence' and e['s3_pooling'] == 'attention'
     assert e['attention_audit']['rows'] == 16946
@@ -116,9 +116,46 @@ def test_e24_attention_results_and_comparisons_are_real_and_consistent():
     for scenario in ['S1','S2']:
         assert next(r for r in e['metrics'] if r['Skenario']==scenario) == next(r for r in e21['metrics'] if r['Skenario']==scenario)
     assert abs(next(r for r in e['metrics'] if r['Skenario']=='S3')['RMSE (poin)'] - 5.981825270792521)<1e-10
-    assert len(c['pairwise']) == 3
+    assert len(c['pairwise']) == 6
     for p in c['pairwise']:
         assert all(r['left']+r['right']+r['ties']==60 for r in p['impact'])
         assert sum(p['overall'].values())==180
-    assert sum(v['share'] for v in c['nearest']['all'].values()) == 60
-    assert len(c['nearest']['all']) == 9
+    assert abs(sum(v['share'] for v in c['nearest']['all'].values())-60)<1e-8
+    assert len(c['nearest']['all']) == 12
+
+
+def test_e23_biGRU_and_study_default_follow_actual_prediction_criteria():
+    _, data=family();c=data['comparison'];e=c['experiments']['E23']
+    assert e['s3_pooling']=='bigru' and e['input_format']=='single_sequence'
+    assert e['bigru_audit']=={'answers':300,'final_state_dimensions':128,'pooling_dimensions':768,'finite':True}
+    assert 'AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb' in e['source_path']
+    assert abs(c['predictionAudit']['E23']['S3']['rmse']-6.043921327113497)<1e-6
+    assert c['predictionAudit']['E23']['S3']['within']['5']==39
+    assert c['predictionAudit']['E24']['S3']['within']['5']==36
+    assert c['nearest']['S3']['E23_S3']['share']==c['nearest']['S3']['E24_S3']['share']==18
+    assert c['studyRecommendation']['experiment']=='E24'
+    assert c['studyRecommendation']['nearest_co_leaders']==['E23','E24']
+    assert c['studyRecommendation']['within5_best']=='E23'
+    pair=next(p for p in c['pairwise'] if (p['left'],p['right'])==('E23','E24'))
+    assert pair['impact'][2]=={'scenario':'S3','left':28,'right':32,'ties':0}
+
+
+def test_screenshot_mappings_and_learning_notes_point_to_actual_source_lines():
+    _, data=family()
+    for experiment,html in data['documents'].items():
+        d=json.loads(re.search(r'<script id="studyData" type="application/json">(.*?)</script>',html,re.S)[1])
+        cells={cell['index']:cell for cell in d['cells']}
+        assert len(d['screenshotMappings'])==10 and d['learningLayout']=='margin'
+        for m in d['screenshotMappings']:
+            assert m['anchor'] in cells[m['cell']]['source'].splitlines()[m['line']-1]
+            assert any(n['line']==m['line'] and n.get('screenshot')==m['title'] for n in cells[m['cell']]['notes'])
+        for cell in cells.values():
+            for n in cell['notes']:
+                assert n['anchor'] in cell['source'].splitlines()[n['line']-1]
+        model=cells[30]
+        assert any(n['title']=='Head regresi linear S1' for n in model['notes'])
+        assert any(n['title']=='Head regresi MLP S3' for n in model['notes'])
+        if experiment=='E23':
+            assert any(n['title']=='Proyeksi ringkasan BiGRU' and '128' in n['body'] for n in model['notes'])
+        if experiment=='E24':
+            assert any(n['title']=='Bobot attention bertopeng' for n in model['notes'])

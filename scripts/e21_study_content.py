@@ -101,6 +101,20 @@ def curriculum(snapshot):
         g['learning rate']=(g['learning rate'][0],g['learning rate'][1].replace('E21','E22'))
         g['special']=('Separator pasangan','E22 memakai empat special token pada pasangan konteks/jawaban. Keduanya tetap saling memperhatikan melalui self-attention; label guru tidak disisipkan.')
     c[3]['terms']=['X','y','learning rate','head'];c[4]['terms']=['X','y','tokenizer']
+    if snapshot.get('id')=='E23':
+        for chapter in c:
+            for key in ('title','goal'):chapter[key]=chapter[key].replace('E21','E23')
+            for key in ('flow','read'):chapter[key]=[v.replace('E21','E23') for v in chapter[key]]
+        c[3]['read'][2]='E23 memakai single_sequence dari E21. Hanya S3 mendapat BiGRU token jawaban; S1/S2 mengikuti acuan E21.'
+        c[6]['read'][2]='Dua special aktual pada single sequence; cadangan empat posisi menjaga anggaran token sama. answer_positions menentukan posisi respons yang dibaca BiGRU.'
+        c[10]['flow']=['Token jawaban768','BiGRU dua arah','State128 →768','Concat BGE256 → MLP']
+        c[10]['read'].append('AnswerBiGRU membaca urutan token jawaban dengan hidden64 per arah. State akhir dua arah disambung128 lalu diproyeksikan ke768. S3 ini tidak memakai attention pooling.')
+        c[14]['flow']=['Model final','State BiGRU128','Pooling768','Fusion1024 dan skor']
+        c[14]['read'].append('BiGRU S3 State Akhir berisi128 komponen; Pooling Jawaban S3 berisi768 hasil proyeksi. Kedua tabel adalah fitur, bukan nilai guru atau prediksi akhir.')
+        c[14]['sheets']=['Pooling Jawaban S3','BiGRU S3 State Akhir','Fusion S3']
+        g['BiGRU']=('Ringkasan urutan dua arah','E23 menjalankan GRU maju dan mundur pada token respons. Dimensi768 adalah fitur tiap token; gabungan state akhir128 diproyeksikan kembali ke768 sebelum fusion.')
+        g['learning rate']=(g['learning rate'][0],g['learning rate'][1].replace('E21','E23')+' BiGRU/proyeksi barunya ikut kelompok head1e-4.')
+        c[10]['terms'].append('BiGRU')
     if snapshot.get('id')=='E24':
         for chapter in c:
             for key in ('title','goal'):chapter[key]=chapter[key].replace('E21','E24')

@@ -12,12 +12,15 @@ from build_e21_study import ROOT,build
 from build_mlp_study import BOOKS,table
 
 
-def build_family(e21,e22,e24=None):
+def build_family(e21,e22,e24=None,e23=None,reuse_audit=False):
     documents={};snapshots={};pairs={};data={};zips={}
-    inputs=[('E21',e21),('E22',e22)]+([('E24',e24)] if e24 else [])
+    inputs=[('E21',e21),('E22',e22)]+([('E23',e23)] if e23 else [])+([('E24',e24)] if e24 else [])
     for experiment,path in inputs:
-        documents[experiment],snapshots[experiment]=build(path,experiment,family=True)
         zips[experiment]=Path(path).read_bytes()
+        if reuse_audit:
+            cached=json.loads((ROOT/('docs/'+experiment.lower()+'_study_snapshot.json')).read_text())
+            assert cached['zip_sha256']==hashlib.sha256(zips[experiment]).hexdigest(),'ZIP berbeda dari audit tersimpan.'
+        documents[experiment],snapshots[experiment]=build(None if reuse_audit else path,experiment,family=True)
         with ZipFile(io.BytesIO(zips[experiment])) as z:
             pairs[experiment]=table(z.read(BOOKS[3]),'Nilai Guru dan Prediksi')
             data[experiment]=table(z.read(BOOKS[0]),'Data dan Nilai Guru')
@@ -71,9 +74,16 @@ def build_family(e21,e22,e24=None):
             diff=[abs(lookup[right][i]['Prediksi '+scenario]-r['Nilai Guru'])-abs(lookup[left][i]['Prediksi '+scenario]-r['Nilai Guru']) for i,r in lookup[left].items()]
             impacts.append({'scenario':scenario,'left':sum(v>1e-5 for v in diff),'right':sum(v< -1e-5 for v in diff),'ties':sum(abs(v)<=1e-5 for v in diff)})
         pairwise.append({'left':left,'right':right,'impact':impacts,'overall':{k:sum(r[k] for r in impacts) for k in ['left','right','ties']}})
-    if e24:
-        assert all(parameters['E21'][k]==parameters['E24'][k] for k in parameters['E21'])
-    comparison={'experiments':snapshots,'nearest':nearest,'impact':impact,
+    for e in ('E23','E24'):
+        if e in snapshots:assert all(parameters['E21'][k]==parameters[e][k] for k in parameters['E21'])
+    most=max(v['share'] for v in nearest['S3'].values())
+    candidates=[e for e in snapshots if abs(nearest['S3'][e+'_S3']['share']-most)<1e-8]
+    primary=min(candidates,key=lambda e:prediction_audit[e]['S3']['rmse'])
+    recommendation={'experiment':primary,'nearest_co_leaders':candidates,'nearest_share':most,
+        'rule':'Most nearest S3 predictions among uploaded experiments; break tie using lower test RMSE. Descriptive learning default, not a new validated model selection.',
+        'rmse_best':min(snapshots,key=lambda e:prediction_audit[e]['S3']['rmse']),
+        'within5_best':max(snapshots,key=lambda e:prediction_audit[e]['S3']['within']['5'])}
+    comparison={'studyRecommendation':recommendation,'experiments':snapshots,'nearest':nearest,'impact':impact,
         'predictionAudit':prediction_audit,'pairedOverall':paired_overall,'pairwise':pairwise,
         'same_300_texts_labels':True,'same_60_test_ids_labels':True,'same_folds':True,'recorded_parameters_equal_except_format':True}
     (ROOT/'docs/three_input_comparison_snapshot.json').write_text(json.dumps(comparison,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
@@ -85,12 +95,21 @@ def build_family(e21,e22,e24=None):
     symbols=(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text()
     family_data={'comparison':comparison,'documents':documents}
     template=(ROOT/'scripts/templates/three_input_study.html').read_text()
-    if e24:
-        template=template.replace('E21 × E22','E21 × E22 × E24').replace('E21–E22','E21–E22–E24').replace('DUA EKSPERIMEN','TIGA EKSPERIMEN').replace('dua eksperimen','tiga eksperimen').replace('Hasil dua run','Hasil tiga run').replace('keenam model','sembilan model').replace('SATU BUKU, DUA FORMAT','TIGA INPUT, TIGA EKSPERIMEN').replace('Format <em>berbeda.</em>','Ringkasan <em>berbeda.</em>').replace('E22 membaca pasangan konteks dan jawaban.', 'E22 membaca pasangan konteks dan jawaban. E24 menambahkan attention pooling pada S3 dari E21.').replace('E22 context pair.', 'E22 context pair · E24 attention pooling.').replace('</select></label><span id="familyStudyStatus"','<option value="E24">E24 · attention pooling S3</option></select></label><span id="familyStudyStatus"')
-    if e24:
-        template=template.replace('<option value="E24">','<option value="E24" selected>')
-        template=template.replace('Meja belajar →','Pelajari kode E24 →').replace('>Meja belajar</button>','>Meja belajar E24</button>')
-        template=template.replace('Kode lengkap, sticky note, output tahap dan semua sheet.', 'E24 · attention pooling S3 · kode utama, sticky note dan lima Excel.')
+    names={'E21':'single sequence','E22':'context pair','E23':'BiGRU S3','E24':'attention pooling S3'}
+    run_ids=list(snapshots);joined=' × '.join(run_ids);dash='–'.join(run_ids)
+    word={2:'DUA',3:'TIGA',4:'EMPAT'}[len(run_ids)]
+    template=template.replace('E21 × E22',joined).replace('E21–E22',dash)
+    template=template.replace('DUA EKSPERIMEN',word+' EKSPERIMEN').replace('dua eksperimen',str(len(run_ids))+' eksperimen')
+    template=template.replace('SATU BUKU, DUA FORMAT','TIGA INPUT, '+word+' EKSPERIMEN')
+    template=template.replace('Hasil dua run','Hasil '+str(len(run_ids))+' run').replace('keenam model',str(len(run_ids)*3)+' model')
+    template=template.replace('Format <em>berbeda.</em>','Ringkasan <em>berbeda.</em>')
+    desc='E21 satu urutan teks; E22 konteks pair.'+(' E23 menambah BiGRU S3.' if e23 else '')+(' E24 menambah attention pooling S3.' if e24 else '')
+    template=template.replace('E21 membaca satu urutan teks. E22 membaca pasangan konteks dan jawaban.',desc)
+    template=template.replace('E21 single sequence · E22 context pair.',desc)
+    options=''.join('<option value="'+e+'"'+(' selected' if e==primary else '')+'>'+e+' · '+names[e]+'</option>' for e in run_ids)
+    template=re.sub(r'(<select id="familyExperiment"[^>]*>).*?(</select>)',lambda m:m[1]+options+m[2],template,flags=re.S)
+    template=template.replace('Meja belajar →','Pelajari kode '+primary+' →').replace('>Meja belajar</button>','>Meja belajar '+primary+'</button>')
+    template=template.replace('Kode lengkap, sticky note, output tahap dan semua sheet.',primary+' · '+names[primary]+' · kode utama, catatan sejajar dan lima Excel.')
     document=(template.replace('__STYLE__',stylesheet).replace('__SYMBOLS__',symbols)
         .replace('__DATA__',json.dumps(family_data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
         .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text())
@@ -105,4 +124,4 @@ def build_family(e21,e22,e24=None):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--e21',type=Path,required=True);p.add_argument('--e22',type=Path,required=True);p.add_argument('--e24',type=Path);a=p.parse_args();build_family(a.e21,a.e22,a.e24)
+    p=argparse.ArgumentParser();p.add_argument('--e21',type=Path,required=True);p.add_argument('--e22',type=Path,required=True);p.add_argument('--e24',type=Path);p.add_argument('--e23',type=Path);p.add_argument('--reuse-audit',action='store_true');a=p.parse_args();build_family(a.e21,a.e22,a.e24,a.e23,a.reuse_audit)

@@ -78,7 +78,7 @@ def test_all_code_blocks_and_fundamental_notes_match_pinned_source(snapshot):
         assert c['source']==raw and c['sha256']==hashlib.sha256(raw.encode()).hexdigest()
         for note in c['notes']:assert 1<=note['line']<=len(c['htmlLines'])
     token=next(c for c in d['cells'] if c['index']==20)
-    note=next(n for n in token['notes'] if n['title']=='Anggaran token jawaban')
+    note=next(n for n in token['notes'] if n['title']=='Kapasitas respons per window')
     assert 'len(context_ids)' in token['source'].splitlines()[note['line']-1]
 
 

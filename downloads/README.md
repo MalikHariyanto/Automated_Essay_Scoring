@@ -2,7 +2,7 @@
 
 | Buku | Isi | Unduh |
 | --- | --- | --- |
-| **Tiga variabel · E21, E22, E24** | Meja belajar utama E24, tiga eksperimen, sembilan model, 60 jawaban test, 15 Excel | [Buku tiga variabel](Belajar_AES_Tiga_Input_Lengkap.html) |
+| **Tiga variabel · E21, E22, E23, E24** | Meja belajar utama E24, empat eksperimen, dua belas model, 60 jawaban test, 20 Excel | [Buku tiga variabel](Belajar_AES_Tiga_Input_Lengkap.html) |
 | **Eksperimen awal sampai E8 / E6 2.0** | Kumpulan eksperimen sebelum tiga variabel; meja belajar E6, hasil dan Excel lama | [Buku eksperimen terdahulu](Belajar_AES_MLP_Lengkap.html) |
 
 1. Di halaman file GitHub, pilih **Download raw file**.
