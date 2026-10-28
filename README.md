@@ -9,6 +9,8 @@ Dua buku terbaru tersedia di bawah. Di GitHub, pilih **Download raw file**, buka
 
 HTML terpisah, variasi tema lama, serta pengunduh E21 lama telah digantikan oleh dua buku ini. [Petunjuk unduhan](downloads/README.md) · [Audit E24](docs/review_e24_study.md) · [Perbaikan tampilan dan pembersihan](docs/review_e23_study.md).
 
+**Eksperimen lanjutan GPU:** [E25 · attention + gated fusion](notebooks/experiments/AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb) dan [E26 · BiGRU + attention](notebooks/experiments/AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb). Tiga input, rater sebagai label, tanpa Drive. [Cara menjalankan](docs/eksperimen_e25_e26_gpu.md). Hasil keduanya belum tersedia.
+
 ## Notebook eksperimen
 
 **[Katalog seluruh eksperimen](notebooks/experiments/README.md)** memisahkan perubahan metode, pilihan CPU/GPU, dan versi yang memakai ulang hasil lama.

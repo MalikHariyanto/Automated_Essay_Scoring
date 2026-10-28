@@ -13,6 +13,8 @@ Label seluruh skenario adalah **rater**, skor 0–100. LR encoder S1/S3 5e-6; pr
 | E23 | E21 + BiGRU hanya pada S3 | [GPU](AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb) | — |
 | **E24** | **E21 + attention pooling token jawaban hanya pada S3** | **[GPU](AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb)** | — |
 
+**Notebook lanjutan, GPU:** [E25 · E24 + gated fusion](AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb) dan [E26 · BiGRU + attention](AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb). Hasil belum tersedia; kode belajar utama hasil terverifikasi tetap E24. [Metode dan cara menjalankan](../../docs/eksperimen_e25_e26_gpu.md).
+
 [Buku tiga variabel terbaru](../../downloads/Belajar_AES_Tiga_Input_Lengkap.html) · [Metode E23/E24](../../docs/eksperimen_e23_e24_sequence_pooling_gpu.md). Hasil E23 dan E24 sudah tersedia di buku; E24 tetap kode utama berdasarkan kriteria yang dijelaskan pada perbandingan. CPU/GPU adalah pilihan perangkat, bukan dua hasil eksperimen pengganti.
 
 ## Eksperimen sebelum tiga variabel
