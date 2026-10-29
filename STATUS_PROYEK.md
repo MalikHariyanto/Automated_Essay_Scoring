@@ -93,3 +93,7 @@ E30 BiGRU + co-attention lalu attention pooling telah diaudit dan ditambahkan. S
 ## Catatan percakapan untuk serah-terima
 
 [Riwayat percakapan dan progres](docs/riwayat/TRANSKRIP_PROGRES_PROYEK.md) merangkum keputusan dari eksperimen awal sampai E30, perubahan aplikasi, keputusan yang digantikan dan titik lanjut. Ini sintesis percakapan, bukan transkrip verbatim. Panduan AI bagian awal diperbarui agar langsung menunjuk status hasil E30.
+
+## E31/E32 · permintaan kode terbaru memakai E25
+
+Pengguna memilih E25 karena unggul pada pembulatan8/60 dan toleransi1poin11/60, bukan semua ukuran. Dibuat dua resep baru terpisah: E31 = E25 dengan LR MLP S2/S3 5e-6; E32 = E25 dengan co-attention respons–referensi sebelum pooling. E32 tanpa BiGRU; dua proyeksi768→128 dan matching640→768 menjaga pooling768/gate E25. Gate, proyeksi/norm/pooling1e-4; MLP E32 1e-4, encoder S1/S3 5e-6. Label/input/split dan GPU tanpa Drive tetap. Hasil belum tersedia; tidak mengubah HTML hasil E21–E30. [Metode](docs/eksperimen/eksperimen_e31_e32_gpu.md).

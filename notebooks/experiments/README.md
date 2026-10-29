@@ -2,6 +2,15 @@
 
 **E29 kini RMSE S3 terendah; S2 E29 memburuk tajam. Meja belajar HTML hanya memuat E29/E30/E26.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
+## E31/E32 · E25 sebagai acuan, belum ada hasil
+
+E31 mengulang perlakuan LR E29 pada E25; E32 menambah co-attention sebelum pooling/gate E25, tanpa BiGRU. GPU Colab biasa, tanpa Drive. [Metode](../../docs/eksperimen/eksperimen_e31_e32_gpu.md).
+
+| Eksperimen | Perubahan | Jalankan |
+| --- | --- | --- |
+| E31 | MLP S2/S3 5e-6; gate/pooling/proyeksi/norm tetap1e-4 | [Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E31_E25_GatedFusion_MLPLR5e6_GPU.ipynb) |
+| E32 | Co-attention128 → matching768 → pooling E25 → gate → MLP1e-4 | [Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E32_E25_CoAttention_GatedFusion_GPU.ipynb) |
+
 ## E29/E30 · dari E26, hasil keduanya sudah tersedia
 
 GPU Colab biasa, tiga input dan label `rater`, tanpa Drive; seluruh S1/S2/S3 dilatih baru. [Metode, dua attention dan kelompok LR](../../docs/eksperimen/eksperimen_e29_e30_gpu.md).

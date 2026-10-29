@@ -49,4 +49,8 @@ Sembilan snapshot/prediksi dan36duel lama tetap utuh saat E30 ditambahkan. Kini1
 - Versi aplikasi hasil terbaru dipublikasikan pada commit `6132421663a992c9df1b33d9da533da399a74661`; [review E30](../review/review_e30_study.md) dan [verifikasi](../verifikasi/verification_e30_study.md).
 - [Pengunduh tiga input](../../downloads/Belajar_AES_Tiga_Input_Lengkap.html) memakai kunci lama, dibawa secara privat. Jangan mempublikasikan teks/skor individual, ZIP asli, checkpoint atau kunci.
 - Notebook sumber E29/E30 dipin ke `7a76191be20604482fa53f770699563b380120ba`. Source E26 dipin ke `bc4713872c7a7ce23f7dad8ae3ea73a2b75d9b86`.
-- E31/ensemble belum dibuat. Tiga seed dan rata-rata prediksi masih usulan; rata-rata metrik bukan ensemble. Jangan memulai eksperimen atau mengganti metode tanpa instruksi baru.
+- Ensemble belum dibuat; E31/E32 kini resep baru berbasis E25 sebagaimana pembaruan terakhir di bawah. Tiga seed dan rata-rata prediksi masih usulan; rata-rata metrik bukan ensemble. Jangan memulai eksperimen atau mengganti metode tanpa instruksi baru.
+
+## Keputusan lanjutan setelah E30: kembali ke E25
+
+Pengguna meminta perlakuan E29/E30 diulang dari source E25 karena unggul pada pembulatan dan toleransi1poin. Dibuat kode baru E31 (E25 + LR MLP S2/S3 5e-6) dan E32 (E25 + co-attention sebelum pooling/gate), bukan menimpa E29/E30. E32 tidak menambah BiGRU; matching640→768 menjaga dimensi pooling E25. Kedua resep GPU, tiga input, label rater, tanpa Drive; belum memiliki hasil penelitian. Ini menggantikan pernyataan historis di atas bahwa nomor E31 belum dibuat; E31 sekarang ablasi LR dari E25, bukan ensemble. [Metode](../eksperimen/eksperimen_e31_e32_gpu.md).

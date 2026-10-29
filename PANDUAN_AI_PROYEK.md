@@ -245,3 +245,7 @@ Pengguna mempertahankan HTML dan meminta kode hanya tiga eksperimen terbaik. Kri
 E30 sudah menerima ZIP asli dan diintegrasikan, bukan placeholder. Ini E26 + co-attention respons–referensi **lalu attention pooling**; MLP tetap1e-4, berbeda dari LR E29. S3 RMSE5,5247,MAE4,0215,≤5poin44/60,≤10poin56/60,terdekat13/60 pada10peserta. E29 tetap RMSE terbaik5,4293; E30 unggul MAE/toleransi/jumlah terdekat, bukan semua ukuran. E30 CVmean5,9491 sedikit di atas E26 5,9245. Label jumlah terdekat/toleransi bukan exact accuracy.
 
 `comparison.experiments`10, `identities`10semua memiliki hasil, `documents` tetap3: **E29,E30,E26** menurut RMSE S3 terendah. UtamaE29; jangan menyebutnya pemimpin jumlah terdekat yang sekarang E30. E24 tidak diembed lagi tetapi hasil/Excel/sumbernya tetap ada. Seluruh9snapshot/prediksi dan36duel lama dipertahankan; S1/S2 E30 identik E26 per jawaban. Semua50Excel/458sheet dibaca lewat tab08. [Review terbaru](docs/review/review_e30_study.md).
+
+## E31/E32 · permintaan kode terbaru memakai E25
+
+Pengguna memilih E25 karena unggul pada pembulatan8/60 dan toleransi1poin11/60, bukan semua ukuran. Dibuat dua resep baru terpisah: E31 = E25 dengan LR MLP S2/S3 5e-6; E32 = E25 dengan co-attention respons–referensi sebelum pooling. E32 tanpa BiGRU; dua proyeksi768→128 dan matching640→768 menjaga pooling768/gate E25. Gate, proyeksi/norm/pooling1e-4; MLP E32 1e-4, encoder S1/S3 5e-6. Label/input/split dan GPU tanpa Drive tetap. Hasil belum tersedia; tidak mengubah HTML hasil E21–E30. [Metode](docs/eksperimen/eksperimen_e31_e32_gpu.md).

@@ -14,6 +14,8 @@ Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **s
 
 Kode baru dari **E26**: **[E29 · LR MLP S2/S3 5e-6](notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb)** dan **[E30 · co-attention lalu attention pooling](notebooks/experiments/AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb)**. GPU, tanpa Drive; hasil E29 dan E30 sudah tersedia. [Panduan](docs/eksperimen/eksperimen_e29_e30_gpu.md).
 
+**Kode baru berbasis E25:** [E31/E32](docs/eksperimen/eksperimen_e31_e32_gpu.md), GPU tanpa Drive; belum ada hasil.
+
 ## Hasil terbaru: E21–E30
 
 Sepuluh eksperimen,30model,60jawaban test yang sama,50Excel/458sheet. Semua hasil lama dipertahankan; hanya tiga kode diembed agar buku lebih ringan.

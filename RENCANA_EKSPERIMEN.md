@@ -2,7 +2,7 @@
 
 Pengguna sudah menjalankan E27/E28 berbasis E23, lalu menetapkan E26 sebagai acuan berikutnya. **E29 = E26 + LR MLP S2 dan S3 5e-6**; **E30 = E26 + co-attention respons–referensi lalu attention pooling**. MLP E30 tetap1e-4; kedua resep encoder5e-6 dan BiGRU/pooling/proyeksi/norm1e-4, linear S1 tetap1e-4. Kode GPU dan kedua hasil kini tersedia. E29 RMSE S3 terendah5,4293; E30 MAE4,0215 dan≤5poin44/60, tetapi RMSE5,5247. [Review E30](docs/review/review_e30_study.md). [Notebook dan metode](docs/eksperimen/eksperimen_e29_e30_gpu.md).
 
-Usulan berikutnya adalah menguji E26/kandidat dengan tiga seed dan, bila sesuai protokol CV, merata-ratakan prediksi setiap jawaban. **Mean metrik tiga seed bukan ensemble prediksi.** E31 belum dibuat; jangan menambahkan ensemble diam-diam ke E29/E30.
+Usulan berikutnya adalah menguji E26/kandidat dengan tiga seed dan, bila sesuai protokol CV, merata-ratakan prediksi setiap jawaban. **Mean metrik tiga seed bukan ensemble prediksi.** Ensemble belum dibuat. Nomor E31 kini dipakai untuk ablasi LR dari E25, dan E32 untuk co-attention dari E25; jangan menyebut keduanya ensemble.
 
 ## Riwayat dua jalur E27/E28 dari E23
 
