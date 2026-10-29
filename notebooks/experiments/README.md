@@ -2,6 +2,15 @@
 
 **Mulai dari E26 untuk acuan RMSE; E23 untuk mempelajari prediksi yang paling sering terdekat.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
+## E29/E30 · notebook baru dari E26, hasil belum tersedia
+
+GPU Colab biasa, tiga input dan label `rater`, tanpa Drive; seluruh S1/S2/S3 dilatih baru. [Metode, dua attention dan kelompok LR](../../docs/eksperimen/eksperimen_e29_e30_gpu.md).
+
+| Eksperimen | Perubahan dari E26 | Jalankan |
+| --- | --- | --- |
+| **E29** | LR **MLP S2 dan S3**5e-6; linear S1 dan BiGRU/attention/proyeksi/norm tetap1e-4 | **[Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb)** · [Source](AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb) |
+| **E30** | E26 + **co-attention respons–referensi → attention pooling**; MLP tetap1e-4 | **[Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb)** · [Source](AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb) |
+
 ## Hasil baru E27/E28 · dasar E23
 
 Keduanya turunan E23, GPU Colab biasa, tiga input dan satu label `rater`, tanpa Drive. Perubahan khusus S3; notebook meminta seluruh S1/S2/S3 dilatih baru. Hasil unggahan sudah masuk buku: RMSE S3 E27 **6,3277**, E28 **7,0447**. [Audit hasil](../../docs/review/review_e27_e28_study.md). [Metode dan LR](../../docs/eksperimen/eksperimen_e27_e28_gpu.md).

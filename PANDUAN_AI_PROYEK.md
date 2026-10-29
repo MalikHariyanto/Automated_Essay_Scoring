@@ -14,7 +14,7 @@ Untuk menjelaskan kode, pengguna menyukai kalimat singkat sekitar 5–10 kata di
 
 ## 2. Kontrak yang berlaku sekarang
 
-Keluarga aktif **E21–E28** memakai tiga fitur teks pada **seluruh S1/S2/S3**; hasil penelitian tersedia sampai E26, sementara E27/E28 adalah notebook lanjutan:
+Keluarga aktif **E21–E30** memakai tiga fitur teks pada **seluruh S1/S2/S3**; hasil penelitian tersedia sampai E28, sementara E29/E30 adalah notebook lanjutan:
 
 - `soal`: pertanyaan;
 - `jawaban_referensi`: kunci/acuan jawaban;
@@ -207,6 +207,8 @@ Dua jalur awal diusulkan dari E26: perubahan LR MLP dan co-attention respons–r
 **Pembaruan sesudah serah-terima:** pengguna meminta kode dua jalur tersebut, lalu secara eksplisit mengganti dasar ke **E23**, karena prioritasnya banyaknya prediksi mendekati guru. Draf turunan E26 belum dipublikasikan dan digantikan; keputusan ini bukan klaim E26 hanya bagus saat training—RMSE/MAE test E26 tetap lebih rendah. **E27 = E23 + co-attention respons–referensi**, **E28 = E23 + LR MLP S3 saja5e-6**. Keduanya dibuat sebagai notebook GPU biasa, tanpa Drive, seluruh S1/S2/S3 dilatih baru, dengan sumber E23 dipin. [Metode dan source](docs/eksperimen/eksperimen_e27_e28_gpu.md). E28 tidak menambahkan co-attention; arsitektur E23 tetap. E27 MLP/layer baru tetap1e-4. Kedua optimizer memisahkan `head.*` dari pooling/norm; S1/S2 tetap kontrol. **Pembaruan29Oktober2026:** kedua ZIP E27/E28 telah diaudit dan ditambahkan ke buku. RMSE S3 E27=6,3277 dan E28=7,0447. Enam buku lama dipertahankan identik. Pada delapan peserta E23/E26 seri terdekat10/60; E23 tetap kode utama sesuai pilihan pengguna. [Review hasil dan preservasi isi](docs/review/review_e27_e28_study.md). Jangan menyebut E29 sudah dibuat atau training pretrained sudah dijalankan oleh tes fixture.
 
 ## 11. Berkas, akun baru, dan sumber kebenaran
+
+**Keputusan terbaru setelah hasil E27/E28:** pengguna memilih **E26** untuk percobaan lanjutan. E29 menurunkan seluruh parameter MLP `head.*` **S2 dan S3** ke5e-6, sementara linear S1 tetap1e-4. E30 menambah **co-attention respons–referensi kemudian attention pooling E26**, bukan ringkasan ujung E27/E23. MLP E30 tetap1e-4. Encoder RoBERTa5e-6; BiGRU/attention/proyeksi/norm/layer baru1e-4. Dua notebook GPU tanpa Drive sudah dibuat terpisah; hasil penelitian belum tersedia. [Source/panduan](docs/eksperimen/eksperimen_e29_e30_gpu.md). Usulan ensemble tiga seed/E31 belum menjadi kode. HTML delapan eksperimen tidak diubah oleh permintaan kode ini.
 
 | Kebutuhan | Lokasi |
 | --- | --- |

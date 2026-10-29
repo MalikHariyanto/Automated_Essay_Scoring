@@ -6,6 +6,7 @@ Tes fungsi, fixture, browser, dan training penelitian adalah tingkat bukti berbe
 
 | Dokumen | Isi |
 | --- | --- |
+| [verification_e29_e30.md](verification_e29_e30.md) | E29 LR MLP S2/S3 dan E30 co-attention→pooling; dua notebook dasar E26 |
 | [verification_e27_e28_study.md](verification_e27_e28_study.md) | Buku delapan eksperimen, preservasi isi, browser dan paket |
 | [verification_e27_e28.md](verification_e27_e28.md) | E27 co-attention, E28 LR MLP S3, eksekusi notebook dengan fixture teknis |
 | [ai_reference_learning.json](ai_reference_learning.json) | Snapshot ai reference learning |

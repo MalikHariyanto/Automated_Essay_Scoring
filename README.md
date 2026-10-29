@@ -12,6 +12,8 @@ Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **s
 
 **Hasil E27/E28 sudah masuk buku tiga input.** [E27 · E23 + co-attention](notebooks/experiments/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb), [E28 · E23 + LR MLP S3 5e-6](notebooks/experiments/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb). [Review hasil dan preservasi isi](docs/review/review_e27_e28_study.md).
 
+Kode baru dari **E26**: **[E29 · LR MLP S2/S3 5e-6](notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb)** dan **[E30 · co-attention lalu attention pooling](notebooks/experiments/AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb)**. GPU, tanpa Drive; hasil belum tersedia. [Panduan](docs/eksperimen/eksperimen_e29_e30_gpu.md).
+
 ## Hasil terbaru: E21–E28
 
 Delapan eksperimen,24model,60jawaban test yang sama,40Excel/363sheet. Enam buku lama beserta kode/catatan/snapshot hasil dipertahankan identik; E27/E28 ditambahkan.

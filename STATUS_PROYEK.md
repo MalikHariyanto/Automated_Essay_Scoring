@@ -69,3 +69,9 @@ Pada delapan peserta, jumlah terdekat S3 E21/E22/E23/E24/E25/E26/E27/E28 adalah 
 Penting: kelompok `head` pada optimizer **E23 asal** juga menampung BiGRU, proyeksi ringkasan dan LayerNorm. **E27/E28 sudah memisahkan** `head.*` dari `pooling_norm`. Pada E28 hanya MLP S3 berubah5e-6; S1/S2 head serta pooling/norm/proyeksi tetap1e-4. `s3_mlp_lr` dan `s3_layers_lr` dicatat terpisah pada config, checkpoint dan Excel.
 
 Untuk akun baru, ikuti [serah-terima](PINDAH_AKUN.md). Chat, lampiran privat, runtime Colab dan `outputs/` tidak otomatis tersedia di akun baru.
+
+## E29/E30 · kode baru, hasil belum tersedia
+
+Pengguna kembali memilih **E26** sebagai dasar. E29 mempertahankan arsitektur E26 dan menurunkan LR **MLP S2 dan S3** menjadi5e-6; linear S1 tetap1e-4. E30 menambah **co-attention lalu attention pooling E26**, MLP S2/S3 tetap1e-4. Encoder5e-6; BiGRU, pooling, proyeksi/norm/layer baru1e-4. Semua skenario dilatih baru, GPU biasa tanpa Drive. [Source dan metode](docs/eksperimen/eksperimen_e29_e30_gpu.md).
+
+Co-attention mencocokkan dua urutan, sedangkan additive attention pooling merangkum hasil matching. Self-attention RoBERTa tetap ada. Keduanya tidak sama dengan E27 berbasis E23. Buku hasil delapan peserta tetap; belum ada hasil E29/E30 maupun kode E31 ensemble.

@@ -1,4 +1,10 @@
-# Eksperimen berikutnya · dasar E23 sesuai pilihan pengguna
+# Eksperimen lanjutan · keputusan terbaru memakai E26
+
+Pengguna sudah menjalankan E27/E28 berbasis E23, lalu menetapkan E26 sebagai acuan berikutnya. **E29 = E26 + LR MLP S2 dan S3 5e-6**; **E30 = E26 + co-attention respons–referensi lalu attention pooling**. MLP E30 tetap1e-4; kedua resep encoder5e-6 dan BiGRU/pooling/proyeksi/norm1e-4, linear S1 tetap1e-4. Kode GPU tersedia, hasil belum ada. [Notebook dan metode](docs/eksperimen/eksperimen_e29_e30_gpu.md).
+
+Usulan berikutnya adalah menguji E26/kandidat dengan tiga seed dan, bila sesuai protokol CV, merata-ratakan prediksi setiap jawaban. **Mean metrik tiga seed bukan ensemble prediksi.** E31 belum dibuat; jangan menambahkan ensemble diam-diam ke E29/E30.
+
+## Riwayat dua jalur E27/E28 dari E23
 
 **E27/E28 dibuat dari E23 atas pilihan eksplisit pengguna; hasilnya kini tersedia.** RMSE S3 E27=6,3277, E28=7,0447; [review](docs/review/review_e27_e28_study.md). Angka frekuensi enam peserta di bawah menjadi riwayat; delapan peserta kini membuat E23/E26 seri10/60. Prioritas pengguna ialah banyaknya prediksi mendekati guru: E23 paling sering terdekat13/60 dan selisih≤5poin39/60 pada enam eksperimen. RMSE test E23 **6,0439**, MAE **4,8576**, mean CV **6,4143**. E26 tetap lebih rendah RMSE/MAE **test** (5,7435/4,4797), bukan hanya bagus saat training. Perbedaan ukuran menjelaskan pilihan dasar; satu run belum membuktikan konsistensi. Tetap tiga input, label `rater`, RoBERTa fine-tuned, BGE frozen, kontrol S1/S2. [Notebook dan metode](docs/eksperimen/eksperimen_e27_e28_gpu.md).
 

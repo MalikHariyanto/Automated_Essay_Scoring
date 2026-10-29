@@ -8,6 +8,7 @@ Notebook Colab aktif bersifat mandiri; pengguna tidak perlu menjalankan seluruh 
 | Notebook E23/E24 | [build_e23_e24_notebooks.py](build_e23_e24_notebooks.py), [helper pooling](s3_sequence_pooling_helpers.py) |
 | Notebook E25/E26 | [build_e25_e26_notebooks.py](build_e25_e26_notebooks.py), [helper gate/GRU-attention](s3_gated_bigru_attention_helpers.py) |
 | Notebook E27/E28 | [build_e27_e28_notebooks.py](build_e27_e28_notebooks.py), [helper co-attention/optimizer](s3_coattention_helpers.py) |
+| Notebook E29/E30 dari E26 | [build_e29_e30_notebooks.py](build_e29_e30_notebooks.py), [helper co-attention→pooling](s3_coattention_pooling_helpers.py) |
 | Audit Excel/source setiap eksperimen | [build_e21_study.py](build_e21_study.py) |
 | Gabungkan buku tiga input | [build_three_input_study.py](build_three_input_study.py) |
 | Kode/catatan belajar | [e21_study_content.py](e21_study_content.py), [three_input_learning_notes.py](three_input_learning_notes.py) |

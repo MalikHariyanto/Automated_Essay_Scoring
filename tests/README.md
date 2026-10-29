@@ -7,6 +7,7 @@ Tes memastikan implementasi sesuai aturan, bukan membuktikan akurasi AES pada da
 | Buku tiga input: metrik, sumber, catatan, privasi | [test_three_input_study.py](test_three_input_study.py), [test_e21_study.py](test_e21_study.py) |
 | Notebook tiga input/arsitektur | [test_e21_e22_notebooks.py](test_e21_e22_notebooks.py), [test_e23_e24_notebooks.py](test_e23_e24_notebooks.py), [test_e25_e26_notebooks.py](test_e25_e26_notebooks.py) |
 | E27 co-attention / E28 LR MLP terpisah | [test_e27_e28_notebooks.py](test_e27_e28_notebooks.py), [batas bukti](../docs/verifikasi/verification_e27_e28.md) |
+| E29 dua MLP / E30 dua tahap attention dari E26 | [test_e29_e30_notebooks.py](test_e29_e30_notebooks.py), [bukti](../docs/verifikasi/verification_e29_e30.md) |
 | Buku dan eksperimen sebelumnya | `test_mlp_*`, `test_lora_*`, `test_context_pair_*`, `test_three_seed_*` |
 | Workflow/modul Python terdahulu | `test_pipeline`, `test_metric_trace`, `test_trainer`, `test_experiment_protocol` |
 
