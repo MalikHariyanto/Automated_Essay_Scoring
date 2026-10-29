@@ -1,6 +1,6 @@
 # Panduan metode eksperimen
 
-Keluarga hasil kini E21–E29; E30 masih menunggu hasil. Meja belajar memuat E29/E26/E24; semua hasil dan Excel tetap tersedia. Dokumen lain menjelaskan versi sebelumnya.
+Keluarga hasil kini E21–E30. Meja belajar memuat E29/E30/E26; semua hasil dan Excel tetap tersedia. Dokumen lain menjelaskan versi sebelumnya.
 
 [Kembali ke dokumentasi](../README.md) · [Status proyek](../../STATUS_PROYEK.md)
 

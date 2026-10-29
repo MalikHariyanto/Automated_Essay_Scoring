@@ -18,8 +18,8 @@ def test_all_eight_old_results_and_pairwise_outcomes_are_preserved():
         assert b['comparison']['predictionAudit'][e]==a['comparison']['predictionAudit'][e]
     old_pairs={(p['left'],p['right']):p for p in a['comparison']['pairwise']}
     assert all(old_pairs[(p['left'],p['right'])]==p for p in b['comparison']['pairwise'] if (p['left'],p['right']) in old_pairs)
-    for e in ('E26','E24'):assert a['documents'][e]==b['documents'][e]
-    assert len(b['comparison']['pairwise'])==36
+    for e in ('E26',):assert a['documents'][e]==b['documents'][e]
+    assert len(b['comparison']['pairwise'])==45
 
 
 def test_e29_verifies_the_actual_lr_intervention_and_all_three_scenarios():
@@ -42,10 +42,10 @@ def test_e29_verifies_the_actual_lr_intervention_and_all_three_scenarios():
     assert c['predictionAudit']['E29']['S2']['within']['10']==0
 
 
-def test_exactly_three_complete_code_books_but_all_nine_result_sets_remain():
+def test_exactly_three_complete_code_books_but_all_ten_result_sets_remain():
     data=family();c=data['comparison'];chosen=sorted(c['predictionAudit'],key=lambda e:c['predictionAudit'][e]['S3']['rmse'])[:3]
-    assert chosen==list(data['documents'])==['E29','E26','E24']
-    assert len(c['experiments'])==9 and c['studyRecommendation']['learning_default']=='E29'
+    assert chosen==list(data['documents'])==['E29','E30','E26']
+    assert len(c['experiments'])==10 and c['studyRecommendation']['learning_default']=='E29'
     x=c['experiments']['E29'];child=json.loads(re.search(r'<script id="studyData" type="application/json">(.*?)</script>',data['documents']['E29'],re.S)[1])
     notebook=json.loads(subprocess.check_output(['git','show',PIN+':'+x['source_path']],cwd=ROOT))
     assert len(child['cells'])==30 and child['coverage']['annotations']==143 and len(child['screenshotMappings'])==10
@@ -54,6 +54,6 @@ def test_exactly_three_complete_code_books_but_all_nine_result_sets_remain():
         assert cell['source']==source and cell['sha256']==hashlib.sha256(source.encode()).hexdigest()
         assert all(n['anchor'] in source.splitlines()[n['line']-1] for n in cell['notes'])
     assert 'MLP S2 dan S3 juga5e-6' in child['glossary']['learning rate'][1]
-    assert 'E30' not in c['experiments'] and 'E30' not in data['documents']
-    assert not data['identities']['E30']['result_available']
+    assert 'E30' in c['experiments'] and 'E30' in data['documents']
+    assert data['identities']['E30']['result_available']
     assert sum(x['book_available'] for x in data['identities'].values())==3

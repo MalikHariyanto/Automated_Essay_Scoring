@@ -5,7 +5,7 @@
 | Tujuan | Buka |
 | --- | --- |
 | Penataan dan bukti serah-terima | [Audit penataan](review/review_penataan_repo.md) |
-| Hasil terbaru sembilan eksperimen | [Review E29](review/review_e29_study.md) |
+| Hasil terbaru sepuluh eksperimen | [Review E30](review/review_e30_study.md) |
 | Memahami metode aktif | [Panduan eksperimen](eksperimen/README.md) |
 | Membaca review hasil lama | [Daftar review](review/README.md) |
 | Memeriksa bukti teknis | [Verifikasi](verifikasi/README.md) |

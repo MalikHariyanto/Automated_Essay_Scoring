@@ -1,8 +1,8 @@
 # Katalog eksperimen AES
 
-**E29 kini RMSE S3 terendah; S2 E29 memburuk tajam. Meja belajar HTML hanya memuat E29/E26/E24.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
+**E29 kini RMSE S3 terendah; S2 E29 memburuk tajam. Meja belajar HTML hanya memuat E29/E30/E26.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
-## E29/E30 · dari E26, hasil E29 sudah tersedia
+## E29/E30 · dari E26, hasil keduanya sudah tersedia
 
 GPU Colab biasa, tiga input dan label `rater`, tanpa Drive; seluruh S1/S2/S3 dilatih baru. [Metode, dua attention dan kelompok LR](../../docs/eksperimen/eksperimen_e29_e30_gpu.md).
 
@@ -11,7 +11,7 @@ GPU Colab biasa, tiga input dan label `rater`, tanpa Drive; seluruh S1/S2/S3 dil
 | **E29** | LR **MLP S2 dan S3**5e-6; linear S1 dan BiGRU/attention/proyeksi/norm tetap1e-4 | **[Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb)** · [Source](AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb) |
 | **E30** | E26 + **co-attention respons–referensi → attention pooling**; MLP tetap1e-4 | **[Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb)** · [Source](AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb) |
 
-[Review hasil E29](../../docs/review/review_e29_study.md). E30 masih menunggu hasil.
+[Review hasil E29](../../docs/review/review_e29_study.md). [Review hasil E30](../../docs/review/review_e30_study.md). E30 unggul MAE/toleransi, E29 tetap RMSE S3 terendah.
 
 ## Hasil baru E27/E28 · dasar E23
 

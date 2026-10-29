@@ -1,6 +1,6 @@
 # E29 dan E30 · dua resep dari E26, Colab GPU
 
-Pengguna memilih E26 sebagai dasar kedua notebook. **E29 mengubah LR MLP S2/S3; E30 menambah co-attention sebelum attention pooling.** Keduanya terpisah dan belum memiliki hasil penelitian. Buku hasil E21–E28 dan notebook E26/E27/E28 tidak diganti.
+Pengguna memilih E26 sebagai dasar kedua notebook. **E29 mengubah LR MLP S2/S3; E30 menambah co-attention sebelum attention pooling.** Keduanya terpisah dan hasil unggahannya sudah tersedia: [E29](../review/review_e29_study.md) dan [E30](../review/review_e30_study.md). Buku kini membandingkan E21–E30; source notebook E26/E27/E28 tidak diubah.
 
 | Eksperimen | Source | Perubahan |
 | --- | --- | --- |

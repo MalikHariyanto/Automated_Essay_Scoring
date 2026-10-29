@@ -237,3 +237,9 @@ Pengguna meminta HTML tetap menyediakan tempat untuk E29/E30 sebelum output ters
 ZIP E29 sudah diterima dan diaudit. S3 RMSE5,4293,MAE4,1713,≤5poin40/60; S2 RMSE75,9702 dengan seluruh fold memilih25epoch. Jangan menyembunyikan S2 buruk atau menyebut40/60 sebagai skor persis. E29 LR MLP S2/S3 5e-6; arsitektur E26, tanpa co-attention. Hasil E30 belum tersedia.
 
 Pengguna mempertahankan HTML dan meminta kode hanya tiga eksperimen terbaik. Kriteria implementasi dinyatakan eksplisit: tiga RMSE test S3 terendah **E29,E26,E24**, utamaE29. Ini menggantikan defaultE23 dan kebijakan delapan buku kode sebelumnya. `documents` hanya3, `comparison.experiments`9, `identities`10. Semua45Excel/hasil tetap tersedia melalui explorer mandiri tab08; tombol Excel tidak boleh bergantung pada buku kode yang telah dihilangkan. Kartu eksperimen lain tetap menautkan notebook eksternal. E30 tetap dua ruang kosong dan tidak masuk perbandingan. [Review](docs/review/review_e29_study.md).
+
+## Hasil E30 · status terbaru
+
+E30 sudah menerima ZIP asli dan diintegrasikan, bukan placeholder. Ini E26 + co-attention respons–referensi **lalu attention pooling**; MLP tetap1e-4, berbeda dari LR E29. S3 RMSE5,5247,MAE4,0215,≤5poin44/60,≤10poin56/60,terdekat13/60 pada10peserta. E29 tetap RMSE terbaik5,4293; E30 unggul MAE/toleransi/jumlah terdekat, bukan semua ukuran. E30 CVmean5,9491 sedikit di atas E26 5,9245. Label jumlah terdekat/toleransi bukan exact accuracy.
+
+`comparison.experiments`10, `identities`10semua memiliki hasil, `documents` tetap3: **E29,E30,E26** menurut RMSE S3 terendah. UtamaE29; jangan menyebutnya pemimpin jumlah terdekat yang sekarang E30. E24 tidak diembed lagi tetapi hasil/Excel/sumbernya tetap ada. Seluruh9snapshot/prediksi dan36duel lama dipertahankan; S1/S2 E30 identik E26 per jawaban. Semua50Excel/458sheet dibaca lewat tab08. [Review terbaru](docs/review/review_e30_study.md).

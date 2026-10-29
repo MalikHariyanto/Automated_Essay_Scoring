@@ -54,3 +54,5 @@ body.family-code-fullscreen{overflow:hidden;overflow-anchor:none}body.family-cod
 #familyResults .metric-compare{min-width:1150px}#familyAccuracy{min-width:1150px}
 
 .family-excel-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:18px 0}.family-excel-controls label{display:grid;gap:7px;font-size:.83rem;font-weight:750;flex:1 1 200px}.family-excel-controls select,.family-excel-controls input{min-height:43px;border:1px solid #9db7cc;border-radius:8px;background:white;color:#173153;padding:9px;font:inherit;max-width:100%}.family-excel-controls input[type=number]{max-width:130px}.family-excel-inspector{white-space:pre-wrap;overflow-wrap:anywhere;max-height:230px;overflow:auto;background:#14264d;color:#e8f8ff;padding:18px;border-radius:10px;font:14px/1.7 system-ui}.family-excel-area td{max-width:300px;overflow-wrap:anywhere}.family-excel-area td:focus{outline:3px solid #1782a3;outline-offset:-3px}
+
+.family-E30{--run-ink:#916219;--run-bg:#fff5e3}.curve-legend.family-E30 span:before{border-top-style:dotted}

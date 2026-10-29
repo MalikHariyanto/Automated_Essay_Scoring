@@ -85,3 +85,7 @@ Tab **07 · Identitas & sitasi** menampilkan sepuluh kartu dengan acuan, alur, L
 Hasil E29 diaudit dan dimasukkan ke HTML: S3 RMSE5,4293/MAE4,1713/≤5poin40dari60; S2 justru RMSE75,9702 dan seluruh fold memilih batas25epoch. E29 memakai LR MLP S2/S3 5e-6 dari arsitektur E26, bukan co-attention. [Review lengkap](docs/review/review_e29_study.md).
 
 **Instruksi terbaru menggantikan default E23:** meja belajar hanya mengembed tiga kode dengan RMSE test S3 terendah, yaitu **E29, E26, E24**; utamaE29. Semua sembilan hasil/45Excel tetap tersedia lewat perbandingan dan tab08SemuaExcel. E30 masih pending. Jumlah terdekat S3 sembilan peserta E21–E29 adalah8/7/8/5/7/6/7/2/10; perubahan peserta tidak mengubah prediksi lama.
+
+## E30 · hasil lengkap tersedia
+
+E30 BiGRU + co-attention lalu attention pooling telah diaudit dan ditambahkan. S3 RMSE5,5247,MAE4,0215,≤5poin44/60,≤10poin56/60; terdekat13/60 pada sepuluh peserta. E29 tetap RMSE S3 terendah5,4293; E30 unggul MAE/toleransi/jumlah terdekat. Meja belajar kini **E29,E30,E26**, tiga RMSE S3 terendah, utamaE29. Seluruh50Excel/458sheet tersedia. Tidak ada placeholder E30 lagi. [Review](docs/review/review_e30_study.md).

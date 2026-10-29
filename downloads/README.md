@@ -2,7 +2,7 @@
 
 | Buku | Isi | Unduh |
 | --- | --- | --- |
-| **Tiga variabel · E21–E29** | Sembilan hasil,27model,60jawaban test,45Excel/409sheet. Hanya kode E29/E26/E24 di meja belajar, dipilih dari RMSE test S3 terendah. E29 utama; E30 masih identitas kosong | [Buku tiga variabel](Belajar_AES_Tiga_Input_Lengkap.html) |
+| **Tiga variabel · E21–E30** | Sepuluh hasil,30model,60jawaban test,50Excel/458sheet. Hanya kode E29/E30/E26 di meja belajar, dipilih dari RMSE test S3 terendah. E29 utama; E30 unggul MAE/toleransi/jumlah terdekat | [Buku tiga variabel](Belajar_AES_Tiga_Input_Lengkap.html) |
 | **Eksperimen awal sampai E8 / E6 2.0** | Kumpulan eksperimen sebelum tiga variabel; meja belajar E6, hasil dan Excel lama | [Buku eksperimen terdahulu](Belajar_AES_MLP_Lengkap.html) |
 
 1. Di halaman file GitHub, pilih **Download raw file**.

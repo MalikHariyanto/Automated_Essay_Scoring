@@ -25,7 +25,7 @@ def test_six_original_books_all_content_numbers_and_duels_are_unchanged():
     old_pairs={(p['left'],p['right']):p for p in a['pairwise']}
     assert all(old_pairs[(p['left'],p['right'])]==p for p in b['pairwise'] if (p['left'],p['right']) in old_pairs)
     assert b['impact']==a['impact'] and b['pairedOverall']==a['pairedOverall']
-    assert a['nearest']['S3']['E23_S3']['share']==13 and b['nearest']['S3']['E23_S3']['share']==8
+    assert a['nearest']['S3']['E23_S3']['share']==13 and b['nearest']['S3']['E23_S3']['share']==5
     assert b['studyRecommendation']['learning_default']=='E29'
 
 

@@ -4,6 +4,32 @@ from mlp_study_content import CHAPTERS as BASE_CHAPTERS, GLOSSARY as BASE_GLOSSA
 
 
 def curriculum(snapshot):
+    if snapshot.get('id')=='E30':
+        c,g=curriculum({**snapshot,'id':'E26'})
+        for chapter in c:
+            for key in ('title','goal'):chapter[key]=chapter[key].replace('E26','E30')
+            for key in ('flow','read'):chapter[key]=[v.replace('E26','E30') for v in chapter[key]]
+        c[3]['read'][1]='Encoder RoBERTa S1/S3 5e-6; linear S1, MLP S2/S3, proyeksi BGE, BiGRU, co-attention, attention pooling dan norm1e-4. BGE frozen.'
+        c[3]['read'][2]='E30 mengikuti E26 dan menambah co-attention sebelum attention pooling. Format tetap single_sequence; tiga input dan label rater sama. Berbeda dari E29, LR MLP tetap1e-4.'
+        c[10]['flow']=['BiGRU respons128','Referensi768→128','Co-attention → matching128','Attention pooling →768 →fusion →MLP']
+        c[10]['read']=[
+            'S1 tetap RoBERTa+linear; S2 BGE frozen+MLP. Tambahan pencocokan dan pooling hanya S3. MLP adalah head, bukan encoder.',
+            'AnswerBiGRUCoAttentionPool mewarisi layer BiGRU/attention/output E26 tetapi mengganti forward. Respons dan referensi dibaca RoBERTa pada tiga input yang sama.',
+            'Co-attention dua arah menghasilkan lima jenis fitur128 yang disambung640 lalu Linear128+tanh. Tahap ini mencocokkan respons dengan referensi, bukan merangkum jadi skor.',
+            'Additive attention128→64→1 merangkum token hasil matching menjadi128; Linear128→768 dan LayerNorm dilanjutkan concat BGE256 dan MLP. Berbeda dari ringkasan ujung E27.',
+            'Mask respons/referensi terpisah. Soal, prefix, special dan padding bukan query/key langsung, tetapi konteks tetap tersedia melalui self-attention RoBERTa. Dua attention tambahan ini berbeda dari self-attention backbone.']
+        c[14]['flow']=['Matching+pooling128','Proyeksi768 →fusion','Bobot pooling / dua arah','Top1 pasangan token']
+        c[14]['read']=[
+            'Ringkasan CoAttn Pooling S3 memuat128 fitur setelah weighted sum; Pooling Jawaban S3 memuat768 fitur setelah proyeksi. Seluruh300jawaban untuk inspeksi; test tetap60.',
+            'Bobot Attention S3 adalah additive pooling. Bobot CoAttention Respons S3 dan Bobot Referensi S3 adalah ringkasan bobot pencocokan. Setiap kelompok berjumlah1 per window, tetapi maknanya berbeda.',
+            'Pasangan Token Top1 S3 memuat satu pasangan referensi terbesar per token respons, bukan seluruh matriks. Bobot bukan nilai guru atau bukti sebab-akibat prediksi.']
+        c[14]['sheets']=['Pooling Jawaban S3','Ringkasan CoAttn Pooling S3','Bobot Attention S3','Bobot CoAttention Respons S3','Bobot Referensi S3','Pasangan Token Top1 S3','Fusion S3']
+        g['learning rate']=('Ukuran langkah pembaruan',c[3]['read'][1]+' LR awal/puncak sebelum scheduler, bukan ukuran akurasi.')
+        g['BiGRU']=('Urutan token dua arah','E30 membaca token respons menjadi urutan128, mencocokkannya dengan referensi128, lalu melakukan attention pooling. Tidak memakai state akhir langsung.')
+        g['attention pooling']=('Ringkasan hasil matching','E30 memberi bobot token hasil co-attention; weighted sum menghasilkan128 fitur. Ini tahap terpisah dari pencocokan respons–referensi.')
+        g['co-attention']=('Pencocokan respons–referensi','Dua softmax membentuk hubungan token respons dan referensi. Adaptasi tingkat token dari Zhang & Litman2018, https://aclanthology.org/W18-0549/; bukan replikasi arsitektur tingkat kalimat atau jaminan RMSE turun.')
+        c[10]['terms']+=['co-attention']
+        return c,g
     if snapshot.get('id')=='E29':
         c,g=curriculum({**snapshot,'id':'E26'})
         for chapter in c:

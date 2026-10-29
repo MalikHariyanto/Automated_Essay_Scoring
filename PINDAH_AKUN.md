@@ -22,9 +22,9 @@ jawaban_referensi + response_text pada seluruh S1/S2/S3,
 dengan label tunggal rater 0–100. S1 linear; S2/S3 MLP.
 RoBERTa fine-tuned, BGE frozen; GPU Colab biasa, tanpa Drive.
 
-E29 saat ini RMSE S3 paling rendah dan terdekat10/60 pada sembilan peserta,
-tetapi S2-nya buruk. Kode HTML hanya E29/E26/E24; semua hasil/45Excel utuh.
-E30 belum memiliki hasil. Terdekat bukan skor persis sama.
+E29 RMSE S3 paling rendah; S2-nya buruk. E30 MAE/toleransi terbaik,
+terdekat13/60 pada sepuluh peserta. Kode HTML hanya E29/E30/E26;
+semua hasil/50Excel utuh. Terdekat bukan skor persis sama.
 Dua HTML lengkap tersedia di downloads; kunci dibawa terpisah.
 Jangan mengaku dapat membaca lampiran privat dari chat lama.
 
