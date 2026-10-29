@@ -10,6 +10,7 @@ import re
 from zipfile import ZipFile,ZIP_STORED
 from build_e21_study import ROOT,build
 from build_mlp_study import BOOKS,table
+from three_input_identities import build_identities
 
 
 def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e27=None,e28=None):
@@ -102,9 +103,9 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e
     child_style='<style>.topbar,.hero,.stats-strip,.site-footer,.closing-note,.workspace-switch,#status{display:none!important}main{padding:0!important}.study-layout{margin:0!important;max-width:none!important;width:100%!important}.sticky-note h3{overflow-wrap:anywhere;word-break:break-word}html{scroll-padding-top:0}body{background:#14264d!important}</style>'
     documents={e:d.replace('</head>',child_style+'</head>') for e,d in documents.items()}
     stylesheet=re.search(r'<style>(.*?)</style>',documents['E21'],re.S)[1]
-    stylesheet+='\n'+(ROOT/'scripts/templates/three_input_study.css').read_text()
+    stylesheet+='\n'+(ROOT/'scripts/templates/three_input_study.css').read_text()+'\n'+(ROOT/'scripts/templates/three_input_identities.css').read_text()
     symbols=(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text()
-    family_data={'comparison':comparison,'documents':documents}
+    family_data={'comparison':comparison,'documents':documents,'identities':build_identities(snapshots)}
     template=(ROOT/'scripts/templates/three_input_study.html').read_text()
     names={'E21':'single sequence','E22':'context pair','E23':'BiGRU S3','E24':'attention pooling S3',
            'E25':'attention + gated fusion S3','E26':'BiGRU + attention S3','E27':'E23 + co-attention S3','E28':'E23 · LR MLP S3 5e-6'}
@@ -127,7 +128,7 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e
     document=(template.replace('__STYLE__',stylesheet).replace('__SYMBOLS__',symbols)
         .replace('__DATA__',json.dumps(family_data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
         .replace('__VENDOR__',(ROOT/'scripts/vendor/mlp_jszip.min.js').read_text())
-        .replace('__SCRIPT__',(ROOT/'scripts/templates/three_input_study.js').read_text().replace('</script','<\\/script')))
+        .replace('__SCRIPT__',(ROOT/'scripts/templates/three_input_study.js').read_text().replace('__IDENTITY_SCRIPT__',(ROOT/'scripts/templates/three_input_identities.js').read_text()).replace('</script','<\\/script')))
     public=ROOT/'docs/belajar_Tiga_Input_Spider.html';public.write_text(document.replace('__PAYLOAD__',''))
     buf=io.BytesIO()
     with ZipFile(buf,'w',ZIP_STORED) as z:

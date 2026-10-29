@@ -227,3 +227,7 @@ Repo publik tidak otomatis memberikan akses ke dataset, teks siswa, nilai indivi
 Source notebook utama dipertahankan saat penataan; output eksekusi dibersihkan. Empat mirror lama yang berbeda disimpan sebagai varian arsip sebelum mirror disamakan. Riwayat Git tetap; pembersihan versi terbaru bukan penghapusan data dari seluruh riwayat.
 
 Saat bekerja: periksa branch/status/sumber aktual, hormati edit pengguna, pisahkan data privat, uji sesuai perubahan, dan verifikasi commit/isi remote sebelum mengatakan GitHub sudah diperbarui. Bedakan **ditulis**, **diuji fungsi/fixture**, **smoke pretrained**, **dijalankan pada data penelitian**, dan **dipublikasikan**. Jangan menyamakan jumlah tes kode dengan kualitas prediksi.
+
+## Identitas tanpa hasil · pembaruan antarmuka terakhir
+
+Pengguna meminta HTML tetap menyediakan tempat untuk E29/E30 sebelum output tersedia. Katalog `familyData.identities` kini memuat E21–E30, sementara `comparison.experiments`, `documents`, dan arsip privat tetap E21–E28. Jangan menghitung placeholder sebagai eksperimen berangka. Ruang kode/output E29/E30 kosong; notebook sumber ditautkan secara eksternal, bukan diembed. Kode utama belajar tetap E23 dan seluruh delapan buku anak utuh. Tab identitas menyediakan acuan eksperimen, alur, kelompok LR dan sitasi dengan batas dukungan. LR5e-6/pair merupakan ablasi proyek, bukan jaminan keunggulan dari paper. [Review](docs/review/review_identitas_eksperimen.md).

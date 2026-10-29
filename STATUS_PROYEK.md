@@ -75,3 +75,7 @@ Untuk akun baru, ikuti [serah-terima](PINDAH_AKUN.md). Chat, lampiran privat, ru
 Pengguna kembali memilih **E26** sebagai dasar. E29 mempertahankan arsitektur E26 dan menurunkan LR **MLP S2 dan S3** menjadi5e-6; linear S1 tetap1e-4. E30 menambah **co-attention lalu attention pooling E26**, MLP S2/S3 tetap1e-4. Encoder5e-6; BiGRU, pooling, proyeksi/norm/layer baru1e-4. Semua skenario dilatih baru, GPU biasa tanpa Drive. [Source dan metode](docs/eksperimen/eksperimen_e29_e30_gpu.md).
 
 Co-attention mencocokkan dua urutan, sedangkan additive attention pooling merangkum hasil matching. Self-attention RoBERTa tetap ada. Keduanya tidak sama dengan E27 berbasis E23. Buku hasil delapan peserta tetap; belum ada hasil E29/E30 maupun kode E31 ensemble.
+
+## Identitas E21–E30 dalam HTML
+
+Tab **07 · Identitas & sitasi** menampilkan sepuluh kartu dengan acuan, alur, LR, label, notebook sumber dan sitasi per eksperimen. **E29/E30 hanya identitas**: ruang kode/output sengaja kosong dan tidak ikut perbandingan delapan hasil. Kode sumber eksternal tersedia; belum dimasukkan ke meja belajar. Seluruh hasil, delapan buku anak dan kode utama E23 dipertahankan. [Rincian pembaruan](docs/review/review_identitas_eksperimen.md).
