@@ -1,8 +1,10 @@
 # Panduan AI: konteks proyek, keputusan, dan urutan eksperimen
 
-Dokumen serah-terima untuk AI pada akun atau sesi baru, disusun dari keputusan penting percakapan proyek sampai **28 Oktober 2026**. Ini sintesis, bukan transkrip. Pertanyaan belajar dicatat jika memengaruhi pemahaman metode atau implementasi; salah ketik, percakapan sementara, dan permintaan status berulang tidak dijadikan keputusan penelitian.
+Dokumen serah-terima untuk AI pada akun atau sesi baru, disusun dari keputusan penting percakapan proyek sampai **29 Oktober 2026**. Ini sintesis, bukan transkrip. Pertanyaan belajar dicatat jika memengaruhi pemahaman metode atau implementasi; salah ketik, percakapan sementara, dan permintaan status berulang tidak dijadikan keputusan penelitian.
 
-**Baca berurutan:** dokumen ini → [status numerik/config aktif](STATUS_PROYEK.md) → [katalog notebook](notebooks/experiments/README.md) → [review terbaru](docs/review/review_e25_e26_study.md). Untuk meneruskan pekerjaan, gunakan instruksi pengguna terbaru; jangan menganggap semua rencana lama masih berlaku.
+Riwayat percakapan yang diringkas secara kronologis: [Transkrip progres proyek](docs/riwayat/TRANSKRIP_PROGRES_PROYEK.md).
+
+**Baca berurutan:** dokumen ini → [status numerik/config aktif](STATUS_PROYEK.md) → [katalog notebook](notebooks/experiments/README.md) → [review terbaru](docs/review/review_e30_study.md). Untuk meneruskan pekerjaan, gunakan instruksi pengguna terbaru; jangan menganggap semua rencana lama masih berlaku.
 
 ## 1. Tujuan dan cara bekerja dengan pengguna
 
@@ -14,7 +16,7 @@ Untuk menjelaskan kode, pengguna menyukai kalimat singkat sekitar 5–10 kata di
 
 ## 2. Kontrak yang berlaku sekarang
 
-Keluarga aktif **E21–E30** memakai tiga fitur teks pada **seluruh S1/S2/S3**; hasil penelitian tersedia sampai E28, sementara E29/E30 adalah notebook lanjutan:
+Keluarga aktif **E21–E30** memakai tiga fitur teks pada **seluruh S1/S2/S3**; hasil unggahan tersedia sampai E30. Meja belajar hanya mengembed E29/E30/E26; seluruh sepuluh hasil tetap dibandingkan:
 
 - `soal`: pertanyaan;
 - `jawaban_referensi`: kunci/acuan jawaban;

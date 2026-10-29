@@ -89,3 +89,7 @@ Hasil E29 diaudit dan dimasukkan ke HTML: S3 RMSE5,4293/MAE4,1713/≤5poin40dari
 ## E30 · hasil lengkap tersedia
 
 E30 BiGRU + co-attention lalu attention pooling telah diaudit dan ditambahkan. S3 RMSE5,5247,MAE4,0215,≤5poin44/60,≤10poin56/60; terdekat13/60 pada sepuluh peserta. E29 tetap RMSE S3 terendah5,4293; E30 unggul MAE/toleransi/jumlah terdekat. Meja belajar kini **E29,E30,E26**, tiga RMSE S3 terendah, utamaE29. Seluruh50Excel/458sheet tersedia. Tidak ada placeholder E30 lagi. [Review](docs/review/review_e30_study.md).
+
+## Catatan percakapan untuk serah-terima
+
+[Riwayat percakapan dan progres](docs/riwayat/TRANSKRIP_PROGRES_PROYEK.md) merangkum keputusan dari eksperimen awal sampai E30, perubahan aplikasi, keputusan yang digantikan dan titik lanjut. Ini sintesis percakapan, bukan transkrip verbatim. Panduan AI bagian awal diperbarui agar langsung menunjuk status hasil E30.
