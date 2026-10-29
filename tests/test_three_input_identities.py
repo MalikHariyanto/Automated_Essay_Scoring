@@ -14,22 +14,22 @@ def family(raw=None):
     return json.loads(re.search(r'<script id="familyData" type="application/json">(.*?)</script>',raw,re.S)[1])
 
 
-def test_catalog_adds_two_pending_identities_without_changing_any_research_content():
+def test_catalog_e29_has_results_e30_stays_pending_and_old_results_are_unchanged():
     old=family(subprocess.check_output(['git','show',BASE+':docs/belajar_Tiga_Input_Spider.html'],cwd=ROOT,text=True))
     new=family()
-    assert new['comparison']==old['comparison']
-    assert new['documents']==old['documents']
+    for e,x in old['comparison']['experiments'].items():
+        assert new['comparison']['experiments'][e]==x
+        assert new['comparison']['predictionAudit'][e]==old['comparison']['predictionAudit'][e]
+    assert set(new['documents'])=={'E29','E26','E24'}
+    for e in ('E26','E24'):assert new['documents'][e]==old['documents'][e]
     assert list(new['identities'])==['E'+str(i) for i in range(21,31)]
-    assert sum(x['result_available'] for x in new['identities'].values())==8
-    for key in ('E29','E30'):
-        item=new['identities'][key]
-        assert item['base']=='E26'
-        assert item['reserved_code'] is None and item['reserved_output'] is None
-        assert item['book_available'] is False and item['result_available'] is False
-        assert key not in new['comparison']['experiments'] and key not in new['documents']
-        assert item['source_commit']==BASE
-        assert (ROOT/item['source_path']).is_file()
-        assert subprocess.check_output(['git','show',BASE+':'+item['source_path']],cwd=ROOT)==(ROOT/item['source_path']).read_bytes()
+    assert sum(x['result_available'] for x in new['identities'].values())==9
+    assert sum(x['book_available'] for x in new['identities'].values())==3
+    item=new['identities']['E30']
+    assert item['base']=='E26' and item['reserved_code'] is None and item['reserved_output'] is None
+    assert not item['book_available'] and not item['result_available']
+    assert 'E30' not in new['comparison']['experiments'] and 'E30' not in new['documents']
+    assert new['identities']['E29']['book_available'] and new['identities']['E29']['result_available']
     assert new['identities']['E29']['head_lr']=='MLP S2/S3 5e-6 · linear S1 1e-4'
     assert new['identities']['E30']['head_lr']=='MLP S2/S3 1e-4 · linear S1 1e-4'
     assert new['identities']['E27']['base']==new['identities']['E28']['base']=='E23'

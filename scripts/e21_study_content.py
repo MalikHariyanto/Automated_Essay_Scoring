@@ -4,6 +4,20 @@ from mlp_study_content import CHAPTERS as BASE_CHAPTERS, GLOSSARY as BASE_GLOSSA
 
 
 def curriculum(snapshot):
+    if snapshot.get('id')=='E29':
+        c,g=curriculum({**snapshot,'id':'E26'})
+        for chapter in c:
+            for key in ('title','goal'):chapter[key]=chapter[key].replace('E26','E29')
+            for key in ('flow','read'):chapter[key]=[v.replace('E26','E29') for v in chapter[key]]
+        c[3]['flow']=['X tiga teks','y rater','Encoder5e-6','MLP S2/S3 5e-6']
+        c[3]['read'][1]='RoBERTa S1/S3 5e-6. MLP S2 dan S3 juga5e-6; linear S1, proyeksi BGE, BiGRU, attention pooling dan norm tetap1e-4. Encoder BGE frozen.'
+        c[3]['read'][2]='E29 mengikuti arsitektur dan format E26. Perubahan LR berlaku pada MLP S2 dan S3; S1 tetap kontrol. Semua skenario dilatih baru sesuai notebook rujukan.'
+        c[11]['read'][1]='Optimizer memisahkan encoder, linear S1, MLP S2/S3, proyeksi BGE dan pooling/norm S3. Satu parameter trainable hanya masuk satu kelompok; MLP5e-6 tidak membekukan head.'
+        c[0]['read'].append('E29 memperbaiki RMSE S3, tetapi S2 memburuk tajam. Periksa kurva S2 dan batas25epoch sebelum menganggap LR kecil unggul untuk semua skenario.')
+        g['learning rate']=('Ukuran langkah pembaruan',c[3]['read'][1]+' Ini LR awal/puncak sebelum warmup dan linear scheduler, bukan ukuran akurasi.')
+        g['BiGRU']=(g['BiGRU'][0],g['BiGRU'][1].replace('E26','E29'))
+        g['attention pooling']=(g['attention pooling'][0],g['attention pooling'][1].replace('E26','E29'))
+        return c,g
     if snapshot.get('id') in ('E27','E28'):
         experiment=snapshot['id'];c,g=curriculum({**snapshot,'id':'E23'})
         for chapter in c:

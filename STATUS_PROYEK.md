@@ -79,3 +79,9 @@ Co-attention mencocokkan dua urutan, sedangkan additive attention pooling merang
 ## Identitas E21–E30 dalam HTML
 
 Tab **07 · Identitas & sitasi** menampilkan sepuluh kartu dengan acuan, alur, LR, label, notebook sumber dan sitasi per eksperimen. **E29/E30 hanya identitas**: ruang kode/output sengaja kosong dan tidak ikut perbandingan delapan hasil. Kode sumber eksternal tersedia; belum dimasukkan ke meja belajar. Seluruh hasil, delapan buku anak dan kode utama E23 dipertahankan. [Rincian pembaruan](docs/review/review_identitas_eksperimen.md).
+
+## E29 · ZIP hasil sudah masuk, tiga kode di meja belajar
+
+Hasil E29 diaudit dan dimasukkan ke HTML: S3 RMSE5,4293/MAE4,1713/≤5poin40dari60; S2 justru RMSE75,9702 dan seluruh fold memilih batas25epoch. E29 memakai LR MLP S2/S3 5e-6 dari arsitektur E26, bukan co-attention. [Review lengkap](docs/review/review_e29_study.md).
+
+**Instruksi terbaru menggantikan default E23:** meja belajar hanya mengembed tiga kode dengan RMSE test S3 terendah, yaitu **E29, E26, E24**; utamaE29. Semua sembilan hasil/45Excel tetap tersedia lewat perbandingan dan tab08SemuaExcel. E30 masih pending. Jumlah terdekat S3 sembilan peserta E21–E29 adalah8/7/8/5/7/6/7/2/10; perubahan peserta tidak mengubah prediksi lama.

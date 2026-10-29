@@ -28,8 +28,9 @@ PENDING_SOURCE = {
 SOURCE_PIN = '7a76191be20604482fa53f770699563b380120ba'
 
 
-def build_identities(snapshots):
+def build_identities(snapshots, study_ids=None):
     result = {}
+    study_ids=set(snapshots) if study_ids is None else set(study_ids)
     for experiment, (name, base, purpose, flow, text_format, head_lr, papers) in RECIPES.items():
         available = experiment in snapshots
         if not available and experiment not in PENDING_SOURCE:
@@ -44,7 +45,7 @@ def build_identities(snapshots):
             inputs=['soal','jawaban_referensi','response_text'], label='rater · 0–100',
             heads='S1 linear · S2/S3 MLP', citations=citations,
             evidence='Hasil unggahan tersedia' if available else 'Menunggu hasil unggahan',
-            result_available=available, book_available=available,
+            result_available=available, book_available=experiment in study_ids,
             reserved_code=None, reserved_output=None,
             source_commit=commit, source_path=path,
             source_url='https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/'+commit+'/'+path,

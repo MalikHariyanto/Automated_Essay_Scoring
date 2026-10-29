@@ -17,13 +17,14 @@ https://github.com/MalikHariyanto/Automated_Essay_Scoring
 Branch: codex/aes-learning.
 
 Baca PANDUAN_AI_PROYEK.md, STATUS_PROYEK.md, AGENTS.md, PINDAH_AKUN.md, dan
-RENCANA_EKSPERIMEN.md dahulu. E21–E26 memakai soal +
+RENCANA_EKSPERIMEN.md dahulu. E21–E30 memakai soal +
 jawaban_referensi + response_text pada seluruh S1/S2/S3,
 dengan label tunggal rater 0–100. S1 linear; S2/S3 MLP.
 RoBERTa fine-tuned, BGE frozen; GPU Colab biasa, tanpa Drive.
 
-E26 saat ini RMSE S3 paling rendah; E23 paling sering terdekat
-pada persaingan enam eksperimen. Jangan samakan dua ukuran itu.
+E29 saat ini RMSE S3 paling rendah dan terdekat10/60 pada sembilan peserta,
+tetapi S2-nya buruk. Kode HTML hanya E29/E26/E24; semua hasil/45Excel utuh.
+E30 belum memiliki hasil. Terdekat bukan skor persis sama.
 Dua HTML lengkap tersedia di downloads; kunci dibawa terpisah.
 Jangan mengaku dapat membaca lampiran privat dari chat lama.
 

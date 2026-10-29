@@ -66,8 +66,9 @@ def test_public_snapshot_has_no_individual_rows_and_no_older_results(snapshot):
     d=content(snapshot)
     assert not {'comparison','multiSeed','lrExperiment','e8Experiment'}.intersection(d)
     parent=(ROOT/'docs/belajar_Tiga_Input_Spider.html').read_text()
-    raw=json.loads(re.search(r'<script id="familyData" type="application/json">(.*?)</script>',parent,re.S)[1])['documents']['E21']
-    assert '<script id="privatePayload" type="application/octet-stream"></script>' in raw
+    docs=json.loads(re.search(r'<script id="familyData" type="application/json">(.*?)</script>',parent,re.S)[1])['documents']
+    assert 'E21' not in docs  # Omitted by latest user request: three selected code books only.
+    assert all('<script id="privatePayload" type="application/octet-stream"></script>' in raw for raw in docs.values())
 
 
 def test_all_code_blocks_and_fundamental_notes_match_pinned_source(snapshot):

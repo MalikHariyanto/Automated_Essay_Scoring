@@ -231,3 +231,9 @@ Saat bekerja: periksa branch/status/sumber aktual, hormati edit pengguna, pisahk
 ## Identitas tanpa hasil · pembaruan antarmuka terakhir
 
 Pengguna meminta HTML tetap menyediakan tempat untuk E29/E30 sebelum output tersedia. Katalog `familyData.identities` kini memuat E21–E30, sementara `comparison.experiments`, `documents`, dan arsip privat tetap E21–E28. Jangan menghitung placeholder sebagai eksperimen berangka. Ruang kode/output E29/E30 kosong; notebook sumber ditautkan secara eksternal, bukan diembed. Kode utama belajar tetap E23 dan seluruh delapan buku anak utuh. Tab identitas menyediakan acuan eksperimen, alur, kelompok LR dan sitasi dengan batas dukungan. LR5e-6/pair merupakan ablasi proyek, bukan jaminan keunggulan dari paper. [Review](docs/review/review_identitas_eksperimen.md).
+
+## Hasil E29 dan pembatasan buku kode terbaru
+
+ZIP E29 sudah diterima dan diaudit. S3 RMSE5,4293,MAE4,1713,≤5poin40/60; S2 RMSE75,9702 dengan seluruh fold memilih25epoch. Jangan menyembunyikan S2 buruk atau menyebut40/60 sebagai skor persis. E29 LR MLP S2/S3 5e-6; arsitektur E26, tanpa co-attention. Hasil E30 belum tersedia.
+
+Pengguna mempertahankan HTML dan meminta kode hanya tiga eksperimen terbaik. Kriteria implementasi dinyatakan eksplisit: tiga RMSE test S3 terendah **E29,E26,E24**, utamaE29. Ini menggantikan defaultE23 dan kebijakan delapan buku kode sebelumnya. `documents` hanya3, `comparison.experiments`9, `identities`10. Semua45Excel/hasil tetap tersedia melalui explorer mandiri tab08; tombol Excel tidak boleh bergantung pada buku kode yang telah dihilangkan. Kartu eksperimen lain tetap menautkan notebook eksternal. E30 tetap dua ruang kosong dan tidak masuk perbandingan. [Review](docs/review/review_e29_study.md).

@@ -48,3 +48,9 @@ body.family-code-fullscreen{overflow:hidden;overflow-anchor:none}body.family-cod
 .prediction-rank-row,.pair-card{contain:layout style}.family-study-controls label{min-width:0;flex:1}.family-study-controls select{max-width:100%}
 @media(max-width:1050px){.curve-legends,.curve-inspect-values{grid-template-columns:repeat(2,minmax(0,1fr))}.family-score-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.family-score-strip .answer-teacher{grid-column:1/-1;grid-row:auto}}
 @media(max-width:600px){.curve-legends{grid-template-columns:1fr}.family-score-strip,.family-score-strip.all-models{grid-template-columns:repeat(2,minmax(0,1fr))}.family-study-controls{align-items:stretch}.family-study-controls select{margin-left:0;width:100%}#familyResults .metric-compare th:first-child{width:140px;min-width:140px}}
+
+.family-E29{--run-ink:#8050a1;--run-bg:#f6effc}.curve-legend.family-E29 span:before{border-top-style:dashed}
+/* Sembilan eksperimen tetap terbaca; geser tabel pada layar sempit. */
+#familyResults .metric-compare{min-width:1150px}#familyAccuracy{min-width:1150px}
+
+.family-excel-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:18px 0}.family-excel-controls label{display:grid;gap:7px;font-size:.83rem;font-weight:750;flex:1 1 200px}.family-excel-controls select,.family-excel-controls input{min-height:43px;border:1px solid #9db7cc;border-radius:8px;background:white;color:#173153;padding:9px;font:inherit;max-width:100%}.family-excel-controls input[type=number]{max-width:130px}.family-excel-inspector{white-space:pre-wrap;overflow-wrap:anywhere;max-height:230px;overflow:auto;background:#14264d;color:#e8f8ff;padding:18px;border-radius:10px;font:14px/1.7 system-ui}.family-excel-area td{max-width:300px;overflow-wrap:anywhere}.family-excel-area td:focus{outline:3px solid #1782a3;outline-offset:-3px}

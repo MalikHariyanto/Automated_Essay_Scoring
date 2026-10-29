@@ -28,6 +28,8 @@ E26_NOTEBOOK='notebooks/experiments/AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.i
 E27_PIN='daa745de0aee5c7bd26090af8fbf7ad99b0cb49c'
 E27_NOTEBOOK='notebooks/experiments/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb'
 E28_NOTEBOOK='notebooks/experiments/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb'
+E29_PIN='7a76191be20604482fa53f770699563b380120ba'
+E29_NOTEBOOK='notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb'
 
 
 def audit_coattention(blobs, data):
@@ -84,8 +86,8 @@ def audit(path, experiment='E21'):
     parameters=table(blobs[BOOKS[4]],'Pengaturan Eksperimen');p={r['Pengaturan']:r['Nilai'] for r in parameters}
     assert len(data)==300 and len(pairs)==60 and len(folds)==15
     assert p['Format input tiga teks']==('context_pair' if experiment=='E22' else 'single_sequence')
-    if experiment in ('E24','E25','E26'):
-        assert p['Pooling jawaban S3']==('bigru_attention' if experiment=='E26' else 'attention') and p['Hidden pooling S3']==64
+    if experiment in ('E24','E25','E26','E29'):
+        assert p['Pooling jawaban S3']==('bigru_attention' if experiment in ('E26','E29') else 'attention') and p['Hidden pooling S3']==64
         weights=table(blobs[BOOKS[1]],'Bobot Attention S3')
         from collections import defaultdict
         sums=defaultdict(float)
@@ -94,7 +96,7 @@ def audit(path, experiment='E21'):
         assert {k[0] for k in sums}=={r['ID Jawaban'] for r in data}
         assert all(abs(v-1)<1e-5 for v in sums.values())
         attention_audit={'rows':len(weights),'answer_windows':len(sums),'max_sum_error':max(abs(v-1) for v in sums.values()),'weights_finite_nonnegative':True}
-    if experiment in ('E25','E26'):
+    if experiment in ('E25','E26','E29'):
         pooled=table(blobs[BOOKS[1]],'Pooling Jawaban S3')
         assert len(pooled)==300 and all(len(r)==769 for r in pooled)
         assert [r['ID Jawaban'] for r in pooled]==[r['ID Jawaban'] for r in data]
@@ -133,6 +135,9 @@ def audit(path, experiment='E21'):
         if experiment=='E27':
             assert p['Pooling jawaban S3']=='bigru_coattention' and p['Hidden pooling S3']==64
             coattention_audit=audit_coattention(blobs,data)
+    elif experiment=='E29':
+        assert p['LR head linear S1']==p['Learning rate proyeksi BGE']==p['LR pooling dan norm S3']==1e-4
+        assert p['LR MLP S2']==p['LR MLP S3']==5e-6
     else:assert p['Learning rate head']==p['Learning rate proyeksi BGE']==1e-4
     assert p['Skor minimum']==0 and p['Skor maksimum']==100
     by_id={r['ID Jawaban']:r for r in data};assert len(by_id)==300
@@ -197,20 +202,20 @@ def audit(path, experiment='E21'):
     public={}
     for i,names in {0:['Panduan'],1:['Panduan'],2:['Panduan'],3:['Panduan','Ringkasan Validasi','Arti Metrik'],4:['Panduan','Model yang Dibandingkan','Pengaturan Eksperimen']}.items():
         for name in names:public[str(i)+'|'+name]=table(blobs[BOOKS[i]],name)
-    notebook_path={'E21':NOTEBOOK,'E22':NOTEBOOK.replace('E21_Tiga_Input','E22_Tiga_Input_ContextPair'),'E23':E23_NOTEBOOK,'E24':E24_NOTEBOOK,'E25':E25_NOTEBOOK,'E26':E26_NOTEBOOK,'E27':E27_NOTEBOOK,'E28':E28_NOTEBOOK}[experiment]
-    pin=E27_PIN if experiment in ('E27','E28') else E25_PIN if experiment in ('E25','E26') else E24_PIN if experiment in ('E23','E24') else PIN
+    notebook_path={'E21':NOTEBOOK,'E22':NOTEBOOK.replace('E21_Tiga_Input','E22_Tiga_Input_ContextPair'),'E23':E23_NOTEBOOK,'E24':E24_NOTEBOOK,'E25':E25_NOTEBOOK,'E26':E26_NOTEBOOK,'E27':E27_NOTEBOOK,'E28':E28_NOTEBOOK,'E29':E29_NOTEBOOK}[experiment]
+    pin=E29_PIN if experiment=='E29' else E27_PIN if experiment in ('E27','E28') else E25_PIN if experiment in ('E25','E26','E29') else E24_PIN if experiment in ('E23','E24') else PIN
     snapshot={'id':experiment,'scope':'UPLOADED '+experiment+' RESULTS; NO NEW TRAINING','rows':300,'development':240,'test':60,
         'input_format':p['Format input tiga teks'],'s3_pooling':p.get('Pooling jawaban S3','cls'),'metric_recompute_max_delta':max(metric_deltas),'metric_recompute_tolerance':1e-6,'zip_sha256':hashlib.sha256(raw).hexdigest(),'source_commit':pin,'source_path':notebook_path,
         'runtime_source_matches_commit':False,'source_note':'Source rujukan repo cocok pengaturan workbook; notebook eksekusi tidak disertakan sehingga kecocokan byte runtime/perangkat belum dibuktikan.',
         'metrics':reported,'folds':folds,'history':history,'foldSummary':summary,'cvSummary':cv,'selected_epochs':selected,
         'matrices':maps,'native':{},'publicSheets':public,'parameters':parameters,'coverage':coverage_summary,
         'errorSummary':extra,'nearest':wins,'books':[{'file':n,'sha256':hashlib.sha256(blobs[n]).hexdigest(),'sheets':workbook_inventory(blobs[n])} for n in BOOKS]}
-    if experiment in ('E24','E25','E26'):snapshot['attention_audit']=attention_audit
+    if experiment in ('E24','E25','E26','E29'):snapshot['attention_audit']=attention_audit
     if experiment in ('E23','E28'):snapshot['bigru_audit']=bigru_audit
     if experiment=='E27':snapshot['coattention_audit']=coattention_audit
-    if experiment in ('E25','E26'):snapshot['s3_fusion']=p['Fusion S3']
+    if experiment in ('E25','E26','E29'):snapshot['s3_fusion']=p['Fusion S3']
     if experiment=='E25':snapshot['gate_audit']=gate_audit
-    if experiment=='E26':snapshot['bigru_attention_audit']=bigru_attention_audit
+    if experiment in ('E26','E29'):snapshot['bigru_attention_audit']=bigru_attention_audit
     return snapshot
 
 
@@ -317,7 +322,7 @@ def build(results=None, experiment='E21', family=False):
     if experiment!='E21':
         template=template.replace('E21',experiment).replace('EKSPERIMEN 21','EKSPERIMEN '+experiment[1:]).replace('eksperimen 21','eksperimen '+experiment[1:])
         script=script.replace('E21',experiment)
-    if experiment in ('E23','E24','E25','E26','E27','E28'):
+    if experiment in ('E23','E24','E25','E26','E27','E28','E29'):
         script=script.replace('cls = self.roberta','hidden = self.roberta')
     if experiment=='E24':
         script=script.replace("['LayerNorm RoBERTa 768','self.roberta_norm =']", "['Attention token jawaban','self.sequence_pool ='],['LayerNorm RoBERTa 768','self.roberta_norm =']")
@@ -326,7 +331,7 @@ def build(results=None, experiment='E21', family=False):
     if experiment=='E25':
         script=script.replace("['LayerNorm RoBERTa 768','self.roberta_norm =']", "['Attention token jawaban','self.sequence_pool ='],['LayerNorm RoBERTa 768','self.roberta_norm =']")
         script=script.replace("['Concat 1024',\"features['concat'] =\"]", "['Gate dua cabang','self.fusion_gate ='],['Concat berbobot 1024',\"features['concat'], gate =\"]")
-    if experiment=='E26':
+    if experiment in ('E26','E29'):
         script=script.replace("['LayerNorm RoBERTa 768','self.roberta_norm =']", "['BiGRU + attention token','self.sequence_pool ='],['LayerNorm RoBERTa 768','self.roberta_norm =']")
     if experiment in ('E27','E28'):
         script=script.replace("['LayerNorm RoBERTa 768','self.roberta_norm =']", "['"+('BiGRU + co-attention referensi' if experiment=='E27' else 'BiGRU state akhir E23')+"','self.sequence_pool ='],['LayerNorm RoBERTa 768','self.roberta_norm =']")
@@ -345,4 +350,4 @@ def build(results=None, experiment='E21', family=False):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--results',type=Path);p.add_argument('--experiment',choices=['E21','E22','E23','E24','E25','E26','E27','E28'],default='E21');a=p.parse_args();build(a.results,a.experiment)
+    p=argparse.ArgumentParser();p.add_argument('--results',type=Path);p.add_argument('--experiment',choices=['E21','E22','E23','E24','E25','E26','E27','E28','E29'],default='E21');a=p.parse_args();build(a.results,a.experiment)

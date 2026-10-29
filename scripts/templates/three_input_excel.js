@@ -1,0 +1,28 @@
+// Full result explorer is independent from the three embedded code books.
+const excelState={experiment:ids.at(-1),book:3,sheet:'Nilai Guru dan Prediksi',page:0,component:1,query:''};
+function openExcel(id){if(!X[id])return;excelState.experiment=id;excelState.page=0;excelState.query='';setMode('results');setTab('excel')}
+function saveBytes(bytes,name){const url=URL.createObjectURL(new Blob([bytes],{type:'application/octet-stream'})),a=el('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000)}
+async function excel(root,ticket){
+ title(root,'Jelajah seluruh Excel','Hasil semua eksperimen tetap lengkap. Kode meja belajar hanya dimuat untuk tiga RMSE test S3 terendah. Tabel di bawah dibaca dari file asli; tidak menjalankan model.');
+ const controls=el('div',undefined,'family-excel-controls');
+ select(controls,'Eksperimen Excel',ids.map(id=>[id,id+' · '+label(id)]),excelState.experiment,v=>{excelState.experiment=v;excelState.page=0;excelState.query='';render()});
+ const id=excelState.experiment,book=X[id].books[excelState.book];
+ select(controls,'Workbook hasil',X[id].books.map((b,i)=>[i,b.file]),excelState.book,v=>{excelState.book=Number(v);excelState.sheet=X[id].books[excelState.book].sheets[0].name;excelState.page=0;excelState.component=1;excelState.query='';render()});
+ if(!book.sheets.some(s=>s.name===excelState.sheet))excelState.sheet=book.sheets[0].name;
+ select(controls,'Sheet hasil',book.sheets.map(s=>[s.name,s.name+' · '+s.rows+' baris']),excelState.sheet,v=>{excelState.sheet=v;excelState.page=0;excelState.component=1;excelState.query='';render()});root.append(controls);
+ if(!pack){note(root,'Buka buku lengkap untuk isi Excel','Preview publik hanya memuat agregat. Buku lengkap terenkripsi menyertakan data individual dan seluruh file asli.');return}
+ const loading=el('p','Membaca sheet…','e21-subtitle');root.append(loading);
+ try{const data=await read(id,excelState.book,excelState.sheet);if(ticket!==serial)return;loading.remove();
+  const tools=el('div',undefined,'family-excel-controls'),searchLabel=el('label','Cari ID / kata pada sheet'),query=el('input');query.type='search';query.value=excelState.query;query.setAttribute('aria-label','Cari baris hasil');searchLabel.append(query);tools.append(searchLabel);
+  const vectorColumns=data.headers.map((h,i)=>({h,i})).filter(c=>/^Komponen \d+$/.test(c.h)),component=el('input');component.type='number';component.min=1;component.max=vectorColumns.length||1;component.value=excelState.component;component.setAttribute('aria-label','Mulai komponen hasil');if(vectorColumns.length){const l=el('label','Mulai komponen · 8 per halaman');l.append(component);tools.append(l)}
+  const download=el('button','Unduh XLSX asli ↓','mini-button');download.addEventListener('click',async()=>{download.disabled=true;try{const a=await archive(id);saveBytes(await a.zip.file(book.file).async('uint8array'),book.file)}catch(e){note(root,'Unduhan belum berhasil',e.message)}finally{download.disabled=false}});tools.append(download);
+  const zipButton=el('button','Unduh ZIP hasil '+id+' ↓','mini-button');zipButton.addEventListener('click',async()=>{zipButton.disabled=true;try{saveBytes((await archive(id)).bytes,'Hasil_'+id+'.zip')}catch(e){note(root,'Unduhan belum berhasil',e.message)}finally{zipButton.disabled=false}});tools.append(zipButton);
+  const area=el('div',undefined,'family-excel-area'),inspector=el('pre','Klik sel atau tekan Enter untuk membaca nilai lengkap.','family-excel-inspector');inspector.setAttribute('role','status');root.append(tools,area,inspector);
+  function draw(){const q=excelState.query.toLocaleLowerCase('id'),rows=data.rows.filter(r=>!q||r.some((v,i)=>!/^Komponen \d+$/.test(data.headers[i])&&String(v??'').toLocaleLowerCase('id').includes(q))),maxPage=Math.max(1,Math.ceil(rows.length/25));excelState.page=Math.min(excelState.page,maxPage-1);
+   const cols=data.headers.map((h,i)=>({h,i})).filter(c=>!/^Komponen \d+$/.test(c.h)||(Number(c.h.split(' ')[1])>=excelState.component&&Number(c.h.split(' ')[1])<excelState.component+8)),slice=rows.slice(excelState.page*25,excelState.page*25+25),wrap=table(cols.map(c=>c.h),slice.map(r=>cols.map(c=>r[c.i])),'familyExcelTable');
+   for(const[ri,tr]of [...wrap.querySelectorAll('tbody tr')].entries())for(const[ci,td]of [...tr.children].entries()){const value=slice[ri][cols[ci].i];td.tabIndex=0;td.textContent=typeof value==='number'?f(value,6):String(value??'—').slice(0,100)+(String(value??'').length>100?'…':'');const inspect=()=>inspector.textContent=cols[ci].h+'\n'+String(value??'—');td.addEventListener('click',inspect);td.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();inspect()}})}
+   const pager=el('div',undefined,'family-excel-controls');for(const[text,step]of [['← Sebelumnya',-1],['Berikutnya →',1]]){const b=el('button',text,'mini-button');b.disabled=excelState.page+step<0||excelState.page+step>=maxPage;b.addEventListener('click',()=>{excelState.page+=step;draw()});pager.append(b)}area.replaceChildren(el('p',id+' · '+excelState.sheet+' · '+rows.length+' baris × '+data.headers.length+' kolom · halaman '+(excelState.page+1)+'/'+maxPage,'e21-subtitle'),wrap,pager)
+  }
+  query.addEventListener('input',()=>{excelState.query=query.value;excelState.page=0;draw()});component.addEventListener('change',()=>{const next=Math.max(1,Math.min(Number(component.max),Math.floor(Number(component.value)||1)));component.value=next;if(next===excelState.component)return;excelState.component=next;draw()});draw();
+ }catch(error){if(ticket===serial){loading.remove();note(root,'Sheet belum dapat dibaca',error.message)}}
+}

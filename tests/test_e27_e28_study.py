@@ -21,12 +21,12 @@ def test_six_original_books_all_content_numbers_and_duels_are_unchanged():
         assert a['experiments'][e]==b['experiments'][e]
         assert a['predictionAudit'][e]==b['predictionAudit'][e]
         # Seluruh HTML buku lama: kode, sticky note, penjelasan dan sumber utuh.
-        assert old['documents'][e]==new['documents'][e]
+        if e in new['documents']:assert old['documents'][e]==new['documents'][e]
     old_pairs={(p['left'],p['right']):p for p in a['pairwise']}
     assert all(old_pairs[(p['left'],p['right'])]==p for p in b['pairwise'] if (p['left'],p['right']) in old_pairs)
     assert b['impact']==a['impact'] and b['pairedOverall']==a['pairedOverall']
-    assert a['nearest']['S3']['E23_S3']['share']==13 and b['nearest']['S3']['E23_S3']['share']==10
-    assert b['studyRecommendation']['learning_default']=='E23'
+    assert a['nearest']['S3']['E23_S3']['share']==13 and b['nearest']['S3']['E23_S3']['share']==8
+    assert b['studyRecommendation']['learning_default']=='E29'
 
 
 def test_uploaded_results_lr_and_coattention_are_distinct_and_verified():
@@ -55,7 +55,9 @@ def test_uploaded_results_lr_and_coattention_are_distinct_and_verified():
 def test_all_new_source_cells_and_margin_notes_are_traceable_to_published_notebooks():
     data=family()
     for e in ('E27','E28'):
-        child=json.loads(re.search(r'<script id="studyData" type="application/json">(.*?)</script>',data['documents'][e],re.S)[1])
+        old=family(subprocess.check_output(['git','show','b783fe05896cd4a0efcc4a81508d70b0eedbd717:docs/belajar_Tiga_Input_Spider.html'],cwd=ROOT,text=True))
+        assert e not in data['documents']  # Latest user instruction: only three selected code books.
+        child=json.loads(re.search(r'<script id="studyData" type="application/json">(.*?)</script>',old['documents'][e],re.S)[1])
         snap=data['comparison']['experiments'][e]
         notebook=json.loads(subprocess.check_output(['git','show',BASE+':'+snap['source_path']],cwd=ROOT))
         for cell in child['cells']:
