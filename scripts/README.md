@@ -14,7 +14,8 @@ Notebook Colab aktif bersifat mandiri; pengguna tidak perlu menjalankan seluruh 
 | Template UI | [templates](templates/) |
 | Buku sebelum tiga input | [build_mlp_study.py](build_mlp_study.py) dan pembuat snapshot `build_mlp_*` |
 | Enkripsi/paket buku | [package_private_study.py](package_private_study.py) |
-| Pemeriksaan browser terbaru | [check_e25_e26_study.mjs](check_e25_e26_study.mjs), [check_e25_e26_package.mjs](check_e25_e26_package.mjs) |
+| Pemeriksaan E27/E28 dan preservasi isi | [check_e27_e28_study.mjs](check_e27_e28_study.mjs), [test_e27_e28_study.py](../tests/test_e27_e28_study.py) |
+| Pemeriksaan browser E25/E26 historis | [check_e25_e26_study.mjs](check_e25_e26_study.mjs), [check_e25_e26_package.mjs](check_e25_e26_package.mjs) |
 | Siapkan hosting statis | [prepare_paper_site.mjs](prepare_paper_site.mjs), [konfigurasi hosting](../hosting/README.md) |
 
 Snapshot kini berada di [docs/snapshots](../docs/snapshots/README.md); bukti tersimpan pada [docs/verifikasi](../docs/verifikasi/README.md). Sebagian script pemeriksaan lama mengharapkan tahap buku sebelumnya (misalnya hanya empat eksperimen). Gunakan pemeriksa sesuai versi, bukan mengklaim seluruh checker historis cocok dengan HEAD terbaru.

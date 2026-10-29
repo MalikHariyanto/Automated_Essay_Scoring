@@ -10,26 +10,26 @@ Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **s
 | Menentukan combo berikutnya | **[Rencana eksperimen](RENCANA_EKSPERIMEN.md)** |
 | Mencari metode, review, atau bukti | **[Daftar dokumentasi](docs/README.md)** |
 
-Notebook baru yang diminta: **[E27 · E23 + co-attention](notebooks/experiments/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb)** dan **[E28 · E23 + LR MLP S3 5e-6](notebooks/experiments/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb)**. GPU, tanpa Drive; [rincian metode](docs/eksperimen/eksperimen_e27_e28_gpu.md). Belum ada hasil penelitian baru; buku masih memakai hasil E21–E26.
+**Hasil E27/E28 sudah masuk buku tiga input.** [E27 · E23 + co-attention](notebooks/experiments/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb), [E28 · E23 + LR MLP S3 5e-6](notebooks/experiments/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb). [Review hasil dan preservasi isi](docs/review/review_e27_e28_study.md).
 
-## Hasil terbaru: E21–E26
+## Hasil terbaru: E21–E28
 
-Enam eksperimen, 18 model, 60 jawaban test yang sama, 30 Excel/270 sheet.
+Delapan eksperimen,24model,60jawaban test yang sama,40Excel/363sheet. Enam buku lama beserta kode/catatan/snapshot hasil dipertahankan identik; E27/E28 ditambahkan.
 
 | Ukuran S3 | Hasil unggahan saat ini |
 | --- | --- |
 | RMSE test terendah | **E26 · BiGRU + attention: 5,7435 poin** |
 | Rerata RMSE lima fold terendah | **E26: 5,9245 poin** |
-| Paling sering menjadi prediksi terdekat | **E23: 13/60**, saat enam eksperimen dibandingkan |
+| Paling sering menjadi prediksi terdekat | **E23 dan E26:10/60**, pada delapan peserta; E23 sebelumnya13/60 pada enam peserta |
 | Terbanyak selisih maksimal 5 poin | **E23: 39/60** |
 
-Kode utama HTML adalah **E23**, mengikuti aturan jumlah terdekat. **E26** tersedia sebagai pilihan RMSE terkecil dan acuan rencana berikutnya. Ukuran ini berbeda; satu run belum membuktikan kestabilan lintas seed. [Review terbaru](docs/review/review_e25_e26_study.md).
+Kode utama HTML tetap **E23** sesuai pilihan pengguna. **E26** tersedia sebagai RMSE terkecil. Penambahan peserta dapat mengubah jumlah terdekat tanpa mengubah satu prediksi lama. E27 RMSE S3 **6,3277**, E28 **7,0447**. Ukuran berbeda; satu run belum membuktikan kestabilan lintas seed. [Review terbaru](docs/review/review_e27_e28_study.md).
 
 ## Dua buku yang dipakai
 
 | Buku | Isi | Unduh lengkap | Preview publik |
 | --- | --- | --- | --- |
-| **Tiga input · E21–E26** | Perbandingan, jawaban/prediksi, kurva, Excel, kode dan sticky note | **[Pengunduh HTML](downloads/Belajar_AES_Tiga_Input_Lengkap.html)** | [Ringkasan](docs/belajar_Tiga_Input_Spider.html) |
+| **Tiga input · E21–E28** | Perbandingan, jawaban/prediksi, kurva, Excel, kode dan sticky note | **[Pengunduh HTML](downloads/Belajar_AES_Tiga_Input_Lengkap.html)** | [Ringkasan](docs/belajar_Tiga_Input_Spider.html) |
 | **Sebelum tiga input · sampai E8/E6 2.0** | Hasil dan kode eksperimen sebelumnya | **[Pengunduh HTML](downloads/Belajar_AES_MLP_Lengkap.html)** | [Ringkasan](docs/belajar_MLP_Spider.html) |
 
 Di GitHub pilih **Download raw file**, buka pengunduh, unduh dan ekstrak ZIP, lalu gunakan **kunci lama**. Kunci dibawa terpisah. Buku lengkap bekerja offline; preview publik hanya memuat agregat dan kode.

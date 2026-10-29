@@ -2,9 +2,9 @@
 
 **Mulai dari E26 untuk acuan RMSE; E23 untuk mempelajari prediksi yang paling sering terdekat.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
-## Notebook baru · hasil penelitian belum tersedia
+## Hasil baru E27/E28 · dasar E23
 
-Keduanya turunan E23, GPU Colab biasa, tiga input dan satu label `rater`, tanpa Drive. Perubahan khusus S3; seluruh S1/S2/S3 dilatih baru. [Metode dan LR](../../docs/eksperimen/eksperimen_e27_e28_gpu.md).
+Keduanya turunan E23, GPU Colab biasa, tiga input dan satu label `rater`, tanpa Drive. Perubahan khusus S3; notebook meminta seluruh S1/S2/S3 dilatih baru. Hasil unggahan sudah masuk buku: RMSE S3 E27 **6,3277**, E28 **7,0447**. [Audit hasil](../../docs/review/review_e27_e28_study.md). [Metode dan LR](../../docs/eksperimen/eksperimen_e27_e28_gpu.md).
 
 | Eksperimen | Perubahan dari E23 | Jalankan |
 | --- | --- | --- |

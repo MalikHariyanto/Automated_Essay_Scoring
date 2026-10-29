@@ -1,6 +1,6 @@
 # Status proyek untuk melanjutkan pekerjaan
 
-Diperbarui **28 Oktober 2026**. Baca bersama **[panduan konteks AI](PANDUAN_AI_PROYEK.md)** sebelum mengubah model atau menafsirkan dokumen lama. Titik acuan hasil E25/E26: commit **`6ee4ec5b20256dc284ecaec378b7474bce4c1826`**. Penataan folder sesudahnya tidak mengganti hasil tersebut.
+Diperbarui **29 Oktober2026**. Baca bersama **[panduan konteks AI](PANDUAN_AI_PROYEK.md)**. Hasil E27/E28 kini ditambahkan; source keduanya dipin ke `daa745d`. Tabel enam peserta di bawah dipertahankan sebagai riwayat; prediksi aslinya tidak berubah.
 
 ## Kontrak aktif
 
@@ -25,7 +25,7 @@ Permintaan pengguna untuk **E21–E26**:
 
 Dokumen empat trait, rubrik 1–5, latihan berlabel AI, E6 jawaban-saja, dan E8 sebelum tiga input adalah workflow berbeda. Jangan menurunkan empat label dari `rater` atau mengganti S1 menjadi MLP tanpa instruksi baru. Kontrak eksplisit pengguna di atas mengatur keluarga aktif ini.
 
-## Eksperimen dan hasil
+## Eksperimen dan hasil · riwayat enam peserta
 
 | Eksperimen | Perubahan S3 | RMSE test | Mean RMSE CV | MAE test | Terdekat di antara enam |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -55,9 +55,16 @@ Kode dalam HTML cocok dengan notebook rujukan. ZIP hasil tidak menyertakan execu
 
 Pembaruan hasil terakhir lulus 18 tes integritas/unit, 8 kelompok browser dan 2 pemeriksaan paket. Ini bukti kode/HTML/unduhan, bukan ukuran akurasi model. Fixture CPU tidak membuktikan pretrained training GPU telah dijalankan oleh pemeriksaan tersebut.
 
-## Notebook lanjutan · hasil belum tersedia
+## E27/E28 · hasil unggahan tersedia
 
-Pengguna memilih **E23** sebagai acuan untuk memprioritaskan jumlah prediksi mendekati guru, lalu meminta dua resep: **E27 = E23 + co-attention respons–referensi**, **E28 = E23 dengan LR MLP S3 saja `5e-6`**. Keduanya tersedia sebagai notebook GPU mandiri tanpa Drive, seluruh S1/S2/S3 dilatih baru. [Source dan metode](docs/eksperimen/eksperimen_e27_e28_gpu.md). Belum ada hasil penelitian atau penambahan hasil E27/E28 ke HTML. Huber dan pengukuhan E26/kandidat tiga seed masih rencana.
+Pengguna memilih **E23** sebagai acuan untuk memprioritaskan jumlah prediksi mendekati guru: **E27 = E23 + co-attention**, **E28 = E23 dengan LR MLP S3 saja5e-6**. Hasil dua ZIP sudah diaudit dan ditambahkan ke buku tiga input; kode utama tetap E23. [Review](docs/review/review_e27_e28_study.md).
+
+| S3 | RMSE test | Mean RMSE CV | MAE test | Selisih≤5poin |
+| --- | ---: | ---: | ---: | ---: |
+| E27 | 6,3277 | 6,5067 | 5,0281 | 34/60 |
+| E28 | 7,0447 | 6,4386 | 5,8803 | 27/60 |
+
+Pada delapan peserta, jumlah terdekat S3 E21/E22/E23/E24/E25/E26/E27/E28 adalah **8/8/10/6/8/10/8/2**. E23/E26 seri10/60; E26 tetap RMSE/MAE terendah; E23 tetap terbanyak≤5poin39/60. Ini perubahan peserta, bukan perubahan prediksi lama. S1/S2 E27/E28 identik E23 per baris. Tidak ada executed notebook/runtime lengkap dalam ZIP, sehingga identitas kode runtime dan perangkat tidak diklaim terbukti.
 
 Penting: kelompok `head` pada optimizer **E23 asal** juga menampung BiGRU, proyeksi ringkasan dan LayerNorm. **E27/E28 sudah memisahkan** `head.*` dari `pooling_norm`. Pada E28 hanya MLP S3 berubah5e-6; S1/S2 head serta pooling/norm/proyeksi tetap1e-4. `s3_mlp_lr` dan `s3_layers_lr` dicatat terpisah pada config, checkpoint dan Excel.
 

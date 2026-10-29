@@ -26,6 +26,8 @@ TEMPLATE = '''<!doctype html>
 const form=document.getElementById('unlock'),password=document.getElementById('password'),button=document.getElementById('open'),status=document.getElementById('status');
 const salt='__SALT__',iv='__IV__',expected='__SHA__';
 function decode(value){const size=value.length*3/4-(value.endsWith('==')?2:value.endsWith('=')?1:0),result=new Uint8Array(size);let offset=0;for(let start=0;start<value.length;start+=1048576){const chunk=atob(value.slice(start,start+1048576));for(let i=0;i<chunk.length;i++)result[offset++]=chunk.charCodeAt(i)}return result}
+let encryptedCache=null;
+async function readEncryptedPayload(){if(encryptedCache)return encryptedCache;const root=document.getElementById('encryptedBook'),chunks=[...document.querySelectorAll('script[data-encrypted-chunk]')];if(root.textContent.trim())chunks.unshift(root);if(!chunks.length)throw Error('Isi buku terenkripsi tidak ditemukan.');const last=chunks.at(-1).textContent.trim(),length=chunks.reduce((sum,c)=>sum+c.textContent.trim().length,0),bytes=new Uint8Array(length*3/4-(last.endsWith('==')?2:last.endsWith('=')?1:0));let offset=0;for(let i=0;i<chunks.length;i++){const data=decode(chunks[i].textContent.trim());bytes.set(data,offset);offset+=data.length;chunks[i].textContent='';if(chunks[i]!==root)chunks[i].remove();if(i%8===0)await new Promise(resolve=>setTimeout(resolve,0))}encryptedCache=bytes;return bytes}
 document.getElementById('show').addEventListener('click',event=>{const show=password.type==='password';password.type=show?'text':'password';event.currentTarget.textContent=show?'Sembunyikan kunci':'Tampilkan kunci';event.currentTarget.setAttribute('aria-pressed',String(show))});
 form.addEventListener('submit',async event=>{
  event.preventDefault();if(!password.value)return;
@@ -34,7 +36,7 @@ form.addEventListener('submit',async event=>{
   if(!crypto.subtle||!window.DecompressionStream)throw Error('Gunakan Chrome, Edge atau Firefox versi terbaru, lalu buka file yang sudah diunduh.');
   const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password.value),'PBKDF2',false,['deriveKey']);
   const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:decode(salt),iterations:600000,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,['decrypt']);
-  const payload=document.getElementById('encryptedBook');let encrypted=decode(payload.textContent.trim());let compressed;try{compressed=await crypto.subtle.decrypt({name:'AES-GCM',iv:decode(iv)},key,encrypted);encrypted=null;payload.remove()}catch{throw Error('Kunci tidak cocok atau file unduhan tidak lengkap. Salin kunci dari chat, lalu coba lagi.')}
+  const payload=document.getElementById('encryptedBook');let encrypted=await readEncryptedPayload();let compressed;try{compressed=await crypto.subtle.decrypt({name:'AES-GCM',iv:decode(iv)},key,encrypted);encrypted=null;encryptedCache=null;payload.remove()}catch{throw Error('Kunci tidak cocok atau file unduhan tidak lengkap. Salin kunci dari chat, lalu coba lagi.')}
   const bytes=await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
   const actual=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('');
   if(actual!==expected)throw Error('Isi buku tidak cocok dengan checksum. Unduh file kembali.');
@@ -70,7 +72,10 @@ def main():
     ciphertext=AESGCM(key).encrypt(iv,compressed,None)
     assert gzip.decompress(AESGCM(key).decrypt(iv,ciphertext,None))==original
     encode=lambda value:base64.b64encode(value).decode('ascii')
-    document=TEMPLATE.replace('__PAYLOAD__',encode(ciphertext)).replace('__SALT__',encode(salt)).replace('__IV__',encode(iv)).replace('__SHA__',hashlib.sha256(original).hexdigest())
+    encoded=encode(ciphertext)
+    chunks=''.join('<script type="application/octet-stream" data-encrypted-chunk>'+encoded[i:i+1048576]+'</script>' for i in range(0,len(encoded),1048576))
+    placeholder='<script id="encryptedBook" type="application/octet-stream"></script>'
+    document=TEMPLATE.replace('__PAYLOAD__','').replace(placeholder,placeholder+chunks).replace('__SALT__',encode(salt)).replace('__IV__',encode(iv)).replace('__SHA__',hashlib.sha256(original).hexdigest())
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(document,encoding='utf-8')
     if args.archive:

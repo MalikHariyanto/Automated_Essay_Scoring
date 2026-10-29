@@ -14,10 +14,10 @@ def family():
     return raw, data
 
 
-def test_same_data_labels_folds_and_only_recorded_format_changes():
+def test_same_data_labels_folds_and_explicit_parameter_differences():
     _, data = family()
     c = data['comparison']
-    for key in ('same_300_texts_labels', 'same_60_test_ids_labels', 'same_folds', 'recorded_parameters_equal_except_format'):
+    for key in ('same_300_texts_labels', 'same_60_test_ids_labels', 'same_folds', 'common_baseline_parameters_equal_except_format'):
         assert c[key] is True
     for experiment, format_ in [('E21', 'single_sequence'), ('E22', 'context_pair')]:
         x = c['experiments'][experiment]
@@ -105,7 +105,7 @@ def test_actual_inline_scripts_parse_without_closing_tag_injection(tmp_path):
 def test_e24_attention_results_and_comparisons_are_real_and_consistent():
     _, data = family()
     c = data['comparison']
-    assert set(c['experiments']) == set(data['documents']) == {'E21','E22','E23','E24','E25','E26'}
+    assert set(c['experiments']) == set(data['documents']) == {'E21','E22','E23','E24','E25','E26','E27','E28'}
     e = c['experiments']['E24']
     assert e['input_format'] == 'single_sequence' and e['s3_pooling'] == 'attention'
     assert e['attention_audit']['rows'] == 16946
@@ -116,12 +116,12 @@ def test_e24_attention_results_and_comparisons_are_real_and_consistent():
     for scenario in ['S1','S2']:
         assert next(r for r in e['metrics'] if r['Skenario']==scenario) == next(r for r in e21['metrics'] if r['Skenario']==scenario)
     assert abs(next(r for r in e['metrics'] if r['Skenario']=='S3')['RMSE (poin)'] - 5.981825270792521)<1e-10
-    assert len(c['pairwise']) == 15
+    assert len(c['pairwise']) == 28
     for p in c['pairwise']:
         assert all(r['left']+r['right']+r['ties']==60 for r in p['impact'])
         assert sum(p['overall'].values())==180
     assert abs(sum(v['share'] for v in c['nearest']['all'].values())-60)<1e-8
-    assert len(c['nearest']['all']) == 18
+    assert len(c['nearest']['all']) == 24
 
 
 def test_e23_biGRU_and_study_default_follow_actual_prediction_criteria():
@@ -132,10 +132,10 @@ def test_e23_biGRU_and_study_default_follow_actual_prediction_criteria():
     assert abs(c['predictionAudit']['E23']['S3']['rmse']-6.043921327113497)<1e-6
     assert c['predictionAudit']['E23']['S3']['within']['5']==39
     assert c['predictionAudit']['E24']['S3']['within']['5']==36
-    assert c['nearest']['S3']['E23_S3']['share']==13
-    assert c['nearest']['S3']['E24_S3']['share']==9
-    assert c['studyRecommendation']['experiment']=='E23'
-    assert c['studyRecommendation']['nearest_co_leaders']==['E23']
+    assert c['nearest']['S3']['E23_S3']['share']==10
+    assert c['nearest']['S3']['E24_S3']['share']==6
+    assert c['studyRecommendation']['experiment']=='E26' and c['studyRecommendation']['learning_default']=='E23'
+    assert c['studyRecommendation']['nearest_co_leaders']==['E23','E26']
     assert c['studyRecommendation']['within5_best']=='E23'
     assert c['studyRecommendation']['rmse_best']=='E26'
     pair=next(p for p in c['pairwise'] if (p['left'],p['right'])==('E23','E24'))
@@ -190,7 +190,7 @@ def test_e26_rmse_lead_is_not_confused_with_nearest_or_duel_wins():
     assert c['predictionAudit']['E26']['S3']['mae']<c['predictionAudit']['E24']['S3']['mae']
     assert c['predictionAudit']['E26']['S3']['within']['5']==38
     assert c['predictionAudit']['E25']['S3']['within']['5']==35
-    assert {k:v['share'] for k,v in c['nearest']['S3'].items()}=={'E21_S3':11,'E22_S3':9,'E23_S3':13,'E24_S3':9,'E25_S3':8,'E26_S3':10}
+    assert {k:v['share'] for k,v in c['nearest']['S3'].items()}=={'E21_S3':8,'E22_S3':8,'E23_S3':10,'E24_S3':6,'E25_S3':8,'E26_S3':10,'E27_S3':8,'E28_S3':2}
     pair=next(p for p in c['pairwise'] if (p['left'],p['right'])==('E24','E26'))
     assert pair['impact'][2]=={'scenario':'S3','left':30,'right':30,'ties':0}
     pair=next(p for p in c['pairwise'] if (p['left'],p['right'])==('E25','E26'))

@@ -69,6 +69,8 @@ def enrich_learning_notes(cells, experiment):
     required=[]
     for spec in CORE:
         index,anchor,title,short,body,*occ=spec
+        if experiment in ('E27','E28') and anchor in ('PROJECTION_LR=HEAD_LR=','def optimizer_groups'):
+            body='Head kontrol S1/S2, proyeksi BGE, BiGRU dan norm tetap1e-4. Hanya head.* S3 memakai '+('5e-6' if experiment=='E28' else '1e-4')+'. s3_mlp_lr dipisah dari s3_layers_lr; satu parameter trainable masuk tepat satu kelompok.'
         if experiment=='E25' and anchor=="features['concat'] =":
             anchor="features['concat'], gate ="
             body='Gate menghasilkan g dari kedua fitur per jawaban. Concat aktual [2g×RoBERTa768, 2(1−g)×BGE256] tetap1024. Ini bukan penjumlahan skor S1 dan S2; kedua cabang masuk head S3 yang dilatih bersama.'
@@ -83,13 +85,13 @@ def enrich_learning_notes(cells, experiment):
         if note:note.update(data)
         else:c['notes'].append(data)
         required.append((index,line,title))
-    if experiment in ('E23','E24','E25','E26'):
+    if experiment in ('E23','E24','E25','E26','E27','E28'):
         extra=[('def answer_token_mask','Mask token jawaban','Memilih posisi respons tanpa memasukkan konteks atau padding.','RoBERTa tetap membaca ketiga teks. Pooling tambahan S3 hanya memakai posisi token jawaban dari answer_positions. Mask bukan pemeriksaan apakah ID kata sama dengan kata pada konteks.'),
           ('hidden = self.roberta','Fitur token contextual','Mengambil representasi semua token dari backbone RoBERTa.','Tensor hidden berbentuk [window,token,768]. Pada S3 ringkasan jawaban berasal dari pooling tambahan. CLS tetap dihitung untuk kontrol/referensi; jangan menyebut CLS sebagai input prediksi S3 varian ini.'),
           ('self.sequence_pool =','Pooling tambahan khusus S3','Membentuk peringkas token sebelum normalisasi dan fusion.','S1 tetap CLS dan head linear. S2 tetap BGE frozen dan MLP. Layer tambahan hanya dijalankan pada S3; encoder RoBERTa tetap ikut fine-tuning.'),
           ("features['answer_pool768']",'Representasi jawaban S3','Menyimpan 768 fitur hasil pooling untuk inspeksi.','Vektor ini belum menjadi skor. Setelah LayerNorm, ia digabung dengan proyeksi BGE lalu melewati head MLP.'),
         ]
-        if experiment=='E23':extra += [
+        if experiment in ('E23','E28'):extra += [
           ('class AnswerBiGRU','BiGRU membaca urutan jawaban','Meringkas urutan token jawaban dari dua arah.','GRU maju dan mundur masing-masing mempunyai hidden 64. Sumbu urutan adalah token jawaban, bukan 768 koordinat fitur. Ini tambahan di luar RoBERTa.'),
           ('self.gru = nn.GRU','GRU dua arah','Membentuk dua pembaca urutan dengan hidden enam puluh empat.','Input setiap langkah adalah 768 fitur satu token. bidirectional=True membentuk arah maju dan mundur; bukan dua encoder pretrained baru.'),
           ('packed = torch.nn.utils.rnn.pack_padded_sequence','Panjang token yang sebenarnya','Mencegah state akhir GRU membaca padding tambahan.','Jumlah token tiap jawaban dapat berbeda. Packing memakai panjang aktual, sehingga token kosong penyama batch tidak menjadi isi jawaban.'),
@@ -122,6 +124,18 @@ def enrich_learning_notes(cells, experiment):
           ('self.last_weights = torch.zeros_like','Bobot kembali ke posisi asli','Menyelaraskan bobot GRU dengan token pada Excel.','masked_scatter menempatkan bobot pada posisi respons asli. Konteks/special/padding tetap nol; tanpa pemetaan ini penjelasan token bisa bergeser.'),
           ('self.last_summary = summary.detach','Salinan ringkasan untuk inspeksi','Menyimpan fitur tanpa memutus jalur prediksi model.','detach dipakai pada salinan last_summary untuk ekspor. Keluaran aktual tetap self.output(summary), sehingga gradien mengalir melalui attention dan BiGRU saat training.'),
         ]
+        if experiment=='E27':extra += [
+          ('class AnswerReferenceCoAttention','Co-attention dari dasar E23','Mencocokkan urutan respons dengan token isi referensi.','Kelas ini mewarisi GRU dan output projection AnswerBiGRU E23, lalu mengganti forward untuk pencocokan. Definisi forward induk tetap terlihat sebagai acuan; jalur aktif S3 memakai subclass ini.'),
+          ('self.reference_projection =','Proyeksi referensi768→128','Menyamakan lebar fitur referensi dengan keluaran BiGRU.','Token referensi tetap berasal dari hidden RoBERTa pada input yang sama. Layer Linear baru dilatih1e-4; ini bukan proyeksi BGE1024→256.'),
+          ('self.matching_projection =','Pencocokan640→128','Memadatkan lima jenis hubungan menjadi fitur pencocokan.','Respons, referensi selaras, selisih, produk dan respons jalur balik masing-masing128komponen disambung640, lalu Linear128+tanh. Fitur ini belum skor guru.'),
+          ('packed_outputs, _ = self.gru','Urutan token respons128','Mempertahankan keluaran setiap token untuk pencocokan referensi.','E23 asli memakai state akhir langsung. E27 perlu urutan128 agar softmax dapat membandingkan beberapa token respons dan referensi, bukan satu vektor global.'),
+          ('scores = torch.bmm','Skor pencocokan dua urutan','Menghitung dot product dengan skala akar dimensi.','Skor respons×referensi dibagi √128. Perhitungan skor/softmax FP32 tetap digunakan saat encoder memakai AMP; ini bukan RMSE atau nilai guru.'),
+          ('a_to_r = torch.softmax','Respons menuju referensi','Membagi bobot hanya pada token isi referensi.','Softmax berjalan sepanjang referensi. Mask mencegah prefix, soal, special dan padding mendapat bobot; jumlah setiap query respons valid adalah1.'),
+          ('r_to_a = torch.softmax','Referensi menuju respons','Membentuk pencocokan arah balik pada token respons.','Softmax transpose berjalan sepanjang respons. Kedua arah berbeda; bobot inspeksi yang dirata-ratakan tidak menjadi attention pooling.'),
+          ('round_trip =','Jalur balik co-attention','Membentuk respons melalui hubungan referensi dan respons.','A(BR) menghasilkan fitur respons yang dipengaruhi pencocokan dua arah. Gradien tetap mengalir ke encoder dan layer baru; BGE tetap frozen.'),
+          ('summary = torch.cat([matched','Ringkasan ujung setelah matching','Menyambung komponen ujung dua arah menjadi128 fitur.','Ambil64komponen pertama dari token akhir dan64komponen terakhir dari token awal setelah matching. Tidak ada weighted attention pooling E26. Linear output128→768 diwarisi dari E23.'),
+          ('self.last_cross_attention =','Salinan matriks untuk inspeksi','Menyimpan bobot tanpa memutus jalur training aktual.','Matriks dilepas dari graph hanya untuk ekspor ketika return_features aktif. Workbook memuat top1 per token, bukan seluruh matriks.'),
+        ]
         c=by_index[30]
         for anchor,title,short,body in extra:
             line=next(i+1 for i,t in enumerate(c['source'].splitlines()) if anchor in t)
@@ -135,7 +149,7 @@ def enrich_learning_notes(cells, experiment):
       ('Konstruksi konteks / text pair','Soal + kunci jawaban dipasangkan dengan jawaban siswa',20,'def context_token_ids','Ketiga teks masuk semua skenario. E22 memakai context_pair; E21/E23/E24 memakai single_sequence. Informasi sama, susunan token berbeda.'),
       ('Dataset PyTorch / X dan y','Dataset berisi teks dan skor guru',14,'class Bundle','Peran Dataset tersebar: Bundle menyimpan tiga teks dan target rater, Engine menyiapkan batch tensor. Tidak harus ada variabel bernama X.'),
       ('Inisialisasi model pretrained','AutoModelForSequenceClassification(..., num_labels=1)',21,'AutoModel.from_pretrained(','Backbone dimuat melalui AutoModel; head regresi dibuat sendiri dalam SingleScoreModel, bukan classifier bawaan AutoModelForSequenceClassification.'),
-      ('Pooling / ContextPooler','CLS → Dense → GELU → Dropout',30,'self.sequence_pool =' if experiment in ('E23','E24','E25','E26') else 'essay = mean_by_essay','S1 tetap CLS. S3 '+('memakai BiGRU token jawaban, state128 → proyeksi768.' if experiment=='E23' else 'memakai attention berbobot pada token jawaban.' if experiment in ('E24','E25') else 'memakai urutan output BiGRU128 → attention → ringkasan128 → proyeksi768.' if experiment=='E26' else 'acuan memakai CLS lalu mean antar-window.')+' Ini berbeda dari ContextPooler pada screenshot.'),
+      ('Pooling / ContextPooler','CLS → Dense → GELU → Dropout',30,'self.sequence_pool =' if experiment in ('E23','E24','E25','E26','E27','E28') else 'essay = mean_by_essay','S1 tetap CLS. S3 '+('memakai BiGRU token jawaban, state128 → proyeksi768.' if experiment in ('E23','E28') else 'memakai attention berbobot pada token jawaban.' if experiment in ('E24','E25') else 'memakai urutan output BiGRU128 → attention → ringkasan128 → proyeksi768.' if experiment=='E26' else 'memakai BiGRU128 → co-attention referensi → ujung128 → proyeksi768.' if experiment=='E27' else 'acuan memakai CLS lalu mean antar-window.')+' Ini berbeda dari ContextPooler pada screenshot.'),
       ('Regression head / classifier','classifier: Linear(768, 1)',30,'self.head = nn.Linear(768, 1)','S1 memakai head linear. S2/S3 memakai MLP 1024→256→1. Layer terakhir MLP tetap linear; keseluruhan head mempunyai hidden nonlinier.'),
       ('Ekstraksi fitur sebelum training','last_hidden_state[:, 0, :] menghasilkan vektor768',24,'def roberta_pretrained_vectors(','Fitur awal dibaca di roberta_pretrained_vectors. Fitur aktual saat model berjalan ada pada forward; fitur checkpoint final diekspor sesudah training.'),
       ('Pelatihan lima fold','for fold_idx ... model baru ... train/validation',38,'def train_all(','make_split menentukan anggota; train_all mengatur fold/refit/test; fit memperbarui bobot satu model. Semua skenario memakai development/test yang sama.'),
@@ -143,6 +157,8 @@ def enrich_learning_notes(cells, experiment):
       ('Prediksi dan label guru','rater dibanding hasil model',39,'def test_score_comparison(','Bagian ini membaca prediksi test tersimpan dan menyandingkan skor guru, prediksi mentah, serta salinan pembulatan. RMSE/Pearson memakai skor kontinu; QWK/AC2 memakai kategori.'),
     ]
     for title,example,index,anchor,body in specs:
+        if experiment in ('E27','E28') and title=='Hyperparameter dan optimisasi':
+            body='Encoder S1/S3 5e-6; head kontrol S1/S2 dan proyeksi BGE1e-4. Hanya MLP S3 '+('5e-6' if experiment=='E28' else '1e-4')+'; BiGRU/norm tetap1e-4. Semua LR dan rentang latihan ada di blok pengaturan.'
         c=by_index[index];line=next(i+1 for i,t in enumerate(c['source'].splitlines()) if anchor in t)
         mappings.append(dict(title=title,example=example,explanation=body,cell=index,line=line,ordinal=c['ordinal'],anchor=anchor))
         n=next((n for n in c['notes'] if n['line']==line),None)

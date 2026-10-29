@@ -4,6 +4,29 @@ from mlp_study_content import CHAPTERS as BASE_CHAPTERS, GLOSSARY as BASE_GLOSSA
 
 
 def curriculum(snapshot):
+    if snapshot.get('id') in ('E27','E28'):
+        experiment=snapshot['id'];c,g=curriculum({**snapshot,'id':'E23'})
+        for chapter in c:
+            for key in ('title','goal'):chapter[key]=chapter[key].replace('E23',experiment)
+            for key in ('flow','read'):chapter[key]=[v.replace('E23',experiment) for v in chapter[key]]
+        c[3]['read'][2]=experiment+' merupakan turunan E23, single_sequence pada tiga input. S1/S2 tetap kontrol; perubahan hanya S3.'
+        c[3]['flow']=['X tiga teks','y rater','Encoder5e-6','MLP S3 '+('5e-6' if experiment=='E28' else '1e-4')]
+        c[3]['read'][1]='Encoder RoBERTa S1/S3 5e-6; head kontrol S1/S2 dan proyeksi BGE1e-4. MLP S3 '+('5e-6' if experiment=='E28' else '1e-4')+'; BiGRU/proyeksi ringkasan/LayerNorm tetap1e-4, dipisahkan dari head.* pada optimizer.'
+        g['learning rate']=('Ukuran langkah pembaruan',c[3]['read'][1]+' Ini LR awal/puncak sebelum warmup dan scheduler; bukan angka akurasi.')
+        if experiment=='E28':
+            c[10]['read'].append('Arsitektur sama persis E23; tidak ada attention pooling atau co-attention tambahan. Hanya LR dua Linear pada MLP S3 turun20×.')
+            c[14]['read'][-1]='BiGRU S3 State Akhir memuat128 komponen dan Pooling Jawaban S3 memuat768 hasil proyeksi; keduanya fitur, bukan skor.'
+            g['BiGRU']=('Ringkasan urutan dua arah','E28 mempertahankan state akhir maju+mundur128 dan proyeksi768 milik E23. LR MLP berubah; arsitektur tidak.')
+        else:
+            c[10]['flow']=['BiGRU respons128','Referensi768 →128','Co-attention dua arah','Ujung128 →768 →fusion →MLP']
+            c[10]['read'][-1]='AnswerReferenceCoAttention mengganti forward pool S3: semua output token BiGRU128 dicocokkan dengan isi referensi128. Fitur respons, referensi selaras, selisih, produk dan jalur balik640 →Linear128+tanh; gabungan ujung dua arah128 →768. Tidak memakai additive attention pooling E26.'
+            c[10]['read'].append('Mask respons dan referensi berasal dari posisi/offset tokenizer; soal, prefix, special dan padding tidak menjadi query/key langsung. RoBERTa tetap membaca ketiga teks melalui self-attention. Ini adaptasi, bukan reproduksi paper co-attention tingkat kalimat.')
+            c[14]['flow']=['Checkpoint final','Ringkasan128 →768','Bobot dua arah','Pasangan token top1']
+            c[14]['read'][-1]='Ringkasan CoAttention S3 berisi128 fitur setelah pencocokan. Bobot Referensi S3 dan Bobot CoAttention Respons S3 masing-masing berjumlah1 per window; keduanya bobot pencocokan, bukan pooling atau bukti kebenaran. Pasangan Token Top1 S3 hanya ringkasan kecocokan terbesar per token respons, bukan matriks lengkap.'
+            c[14]['sheets']=['Pooling Jawaban S3','Ringkasan CoAttention S3','Bobot CoAttention Respons S3','Bobot Referensi S3','Pasangan Token Top1 S3','Fusion S3']
+            g['co-attention']=('Pencocokan respons–referensi','Dua softmax mencocokkan urutan token respons128 dengan isi referensi128. Jalur balik respons→referensi→respons juga membentuk fitur matching; bobot bukan skor guru.')
+            c[10]['terms'].append('co-attention')
+        return c,g
     c=copy.deepcopy(BASE_CHAPTERS);g=copy.deepcopy(BASE_GLOSSARY)
     lessons=[
         ('Hasil E21', 'Baca hasil satu eksperimen dengan tiga skenario.',

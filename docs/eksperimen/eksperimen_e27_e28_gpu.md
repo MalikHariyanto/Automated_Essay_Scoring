@@ -1,6 +1,6 @@
 # E27 dan E28 · dua ablation dari E23, Colab GPU
 
-Pengguna meminta dua notebook terpisah, kemudian memilih E23 sebagai dasar karena memprioritaskan banyaknya prediksi mendekati guru. Pilihan ini mengganti draf E26 yang belum dipublikasikan; tidak mengubah fakta bahwa E26 memiliki RMSE/MAE test lebih rendah. **E27 menambah co-attention; E28 hanya menurunkan LR MLP S3.** Keduanya berasal dari [E23](../../notebooks/experiments/AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb) pada commit `f3d25c4`. Notebook E21–E26 dan buku hasil tidak dibangun ulang atau ditimpa. Belum ada hasil penelitian E27/E28.
+Pengguna meminta dua notebook terpisah, kemudian memilih E23 sebagai dasar karena memprioritaskan banyaknya prediksi mendekati guru. Pilihan ini mengganti draf E26 yang belum dipublikasikan; tidak mengubah fakta bahwa E26 memiliki RMSE/MAE test lebih rendah. **E27 menambah co-attention; E28 hanya menurunkan LR MLP S3.** Keduanya berasal dari [E23](../../notebooks/experiments/AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb) pada commit `f3d25c4`. Notebook E21–E26 dan buku hasil tidak dibangun ulang atau ditimpa. Hasil telah diunggah29Oktober2026 dan ditambahkan ke buku; [review hasil](../review/review_e27_e28_study.md).
 
 | Eksperimen | Source | Perubahan S3 | LR MLP S3 |
 | --- | --- | --- | --- |

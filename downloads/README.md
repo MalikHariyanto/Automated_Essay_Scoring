@@ -2,7 +2,7 @@
 
 | Buku | Isi | Unduh |
 | --- | --- | --- |
-| **Tiga variabel · E21–E26** | Kode utama E23 paling sering terdekat; E26 RMSE S3 terkecil, enam eksperimen, 18 model, 60 jawaban test, 30 Excel/270 sheet | [Buku tiga variabel](Belajar_AES_Tiga_Input_Lengkap.html) |
+| **Tiga variabel · E21–E28** | Kode utama E23; E26 RMSE S3 terkecil; E23/E26 seri terdekat pada delapan peserta. Delapan eksperimen,24model,60jawaban test,40Excel/363sheet | [Buku tiga variabel](Belajar_AES_Tiga_Input_Lengkap.html) |
 | **Eksperimen awal sampai E8 / E6 2.0** | Kumpulan eksperimen sebelum tiga variabel; meja belajar E6, hasil dan Excel lama | [Buku eksperimen terdahulu](Belajar_AES_MLP_Lengkap.html) |
 
 1. Di halaman file GitHub, pilih **Download raw file**.

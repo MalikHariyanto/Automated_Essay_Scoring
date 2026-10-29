@@ -1,6 +1,6 @@
 # Eksperimen berikutnya · dasar E23 sesuai pilihan pengguna
 
-**E27/E28 kini dibuat dari E23 atas pilihan eksplisit pengguna; hasil penelitian belum tersedia.** Prioritas pengguna ialah banyaknya prediksi mendekati guru: E23 paling sering terdekat13/60 dan selisih≤5poin39/60 pada enam eksperimen. RMSE test E23 **6,0439**, MAE **4,8576**, mean CV **6,4143**. E26 tetap lebih rendah RMSE/MAE **test** (5,7435/4,4797), bukan hanya bagus saat training. Perbedaan ukuran menjelaskan pilihan dasar; satu run belum membuktikan konsistensi. Tetap tiga input, label `rater`, RoBERTa fine-tuned, BGE frozen, kontrol S1/S2. [Notebook dan metode](docs/eksperimen/eksperimen_e27_e28_gpu.md).
+**E27/E28 dibuat dari E23 atas pilihan eksplisit pengguna; hasilnya kini tersedia.** RMSE S3 E27=6,3277, E28=7,0447; [review](docs/review/review_e27_e28_study.md). Angka frekuensi enam peserta di bawah menjadi riwayat; delapan peserta kini membuat E23/E26 seri10/60. Prioritas pengguna ialah banyaknya prediksi mendekati guru: E23 paling sering terdekat13/60 dan selisih≤5poin39/60 pada enam eksperimen. RMSE test E23 **6,0439**, MAE **4,8576**, mean CV **6,4143**. E26 tetap lebih rendah RMSE/MAE **test** (5,7435/4,4797), bukan hanya bagus saat training. Perbedaan ukuran menjelaskan pilihan dasar; satu run belum membuktikan konsistensi. Tetap tiga input, label `rater`, RoBERTa fine-tuned, BGE frozen, kontrol S1/S2. [Notebook dan metode](docs/eksperimen/eksperimen_e27_e28_gpu.md).
 
 ## Jalur yang dapat dibandingkan
 

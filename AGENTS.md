@@ -1,10 +1,10 @@
-# Status operasional terbaru — 28 Oktober 2026
+# Status operasional terbaru — 29 Oktober2026
 
 Untuk melanjutkan percakapan pengguna dari akun baru, baca **[PANDUAN_AI_PROYEK.md](PANDUAN_AI_PROYEK.md)**, [STATUS_PROYEK.md](STATUS_PROYEK.md), [PINDAH_AKUN.md](PINDAH_AKUN.md), dan [RENCANA_EKSPERIMEN.md](RENCANA_EKSPERIMEN.md).
 
-**Keluarga aktif E21–E28 mengikuti instruksi pengguna terbaru:** tiga input `soal`, `jawaban_referensi`, `response_text` pada semua skenario; satu label `rater`0–100; S1 linear, S2/S3 MLP; RoBERTa fine-tuned, BGE frozen; GPU Colab biasa, tanpa Drive. Hasil tersedia sampai E26; E27/E28 baru berupa notebook. Bagian empat trait/CSV/rubrik1–5 di bawah berlaku untuk workflow arsip, bukan perubahan otomatis pada eksperimen aktif. Jangan menimpa kontrak terbaru berdasarkan dokumen lama atau skill generik.
+**Keluarga aktif E21–E28 mengikuti instruksi pengguna terbaru:** tiga input `soal`, `jawaban_referensi`, `response_text` pada semua skenario; satu label `rater`0–100; S1 linear, S2/S3 MLP; RoBERTa fine-tuned, BGE frozen; GPU Colab biasa, tanpa Drive. Hasil E27/E28 kini sudah ditambahkan ke HTML. Bagian empat trait/CSV/rubrik1–5 di bawah berlaku untuk workflow arsip. Jangan menimpa kontrak terbaru berdasarkan dokumen lama atau skill generik.
 
-Dua aplikasi hasil aktif adalah buku lama dan buku tiga input. Hasil E25/E26 sudah dimasukkan; E26 terendah RMSE S3, E23 paling sering terdekat. Pengguna kemudian meminta **E27 co-attention** dan **E28 LR MLP S3 saja5e-6**, keduanya turunan **E23** GPU sesuai pilihan pengguna untuk memprioritaskan banyaknya prediksi mendekati guru tanpa Drive, sudah diimplementasikan tetapi belum memiliki hasil penelitian. Kelompok `head` E23 asal mengandung pooling/norm; E27/E28 memisahkannya. Jangan mengubah hasil HTML atau menyatakan perbaikan akurasi hanya dari tes implementasi.
+Dua aplikasi hasil aktif adalah buku lama dan buku tiga input. E27 co-attention dan E28 LR MLP S3 saja5e-6 berasal dari **E23**; source `daa745d`. Kedua ZIP telah ditambahkan tanpa mengubah isi enam buku lama. Pada delapan peserta E23/E26 seri terdekat10/60; E26 tetap RMSE terendah, E23 tetap terbanyak≤5poin. **Kode utama E23 dipertahankan** atas pilihan pengguna, terpisah dari ranking yang dihitung ulang. Perubahan jumlah terdekat bukan perubahan prediksi lama. Kelompok optimizer MLP terpisah dari BiGRU/norm. Jangan mengubah notebook atau isi lama saat hanya mengoptimalkan UI.
 
 Dokumentasi kini dikelompokkan pada `docs/eksperimen`, `docs/review`, `docs/verifikasi`, `docs/snapshots`, `docs/arsip`. Notebook utama dan tautan Colab tetap. Mirror lama berbeda dipertahankan sebagai varian arsip sebelum disamakan. Jangan menjalankan builder yang menimpa edit pengguna tanpa memeriksanya.
 

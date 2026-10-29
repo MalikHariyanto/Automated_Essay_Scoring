@@ -6,6 +6,7 @@
 
 | Dokumen | Isi |
 | --- | --- |
+| [review_e27_e28_study.md](review_e27_e28_study.md) | Delapan eksperimen, preservasi seluruh isi lama dan optimasi UI |
 | [review_colab_2026_10_14.md](review_colab_2026_10_14.md) | Pemeriksaan notebook tersimpan — 14 Oktober 2026 |
 | [review_context_pair_dashboard.md](review_context_pair_dashboard.md) | Hasil konteks pair dan papan perbandingan semua eksperimen |
 | [review_double_frozen_results.md](review_double_frozen_results.md) | Review hasil double frozen + MLP |
