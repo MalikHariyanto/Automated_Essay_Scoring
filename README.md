@@ -16,15 +16,15 @@ Kode baru dari **E26**: **[E29 · LR MLP S2/S3 5e-6](notebooks/experiments/AES_3
 
 **Kode baru berbasis E25:** [E31/E32](docs/eksperimen/eksperimen_e31_e32_gpu.md), GPU tanpa Drive; belum ada hasil.
 
-## Hasil terbaru: E21–E30
+## Hasil terbaru: E21–E32
 
-Sepuluh eksperimen,30model,60jawaban test yang sama,50Excel/458sheet. Semua hasil lama dipertahankan; hanya tiga kode diembed agar buku lebih ringan.
+Dua belas eksperimen,36model,60jawaban test yang sama,60Excel/557sheet. Semua hasil lama dipertahankan; hanya tiga kode diembed agar buku lebih ringan.
 
 | Ukuran S3 | Hasil unggahan saat ini |
 | --- | --- |
 | RMSE test terendah | **E29 · E26 + LR MLP S2/S3 5e-6: 5,4293 poin** |
 | Rerata RMSE lima fold terendah | **E29: 5,7667 poin** |
-| Paling sering menjadi prediksi terdekat | **E30:13/60**, pada sepuluh peserta; bukan jumlah skor persis sama |
+| Paling sering menjadi prediksi terdekat | **E30:11/60**, pada dua belas peserta; bukan jumlah skor persis sama |
 | Terbanyak selisih maksimal 5 poin | **E30:44/60** |
 
 Kode utama HTML kini **E29**. Atas instruksi pengguna, meja belajar hanya memuat **E29, E30, E26**, tiga RMSE test S3 terendah. Semua hasil/Excel tetap lengkap di tab08. S2 E29 justru memburuk ke RMSE75,9702; hasil itu tidak disembunyikan. Perubahan peserta dapat mengubah jumlah terdekat tanpa mengubah prediksi lama. [Review terbaru](docs/review/review_e30_study.md).
@@ -33,7 +33,7 @@ Kode utama HTML kini **E29**. Atas instruksi pengguna, meja belajar hanya memuat
 
 | Buku | Isi | Unduh lengkap | Preview publik |
 | --- | --- | --- | --- |
-| **Tiga input · E21–E30** | Perbandingan, jawaban/prediksi, kurva, Excel, kode dan sticky note | **[Pengunduh HTML](downloads/Belajar_AES_Tiga_Input_Lengkap.html)** | [Ringkasan](docs/belajar_Tiga_Input_Spider.html) |
+| **Tiga input · E21–E32** | Perbandingan, jawaban/prediksi, kurva, Excel, kode dan sticky note | **[Pengunduh HTML](downloads/Belajar_AES_Tiga_Input_Lengkap.html)** | [Ringkasan](docs/belajar_Tiga_Input_Spider.html) |
 | **Sebelum tiga input · sampai E8/E6 2.0** | Hasil dan kode eksperimen sebelumnya | **[Pengunduh HTML](downloads/Belajar_AES_MLP_Lengkap.html)** | [Ringkasan](docs/belajar_MLP_Spider.html) |
 
 Di GitHub pilih **Download raw file**, buka pengunduh, unduh dan ekstrak ZIP, lalu gunakan **kunci lama**. Kunci dibawa terpisah. Buku lengkap bekerja offline; preview publik hanya memuat agregat dan kode.
@@ -55,3 +55,7 @@ configs/ dan schemas/   Workflow empat trait terdahulu
 Dataset, bobot, checkpoint, kunci, dan `outputs/` bersifat lokal; tidak ikut clone. [Berkas yang perlu dibawa](PINDAH_AKUN.md#berkas-yang-perlu-dibawa).
 
 Workflow empat trait dan latihan berlabel AI ada sebagai **arsip terpisah**. Jangan memakai konfigurasinya untuk mengubah eksperimen `rater` secara otomatis. [Kontrak aktif](STATUS_PROYEK.md#kontrak-aktif).
+
+## Hasil E31/E32 ditambahkan
+
+Buku tiga input kini mencakup E21–E32:12hasil,36model,60Excel/557sheet. E31 S3 RMSE6,5735; E32 S3 RMSE5,8059. Tiga kode tetap E29/E30/E26, utama E29. [Review E31/E32](docs/review/review_e31_e32_study.md).

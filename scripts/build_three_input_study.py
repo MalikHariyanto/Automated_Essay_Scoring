@@ -13,9 +13,9 @@ from build_mlp_study import BOOKS,table
 from three_input_identities import build_identities
 
 
-def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e27=None,e28=None,e29=None,e30=None):
+def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e27=None,e28=None,e29=None,e30=None,e31=None,e32=None):
     documents={};snapshots={};pairs={};data={};zips={}
-    inputs=[('E21',e21),('E22',e22)]+[(e,p) for e,p in [('E23',e23),('E24',e24),('E25',e25),('E26',e26),('E27',e27),('E28',e28),('E29',e29),('E30',e30)] if p]
+    inputs=[('E21',e21),('E22',e22)]+[(e,p) for e,p in [('E23',e23),('E24',e24),('E25',e25),('E26',e26),('E27',e27),('E28',e28),('E29',e29),('E30',e30),('E31',e31),('E32',e32)] if p]
     for experiment,path in inputs:
         zips[experiment]=Path(path).read_bytes()
         if reuse_audit:
@@ -82,7 +82,7 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e
         if e not in snapshots:continue
         canonical={**parameters[e],'Learning rate head':parameters[e]['Learning rate head kontrol S1 S2']}
         assert all(parameters['E21'][k]==canonical[k] for k in parameters['E21'])
-    for e in ('E29','E30'):
+    for e in ('E29','E30','E31','E32'):
         if e in parameters:
             canonical={**parameters[e],'Learning rate head':parameters[e]['LR head linear S1']}
             assert all(parameters['E21'][k]==canonical[k] for k in parameters['E21'])
@@ -93,36 +93,38 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e
         'rule':'Most nearest S3 predictions among uploaded experiments; break tie using lower test RMSE. Descriptive learning default, not a new validated model selection.',
         'rmse_best':min(snapshots,key=lambda e:prediction_audit[e]['S3']['rmse']),
         'within5_best':max(snapshots,key=lambda e:prediction_audit[e]['S3']['within']['5'])}
-    if e27 or e28 or e29 or e30:
+    if e27 or e28 or e29 or e30 or e31 or e32:
         recommendation['learning_default']='E23'
         recommendation['learning_default_reason']='Preserve existing E23 study code/content and explicit user choice; rankings are recomputed independently.'
-    study_ids=sorted(snapshots,key=lambda e:prediction_audit[e]['S3']['rmse'])[:3] if e29 or e30 else list(snapshots)
-    if e29 or e30:
+    study_ids=sorted(snapshots,key=lambda e:prediction_audit[e]['S3']['rmse'])[:3] if e29 or e30 or e31 or e32 else list(snapshots)
+    if e29 or e30 or e31 or e32:
         recommendation['learning_default']=study_ids[0]
         recommendation['learning_default_reason']='Latest user instruction: embed only three code books with lowest S3 test RMSE. Descriptive shortlist on repeatedly observed test, not fresh validation.'
         recommendation['learning_experiments']=study_ids
         recommendation['learning_rule']='Three lowest S3 test RMSE; other results and all original Excel remain available.'
-    documents={e:build(None,e,family=True)[0] for e in study_ids}
+    previous_path=ROOT/'docs/belajar_Tiga_Input_Spider.html'
+    previous=json.loads(re.search(r'<script id="familyData" type="application/json">(.*?)</script>',previous_path.read_text(),re.S)[1]) if previous_path.exists() else {'documents':{},'comparison':{'experiments':{}}}
+    documents={e:previous['documents'][e] if e in previous['documents'] and previous['comparison']['experiments'][e]==snapshots[e] else build(None,e,family=True)[0] for e in study_ids}
     comparison={'studyRecommendation':recommendation,'experiments':snapshots,'nearest':nearest,'impact':impact,
         'predictionAudit':prediction_audit,'pairedOverall':paired_overall,'pairwise':pairwise,
         'same_300_texts_labels':True,'same_60_test_ids_labels':True,'same_folds':True,'recorded_parameters_equal_except_format':True}
-    if e27 or e28 or e29 or e30:
+    if e27 or e28 or e29 or e30 or e31 or e32:
         comparison['recorded_parameters_equal_except_format']=False
         comparison['common_baseline_parameters_equal_except_format']=True
-        comparison['parameter_differences']={e:{k:v for k,v in parameters[e].items() if parameters['E21'].get(k)!=v} for e in ('E27','E28','E29','E30') if e in snapshots}
+        comparison['parameter_differences']={e:{k:v for k,v in parameters[e].items() if parameters['E21'].get(k)!=v} for e in ('E27','E28','E29','E30','E31','E32') if e in snapshots}
     (ROOT/'docs/snapshots/three_input_comparison_snapshot.json').write_text(json.dumps(comparison,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     # Child books keep independent source/curriculum/state. No original data in public srcdoc.
     child_style='<style>.topbar,.hero,.stats-strip,.site-footer,.closing-note,.workspace-switch,#status{display:none!important}main{padding:0!important}.study-layout{margin:0!important;max-width:none!important;width:100%!important}.sticky-note h3{overflow-wrap:anywhere;word-break:break-word}html{scroll-padding-top:0}body{background:#14264d!important}</style>'
-    documents={e:d.replace('</head>',child_style+'</head>') for e,d in documents.items()}
+    documents={e:d if child_style in d else d.replace('</head>',child_style+'</head>') for e,d in documents.items()}
     stylesheet=re.search(r'<style>(.*?)</style>',next(iter(documents.values())),re.S)[1]
     stylesheet+='\n'+(ROOT/'scripts/templates/three_input_study.css').read_text()+'\n'+(ROOT/'scripts/templates/three_input_identities.css').read_text()
     symbols=(ROOT/'scripts/assets/paper_spider_symbols.svg').read_text()
     family_data={'comparison':comparison,'documents':documents,'identities':build_identities(snapshots,set(study_ids))}
     template=(ROOT/'scripts/templates/three_input_study.html').read_text()
     names={'E21':'single sequence','E22':'context pair','E23':'BiGRU S3','E24':'attention pooling S3',
-           'E25':'attention + gated fusion S3','E26':'BiGRU + attention S3','E27':'E23 + co-attention S3','E28':'E23 · LR MLP S3 5e-6','E29':'E26 · LR MLP S2/S3 5e-6','E30':'E26 · co-attention + pooling'}
+           'E25':'attention + gated fusion S3','E26':'BiGRU + attention S3','E27':'E23 + co-attention S3','E28':'E23 · LR MLP S3 5e-6','E29':'E26 · LR MLP S2/S3 5e-6','E30':'E26 · co-attention + pooling','E31':'E25 · LR MLP S2/S3 5e-6','E32':'E25 · co-attention + gated fusion'}
     run_ids=list(snapshots);joined=' × '.join(run_ids);dash='–'.join(run_ids)
-    word={2:'DUA',3:'TIGA',4:'EMPAT',5:'LIMA',6:'ENAM',7:'TUJUH',8:'DELAPAN',9:'SEMBILAN',10:'SEPULUH'}[len(run_ids)]
+    word={2:'DUA',3:'TIGA',4:'EMPAT',5:'LIMA',6:'ENAM',7:'TUJUH',8:'DELAPAN',9:'SEMBILAN',10:'SEPULUH',11:'SEBELAS',12:'DUA BELAS'}[len(run_ids)]
     template=template.replace('E21 × E22',joined).replace('E21–E22',dash)
     template=template.replace('DUA EKSPERIMEN',word+' EKSPERIMEN').replace('dua eksperimen',str(len(run_ids))+' eksperimen')
     template=template.replace('SATU BUKU, DUA FORMAT','TIGA INPUT, '+word+' EKSPERIMEN')
@@ -132,13 +134,14 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e
     desc+=(' E27 co-attention dari E23;' if e27 else '')+(' E28 LR MLP S3 5e-6.' if e28 else '')
     desc+=(' E29 LR MLP S2/S3 5e-6 dari E26.' if e29 else '')
     desc+=(' E30 BiGRU + co-attention + attention pooling dari E26.' if e30 else '')
+    desc+=(' E31 LR MLP S2/S3 5e-6 dari E25.' if e31 else '')+(' E32 co-attention + attention pooling + gate dari E25, tanpa BiGRU.' if e32 else '')
     template=template.replace('E21 membaca satu urutan teks. E22 membaca pasangan konteks dan jawaban.',desc)
     template=template.replace('E21 single sequence · E22 context pair.',desc)
     study_default=recommendation.get('learning_default',primary)
     options=''.join('<option value="'+e+'"'+(' selected' if e==study_default else '')+'>'+e+' · '+names[e]+'</option>' for e in study_ids)
     template=re.sub(r'(<select id="familyExperiment"[^>]*>).*?(</select>)',lambda m:m[1]+options+m[2],template,flags=re.S)
     template=template.replace('Meja belajar →','Pelajari kode '+study_default+' →').replace('>Meja belajar</button>','>Meja belajar '+study_default+'</button>')
-    if e29 or e30:template=template.replace('Pilih kode & hasil','Kode tiga RMSE S3 terendah').replace('kode utama, catatan sejajar dan lima Excel.','kode utama; hanya tiga buku kode dimuat. Semua hasil/Excel tetap tersedia.')
+    if e29 or e30 or e31 or e32:template=template.replace('Pilih kode & hasil','Kode tiga RMSE S3 terendah').replace('kode utama, catatan sejajar dan lima Excel.','kode utama; hanya tiga buku kode dimuat. Semua hasil/Excel tetap tersedia.')
     template=template.replace('Kode lengkap, sticky note, output tahap dan semua sheet.',study_default+' · '+names[study_default]+' · kode utama, catatan sejajar dan lima Excel.')
     document=(template.replace('__STYLE__',stylesheet).replace('__SYMBOLS__',symbols)
         .replace('__DATA__',json.dumps(family_data,ensure_ascii=False,allow_nan=False).replace('<','\\u003c'))
@@ -159,4 +162,4 @@ def build_family(e21,e22,e24=None,e23=None,reuse_audit=False,e25=None,e26=None,e
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--e21',type=Path,required=True);p.add_argument('--e22',type=Path,required=True);p.add_argument('--e24',type=Path);p.add_argument('--e23',type=Path);p.add_argument('--e25',type=Path);p.add_argument('--e26',type=Path);p.add_argument('--e27',type=Path);p.add_argument('--e28',type=Path);p.add_argument('--e29',type=Path);p.add_argument('--e30',type=Path);p.add_argument('--reuse-audit',action='store_true');a=p.parse_args();build_family(a.e21,a.e22,a.e24,a.e23,a.reuse_audit,a.e25,a.e26,a.e27,a.e28,a.e29,a.e30)
+    p=argparse.ArgumentParser();p.add_argument('--e21',type=Path,required=True);p.add_argument('--e22',type=Path,required=True);p.add_argument('--e24',type=Path);p.add_argument('--e23',type=Path);p.add_argument('--e25',type=Path);p.add_argument('--e26',type=Path);p.add_argument('--e27',type=Path);p.add_argument('--e28',type=Path);p.add_argument('--e29',type=Path);p.add_argument('--e30',type=Path);p.add_argument('--e31',type=Path);p.add_argument('--e32',type=Path);p.add_argument('--reuse-audit',action='store_true');a=p.parse_args();build_family(a.e21,a.e22,a.e24,a.e23,a.reuse_audit,a.e25,a.e26,a.e27,a.e28,a.e29,a.e30,a.e31,a.e32)

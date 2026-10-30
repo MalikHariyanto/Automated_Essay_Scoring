@@ -97,3 +97,7 @@ E30 BiGRU + co-attention lalu attention pooling telah diaudit dan ditambahkan. S
 ## E31/E32 · permintaan kode terbaru memakai E25
 
 Pengguna memilih E25 karena unggul pada pembulatan8/60 dan toleransi1poin11/60, bukan semua ukuran. Dibuat dua resep baru terpisah: E31 = E25 dengan LR MLP S2/S3 5e-6; E32 = E25 dengan co-attention respons–referensi sebelum pooling. E32 tanpa BiGRU; dua proyeksi768→128 dan matching640→768 menjaga pooling768/gate E25. Gate, proyeksi/norm/pooling1e-4; MLP E32 1e-4, encoder S1/S3 5e-6. Label/input/split dan GPU tanpa Drive tetap. Hasil belum tersedia; tidak mengubah HTML hasil E21–E30. [Metode](docs/eksperimen/eksperimen_e31_e32_gpu.md).
+
+## E31/E32 · hasil unggahan tersedia
+
+Kedua ZIP telah diaudit dan ditambahkan pada buku tiga input E21–E32. E31 RMSE S3=6,5735; E32=5,8059. Seluruh60Excel/557sheet tersedia; tiga buku kode tetap E29/E30/E26. [Review](docs/review/review_e31_e32_study.md).

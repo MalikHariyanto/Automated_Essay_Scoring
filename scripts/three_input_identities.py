@@ -20,6 +20,8 @@ RECIPES = {
  'E28': ('BiGRU · LR MLP S3 5e-6', 'E23', 'Ablasi learning rate MLP S3; arsitektur E23 dipertahankan.', 'S3: BiGRU → state128 → proyeksi768 → fusion → MLP; tanpa attention tambahan', 'Single sequence; mask token respons', 'MLP S2 1e-4 · MLP S3 5e-6', ['bigru']),
  'E29': ('BiGRU + pooling · LR MLP S2/S3 5e-6', 'E26', 'Ablasi learning rate kedua MLP; layer lain mengikuti E26.', 'S3: BiGRU → attention pooling → proyeksi → fusion → MLP', 'Single sequence; mask token respons', 'MLP S2/S3 5e-6 · linear S1 1e-4', ['bigru','attention']),
  'E30': ('BiGRU + co-attention + pooling', 'E26', 'Mencocokkan respons–referensi, kemudian merangkum hasil matching dengan attention pooling.', 'S3: BiGRU respons ↔ referensi → co-attention → matching → attention pooling → proyeksi768 → fusion → MLP', 'Single sequence; mask respons dan referensi', 'MLP S2/S3 1e-4 · linear S1 1e-4', ['bigru','attention','coattention']),
+ 'E31': ('Attention + gate · LR MLP S2/S3 5e-6', 'E25', 'Ablasi LR kedua MLP; gate dan attention E25 dipertahankan.', 'S3: attention pooling768 → gate → concat berbobot1024 → MLP; tanpa BiGRU', 'Single sequence; mask token respons', 'MLP S2/S3 5e-6 · linear S1 1e-4', ['attention','gate']),
+ 'E32': ('Co-attention + attention pooling + gate', 'E25', 'Mencocokkan respons–referensi sebelum pooling dan gate E25.', 'S3: respons768/referensi768 → proyeksi128 ↔ co-attention → matching640→768 → attention pooling768 → gate → concat1024 → MLP; tanpa BiGRU', 'Single sequence; mask respons dan referensi', 'MLP S2/S3 1e-4 · linear S1 1e-4', ['attention','gate','coattention']),
 }
 PENDING_SOURCE = {
  'E29': 'notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb',
