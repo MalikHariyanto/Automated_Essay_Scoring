@@ -2,6 +2,12 @@
 
 **E29 kini RMSE S3 terendah; S2 E29 memburuk tajam. Meja belajar HTML hanya memuat E29/E30/E26.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
+## Diagnosis BGE frozen · empat kondisi readout
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_BGE_Frozen_Readout_Colab.ipynb) · [Source](AES_300_BGE_Frozen_Readout_Colab.ipynb) · [Metode dan referensi](../../docs/eksperimen/diagnostik_bge_frozen_readout.html).
+
+BGE diekstrak sekali dan tetap frozen. Bandingkan MLP asli, MLP target-center, MLP StandardScaler, serta Ridge pada development/lima fold. Tiga seed MLP, head CPU float32, inner CV Ridge, lima Excel dan ZIP. Tidak menjalankan S1/S3 dan tidak mengevaluasi test.
+
 ## E31/E32 · E25 sebagai acuan, belum ada hasil
 
 E31 mengulang perlakuan LR E29 pada E25; E32 menambah co-attention sebelum pooling/gate E25, tanpa BiGRU. GPU Colab biasa, tanpa Drive. [Metode](../../docs/eksperimen/eksperimen_e31_e32_gpu.md).
