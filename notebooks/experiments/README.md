@@ -8,6 +8,12 @@
 
 BGE diekstrak sekali dan tetap frozen. Bandingkan MLP asli, MLP target-center, MLP StandardScaler, serta Ridge pada development/lima fold. Tiga seed MLP, head CPU float32, inner CV Ridge, lima Excel dan ZIP. Tidak menjalankan S1/S3 dan tidak mengevaluasi test.
 
+## BGE-M3 frozen + Ridge · tiga input, CV dan test
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_BGE_M3_Ridge_Tiga_Input_Colab.ipynb) · [Source](AES_300_BGE_M3_Ridge_Tiga_Input_Colab.ipynb) · [Metode dan referensi](../../docs/eksperimen/bge_ridge_tiga_input.html).
+
+Notebook terpisah untuk soal + referensi + respons → BGE frozen → Ridge. Nested CV development, alpha final dari development, refit seluruh development, lalu evaluasi test historis. Lima Excel, prediksi per jawaban, model NPZ dan manifest untuk audit terhadap S2 E21–E32 pada partisi yang sama. Belum ada hasil penelitian dari notebook ini; skor OOF diagnosis sebelumnya bukan skor test.
+
 ## E31/E32 · E25 sebagai acuan, belum ada hasil
 
 E31 mengulang perlakuan LR E29 pada E25; E32 menambah co-attention sebelum pooling/gate E25, tanpa BiGRU. GPU Colab biasa, tanpa Drive. [Metode](../../docs/eksperimen/eksperimen_e31_e32_gpu.md).

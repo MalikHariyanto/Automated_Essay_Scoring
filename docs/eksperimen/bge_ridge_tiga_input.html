@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BGE-M3 Ridge tiga input — metode dan pembandingan</title>
+<style>body{max-width:940px;margin:36px auto;padding:0 20px;font:17px/1.75 system-ui;color:#16333d;background:#fafcfb}h1,h2{line-height:1.3}table{border-collapse:collapse;width:100%;font-size:15px}th,td{border:1px solid #b8cacc;padding:12px;text-align:left;vertical-align:top}th{background:#e7f1ed}a{color:#05685e}code{background:#e8efed;padding:2px 4px}.scroll{overflow:auto}</style>
+</head><body>
+<h1>BGE-M3 frozen → Ridge dengan tiga input</h1>
+<p><a href="https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_BGE_M3_Ridge_Tiga_Input_Colab.ipynb">Jalankan di Colab</a> · <a href="../../notebooks/experiments/AES_300_BGE_M3_Ridge_Tiga_Input_Colab.ipynb">Notebook source</a> · <a href="../verifikasi/verification_bge_ridge_three_input.html">Bukti teknis dan batas pengujian</a>.</p>
+<p>Eksperimen ini menggunakan <code>soal</code>, <code>jawaban_referensi</code>, dan <code>response_text</code>, dengan satu target guru <code>rater</code>0–100. BGE tetap frozen. Tujuannya menguji pembaca Ridge pada representasi acuan, lalu membandingkan prediksi test dengan S2 MLP tiga input. Belum ada hasil penelitian dari notebook baru ini.</p>
+<h2>Kontrak fitur dan parameter</h2>
+<p>Checkpoint <code>BAAI/bge-m3</code>, revision <code>5617a9f61b028005a4858fdac845db406aefb181</code>. Resep single-sequence mengikuti E21: konteks soal/referensi maksimal192token, soal maksimal64, window1024, overlap128, batch4. Mean CLS antar-window kemudian L2 menghasilkan1024komponen. Encoder memakai eval, no_grad dan requires_grad=False. Teks test dapat diekstrak karena encoder tidak memperbarui parameter atau mempelajari statistik korpus.</p>
+<p>Grid alpha <code>0.01, 0.1, 1, 10, 100</code> ditetapkan sebelum run, mengikuti diagnosis terdahulu. Ridge menggunakan intercept, solver Cholesky, target asli0–100, fitur L2 tanpa StandardScaler. Perhitungan head float64; fitur tersimpan float32 seperti acuan. Tidak ada learning rate, dropout, epoch atau pemilihan seed untuk Ridge. Pengaturan token dan grid alpha adalah rancangan eksperimen yang dikendalikan, bukan rekomendasi angka optimal dari paper.</p>
+<h2>Seleksi, OOF dan test</h2>
+<ol>
+<li>Gunakan enam header dataset yang sama dengan E21–E32. Kelompok email/duplikat tidak menyeberang partisi. Split memakai128kandidat GroupShuffleSplit seed2026, memilih proporsi baris terdekat80:20 tanpa label; lima GroupKFold di development.</li>
+<li>Setiap outer fold memilih alpha menggunakan empat blok fold lain saja. Prediksi outer validation digabung menjadi nested OOF. Ini mengevaluasi prosedur seleksi, bukan satu alpha final yang dipilih memakai outer validation.</li>
+<li>Pilih alpha final melalui pooled RMSE lima fold development. Jika seri, pilih alpha lebih kecil. Skor yang dipakai seleksi ini tidak disebut evaluasi independen.</li>
+<li>Simpan kontrak alpha, fit model baru pada seluruh development, simpan koefisien, lalu prediksi test. Test tidak dipakai memilih alpha.</li>
+</ol>
+<p>Test historis sudah dievaluasi pada keluarga eksperimen sebelumnya. Karena pilihan penelitian berikutnya dipengaruhi hasil lama, perbandingan ini bersifat retrospektif. Prosedur baru tidak menjadikan holdout lama sebagai test baru yang belum pernah dilihat. Jumlah240/60 hanya berlaku ketika dataset300 dan kelompoknya sama; notebook melaporkan jumlah aktual.</p>
+<h2>Cara membandingkan dengan S2 E21–E32</h2>
+<p>Bandingkan prediksi test Ridge dengan prediksi test S2 pada jawaban yang sama setelah memeriksa ketiga teks, skor guru, keanggotaan test dan fold. ID baris saja tidak membuktikan kesamaan data. Skor OOF Ridge dari diagnosis lama tidak boleh disejajarkan dengan skor test S2. Workbook baru menyimpan seluruh informasi pencocokan; angka S2 lama tidak diisi dari ingatan atau disalin ke notebook ini.</p>
+<p>E22 memakai format token konteks berbeda; selisihnya belum mengisolasi perubahan head. E29/E31 mempunyai LR MLP S2 yang berbeda dari kontrol biasa. Tandai hasil S2 yang prediksinya identik sebagai kontrol berulang, bukan eksperimen independen. Source yang sesuai belum membuktikan identitas runtime lama tanpa executed notebook/checkpoint yang cocok.</p>
+<p>Bandingkan RMSE dan MAE, jumlah dalam±1/±2/±5poin, error per jawaban, bias, p90/p95/max error, serta QWK/Pearson/Gwet AC2. RMSE memberi penalti lebih besar pada error besar; hitungan toleransi menghitung banyaknya prediksi dekat. Laporkan tradeoff jika kedua ukuran tidak memilih model yang sama. Semua error memakai skor kontinu tanpa clipping; clipping/konversi kategori hanya untuk agreement.</p>
+<h2>Dasar literatur dan batasnya</h2>
+<div class="scroll"><table><thead><tr><th>Komponen</th><th>Referensi primer</th><th>Yang didukung</th></tr></thead><tbody>
+<tr><td>Encoder BGE-M3</td><td><a href="https://arxiv.org/abs/2402.03216">Chen et al. (2024), BGE M3-Embedding</a></td><td>Arsitektur dan representasi BGE-M3. Paper ini tidak menetapkan bahwa Ridge tiga input pasti terbaik untuk dataset AES ini.</td></tr>
+<tr><td>Regresi Ridge</td><td><a href="https://doi.org/10.1080/00401706.1970.10488634">Hoerl &amp; Kennard (1970), Ridge Regression: Biased Estimation for Nonorthogonal Problems</a></td><td>Regresi linear dengan penalti L2 untuk mengendalikan koefisien. Alpha perlu dipilih pada development, bukan diambil sebagai angka optimal universal.</td></tr>
+<tr><td>Pemisahan seleksi dan evaluasi</td><td><a href="https://www.jmlr.org/papers/v11/cawley10a.html">Cawley &amp; Talbot (2010), On Over-fitting in Model Selection and Subsequent Selection Bias in Performance Evaluation</a></td><td>Risiko overfitting pada seleksi model; mendasari evaluasi terpisah dan nested CV. Tidak menghapus bias penelitian akibat melihat holdout historis berulang.</td></tr>
+</tbody></table></div>
+<p>Hipotesis yang diuji: regularisasi linear pada representasi frozen dapat mengurangi error tanpa ketidakstabilan optimisasi MLP. Ini belum menjadi kesimpulan hasil test dan tidak menjamin error di bawah5poin pada setiap jawaban.</p>
+<h2>Paket hasil privat</h2>
+<p>Lima Excel mencakup data/split, fitur/koefisien, prediksi OOF dan test pada sheet terpisah, evaluasi/seleksi, serta pengaturan/referensi. ZIP juga menyimpan model NPZ tanpa pickle, split JSON, kontrak alpha sebelum test, dan checksum tiap file. Dataset, prediksi individual, bobot, Excel terisi, serta executed notebook tidak dipublikasikan ke repository.</p>
+</body></html>
