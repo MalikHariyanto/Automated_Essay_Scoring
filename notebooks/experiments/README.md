@@ -14,6 +14,12 @@ BGE diekstrak sekali dan tetap frozen. Bandingkan MLP asli, MLP target-center, M
 
 Notebook terpisah untuk soal + referensi + respons → BGE frozen → Ridge. Nested CV development, alpha final dari development, refit seluruh development, lalu evaluasi test historis. Lima Excel, prediksi per jawaban, model NPZ dan manifest untuk audit terhadap S2 E21–E32 pada partisi yang sama. Belum ada hasil penelitian dari notebook ini; skor OOF diagnosis sebelumnya bukan skor test.
 
+## S3 · fusi RoBERTa/BGE → Ridge
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_S3_Fusion_Ridge_Tiga_Input_Colab.ipynb) · [Source](AES_300_S3_Fusion_Ridge_Tiga_Input_Colab.ipynb).
+
+Tiga teks → fusi E21 concat1024 → Ridge, dengan kontrol MLP pada fitur sama dan S2 Ridge tetap. RoBERTa/norm/proyeksi belajar dari train; encoder BGE frozen. Nested CV melatih ulang representasi di inner split, berbagi cache pasangan fold: 16 pelatihan pada konfigurasi5fold. Epoch tetap25 berbeda dari early stopping historis. Lima Excel+ZIP; checkpoint representasi final besar tetap lokal, tersedia opsi unduh. Referensi dan batas klaim ada di notebook; belum ada hasil penelitian dari kode baru ini.
+
 ## E31/E32 · E25 sebagai acuan, belum ada hasil
 
 E31 mengulang perlakuan LR E29 pada E25; E32 menambah co-attention sebelum pooling/gate E25, tanpa BiGRU. GPU Colab biasa, tanpa Drive. [Metode](../../docs/eksperimen/eksperimen_e31_e32_gpu.md).
