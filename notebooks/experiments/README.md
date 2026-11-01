@@ -86,3 +86,9 @@ Nomor eksperimen lama mengikuti penamaan pada buku. Tabel ini tidak menyamakan i
 | E8 · context pair + S3 LR5e-6 | [GPU](AES_300_E8_ContextPair_LR5e6_GPU.ipynb), [CPU](AES_300_E8_ContextPair_LR5e6_CPU.ipynb) | Bukan E22 |
 
 [Buku hasil terdahulu](../../downloads/Belajar_AES_MLP_Lengkap.html). Varian mirror lama yang berbeda dipertahankan di [arsip](../archive/README.md). Source jalur utama tidak diganti dengan builder saat penataan, sehingga edit pengguna tidak tertimpa.
+
+## S3 Ridge hemat · 5-fold CV, parameter tetap
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_S3_Fusion_Ridge_Hemat_Colab.ipynb) · [Source](AES_300_S3_Fusion_Ridge_Hemat_Colab.ipynb).
+
+Enam pelatihan × lima epoch (30 total), alpha S3 tetap1.0; ordinary grouped CV, tanpa nested tuning. Fusi dan tiga teks tetap, kontrol MLP/S2 Ridge. Unduhan backup kumulatif setelah setiap outer fold; unggah backup terakhir dan dataset asli sebelum Run all untuk restore fold selesai lintas runtime/perangkat. Tahap aktif serta encoder final tidak masuk backup kecil. Anggaran ini mengubah protokol, bukan jaminan akurasi atau kuota T4. Notebook nested lama dipertahankan; referensi dan batas klaim di notebook baru.
