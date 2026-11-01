@@ -2,6 +2,12 @@
 
 **E29 kini RMSE S3 terendah; S2 E29 memburuk tajam. Meja belajar HTML hanya memuat E29/E30/E26.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
+## E29 + Ridge · versi berikutnya
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E29_BiGRU_Attention_Ridge_Colab.ipynb) · [Source](AES_300_E29_BiGRU_Attention_Ridge_Colab.ipynb) · [Metode dan batas perbandingan](../../docs/eksperimen/eksperimen_e29_ridge.md).
+
+Tiga input → RoBERTa fine-tuned + BiGRU + attention → concat BGE frozen → Ridge. LR MLP bantu5e-6; MLP disimpan sebagai pembanding. Nested CV,16training representasi dengan25epoch tetap, lima Excel dan ZIP. Berbeda dari early stopping E29 historis; belum ada hasil penelitian atau jaminan perbaikan.
+
 ## Diagnosis BGE frozen · empat kondisi readout
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_BGE_Frozen_Readout_Colab.ipynb) · [Source](AES_300_BGE_Frozen_Readout_Colab.ipynb) · [Metode dan referensi](../../docs/eksperimen/diagnostik_bge_frozen_readout.html).
