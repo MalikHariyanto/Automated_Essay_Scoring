@@ -2,13 +2,19 @@
 
 **E29 kini RMSE S3 terendah; S2 E29 memburuk tajam. Meja belajar HTML hanya memuat E29/E30/E26.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
-## E30 + Ridge · versi aktif pilihan pengguna
+## E33 · E30 + LR MLP S3 5e-5 · kandidat aktif
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb) · [Source](AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e33_gpu.md).
+
+Format E30 asli:47cell/30codecell, S1/S2/S3,5fold CV, maksimal25epoch, patience5, lima Excel/ZIP. Hanya MLP S3 turun1e-4→5e-5; MLP S2 dan semua layer lain tetap resep E30. Prediktor akhir MLP. GPU Colab tanpa Drive, semua model dilatih baru. Belum ada hasil penelitian E33.
+
+## E30 + Ridge · percobaan sebelumnya
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E30_BiGRU_CoAttention_Ridge_Colab.ipynb) · [Source](AES_300_E30_BiGRU_CoAttention_Ridge_Colab.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e30_ridge.md).
 
 Tiga input → RoBERTa fine-tuned + BiGRU + co-attention + attention pooling → concat BGE frozen → Ridge. **5-fold CV, maksimal25epoch, early stopping patience5**, lalu refit ceil median epoch terbaik. LR MLP1e-4 mengikuti E30; MLP disimpan sebagai pembanding. Alpha Ridge1,0 tetap sebelum CV. Progres Fold1/5 sampai5/5; tanpa nested CV/16fit. Lima Excel dan ZIP; belum ada hasil penelitian.
 
-Notebook E29 Ridge sebelumnya tetap sebagai arsip; versi aktif berikutnya memakai E30.
+Notebook Ridge sebelumnya dipertahankan sebagai arsip; kandidat berikutnya E33 memakai E30 asli + MLP.
 
 ## Diagnosis BGE frozen · empat kondisi readout
 

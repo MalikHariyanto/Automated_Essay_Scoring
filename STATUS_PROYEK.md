@@ -101,3 +101,8 @@ Pengguna memilih E25 karena unggul pada pembulatan8/60 dan toleransi1poin11/60, 
 ## E31/E32 · hasil unggahan tersedia
 
 Kedua ZIP telah diaudit dan ditambahkan pada buku tiga input E21–E32. E31 RMSE S3=6,5735; E32=5,8059. Seluruh60Excel/557sheet tersedia; tiga buku kode tetap E29/E30/E26. [Review](docs/review/review_e31_e32_study.md).
+
+
+## E33 · permintaan terbaru, LR MLP S3 5e-5
+
+Pengguna memilih rekomendasi pertama setelah analisis E30: E33 diturunkan dari **E30 asli + MLP**, bukan Ridge. Hanya `s3_mlp_lr` menjadi5e-5; MLP S2 tetap1e-4, encoder5e-6, proyeksi/BiGRU/co-attention/pooling/norm1e-4. Format47cell/30codecell dan workflow5fold CV/maks25epoch/patience5/ceil median refit/final test sama dengan E30. Semua skenario dilatih baru. Notebook, builder dan metode E33 tersedia; belum ada hasil penelitian E33. [Metode](docs/eksperimen/eksperimen_e33_gpu.md) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb).
