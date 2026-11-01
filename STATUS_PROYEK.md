@@ -106,3 +106,8 @@ Kedua ZIP telah diaudit dan ditambahkan pada buku tiga input E21–E32. E31 RMSE
 ## E33 · permintaan terbaru, LR MLP S3 5e-5
 
 Pengguna memilih rekomendasi pertama setelah analisis E30: E33 diturunkan dari **E30 asli + MLP**, bukan Ridge. Hanya `s3_mlp_lr` menjadi5e-5; MLP S2 tetap1e-4, encoder5e-6, proyeksi/BiGRU/co-attention/pooling/norm1e-4. Format47cell/30codecell dan workflow5fold CV/maks25epoch/patience5/ceil median refit/final test sama dengan E30. Semua skenario dilatih baru. Notebook, builder dan metode E33 tersedia; belum ada hasil penelitian E33. [Metode](docs/eksperimen/eksperimen_e33_gpu.md) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb).
+
+
+## E34 · kode kandidat berikutnya dari E33
+
+Pengguna memilih E33 sebagai acuan berikutnya untuk meningkatkan kedekatan prediksi. E34 hanya menurunkan `s3_layers_lr` menjadi5e-5; MLP S3 tetap5e-5. Kelompok ini meliputi sequence_pool.* dan roberta_norm.*, termasuk BiGRU/co-attention/pooling/proyeksi ringkasan. Proyeksi BGE tetap1e-4, encoder5e-6, S1/S2 tetap kontrol. Format47cell/30codecell,5fold CV,maks25epoch,patience5 dan ceil median refit tetap. Belum ada hasil penelitian E34. [Metode](docs/eksperimen/eksperimen_e34_gpu.md).

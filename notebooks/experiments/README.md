@@ -2,6 +2,12 @@
 
 **E29 kini RMSE S3 terendah; S2 E29 memburuk tajam. Meja belajar HTML hanya memuat E29/E30/E26.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
+## E34 · E33 + LR layer S3 5e-5 · kandidat berikutnya
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E34_E33_BiGRU_CoAttention_LayersLR5e5_GPU.ipynb) · [Source](AES_300_E34_E33_BiGRU_CoAttention_LayersLR5e5_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e34_gpu.md).
+
+Format E33/E30 asli:47cell/30codecell,S1/S2/S3,5fold CV,maksimal25epoch,patience5,lima Excel/ZIP. Hanya kelompok `pooling_norm` S3 turun1e-4→5e-5; MLP S3 tetap5e-5. Encoder5e-6; linear S1/MLP S2/proyeksi BGE1e-4. Prediktor akhir MLP, GPU Colab tanpa Drive. Semua model dilatih baru. Belum ada hasil penelitian E34.
+
 ## E33 · E30 + LR MLP S3 5e-5 · kandidat aktif
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb) · [Source](AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e33_gpu.md).
