@@ -4,6 +4,7 @@ Tes memastikan implementasi sesuai aturan, bukan membuktikan akurasi AES pada da
 
 | Kelompok | Contoh |
 | --- | --- |
+| E36 S3-only native, LR encoder3e-6 | [test_e36_notebook.py](test_e36_notebook.py), [batas bukti](../docs/verifikasi/verification_e36_native.md) |
 | Buku tiga input: metrik, sumber, catatan, privasi | [test_three_input_study.py](test_three_input_study.py), [test_e21_study.py](test_e21_study.py) |
 | Notebook tiga input/arsitektur | [test_e21_e22_notebooks.py](test_e21_e22_notebooks.py), [test_e23_e24_notebooks.py](test_e23_e24_notebooks.py), [test_e25_e26_notebooks.py](test_e25_e26_notebooks.py) |
 | E27 co-attention / E28 LR MLP terpisah | [test_e27_e28_notebooks.py](test_e27_e28_notebooks.py), [batas bukti](../docs/verifikasi/verification_e27_e28.md) |

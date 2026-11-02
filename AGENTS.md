@@ -1,5 +1,7 @@
 # Pilihan pengguna terbaru · notebook native dan mudah dipelajari
 
+**E36 terbaru:** jalankan S3 saja, LR encoder RoBERTa3e-6. Arsitektur dan semua pengaturan lain mengikuti E30 asli, termasuk LR MLP/proyeksi/layer pooling_norm1e-4; jangan membawa LR layer E35 5e-5. Format notebook mengikuti E35 Native Learnable: Python per section tanpa magic/worker tersembunyi, 5fold, maksimal25epoch, patience5. S1/S2 tidak dilatih/dievaluasi/dimuat dari run lama; kedua cabang RoBERTa/BGE di dalam S3 tetap ada. Source `AES_300_E36_E30_S3_EncoderLR3e6_Native_Learnable_GPU.ipynb`; [metode](docs/eksperimen/eksperimen_e36_s3_native_gpu.md).
+
 Untuk E35 dan notebook baru berikutnya, pengguna meminta **Python biasa tanpa cell magic/worker tersembunyi**. Tampilkan nama checkpoint, kolom X/y, hyperparameter, arsitektur dan training dalam section yang mudah dicari; variabel harus berada di kernel notebook. Ini menggantikan aturan worker lama pada notebook baru, bukan alasan mengubah source/hasil historis. Pertahankan setup/guard kompatibilitas native yang jelas. Pengguna melarang pemeriksaan cosine pada notebook berikutnya; E35 menghapus fungsi/kolom diagnostik tersebut. Resep E35: dari E30, hanya LR sequence_pool/roberta_norm S3 menjadi5e-5; MLP S3 tetap1e-4, encoder5e-6, proyeksi BGE1e-4;5fold,maks25epoch,patience5. [Peta metode](docs/eksperimen/eksperimen_e35_native_gpu.md).
 
 # Pengunduh HTML tetap

@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E36 · S3 saja · E30 dengan LR RoBERTa 3e-6 · Native Learnable
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E36_E30_S3_EncoderLR3e6_Native_Learnable_GPU.ipynb) · [Source](AES_300_E36_E30_S3_EncoderLR3e6_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e36_s3_native_gpu.md).
+
+Arsitektur E30, format section native E35 tanpa magic/worker. Hanya LR encoder S3 berubah5e-6→3e-6; MLP, proyeksi BGE dan kelompok BiGRU/co-attention/pooling/norm tetap1e-4. BGE frozen. S1/S2 tidak dilatih atau dimuat dari hasil lama.5-fold CV,maksimal25epoch,patience5,lima Excel dengan kolom S3 saja. Belum ada hasil penelitian E36.
+
 **E29 kini RMSE S3 terendah; S2 E29 memburuk tajam. Meja belajar HTML hanya memuat E29/E30/E26.** [Status lengkap](../../STATUS_PROYEK.md) · [buku hasil](../../downloads/README.md) · [rencana berikutnya](../../RENCANA_EKSPERIMEN.md).
 
 ## E34 · E33 + LR layer S3 5e-5 · kandidat berikutnya
