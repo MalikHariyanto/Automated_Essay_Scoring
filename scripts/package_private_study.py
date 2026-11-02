@@ -40,8 +40,12 @@ form.addEventListener('submit',async event=>{
   const bytes=await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
   const actual=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('');
   if(actual!==expected)throw Error('Isi buku tidak cocok dengan checksum. Unduh file kembali.');
-  const html=new TextDecoder('utf-8',{fatal:true}).decode(bytes);password.value='';
-  document.open();document.write(html);document.close();
+  // A complete family book can exceed V8's single-string limit (~512 MiB).
+  // Decode UTF-8 incrementally; stream:true preserves split multibyte characters.
+  const decoder=new TextDecoder('utf-8',{fatal:true}),plain=new Uint8Array(bytes);password.value='';
+  document.open();
+  for(let start=0;start<plain.length;start+=1048576)document.write(decoder.decode(plain.subarray(start,start+1048576),{stream:true}));
+  document.write(decoder.decode());document.close();
  }catch(error){status.textContent=error.message;button.disabled=false}
 });
 })();

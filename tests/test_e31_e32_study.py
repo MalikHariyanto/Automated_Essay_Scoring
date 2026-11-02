@@ -35,11 +35,11 @@ def test_new_results_gate_pooling_and_source_provenance():
 def test_family_retains_all_results_and_independent_excel_access():
     d = family(ROOT / 'docs/belajar_Tiga_Input_Spider.html')
     c = d['comparison']
-    assert list(c['experiments']) == [f'E{n}' for n in range(21,33)]
+    assert list(c['experiments']) == [f'E{n}' for n in range(21,35)]
     assert list(d['documents']) == ['E29', 'E30', 'E26']
-    assert len(d['identities']) == 12 and all(x['result_available'] for x in d['identities'].values())
-    assert len(c['pairwise']) == 66
-    assert sum(len(x['books']) for x in c['experiments'].values()) == 60
+    assert len(d['identities']) == 14 and all(x['result_available'] for x in d['identities'].values())
+    assert len(c['pairwise']) == 91
+    assert sum(len(x['books']) for x in c['experiments'].values()) == 70
     for scenario in ('S1','S2','S3','all'):
         assert abs(sum(x['share'] for x in c['nearest'][scenario].values())-60) < 1e-8
     for e in ('E31','E32'):

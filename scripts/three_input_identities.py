@@ -22,6 +22,8 @@ RECIPES = {
  'E30': ('BiGRU + co-attention + pooling', 'E26', 'Mencocokkan respons–referensi, kemudian merangkum hasil matching dengan attention pooling.', 'S3: BiGRU respons ↔ referensi → co-attention → matching → attention pooling → proyeksi768 → fusion → MLP', 'Single sequence; mask respons dan referensi', 'MLP S2/S3 1e-4 · linear S1 1e-4', ['bigru','attention','coattention']),
  'E31': ('Attention + gate · LR MLP S2/S3 5e-6', 'E25', 'Ablasi LR kedua MLP; gate dan attention E25 dipertahankan.', 'S3: attention pooling768 → gate → concat berbobot1024 → MLP; tanpa BiGRU', 'Single sequence; mask token respons', 'MLP S2/S3 5e-6 · linear S1 1e-4', ['attention','gate']),
  'E32': ('Co-attention + attention pooling + gate', 'E25', 'Mencocokkan respons–referensi sebelum pooling dan gate E25.', 'S3: respons768/referensi768 → proyeksi128 ↔ co-attention → matching640→768 → attention pooling768 → gate → concat1024 → MLP; tanpa BiGRU', 'Single sequence; mask respons dan referensi', 'MLP S2/S3 1e-4 · linear S1 1e-4', ['attention','gate','coattention']),
+ 'E33': ('E30 · LR MLP S3 5e-5', 'E30', 'Ablasi LR MLP S3 turun2kali; arsitektur dan S1/S2 E30 dipertahankan.', 'S3: BiGRU → co-attention respons–referensi → attention pooling → proyeksi768 → concat BGE256 → MLP', 'Single sequence; mask respons dan referensi', 'MLP S2 1e-4 · MLP S3 5e-5 · linear S1 1e-4', ['bigru','attention','coattention']),
+ 'E34': ('E33 · LR layer S3 5e-5', 'E33', 'Ablasi LR kelompok sequence_pool/roberta_norm turun1e-4→5e-5; MLP S3 tetap5e-5, proyeksi BGE tetap1e-4.', 'S3: BiGRU → co-attention respons–referensi → attention pooling → proyeksi768 → concat BGE256 → MLP', 'Single sequence; mask respons dan referensi', 'MLP S2 1e-4 · MLP S3 5e-5 · linear S1 1e-4', ['bigru','attention','coattention']),
 }
 PENDING_SOURCE = {
  'E29': 'notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb',
@@ -43,7 +45,7 @@ def build_identities(snapshots, study_ids=None):
         citations = [dict(key=k, title=PAPERS[k][0], url=PAPERS[k][1], scope=PAPERS[k][2]) for k in ['roberta','bge',*papers]]
         result[experiment] = dict(id=experiment, name=name, base=base, purpose=purpose, flow=flow,
             text_format=text_format, head_lr=head_lr, encoder_lr='RoBERTa S1/S3 5e-6 · BGE frozen',
-            other_lr='Layer trainable di luar encoder/head 1e-4',
+            other_lr=('Kelompok sequence_pool/roberta_norm S3 5e-5; proyeksi BGE 1e-4' if experiment=='E34' else 'Layer trainable di luar encoder/head 1e-4'),
             inputs=['soal','jawaban_referensi','response_text'], label='rater · 0–100',
             heads='S1 linear · S2/S3 MLP', citations=citations,
             evidence='Hasil unggahan tersedia' if available else 'Menunggu hasil unggahan',
@@ -52,7 +54,9 @@ def build_identities(snapshots, study_ids=None):
             source_commit=commit, source_path=path,
             source_url='https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/'+commit+'/'+path,
             colab_url='https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/'+commit+'/'+path,
-            adaptation=('Nilai LR adalah pilihan ablasi proyek; paper tidak menetapkan 5e-6 sebagai nilai terbaik.' if experiment in ('E28','E29') else
+            adaptation=('LR5e-5 pada kelompok layer S3 adalah hipotesis ablasi E34; paper tidak menetapkan nilai terbaik untuk data ini.' if experiment=='E34' else
+                        'Nilai LR5e-5 adalah pilihan ablasi E33; paper tidak menetapkannya sebagai nilai terbaik untuk data ini.' if experiment=='E33' else
+                        'Nilai LR adalah pilihan ablasi proyek; paper tidak menetapkan 5e-6 sebagai nilai terbaik.' if experiment in ('E28','E29') else
                         'Format pair adalah ablasi implementasi proyek; bukan klaim paper membuktikan format ini lebih unggul.' if experiment=='E22' else
                         'Komponen diadaptasi untuk proyek ini; keunggulan hanya dinilai dari hasil eksperimen yang tersedia.'))
     return result

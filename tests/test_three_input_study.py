@@ -105,7 +105,7 @@ def test_actual_inline_scripts_parse_without_closing_tag_injection(tmp_path):
 def test_e24_attention_results_and_comparisons_are_real_and_consistent():
     _, data = family()
     c = data['comparison']
-    assert set(c['experiments']) == {f'E{n}' for n in range(21,33)}
+    assert set(c['experiments']) == {f'E{n}' for n in range(21,35)}
     assert set(data['documents']) == {'E29','E30','E26'}
     e = c['experiments']['E24']
     assert e['input_format'] == 'single_sequence' and e['s3_pooling'] == 'attention'
@@ -117,12 +117,12 @@ def test_e24_attention_results_and_comparisons_are_real_and_consistent():
     for scenario in ['S1','S2']:
         assert next(r for r in e['metrics'] if r['Skenario']==scenario) == next(r for r in e21['metrics'] if r['Skenario']==scenario)
     assert abs(next(r for r in e['metrics'] if r['Skenario']=='S3')['RMSE (poin)'] - 5.981825270792521)<1e-10
-    assert len(c['pairwise']) == 66
+    assert len(c['pairwise']) == 91
     for p in c['pairwise']:
         assert all(r['left']+r['right']+r['ties']==60 for r in p['impact'])
         assert sum(p['overall'].values())==180
     assert abs(sum(v['share'] for v in c['nearest']['all'].values())-60)<1e-8
-    assert len(c['nearest']['all']) == 36
+    assert len(c['nearest']['all']) == 42
 
 
 def test_e23_biGRU_and_study_default_follow_actual_prediction_criteria():
@@ -192,7 +192,7 @@ def test_e26_rmse_lead_is_not_confused_with_nearest_or_duel_wins():
     assert c['predictionAudit']['E26']['S3']['mae']<c['predictionAudit']['E24']['S3']['mae']
     assert c['predictionAudit']['E26']['S3']['within']['5']==38
     assert c['predictionAudit']['E25']['S3']['within']['5']==35
-    assert {k:v['share'] for k,v in c['nearest']['S3'].items()}=={'E21_S3':7,'E22_S3':6,'E23_S3':5,'E24_S3':2,'E25_S3':5,'E26_S3':3,'E27_S3':4,'E28_S3':2,'E29_S3':7,'E30_S3':11,'E31_S3':3,'E32_S3':5}
+    assert {k:v['share'] for k,v in c['nearest']['S3'].items()}=={'E21_S3':6,'E22_S3':3,'E23_S3':5,'E24_S3':2,'E25_S3':5,'E26_S3':3,'E27_S3':4,'E28_S3':2,'E29_S3':4,'E30_S3':11,'E31_S3':2,'E32_S3':5,'E33_S3':4,'E34_S3':4}
     pair=next(p for p in c['pairwise'] if (p['left'],p['right'])==('E24','E26'))
     assert pair['impact'][2]=={'scenario':'S3','left':30,'right':30,'ties':0}
     pair=next(p for p in c['pairwise'] if (p['left'],p['right'])==('E25','E26'))

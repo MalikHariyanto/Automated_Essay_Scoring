@@ -14,7 +14,7 @@ def family(raw=None):
     return json.loads(re.search(r'<script id="familyData" type="application/json">(.*?)</script>',raw,re.S)[1])
 
 
-def test_catalog_all_ten_results_and_three_code_books_keep_old_results_unchanged():
+def test_catalog_all_uploaded_results_and_three_code_books_keep_old_results_unchanged():
     old=family(subprocess.check_output(['git','show',BASE+':docs/belajar_Tiga_Input_Spider.html'],cwd=ROOT,text=True))
     new=family()
     for e,x in old['comparison']['experiments'].items():
@@ -22,8 +22,8 @@ def test_catalog_all_ten_results_and_three_code_books_keep_old_results_unchanged
         assert new['comparison']['predictionAudit'][e]==old['comparison']['predictionAudit'][e]
     assert set(new['documents'])=={'E29','E30','E26'}
     for e in ('E26',):assert new['documents'][e]==old['documents'][e]
-    assert list(new['identities'])==['E'+str(i) for i in range(21,31)]
-    assert sum(x['result_available'] for x in new['identities'].values())==10
+    assert list(new['identities'])==['E'+str(i) for i in range(21,35)]
+    assert sum(x['result_available'] for x in new['identities'].values())==14
     assert sum(x['book_available'] for x in new['identities'].values())==3
     item=new['identities']['E30']
     assert item['base']=='E26' and item['reserved_code'] is None and item['reserved_output'] is None

@@ -111,3 +111,9 @@ Pengguna memilih rekomendasi pertama setelah analisis E30: E33 diturunkan dari *
 ## E34 · kode kandidat berikutnya dari E33
 
 Pengguna memilih E33 sebagai acuan berikutnya untuk meningkatkan kedekatan prediksi. E34 hanya menurunkan `s3_layers_lr` menjadi5e-5; MLP S3 tetap5e-5. Kelompok ini meliputi sequence_pool.* dan roberta_norm.*, termasuk BiGRU/co-attention/pooling/proyeksi ringkasan. Proyeksi BGE tetap1e-4, encoder5e-6, S1/S2 tetap kontrol. Format47cell/30codecell,5fold CV,maks25epoch,patience5 dan ceil median refit tetap. Belum ada hasil penelitian E34. [Metode](docs/eksperimen/eksperimen_e34_gpu.md).
+
+## 2 November 2026 · audit E34 dan HTML lokal terbaru
+
+E34 telah ditambahkan dari ZIP unggahan ke buku tiga input:14eksperimen,42model,70Excel/655sheet,91duel. Mean RMSE CV S3 5,8931; RMSE test5,9610; MAE4,4007; dalam±5poin39/60. Lebih baik sedikit dari E33 pada ringkasan tersebut, belum mengalahkan E30 pada test; E29 tetap mean CV/RMSE test terendah. Kontrol S1/S2 identik E33/E30. Hanya LR kelompok pooling/norm S3 berubah1e-4→5e-5, MLP S3 tetap5e-5 dan proyeksi BGE1e-4. [Analisis](docs/review/review_e34_study.md).
+
+Paket lokal terbaru `outputs/e34_study/Belajar_AES_Tiga_Input_Lengkap_E34.zip` berisi satu HTML terenkripsi dengan kunci lama. Pembuka UTF-8 kini bertahap untuk buku yang melewati batas satu string V8. Seluruh hasil/Excel lama dan tiga buku kode E29/E30/E26 dipertahankan; buku MLP lama tidak diubah. Tidak ada training baru atau publikasi GitHub pada tugas analisis ini. Paket privat E33 sebelumnya yang menunggu persetujuan publikasi tetap tidak diunggah.
