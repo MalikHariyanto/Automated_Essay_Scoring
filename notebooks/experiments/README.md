@@ -112,3 +112,7 @@ Nomor eksperimen lama mengikuti penamaan pada buku. Tabel ini tidak menyamakan i
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_S3_Fusion_Ridge_Hemat_Colab.ipynb) · [Source](AES_300_S3_Fusion_Ridge_Hemat_Colab.ipynb).
 
 Enam pelatihan × lima epoch (30 total), alpha S3 tetap1.0; ordinary grouped CV, tanpa nested tuning. Fusi dan tiga teks tetap, kontrol MLP/S2 Ridge. Unduhan backup kumulatif setelah setiap outer fold; unggah backup terakhir dan dataset asli sebelum Run all untuk restore fold selesai lintas runtime/perangkat. Tahap aktif serta encoder final tidak masuk backup kecil. Anggaran ini mengubah protokol, bukan jaminan akurasi atau kuota T4. Notebook nested lama dipertahankan; referensi dan batas klaim di notebook baru.
+
+## E35 · Python biasa, section belajar jelas
+
+[Buka Colab E35](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E35_E30_LayersLR5e5_Native_Learnable_GPU.ipynb) · [Metode dan peta cell](../../docs/eksperimen/eksperimen_e35_native_gpu.md). E30 dengan LR kelompok layer S3 5e-5; MLP S3 tetap1e-4. Tanpa cell magic/worker; nama model, X/y dan hyperparameter terlihat di bagian awal. Pemeriksaan cosine dihapus. 5fold,maks25epoch,patience5,T4 GPU. Belum ada hasil penelitian E35.

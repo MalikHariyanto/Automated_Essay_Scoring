@@ -1,3 +1,11 @@
+# Pilihan pengguna terbaru · notebook native dan mudah dipelajari
+
+Untuk E35 dan notebook baru berikutnya, pengguna meminta **Python biasa tanpa cell magic/worker tersembunyi**. Tampilkan nama checkpoint, kolom X/y, hyperparameter, arsitektur dan training dalam section yang mudah dicari; variabel harus berada di kernel notebook. Ini menggantikan aturan worker lama pada notebook baru, bukan alasan mengubah source/hasil historis. Pertahankan setup/guard kompatibilitas native yang jelas. Pengguna melarang pemeriksaan cosine pada notebook berikutnya; E35 menghapus fungsi/kolom diagnostik tersebut. Resep E35: dari E30, hanya LR sequence_pool/roberta_norm S3 menjadi5e-5; MLP S3 tetap1e-4, encoder5e-6, proyeksi BGE1e-4;5fold,maks25epoch,patience5. [Peta metode](docs/eksperimen/eksperimen_e35_native_gpu.md).
+
+# Pengunduh HTML tetap
+
+Untuk pembaruan HTML tiga variabel, pengguna meminta file pengunduh **`downloads/Belajar_AES_Tiga_Input_Lengkap.html`** yang sama. Jangan menggantinya dengan preview publik `docs/belajar_Tiga_Input_Spider.html` atau membuat aplikasi/varian baru per eksperimen. Pertahankan nama file/ZIP/HTML buku dan kunci lama. Publikasi bagian terenkripsi sebelumnya ditolak review persetujuan otomatis; source-only notebook seperti E35 tidak mengizinkan ekspor paket data siswa yang tertahan.
+
 # Status operasional terbaru — 29 Oktober2026
 
 Untuk melanjutkan percakapan pengguna dari akun baru, baca **[PANDUAN_AI_PROYEK.md](PANDUAN_AI_PROYEK.md)**, [STATUS_PROYEK.md](STATUS_PROYEK.md), [PINDAH_AKUN.md](PINDAH_AKUN.md), dan [RENCANA_EKSPERIMEN.md](RENCANA_EKSPERIMEN.md).
