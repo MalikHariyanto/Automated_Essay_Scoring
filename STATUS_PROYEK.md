@@ -121,3 +121,7 @@ Paket lokal terbaru `outputs/e34_study/Belajar_AES_Tiga_Input_Lengkap_E34.zip` b
 ## 2 November 2026 · E35 native Colab
 
 Pengguna memilih E35 dari E30: LR kelompok pooling_norm S3 5e-5, MLP S3 tetap1e-4; S1/S2/proyeksi BGE tetap kontrol E30. Permintaan baru: notebook native tanpa magic/worker dan section mudah dipelajari. Nama model, pemetaan kolom X/y, hyperparameter dan arsitektur terpisah; inspeksi cosine dihapus. [Metode/peta cell](docs/eksperimen/eksperimen_e35_native_gpu.md). Notebook baru mandiri; source/hasil E30/E33/E34 tidak diubah. Belum ada hasil penelitian E35; publikasi tugas ini hanya source notebook, bukan paket hasil siswa yang masih tertahan.
+
+## 2 November 2026 · hasil E35 diaudit dan ditambahkan ke buku
+
+E35 S3:meanRMSECV5,8550±0,9042,RMSEtest5,9452,MAE4,4253,dalam±5poin38/60,±10poin56/60;refit11epoch. CV membaik dariE30 tetapi test belum mengalahkannya. KontrolS1/S2 identik E30/E33/E34. Hanya LR pooling_norm S3 menjadi5e-5,MLP S3 tetap1e-4;notebook native/inspeksi cosine dihapus. [Analisis](docs/review/review_e35_study.md). Buku lokal kini15hasil/45model,75Excel/704sheet,105duel;kode meja belajar tetapE29/E30/E26. Seluruh14hasil lama dipertahankan. Nama pengunduh/ZIP/HTML dan kunci lama tetap;paket standar lokal siap. Publikasi bagian terenkripsi masih tertahan penolakan review sebelumnya dan belum diunggah. Jangan mengirim pengunduh yang menunjuk bagian belum online sebagai versi siap pakai.

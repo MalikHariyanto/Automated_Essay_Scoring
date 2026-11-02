@@ -22,7 +22,7 @@ def test_thirteen_prior_results_and_code_books_are_preserved():
     pairs = {(p['left'], p['right']): p for p in new['comparison']['pairwise']}
     for p in old['comparison']['pairwise']:
         assert pairs[p['left'], p['right']] == p
-    assert len(pairs) == 91
+    assert len(pairs) == 105
 
 
 def test_e34_matches_its_source_and_only_one_recorded_parameter_changes():
@@ -68,10 +68,10 @@ def test_e34_improvement_is_small_and_does_not_win_all_criteria():
 
 def test_all_results_excel_and_precise_e34_identity_are_available():
     f = family(); c = f['comparison']
-    assert list(c['experiments']) == [f'E{n}' for n in range(21, 35)]
+    assert list(c['experiments']) == [f'E{n}' for n in range(21, 36)]
     assert list(f['documents']) == ['E29', 'E30', 'E26']
-    assert sum(len(s['books']) for s in c['experiments'].values()) == 70
-    assert len(f['identities']) == 14
+    assert sum(len(s['books']) for s in c['experiments'].values()) == 75
+    assert len(f['identities']) == 15
     identity = f['identities']['E34']
     assert identity['base'] == 'E33' and identity['result_available'] and not identity['book_available']
     assert 'sequence_pool/roberta_norm S3 5e-5' in identity['other_lr']

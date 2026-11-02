@@ -58,11 +58,11 @@ def test_e33_comparison_does_not_claim_universal_improvement():
 
 def test_thirteen_results_independent_workbooks_and_specific_e33_identity():
     f=family();c=f['comparison']
-    assert list(c['experiments'])==[f'E{n}' for n in range(21,35)]
-    assert len(c['pairwise'])==91 and list(f['documents'])==['E29','E30','E26']
-    assert len(f['identities'])==14 and f['identities']['E33']['base']=='E30'
+    assert list(c['experiments'])==[f'E{n}' for n in range(21,36)]
+    assert len(c['pairwise'])==105 and list(f['documents'])==['E29','E30','E26']
+    assert len(f['identities'])==15 and f['identities']['E33']['base']=='E30'
     assert f['identities']['E33']['result_available'] and not f['identities']['E33']['book_available']
     assert 'MLP S2 1e-4 · MLP S3 5e-5' in f['identities']['E33']['head_lr']
-    assert sum(len(s['books']) for s in c['experiments'].values())==70
-    assert sum(len(b['sheets']) for s in c['experiments'].values() for b in s['books'])==655
+    assert sum(len(s['books']) for s in c['experiments'].values())==75
+    assert sum(len(b['sheets']) for s in c['experiments'].values() for b in s['books'])==704
     for rows in c['nearest'].values():assert abs(sum(v['share'] for v in rows.values())-60)<1e-8
