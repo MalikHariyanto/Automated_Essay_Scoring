@@ -1,5 +1,7 @@
 # E37 · LR encoder5e-6 vs7e-6 · tiga seed pada fold tetap
 
+**ARSIP: pengguna membatalkan desain tiga seed. Pakai [E37 satu resep/lima fold](eksperimen_e37_single_lr_native_gpu.md). Dokumen ini hanya merekam desain sebelumnya.**
+
 E37 menguji satu faktor pada metode E30: LR encoder RoBERTa. Penurunan ke3e-6 pada E36 belum mengalahkan E30; peningkatan ke7e-6 adalah hipotesis baru, bukan nilai optimal yang sudah dibuktikan paper.
 
 [Buka Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E37_E30_S3_EncoderLR5e6_vs7e6_3Seed_Native_Learnable_GPU.ipynb) · [Source notebook](../../notebooks/experiments/AES_300_E37_E30_S3_EncoderLR5e6_vs7e6_3Seed_Native_Learnable_GPU.ipynb).

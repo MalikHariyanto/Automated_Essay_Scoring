@@ -151,9 +151,9 @@ def test_gpu_guard_stops_training_without_cuda(monkeypatch):
         ns['check_gpu'](require_gpu=True)
 
 
-def test_full_native_notebook_and_fresh_kernel_resume(tmp_path):
+def execute_full_native_fixture(tmp_path, notebook_path, role_key, encoder_lr):
     """Actual native notebook execution; random Transformer fixture, not GPU research."""
-    n=nbformat.read(NOTEBOOK,as_version=4)
+    n=nbformat.read(notebook_path,as_version=4)
     isolated=tmp_path/'standalone';isolated.mkdir();fixture=isolated/'TECHNICAL_FIXTURE_ONLY.xlsx';make_book(fixture)
     workspace=isolated/'workspace'
     guard="""import builtins
@@ -177,7 +177,7 @@ def tokenizer(*a,**k):return ThreeTechnicalTokenizer()
 """
     for c in n.cells:
         if c.cell_type!='code':continue
-        role=c.metadata.aes36_role
+        role=c.metadata[role_key]
         if role=='hyperparameters':
             for a,b in {'EPOCHS = 25':'EPOCHS = 1',"DEVICE = 'cuda'":"DEVICE = 'cpu'",'REQUIRE_GPU = True':'REQUIRE_GPU = False',
                 'ROBERTA_MAX_TOKENS = 512':'ROBERTA_MAX_TOKENS = 32','BGE_MAX_TOKENS = 1024':'BGE_MAX_TOKENS = 32',
@@ -222,16 +222,16 @@ assert fit.__globals__ is globals() and make_model.__globals__ is globals()
     assert set(report['checkpoints'])==set(report['selected_epochs'])=={'S3'}
     import pandas as pd
     config=json.loads((run/'effective_config.json').read_text())
-    assert config['s3_mlp_lr']==config['projection_lr']==1e-4 and config['s3_layers_lr']==1e-4 and config['s3_encoder_lr']==3e-6
+    assert config['s3_mlp_lr']==config['projection_lr']==1e-4 and config['s3_layers_lr']==1e-4 and config['s3_encoder_lr']==encoder_lr
     settings=pd.read_excel(run/'hasil_ringkas/05_Riwayat_Pelatihan.xlsx',sheet_name='Pengaturan Eksperimen')
     settings=dict(zip(settings.Pengaturan,settings.Nilai))
-    assert float(settings['LR MLP S3'])==1e-4 and float(settings['LR pooling dan norm S3'])==1e-4 and float(settings['Learning rate encoder RoBERTa S3'])==3e-6
+    assert float(settings['LR MLP S3'])==1e-4 and float(settings['LR pooling dan norm S3'])==1e-4 and float(settings['Learning rate encoder RoBERTa S3'])==encoder_lr
     headers=pd.read_excel(run/'hasil_ringkas/03_Vektor_Kata_dan_Kalimat.xlsx',sheet_name='Kata Berulang',nrows=0).columns
     assert len(headers)==8 and not any('cosine' in h.lower() for h in headers)
     for s in ['S3']:
         checkpoint=torch.load(run/s/'final.pt',map_location='cpu',weights_only=True)
         rates=checkpoint['training']['optimizer_learning_rates'];assert rates['head']==1e-4
-        if s=='S3':assert rates['pooling_norm']==1e-4 and rates['roberta']==3e-6 and rates['projection']==1e-4
+        if s=='S3':assert rates['pooling_norm']==1e-4 and rates['roberta']==encoder_lr and rates['projection']==1e-4
     evaluation=pd.read_excel(run/'hasil_ringkas/04_Prediksi_dan_Evaluasi.xlsx',sheet_name='Nilai Guru dan Prediksi')
     assert set(evaluation.columns)=={'ID Jawaban','Nilai Guru','Prediksi S3','Pembulatan S3','Selisih S3'}
     assert evaluation['Prediksi S3'].notna().all()
@@ -242,3 +242,7 @@ assert fit.__globals__ is globals() and make_model.__globals__ is globals()
            'visible_X_y_same_as_training_inputs':True,'code_cells':sum(c.cell_type=='code' for c in n.cells)-2,
            'execution_device':'cpu','published_runtime':'cuda','cosine_removed':True}
     (isolated/'proof.json').write_text(json.dumps(proof,indent=2));print(json.dumps(proof))
+
+
+def test_full_native_notebook_and_fresh_kernel_resume(tmp_path):
+    execute_full_native_fixture(tmp_path, NOTEBOOK, 'aes36_role', 3e-6)

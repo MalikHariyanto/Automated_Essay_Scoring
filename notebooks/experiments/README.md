@@ -1,6 +1,12 @@
 # Katalog eksperimen AES
 
-## E37 · LR encoder5e-6 vs7e-6 · tiga seed · S3 native
+## E37 aktif · LR encoder7e-6 · S3 · 5-fold CV sekali
+
+[**Buka Colab terbaru**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E37_E30_S3_EncoderLR7e6_Native_Learnable_GPU.ipynb) · [Source](AES_300_E37_E30_S3_EncoderLR7e6_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e37_single_lr_native_gpu.md).
+
+Sesuai koreksi pengguna: langsung kandidat7e-6, tidak mengulang kontrol E30 atau tiga seed. S3 saja; MLP/layer/proyeksi1e-4;5fold,maks25epoch,patience5;1refit+1test. TRAIN_SEED42satu konstanta, tanpa sweep. Format native E35/E36 dan lima Excel standar. Belum ada hasil penelitian kandidat E37.
+
+## Arsip E37 paired · digantikan versi lima fold di atas
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E37_E30_S3_EncoderLR5e6_vs7e6_3Seed_Native_Learnable_GPU.ipynb) · [Source](AES_300_E37_E30_S3_EncoderLR5e6_vs7e6_3Seed_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e37_paired_lr_native_gpu.md).
 

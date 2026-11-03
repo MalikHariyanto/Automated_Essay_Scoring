@@ -6,6 +6,7 @@
 
 | Dokumen | Isi |
 | --- | --- |
+| [review_e37_partial_control_log.md](review_e37_partial_control_log.md) | Log E37 lama baru mengulang kontrol E30; kandidat7e-6belum dijalankan |
 | [review_e36_study.md](review_e36_study.md) | Hasil S3-only LR encoder3e-6, perbandingan E30 dan buku16eksperimen |
 | [review_e27_e28_study.md](review_e27_e28_study.md) | Delapan eksperimen, preservasi seluruh isi lama dan optimasi UI |
 | [review_colab_2026_10_14.md](review_colab_2026_10_14.md) | Pemeriksaan notebook tersimpan — 14 Oktober 2026 |
