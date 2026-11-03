@@ -15,15 +15,15 @@ def family(ref=None):
 
 def test_all_fourteen_prior_results_duels_and_code_books_are_unchanged():
     old,new=family(BASE),family()
-    assert old['documents']==new['documents']
+    for e in old['documents'].keys() & new['documents'].keys():assert old['documents'][e]==new['documents'][e]
     for e,s in old['comparison']['experiments'].items():
         assert new['comparison']['experiments'][e]==s
         assert new['comparison']['predictionAudit'][e]==old['comparison']['predictionAudit'][e]
-        assert new['identities'][e]==old['identities'][e]
+        assert new['identities'][e]=={**old['identities'][e],'book_available':e in new['documents']}
     pairs={(r['left'],r['right']):r for r in new['comparison']['pairwise']}
     for r in old['comparison']['pairwise']:
         assert pairs[r['left'],r['right']]==r
-    assert len(pairs)==105
+    assert len(pairs)==120
     for p in ['docs/belajar_MLP_Spider.html',*map(str,(ROOT/'downloads').glob('Belajar_AES_MLP_Lengkap*'))]:
         p=str(Path(p).relative_to(ROOT)) if Path(p).is_absolute() else p
         assert subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT)==(ROOT/p).read_bytes()
@@ -74,10 +74,10 @@ def test_e35_cv_improves_while_test_does_not_replace_e30():
 
 def test_fifteen_results_and_all_original_excel_remain_accessible():
     f=family();c=f['comparison']
-    assert list(c['experiments'])==[f'E{n}' for n in range(21,36)]
-    assert list(f['documents'])==['E29','E30','E26']
-    assert len(f['identities'])==15 and sum(len(x['books']) for x in c['experiments'].values())==75
-    assert sum(len(b['sheets']) for s in c['experiments'].values() for b in s['books'])==704
+    assert list(c['experiments'])==[f'E{n}' for n in range(21,37)]
+    assert list(f['documents'])==['E29','E30','E36']
+    assert len(f['identities'])==16 and sum(len(x['books']) for x in c['experiments'].values())==80
+    assert sum(len(b['sheets']) for s in c['experiments'].values() for b in s['books'])==748
     identity=f['identities']['E35']
     assert identity['base']=='E30' and identity['result_available'] and not identity['book_available']
     assert 'MLP S2/S3 1e-4' in identity['head_lr']

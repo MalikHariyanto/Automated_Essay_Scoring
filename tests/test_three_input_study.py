@@ -49,7 +49,7 @@ def test_both_embedded_code_books_are_exact_pinned_notebooks():
         data = json.loads(m[1])
         snap = family_data['comparison']['experiments'][e]
         source = json.loads(subprocess.check_output(['git', 'show', snap['source_commit'] + ':' + snap['source_path']], cwd=ROOT))
-        assert len(data['cells']) == 30
+        assert len(data['cells']) == (89 if e=='E36' else 30)
         for cell in data['cells']:
             raw = source['cells'][cell['index']]['source']
             raw = raw if isinstance(raw, str) else ''.join(raw)
@@ -105,8 +105,8 @@ def test_actual_inline_scripts_parse_without_closing_tag_injection(tmp_path):
 def test_e24_attention_results_and_comparisons_are_real_and_consistent():
     _, data = family()
     c = data['comparison']
-    assert set(c['experiments']) == {f'E{n}' for n in range(21,36)}
-    assert set(data['documents']) == {'E29','E30','E26'}
+    assert set(c['experiments']) == {f'E{n}' for n in range(21,37)}
+    assert set(data['documents']) == {'E29','E30','E36'}
     e = c['experiments']['E24']
     assert e['input_format'] == 'single_sequence' and e['s3_pooling'] == 'attention'
     assert e['attention_audit']['rows'] == 16946
@@ -117,12 +117,12 @@ def test_e24_attention_results_and_comparisons_are_real_and_consistent():
     for scenario in ['S1','S2']:
         assert next(r for r in e['metrics'] if r['Skenario']==scenario) == next(r for r in e21['metrics'] if r['Skenario']==scenario)
     assert abs(next(r for r in e['metrics'] if r['Skenario']=='S3')['RMSE (poin)'] - 5.981825270792521)<1e-10
-    assert len(c['pairwise']) == 105
+    assert len(c['pairwise']) == 120
     for p in c['pairwise']:
         assert all(r['left']+r['right']+r['ties']==60 for r in p['impact'])
-        assert sum(p['overall'].values())==180
+        assert sum(p['overall'].values())==60*len(p['impact'])
     assert abs(sum(v['share'] for v in c['nearest']['all'].values())-60)<1e-8
-    assert len(c['nearest']['all']) == 45
+    assert len(c['nearest']['all']) == 46
 
 
 def test_e23_biGRU_and_study_default_follow_actual_prediction_criteria():
@@ -148,13 +148,16 @@ def test_screenshot_mappings_and_learning_notes_point_to_actual_source_lines():
     for experiment,html in data['documents'].items():
         d=json.loads(re.search(r'<script id="studyData" type="application/json">(.*?)</script>',html,re.S)[1])
         cells={cell['index']:cell for cell in d['cells']}
-        assert len(d['screenshotMappings'])==10 and d['learningLayout']=='margin'
-        for m in d['screenshotMappings']:
+        assert len(d['screenshotMappings'] or [])==(0 if experiment=='E36' else 10) and d['learningLayout']=='margin'
+        for m in d['screenshotMappings'] or []:
             assert m['anchor'] in cells[m['cell']]['source'].splitlines()[m['line']-1]
             assert any(n['line']==m['line'] and n.get('screenshot')==m['title'] for n in cells[m['cell']]['notes'])
         for cell in cells.values():
             for n in cell['notes']:
                 assert n['anchor'] in cell['source'].splitlines()[n['line']-1]
+        if experiment=='E36':
+            assert len(cells)==89 and all(c['notes'] for c in cells.values())
+            continue
         model=cells[30]
         assert any(n['title']=='Head regresi linear S1' for n in model['notes'])
         assert any(n['title']=='Head regresi MLP S3' for n in model['notes'])
@@ -192,7 +195,7 @@ def test_e26_rmse_lead_is_not_confused_with_nearest_or_duel_wins():
     assert c['predictionAudit']['E26']['S3']['mae']<c['predictionAudit']['E24']['S3']['mae']
     assert c['predictionAudit']['E26']['S3']['within']['5']==38
     assert c['predictionAudit']['E25']['S3']['within']['5']==35
-    assert {k:v['share'] for k,v in c['nearest']['S3'].items()}=={'E21_S3': 6, 'E22_S3': 3, 'E23_S3': 5, 'E24_S3': 2, 'E25_S3': 5, 'E26_S3': 3, 'E27_S3': 4, 'E28_S3': 2, 'E29_S3': 3, 'E30_S3': 11, 'E31_S3': 2, 'E32_S3': 4, 'E33_S3': 3, 'E34_S3': 4, 'E35_S3': 3}
+    assert {k:v['share'] for k,v in c['nearest']['S3'].items()}=={'E21_S3': 6, 'E22_S3': 3, 'E23_S3': 5, 'E24_S3': 2, 'E25_S3': 5, 'E26_S3': 3, 'E27_S3': 4, 'E28_S3': 2, 'E29_S3': 2, 'E30_S3': 10, 'E31_S3': 2, 'E32_S3': 4, 'E33_S3': 3, 'E34_S3': 4, 'E35_S3': 2, 'E36_S3': 3}
     pair=next(p for p in c['pairwise'] if (p['left'],p['right'])==('E24','E26'))
     assert pair['impact'][2]=={'scenario':'S3','left':30,'right':30,'ties':0}
     pair=next(p for p in c['pairwise'] if (p['left'],p['right'])==('E25','E26'))

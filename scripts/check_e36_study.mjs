@@ -1,0 +1,82 @@
+// Browser audit: aggregate/public content and offline Excel access, no key/data logging.
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+const require=createRequire(import.meta.url),{chromium}=require('playwright');
+const base=process.env.AES_STUDY_BASE||'http://127.0.0.1:8765/';
+const folder='outputs/e36_study/';fs.mkdirSync(folder,{recursive:true});
+const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage','--js-flags=--max-old-space-size=8192']});
+const checks=[];const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
+try{
+ let page=await browser.newPage({viewport:{width:1440,height:1000}});page.setDefaultTimeout(120000);
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base+'docs/belajar_Tiga_Input_Spider.html');
+ await page.waitForFunction(()=>window.ThreeInputBook?.data.experiments.E36);
+ assert.equal(await page.locator('#familyExperiment option').count(),3);
+ assert.match(await page.locator('#familyMetricsS3').innerText(),/5,6738/);
+ assert.match(await page.locator('#familyBody').innerText(),/E36 terhadap E30/);
+ for(const tab of ['accuracy','training','maps']){await page.evaluate(tab=>ThreeInputBook.setTab(tab),tab);for(const scenario of ['S1','S2','S3']){await page.getByRole('combobox',{name:'Skenario perbandingan',exact:true}).selectOption(scenario);}}
+ await page.evaluate(()=>ThreeInputBook.setTab('identities'));
+ assert.equal(await page.locator('.identity-card').count(),16);
+ const card=page.locator('.identity-card').filter({hasText:'E36'});
+ assert.match(await card.innerText(),/3e-6/);assert.match(await card.innerText(),/E30/);
+ await page.evaluate(()=>ThreeInputBook.setTab('method'));
+ const method=await page.locator('#familyBody').innerText();assert.match(method,/3e-6/);assert.match(method,/Tidak dijalankan/);assert.match(method,/BiGRU/);
+ const rows=page.locator('#familyBody table').first();
+ const headers=await rows.locator('thead th').allTextContents();const index=headers.indexOf('E36');assert(index>0);
+ for(const [label,pattern] of [['Pooling S3',/BiGRU128.*matching128.*attention pooling128/],['LR MLP S3',/1e-4/],['LR MLP S2',/Tidak dijalankan/],['LR BiGRU/pooling/norm S3',/1e-4/]]){
+  const row=rows.locator('tbody tr').filter({has:page.locator('td').filter({hasText:new RegExp('^'+label+'$')})});
+  assert.match(await row.locator('td').nth(index).innerText(),pattern);
+ }
+ await page.evaluate(()=>ThreeInputBook.setTab('accuracy'));assert.match(await page.locator('#familyAccuracy').innerText(),/E36/);
+ await page.setViewportSize({width:390,height:844});await page.evaluate(()=>ThreeInputBook.setTab('identities'));
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.screenshot({path:folder+'public-mobile.png',fullPage:false});
+ await page.setViewportSize({width:1440,height:1000});await page.evaluate(()=>ThreeInputBook.setTab('overview'));
+ await page.screenshot({path:folder+'public-desktop.png',fullPage:false});
+ assert.deepEqual(errors,[]);console.log('Public aggregate checks passed.');checks.push('Public:16identities,E36method/LR/accuracy and mobile layout;E29/E30 retained; native E36 enters third slot.');await page.close();
+ page=await browser.newPage({viewport:{width:1440,height:1000},acceptDownloads:true});page.setDefaultTimeout(180000);const privateErrors=[];page.on('pageerror',e=>privateErrors.push(e.message));
+ await page.goto(base+'outputs/e21_study/Belajar_AES_Tiga_Input_Lengkap_terenkripsi.html',{timeout:180000});
+ await page.locator('#show').click();assert.equal(await page.locator('#password').getAttribute('type'),'text');await page.locator('#show').click();assert.equal(await page.locator('#password').getAttribute('type'),'password');
+ await page.locator('#password').fill('TECHNICAL_EXPECTED_WRONG_KEY');await page.locator('#open').click();
+ await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('Kunci tidak cocok'));console.log('Wrong-key rejection passed.');
+ await page.locator('#password').fill(JSON.parse(fs.readFileSync('outputs/e21_study/family_download_key.json')).password);
+ await page.locator('#open').click();
+ await page.waitForFunction(()=>window.ThreeInputBook?.ready()||(!document.querySelector('#open')?.disabled&&document.querySelector('#status')?.textContent),{},{timeout:180000});
+ if(!await page.evaluate(()=>window.ThreeInputBook?.ready()))throw Error('Unlock failed: '+await page.locator('#status').innerText());
+ console.log('Old-key decryption and large-book loading passed.');
+ await page.route('**/*',r=>r.abort());
+ await page.evaluate(()=>ThreeInputBook.setTab('predictions'));await page.waitForSelector('#familyPredictions [data-prediction]');
+ assert.equal(await page.locator('#familyPredictions [data-prediction]').count(),960);
+ await page.getByRole('combobox',{name:'Skenario perbandingan',exact:true}).selectOption('all');
+ await page.waitForFunction(()=>document.querySelectorAll('#familyPredictions [data-prediction]').length===2760);
+ await page.getByRole('combobox',{name:'Skenario perbandingan',exact:true}).selectOption('S1');
+ await page.waitForFunction(()=>document.querySelectorAll('#familyPredictions [data-prediction]').length===900);
+ assert.match(await page.locator('#familyBody').innerText(),/15 prediksi S1/);
+ await page.evaluate(()=>ThreeInputBook.setTab('excel'));
+ await page.getByRole('combobox',{name:'Eksperimen Excel',exact:true}).selectOption('E36');
+ await page.getByRole('combobox',{name:'Workbook hasil',exact:true}).selectOption('4');
+ await page.getByRole('combobox',{name:'Sheet hasil',exact:true}).selectOption('Pengaturan Eksperimen');
+ await page.waitForSelector('#familyExcelTable');
+ const text=await page.locator('#familyExcelTable').innerText();assert.match(text,/LR MLP S3/);assert.match(text,/0,000003/);
+ const download=page.waitForEvent('download');await page.getByRole('button',{name:'Unduh XLSX asli ↓',exact:true}).click();
+ const dl=await download;await dl.saveAs(folder+'browser_E36_history.xlsx');
+ const inventory=await page.evaluate(()=>ThreeInputBook.data.experiments.E36.books[4]);
+ assert.equal(sha(fs.readFileSync(folder+'browser_E36_history.xlsx')),inventory.sha256);
+ await page.getByRole('combobox',{name:'Workbook hasil',exact:true}).selectOption('2');
+ await page.getByRole('combobox',{name:'Sheet hasil',exact:true}).selectOption('Kata Berulang');
+ await page.waitForSelector('#familyExcelTable');
+ const columns=await page.locator('#familyExcelTable thead th').allTextContents();
+ assert.equal(columns.length,8);assert(columns.every(c=>!c.toLowerCase().includes('cosine')));
+ await page.evaluate(()=>ThreeInputBook.openBook('E36'));
+ const child=page.frames().find(f=>f.parentFrame()===page.mainFrame());
+ await child.waitForFunction(()=>window.E36Book&&MLPStudy.getState().resultsLoaded);
+ assert.equal(await child.locator('#cellSelect option').count(),89);
+ for(let chapter=0;chapter<16;chapter++){await child.evaluate(chapter=>MLPStudy.openChapter(chapter),chapter);await child.evaluate(()=>MLPStudy.setTab('code'));}
+ await child.evaluate(()=>MLPStudy.openChapter(10));
+ assert.equal(await child.locator('.diagram-row').count(),1);
+ assert.deepEqual(privateErrors,[]);checks.push('Old key unlocks; wrong key rejected; offline2760predictions,E36Excel byte-identical,and preserved E30code/output.');
+ fs.writeFileSync(folder+'browser.json',JSON.stringify({passed:checks.length,failed:0,checks,browser:browser.version()},null,2));
+ console.log(JSON.stringify({passed:checks.length,failed:0,checks}));
+}finally{await browser.close();}

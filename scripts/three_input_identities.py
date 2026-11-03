@@ -25,6 +25,7 @@ RECIPES = {
  'E33': ('E30 · LR MLP S3 5e-5', 'E30', 'Ablasi LR MLP S3 turun2kali; arsitektur dan S1/S2 E30 dipertahankan.', 'S3: BiGRU → co-attention respons–referensi → attention pooling → proyeksi768 → concat BGE256 → MLP', 'Single sequence; mask respons dan referensi', 'MLP S2 1e-4 · MLP S3 5e-5 · linear S1 1e-4', ['bigru','attention','coattention']),
  'E34': ('E33 · LR layer S3 5e-5', 'E33', 'Ablasi LR kelompok sequence_pool/roberta_norm turun1e-4→5e-5; MLP S3 tetap5e-5, proyeksi BGE tetap1e-4.', 'S3: BiGRU → co-attention respons–referensi → attention pooling → proyeksi768 → concat BGE256 → MLP', 'Single sequence; mask respons dan referensi', 'MLP S2 1e-4 · MLP S3 5e-5 · linear S1 1e-4', ['bigru','attention','coattention']),
  'E35': ('E30 · LR layer S3 5e-5 · Python biasa', 'E30', 'Ablasi LR sequence_pool/roberta_norm S3 1e-4→5e-5; MLP S3 tetap1e-4, proyeksi BGE1e-4. Notebook Python biasa dengan X/y dan nama model eksplisit; pemeriksaan cosine dihapus.', 'S3: BiGRU → co-attention respons–referensi → attention pooling → proyeksi768 → concat BGE256 → MLP', 'Single sequence; mask respons dan referensi', 'MLP S2/S3 1e-4 · linear S1 1e-4', ['bigru','attention','coattention']),
+ 'E36': ('E30 · S3 saja · LR encoder 3e-6 · Python biasa', 'E30', 'Ablasi LR encoder RoBERTa S3 5e-6→3e-6; layer/head/proyeksi1e-4, BGE frozen. S1/S2 tidak dijalankan.', 'S3: BiGRU → co-attention respons–referensi → attention pooling → proyeksi768 → concat BGE256 → MLP', 'Single sequence; mask respons dan referensi', 'MLP S3 1e-4 · S1/S2 tidak dijalankan', ['bigru','attention','coattention']),
 }
 PENDING_SOURCE = {
  'E29': 'notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb',
@@ -61,4 +62,6 @@ def build_identities(snapshots, study_ids=None):
                         'Nilai LR adalah pilihan ablasi proyek; paper tidak menetapkan 5e-6 sebagai nilai terbaik.' if experiment in ('E28','E29') else
                         'Format pair adalah ablasi implementasi proyek; bukan klaim paper membuktikan format ini lebih unggul.' if experiment=='E22' else
                         'Komponen diadaptasi untuk proyek ini; keunggulan hanya dinilai dari hasil eksperimen yang tersedia.'))
+    if 'E36' in result:
+        result['E36'].update(encoder_lr='RoBERTa S3 3e-6 · BGE frozen',heads='S3 MLP · S1/S2 tidak dijalankan',other_lr='BiGRU/co-attention/pooling/norm/proyeksi BGE1e-4',adaptation='LR3e-6 adalah hipotesis proyek, bukan nilai optimal dari paper. Hasil satu seed belum mengalahkan E30; S1/S2 tidak dibuat, bukan hilang.')
     return result

@@ -20,10 +20,10 @@ def test_catalog_all_uploaded_results_and_three_code_books_keep_old_results_unch
     for e,x in old['comparison']['experiments'].items():
         assert new['comparison']['experiments'][e]==x
         assert new['comparison']['predictionAudit'][e]==old['comparison']['predictionAudit'][e]
-    assert set(new['documents'])=={'E29','E30','E26'}
-    for e in ('E26',):assert new['documents'][e]==old['documents'][e]
-    assert list(new['identities'])==['E'+str(i) for i in range(21,36)]
-    assert sum(x['result_available'] for x in new['identities'].values())==15
+    assert set(new['documents'])=={'E29','E30','E36'}
+    for e in old['documents'].keys() & new['documents'].keys():assert new['documents'][e]==old['documents'][e]
+    assert list(new['identities'])==['E'+str(i) for i in range(21,37)]
+    assert sum(x['result_available'] for x in new['identities'].values())==16
     assert sum(x['book_available'] for x in new['identities'].values())==3
     item=new['identities']['E30']
     assert item['base']=='E26' and item['reserved_code'] is None and item['reserved_output'] is None
@@ -39,7 +39,7 @@ def test_every_identity_has_specific_citations_traceable_source_and_same_input_c
     catalog=family()['identities']
     for key,item in catalog.items():
         assert item['inputs']==['soal','jawaban_referensi','response_text']
-        assert item['label']=='rater · 0–100' and item['heads']=='S1 linear · S2/S3 MLP'
+        assert item['label']=='rater · 0–100' and item['heads']==('S3 MLP · S1/S2 tidak dijalankan' if key=='E36' else 'S1 linear · S2/S3 MLP')
         assert 7<=len(item['source_commit'])<=40 and item['source_path'].endswith('.ipynb')
         assert all(c['url'].startswith('https://') and c['scope'] for c in item['citations'])
         assert {'roberta','bge'} <= {c['key'] for c in item['citations']}

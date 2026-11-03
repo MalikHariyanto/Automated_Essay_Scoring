@@ -11,11 +11,11 @@ def family(raw=None):
 
 def test_preserve_twelve_experiments_code_books_and_all_old_duels():
     old=family(subprocess.check_output(['git','show',BASE+':docs/belajar_Tiga_Input_Spider.html'],cwd=ROOT,text=True));new=family()
-    assert old['documents']==new['documents']
+    for e in old['documents'].keys() & new['documents'].keys():assert old['documents'][e]==new['documents'][e]
     for e,s in old['comparison']['experiments'].items():
         assert new['comparison']['experiments'][e]==s
         assert new['comparison']['predictionAudit'][e]==old['comparison']['predictionAudit'][e]
-        assert new['identities'][e]==old['identities'][e]
+        assert new['identities'][e]=={**old['identities'][e],'book_available':e in new['documents']}
     pairs={(p['left'],p['right']):p for p in new['comparison']['pairwise']}
     assert all(pairs[p['left'],p['right']]==p for p in old['comparison']['pairwise'])
     for f in ['docs/belajar_MLP_Spider.html',*map(str,(ROOT/'downloads').glob('Belajar_AES_MLP_Lengkap*'))]:
@@ -58,11 +58,11 @@ def test_e33_comparison_does_not_claim_universal_improvement():
 
 def test_thirteen_results_independent_workbooks_and_specific_e33_identity():
     f=family();c=f['comparison']
-    assert list(c['experiments'])==[f'E{n}' for n in range(21,36)]
-    assert len(c['pairwise'])==105 and list(f['documents'])==['E29','E30','E26']
-    assert len(f['identities'])==15 and f['identities']['E33']['base']=='E30'
+    assert list(c['experiments'])==[f'E{n}' for n in range(21,37)]
+    assert len(c['pairwise'])==120 and list(f['documents'])==['E29','E30','E36']
+    assert len(f['identities'])==16 and f['identities']['E33']['base']=='E30'
     assert f['identities']['E33']['result_available'] and not f['identities']['E33']['book_available']
     assert 'MLP S2 1e-4 · MLP S3 5e-5' in f['identities']['E33']['head_lr']
-    assert sum(len(s['books']) for s in c['experiments'].values())==75
-    assert sum(len(b['sheets']) for s in c['experiments'].values() for b in s['books'])==704
+    assert sum(len(s['books']) for s in c['experiments'].values())==80
+    assert sum(len(b['sheets']) for s in c['experiments'].values() for b in s['books'])==748
     for rows in c['nearest'].values():assert abs(sum(v['share'] for v in rows.values())-60)<1e-8

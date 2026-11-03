@@ -1,11 +1,12 @@
 # Review hasil dan buku
 
-[Review E25/E26](review_e25_e26_study.md) adalah ringkasan terbaru. Review lain merekam keadaan pada tahap masing-masing; kata “terbaik” di dokumen lama terikat peserta saat itu.
+[Review E36](review_e36_study.md) adalah ringkasan terbaru. Review lain merekam keadaan pada tahap masing-masing; kata “terbaik” di dokumen lama terikat peserta saat itu.
 
 [Kembali ke dokumentasi](../README.md) · [Status proyek](../../STATUS_PROYEK.md)
 
 | Dokumen | Isi |
 | --- | --- |
+| [review_e36_study.md](review_e36_study.md) | Hasil S3-only LR encoder3e-6, perbandingan E30 dan buku16eksperimen |
 | [review_e27_e28_study.md](review_e27_e28_study.md) | Delapan eksperimen, preservasi seluruh isi lama dan optimasi UI |
 | [review_colab_2026_10_14.md](review_colab_2026_10_14.md) | Pemeriksaan notebook tersimpan — 14 Oktober 2026 |
 | [review_context_pair_dashboard.md](review_context_pair_dashboard.md) | Hasil konteks pair dan papan perbandingan semua eksperimen |
