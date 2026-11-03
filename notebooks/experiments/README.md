@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E39 · E30 MLP · BiGRU128 per arah · S3 native
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E39_E30_S3_BiGRU128_Native_Learnable_GPU.ipynb) · [Source](AES_300_E39_E30_S3_BiGRU128_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e39_bigru128_native_gpu.md).
+
+Pilihan pengguna: BiGRU128perarah,keluaran256; attention pooling bottleneck64,proyeksi RoBERTa768,fusion1024 dan MLP akhir tetap. LR E30 encoder5e-6/layer lain1e-4,dropoutMLP0,1. S3 saja,5fold,maks25epoch,patience5,1refit+1test,tanpa loop tiga seed. Format native E37/E38 tanpa magic/worker;89cell kode dan lima Excel standar mencatat dimensi aktual. Belum ada hasil penelitian E39.
+
 ## E38 · E30 S3 · Dropout MLP 0,2 · lima fold sekali
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E38_E30_S3_MLPDropout02_Native_Learnable_GPU.ipynb) · [Source](AES_300_E38_E30_S3_MLPDropout02_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e38_mlp_dropout_native_gpu.md).
