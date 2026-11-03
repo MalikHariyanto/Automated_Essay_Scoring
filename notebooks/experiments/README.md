@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E38 · E30 S3 · Dropout MLP 0,2 · lima fold sekali
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E38_E30_S3_MLPDropout02_Native_Learnable_GPU.ipynb) · [Source](AES_300_E38_E30_S3_MLPDropout02_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e38_mlp_dropout_native_gpu.md).
+
+Hanya dropout hidden MLP S3 naik0,1→0,2; encoder5e-6 dan seluruh LR lain1e-4 mengikuti E30. Dropout RoBERTa/komponen lain tetap. S3 saja,5fold,maks25epoch,patience5,1refit+1test; tanpa loop tiga seed atau pengulangan kontrol. Format native E35/E36, lima Excel standar mencatat dropout aktual. Belum ada hasil penelitian E38.
+
 ## E37 aktif · LR encoder7e-6 · S3 · 5-fold CV sekali
 
 [**Buka Colab terbaru**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E37_E30_S3_EncoderLR7e6_Native_Learnable_GPU.ipynb) · [Source](AES_300_E37_E30_S3_EncoderLR7e6_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e37_single_lr_native_gpu.md).

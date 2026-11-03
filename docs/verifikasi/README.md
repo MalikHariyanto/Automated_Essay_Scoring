@@ -6,6 +6,7 @@ Tes fungsi, fixture, browser, dan training penelitian adalah tingkat bukti berbe
 
 | Dokumen | Isi |
 | --- | --- |
+| [verification_e38_native.md](verification_e38_native.md) | Perubahan dropout hanya head MLP, kesetaraan eval E30 dan eksekusi native |
 | [verification_e37_single_native.md](verification_e37_single_native.md) | E37 aktif satu resep7e-6,lima fold sekali,eksekusi native dan resume |
 | [verification_e37_native.md](verification_e37_native.md) | Protokol LR/seed E37, kesetaraan E30 dan eksekusi notebook fixture |
 | [verification_e36_study.md](verification_e36_study.md) | Audit unggahan E36, preservasi80Excel, browser dan paket lengkap lokal |

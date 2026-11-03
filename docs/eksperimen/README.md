@@ -6,6 +6,7 @@ Keluarga hasil kini E21–E30. Meja belajar memuat E29/E30/E26; semua hasil dan 
 
 | Dokumen | Isi |
 | --- | --- |
+| [eksperimen_e38_mlp_dropout_native_gpu.md](eksperimen_e38_mlp_dropout_native_gpu.md) | E38 aktif: hanya dropout MLP S3 0,2, LR E30, satu CV lima fold |
 | [eksperimen_e37_single_lr_native_gpu.md](eksperimen_e37_single_lr_native_gpu.md) | E37 aktif: satu LR7e-6, S3,5fold sekali; tanpa loop multi-seed/kontrol |
 | [eksperimen_e37_paired_lr_native_gpu.md](eksperimen_e37_paired_lr_native_gpu.md) | Arsip desain paired yang dibatalkan pengguna |
 | [eksperimen_e36_s3_native_gpu.md](eksperimen_e36_s3_native_gpu.md) | E30 S3 saja, LR encoder3e-6; Python native per section mengikuti E35 |
