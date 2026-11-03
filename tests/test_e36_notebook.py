@@ -151,7 +151,8 @@ def test_gpu_guard_stops_training_without_cuda(monkeypatch):
         ns['check_gpu'](require_gpu=True)
 
 
-def execute_full_native_fixture(tmp_path, notebook_path, role_key, encoder_lr):
+def execute_full_native_fixture(tmp_path, notebook_path, role_key, encoder_lr,
+                                encoder_rate_groups=None, encoder_layers=1):
     """Actual native notebook execution; random Transformer fixture, not GPU research."""
     n=nbformat.read(notebook_path,as_version=4)
     isolated=tmp_path/'standalone';isolated.mkdir();fixture=isolated/'TECHNICAL_FIXTURE_ONLY.xlsx';make_book(fixture)
@@ -175,6 +176,7 @@ def encoder(cfg,role):
     result.requires_grad_(role=='roberta');return result
 def tokenizer(*a,**k):return ThreeTechnicalTokenizer()
 """
+    tiny=tiny.replace('num_hidden_layers=1', f'num_hidden_layers={encoder_layers}')
     for c in n.cells:
         if c.cell_type!='code':continue
         role=c.metadata[role_key]
@@ -231,7 +233,10 @@ assert fit.__globals__ is globals() and make_model.__globals__ is globals()
     for s in ['S3']:
         checkpoint=torch.load(run/s/'final.pt',map_location='cpu',weights_only=True)
         rates=checkpoint['training']['optimizer_learning_rates'];assert rates['head']==1e-4
-        if s=='S3':assert rates['pooling_norm']==1e-4 and rates['roberta']==encoder_lr and rates['projection']==1e-4
+        if s=='S3':
+            assert rates['pooling_norm']==1e-4 and rates['projection']==1e-4
+            expected_encoder_rates=encoder_rate_groups or {'roberta':encoder_lr}
+            assert {k:v for k,v in rates.items() if k.startswith('roberta')}==expected_encoder_rates
     evaluation=pd.read_excel(run/'hasil_ringkas/04_Prediksi_dan_Evaluasi.xlsx',sheet_name='Nilai Guru dan Prediksi')
     assert set(evaluation.columns)=={'ID Jawaban','Nilai Guru','Prediksi S3','Pembulatan S3','Selisih S3'}
     assert evaluation['Prediksi S3'].notna().all()
