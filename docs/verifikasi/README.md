@@ -6,6 +6,7 @@ Tes fungsi, fixture, browser, dan training penelitian adalah tingkat bukti berbe
 
 | Dokumen | Isi |
 | --- | --- |
+| [verification_e37_native.md](verification_e37_native.md) | Protokol LR/seed E37, kesetaraan E30 dan eksekusi notebook fixture |
 | [verification_e36_study.md](verification_e36_study.md) | Audit unggahan E36, preservasi80Excel, browser dan paket lengkap lokal |
 | [verification_e36_native.md](verification_e36_native.md) | Notebook native S3 saja, kesetaraan metode E30, optimizer dan eksekusi fixture |
 | [verification_e29_e30.md](verification_e29_e30.md) | E29 LR MLP S2/S3 dan E30 co-attention→pooling; dua notebook dasar E26 |

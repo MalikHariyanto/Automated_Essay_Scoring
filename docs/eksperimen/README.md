@@ -6,6 +6,7 @@ Keluarga hasil kini E21–E30. Meja belajar memuat E29/E30/E26; semua hasil dan 
 
 | Dokumen | Isi |
 | --- | --- |
+| [eksperimen_e37_paired_lr_native_gpu.md](eksperimen_e37_paired_lr_native_gpu.md) | E30 kontrol5e-6 vs kandidat7e-6, tiga seed, S3 native, pemilihan LR hanya CV |
 | [eksperimen_e36_s3_native_gpu.md](eksperimen_e36_s3_native_gpu.md) | E30 S3 saja, LR encoder3e-6; Python native per section mengikuti E35 |
 | [eksperimen_double_frozen_manual.md](eksperimen_double_frozen_manual.md) | Double frozen + MLP tanpa penghapusan otomatis |
 | [eksperimen_double_frozen_mlp.md](eksperimen_double_frozen_mlp.md) | Eksperimen S3 double frozen + MLP |
