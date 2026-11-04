@@ -1,10 +1,16 @@
 # Katalog eksperimen AES
 
+## E44 · E43 + MSE dan ListNet · S3 native
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb) · [Source](AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb) · [Metode dan paper](../../docs/eksperimen/eksperimen_e44_listnet_native_gpu.md).
+
+Arsitektur E43 tetap; loss menjadi MSE+0,1×ListNet kelompok soal sama dalam batch efektif8. Singleton hanya MSE. RoBERTa fine-tuned, Scalar Mix/gamma, BiGRU64/arah, co-attention, masked mean, BGE frozen dan MLP tetap; LR5e-6/1e-4. S3 saja, satu5-fold, maksimal25epoch, patience5. Format native 90cell kode tanpa magic. Excel05 memisahkan MSE/ranking/gabungan/cakupan; Excel04 menambah prediksi validasi OOF perjawaban. Inferensi tetap satu jawaban→satu nilai. Dasar AES Yangdkk.(2020); fixed0,1adalah adaptasi, bukan optimum paper. Belum ada hasil penelitian E44; acuan E43 dipertahankan.
+
 ## E43 · E42 + masked mean pooling · S3 native
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb) · [Source](AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb) · [Metode dan paper](../../docs/eksperimen/eksperimen_e43_masked_mean_native_gpu.md).
 
-Hanya attention pooling sesudah matching E42 diganti masked mean atas token valid. Scalar Mix + gamma, BiGRU64 per arah, co-attention, BGE frozen dan MLP tetap. S3 saja, 5-fold sekali, maksimal 25 epoch, patience 5, satu refit dan satu test; Python biasa tanpa magic. Excel 02 membedakan bobot mean dari co-attention; Excel 05 menambahkan MAE dan jumlah selisih ≤1/5/10 poin pada CV/OOF development. Dasar MeanOverTime dari Taghipour & Ng (2016), dengan batas adaptasi dijelaskan. Belum ada hasil penelitian E43. [E42 acuan langsung](../../docs/eksperimen/eksperimen_e42_gamma_native_gpu.md) dan E30 lengkap tidak ditimpa.
+Hanya attention pooling sesudah matching E42 diganti masked mean atas token valid. Scalar Mix + gamma, BiGRU64 per arah, co-attention, BGE frozen dan MLP tetap. S3 saja, 5-fold sekali, maksimal 25 epoch, patience 5, satu refit dan satu test; Python biasa tanpa magic. Excel 02 membedakan bobot mean dari co-attention; Excel 05 menambahkan MAE dan jumlah selisih ≤1/5/10 poin pada CV/OOF development. Dasar MeanOverTime dari Taghipour & Ng (2016), dengan batas adaptasi dijelaskan. E43 kini acuan aktif: mean RMSE CV5,8876, RMSE test5,1265, MAE test3,7817 pada hasil yang diaudit. [E42 acuan langsung](../../docs/eksperimen/eksperimen_e42_gamma_native_gpu.md) dan E30 lengkap tidak ditimpa.
 
 ## E39 · E30 MLP · BiGRU128 per arah · S3 native
 
