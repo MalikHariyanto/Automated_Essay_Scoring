@@ -1,5 +1,11 @@
 # Eksperimen lanjutan · acuan aktif E43
 
+## Dua kandidat paralel E44 dan E45
+
+Pengguna menyetujui E45 sebagai kode kedua,langsung dari E43. E44 mengujiMSE+0,1×ListNet;E45 tetapMSE dan memperluas ScalarMix4layerterakhir menjadi seluruh12layerTransformerRoBERTa. Gamma,LR5e-6/1e-4,BiGRU64perarah,co-attention,maskedmean,BGEfrozen,MLP dan dropout tetapE43. Setiap kandidat S3saja,satu5fold,maks25epoch,patience5,satu refit+test,tanpasweepseed/kontrolulang. E43tetapacuan;belum ada hasil penelitianE45. [Notebook/metode E45](docs/eksperimen/eksperimen_e45_scalar_mix12_native_gpu.md).
+
+Dasar E45:ELMo/Petersdkk.(2018)dan implementasi resmiAllenNLP yang mencampur seluruhlayerTransformer dengan `ScalarMix(config.num_hidden_layers)`/`hidden_states[1:]`. Embeddingawal tidak dicampur langsung;parameterembeddingtetapdilatih. E45menambah8logit tanpaRNGtambahan,12bobotawal1/12,gammaawal1;guard jumlahlayer haruscocok modelaktual. Tidak menambahforwardencoderbaru;overheadmixing/gradien tetapperlu diukur. Excel05menyimpan72barisbobot/gamma,Excel04menambahOOFperjawaban,terpisahdaritest. Pilih dariCV,bukan melihat test terlebih dahulu;gabungan ranking+12layerbaru dipertimbangkan setelahhasilmasing-masingmendukung.
+
 ## Keputusan 5 November 2026 dan implementasi E44
 
 Pengguna menetapkan **E43 sebagai acuan pengembangan berikutnya**. Hasil yang diaudit: mean RMSE CV5,8876; RMSE test5,1265; MAE test3,7817. E43 mempertahankan Scalar Mix empat layer+gamma, BiGRU64 per arah, co-attention respons–referensi, masked mean token valid, RoBERTa768+BGEproyeksi256→concat1024→MLP. Encoder5e-6,komponen lain1e-4,BGEfrozen,dropoutMLP0,1,S3saja,5fold sekali,maks25epoch,patience5. E30 tetap kontrol historis. E43 unggul pada3/5fold atas E42;Fold4masih7,5279. Kenaikan kinerja test belum menjadi bukti keunggulan yang pasti pada data baru. Hasil/HTML/source lama dipertahankan.

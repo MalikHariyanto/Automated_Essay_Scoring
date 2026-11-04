@@ -2,7 +2,9 @@
 
 Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **satu label `rater` (0–100)**. Notebook berjalan di Colab; HTML untuk belajar dan membaca hasil.
 
-**Eksperimen terbaru E44:** [Colab MSE + ListNet dari E43](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb), ranking hanya jawaban untuk soal yang sama, S3 saja, 5-fold/25 epoch/patience5. [Metode dan paper](docs/eksperimen/eksperimen_e44_listnet_native_gpu.md). E43 tetap acuan; belum ada hasil penelitian E44.
+**Kandidat kedua E45:** [Colab Scalar Mix seluruh12layer dari E43](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb), loss tetapMSE,S3saja,5-fold/25epoch/patience5. [Metode dan paper](docs/eksperimen/eksperimen_e45_scalar_mix12_native_gpu.md). Belum ada hasil penelitianE45.
+
+**Kandidat E44:** [Colab MSE + ListNet dari E43](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb), ranking hanya jawaban untuk soal yang sama, S3 saja, 5-fold/25 epoch/patience5. [Metode dan paper](docs/eksperimen/eksperimen_e44_listnet_native_gpu.md). E43 tetap acuan; belum ada hasil penelitian E44.
 
 **Acuan aktif E43:** [Colab masked mean pooling dari E42](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb), S3 saja, 5-fold/25 epoch/patience 5, format Python biasa. [Metode dan paper](docs/eksperimen/eksperimen_e43_masked_mean_native_gpu.md). Hasil yang diaudit: mean RMSE CV5,8876, RMSE test5,1265, MAE test3,7817; tabel hasil historis di bawah tetap dipertahankan.
 

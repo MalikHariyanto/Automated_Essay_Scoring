@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E45 · E43 + Scalar Mix seluruh 12 layer · S3 native
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb) · [Source](AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb) · [Metode dan paper](../../docs/eksperimen/eksperimen_e45_scalar_mix12_native_gpu.md).
+
+Kandidat kedua bersama E44,langsung dari E43. Campuran layer9–12 diperluas menjadi1–12,bobotawal1/12,gamma tetap. LossMSE dan seluruh komponen/LR tetap E43;tanpaListNet. S3saja,satu5fold,maks25epoch,patience5;Python native89cell kode. Excel05mengekspor72baris bobot/gamma;Excel04menambahOOFperjawaban. Dasar ELMo/AllenNLPseluruhlayer,belum terbuktiunggulAES. Belum ada hasil penelitianE45;E43tetapacuan.
+
 ## E44 · E43 + MSE dan ListNet · S3 native
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb) · [Source](AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb) · [Metode dan paper](../../docs/eksperimen/eksperimen_e44_listnet_native_gpu.md).
