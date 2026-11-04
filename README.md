@@ -2,6 +2,8 @@
 
 Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **satu label `rater` (0–100)**. Notebook berjalan di Colab; HTML untuk belajar dan membaca hasil.
 
+**Eksperimen terbaru E43:** [Colab masked mean pooling dari E42](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb), S3 saja, 5-fold/25 epoch/patience 5, format Python biasa. [Metode dan paper](docs/eksperimen/eksperimen_e43_masked_mean_native_gpu.md). Belum ada hasil penelitian E43; tabel hasil historis di bawah tetap dipertahankan.
+
 | Tujuan | Mulai dari |
 | --- | --- |
 | Melanjutkan dari akun/chat baru | **[Panduan untuk AI](PANDUAN_AI_PROYEK.md)**, [pindah akun](PINDAH_AKUN.md), [status proyek](STATUS_PROYEK.md) |

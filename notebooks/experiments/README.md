@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E43 · E42 + masked mean pooling · S3 native
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb) · [Source](AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb) · [Metode dan paper](../../docs/eksperimen/eksperimen_e43_masked_mean_native_gpu.md).
+
+Hanya attention pooling sesudah matching E42 diganti masked mean atas token valid. Scalar Mix + gamma, BiGRU64 per arah, co-attention, BGE frozen dan MLP tetap. S3 saja, 5-fold sekali, maksimal 25 epoch, patience 5, satu refit dan satu test; Python biasa tanpa magic. Excel 02 membedakan bobot mean dari co-attention; Excel 05 menambahkan MAE dan jumlah selisih ≤1/5/10 poin pada CV/OOF development. Dasar MeanOverTime dari Taghipour & Ng (2016), dengan batas adaptasi dijelaskan. Belum ada hasil penelitian E43. [E42 acuan langsung](../../docs/eksperimen/eksperimen_e42_gamma_native_gpu.md) dan E30 lengkap tidak ditimpa.
+
 ## E39 · E30 MLP · BiGRU128 per arah · S3 native
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E39_E30_S3_BiGRU128_Native_Learnable_GPU.ipynb) · [Source](AES_300_E39_E30_S3_BiGRU128_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e39_bigru128_native_gpu.md).
