@@ -1,5 +1,7 @@
 # E41 Scalar Mix dan E30 MLP acuan native
 
+**Pembaruan pengguna:** E30 acuan terbaru harus lengkap S1/S2/S3. Gunakan [E30 acuan lengkap native](e30_acuan_lengkap_native_gpu.md). Uraian E30 S3 saja di bawah merekam varian yang dikirim sebelumnya; E41 tetap S3 saja.
+
 Pengguna meminta dua notebook: E41 dengan campuran empat layer RoBERTa terakhir dan E30 MLP acuan dengan format kode terbaru, terstruktur serta tanpa cell magic. Keduanya merupakan notebook mandiri S3 saja. Source E30 historis dan seluruh hasil/HTML lama tetap utuh.
 
 | Notebook | Colab | Source |
