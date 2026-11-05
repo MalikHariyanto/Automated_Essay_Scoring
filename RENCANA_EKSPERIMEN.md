@@ -1,5 +1,11 @@
 # Eksperimen lanjutan · acuan aktif E43
 
+## Keputusan terbaru: E48 LDS-weighted MSE dari E43
+
+Pengguna mempertahankan seluruh arsitektur E43 dan menyetujui pengujian LDS-weighted MSE. [Notebook dan rancangan E48](docs/eksperimen/eksperimen_e48_lds_native_gpu.md). Distribusi label hanya train fold;Gaussian5/sigma2,bin1poin,inverse setelah smoothing,mean bobot training1. Label asli tidak diubah. Refit menghitung ulang240development;test tidak menentukan bobot. Metrik/earlystop tetap tanpa bobot. S3,5CVbaru,25epoch/patience5,saturefit+test;upload cukupExcel tanpaZIPacuan. Jadwal kembali E43 asli. Landasan Yangdkk.ICML2021DIR,termasukSTS-B;adaptasiAESbelumterbuktiunggul. Belum ada hasilpenelitianE48.
+
+HasilE46/E47 sudah dianalisis:RMSEtest5,3863/8,9816 danMAE4,1258/7,6945,lebihburukE43. CV keduanya adalahhasil lama yangdipakaiulang. Targetpengguna60/60dalam±3,alternatif±5;E43mentah28/60dalam±3dan45/60dalam±5. Hasiltesthistorisbersifateksploratif;pilihpengaturanmelaluivalidasi. Bagian di bawah menyimpan urutan keputusan historis.
+
 ## Setelah hasil E44/E45: audit refit E46/E47 disetujui
 
 E44 telah selesai:meanRMSECV6,2100/test6,0337/MAEtest4,5917. E45selesai:meanRMSECV5,7645/test6,3814/MAEtest4,8481. E45bukan kalahpadasemuaukuran;CV-nya lebihbaikE43,tetapitestlebihburuk. E43tetapacuanpengguna. Keduanyarefit7epoch,sedangkanE43refit18. Exporterrusakpadaduasheet ringkasan akibatvariabel`file`late-boundtertimpaloopOOF;60test/240OOF tersimpan,makaanalisisdapatdihitungulangtanparetraining. Sumber/HTMLlama belumdiubah.

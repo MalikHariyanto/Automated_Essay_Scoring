@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E48 · E43 + LDS-weighted MSE · S3 native
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E48_E43_S3_LDS_WeightedMSE_Native_Learnable_GPU.ipynb) · [Source](AES_300_E48_E43_S3_LDS_WeightedMSE_Native_Learnable_GPU.ipynb) · [Metode dan paper](../../docs/eksperimen/eksperimen_e48_lds_native_gpu.md).
+
+Arsitektur dan protokol E43 tetap; loss memakai bobot inverse dari distribusi skor training yang dihaluskan LDS. Gaussian5/sigma2,bin1poin,mean bobot training1;tidak normalisasi ulang per microbatch. Evaluasi/earlystop tanpa bobot. Cukup datasetExcel;S3saja,5CVbaru,maks25epoch,patience5,saturefit+test,tanpasweepseed. OutputOOF/rincian selisih test/audit bobot dan gate sebelumZIP. Belum ada hasil penelitian E48;E43tetapacuan.
+
 ## E46/E47 · diagnostik refit, CV lama dipakai ulang
 
 [**E46 Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E46_E43_S3_Refit18_Schedule25_Native_Learnable_GPU.ipynb) · [Source E46](AES_300_E46_E43_S3_Refit18_Schedule25_Native_Learnable_GPU.ipynb) · [**E47 Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E47_E45_S3_Refit7_Schedule25_Native_Learnable_GPU.ipynb) · [Source E47](AES_300_E47_E45_S3_Refit7_Schedule25_Native_Learnable_GPU.ipynb) · [Metode/pemakaian](../../docs/eksperimen/eksperimen_e46_e47_refit_schedule_native_gpu.md).
