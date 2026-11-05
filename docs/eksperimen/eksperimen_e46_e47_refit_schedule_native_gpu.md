@@ -34,7 +34,7 @@ FiturBGEfrozen300×1024dibacadarifile02ZIPterverifikasi,ID/dimensi/finite diperi
 
 S3saja;ScalarMix4atau12+gamma;BiGRU64perarah;co-attention/matching128;maskedmean1/Nvalid,padding0;RoBERTa768+BGEproyeksi256→concat1024→MLP256/GELU/Dropout0,1→1. LRencoder5e-6,semuakomponenlain1e-4. MSEtarget0–1,AdamW,decay0,01,warmup10%,clipping1,microbatch1/batchefektif8. TRAIN_SEED42satu konstanta,tanpasweepseed/ListNet/cosine/S1/S2. Patience5diverifikasipadaCVlama;earlystoppingtidakditerapkanpadarefitdurasiterkunci.
 
-Notebook187cell/91cellkodePythonbiasa,semuafungsiterlihatpersection,tanpamagic/worker/importrepo. `EXPECTED_REFIT_EPOCHS`dan`REFIT_SCHEDULER_EPOCHS`terlihatpadahyperparameter. PetaX/y/model/concat/optimizer/fitmengikutiE43/E45. Cache,folder,checkpointdanZIPterpisah. Resumememulihkanoptimizer/scaler/scheduler/loader/RNGdanmenolaksumber/configberbeda.
+Notebook189cell/92cellkodePythonbiasa,semuafungsiterlihatpersection,tanpamagic/worker/importrepo. `EXPECTED_REFIT_EPOCHS`dan`REFIT_SCHEDULER_EPOCHS`terlihatpadahyperparameter. PetaX/y/model/concat/optimizer/fitmengikutiE43/E45. Cache,folder,checkpointdanZIPterpisah. Resumememulihkanoptimizer/scaler/scheduler/loader/RNGdanmenolaksumber/configberbeda.
 
 ## Lima Excel dan pengaman unduhan
 
@@ -49,6 +49,28 @@ OutputtetaplimaExcelstandar,satupaket`Hasil_AES_300_E46_E43_S3_Refit18_Schedule2
 BugE44/E45diperbaikipadaexporterbaru:dalamgenerator`final_rows`dan`summaries`,filediikatmelaluidefaultargument,sehinggatidakberubahketikaloopOOFberjalan. SumberhistorisE43/E44/E45tidakditimpa.
 
 **SebelumZIPdibuat**,gatewajibmemeriksalimaExcel,datasetdanvektor1024/128finite/lengkap,tabeltest1baris,CV5baris,ringkasanCV1baris,jumlah/ID/labelprediksitest,keempatmetriktestdariprediksitersimpan,mean/SDCV,historirefit,bobotcampuran,danLRaktualsesuaischeduler. Kegagalanmenimbulkanpesan**Unduhan dihentikan**;celltidakmenawarkanZIPbaru. Bukti`verifikasi_unduhan.json`disimpanlokal,paketZIPtetaptepat5Excel. Pemeriksaaninimencakupbugyangdiketahui,bukanjaminanbebasseluruhkemungkinanbug.
+
+## Rincian prediksi tanpa mengubah training
+
+Pembaruan pelaporan 5 November 2026 menambah tiga tabel pada **04_Prediksi_dan_Evaluasi.xlsx** dan tampilan Colab:
+
+| Sheet | Isi |
+|---|---|
+| Nilai Guru dan Prediksi | Seluruh jawaban **test**, skor guru, prediksi mentah 0–100, pembulatan, normalisasi keduanya, selisih bertanda/absolut, kategori selisih |
+| Selisih Tepat | Sama persis, beda **tepat** 1/2/3/4/5/10 poin, serta selisih lain; jumlah dan persentase sebelum/sesudah pembulatan |
+| Toleransi Selisih | Jumlah/persentase dengan selisih **maksimal** 0/1/2/3/4/5/10 poin (≤n), sebelum/sesudah pembulatan |
+
+Normalisasi = `(nilai−score_min)/(score_max−score_min)`. Pada rentang 0–100, 1 poin setara 0,01, dan 10 poin setara 0,10. Normalisasi hanya mengganti satuan: tidak membuat prediksi lebih tepat. Jumlah kategori yang setara tetap sama; rekap dihitung dalam poin agar artefak floating point saat membandingkan 0,01 tidak mengubah batas. Prediksi mentah yang di luar rentang dapat memiliki salinan normalisasi di luar 0–1; disimpan apa adanya. Kolom prediksi dibatasi/pembulatan terpisah dari mentah.
+
+Contoh ilustrasi: guru80, prediksi84,6 → selisih mentah4,6; normalisasi0,846 versus0,8, selisih0,046; dibulatkan85 → **beda tepat5poin**. Sebelum pembulatan termasuk ≤5, tetapi bukan beda tepat5. Sama persis pada nilai mentah berarti benar-benar sama, tanpa toleransi tersembunyi. Kategori tepat yang tidak dipilih, termasuk beda6/7/8/9 atau desimal, masuk `Selisih lain`; total kategori tepat tetap seluruh N test. Rekap tidak menggabungkan data training/OOF dengan test.
+
+Metrik penelitian tetap memakai aturan sebelumnya: RMSE/Pearson dari mentah, QWK/AC2 dari salinan kategori terdekat (clip, tepat .5 ke bawah). Gate unduhan membaca kembali Excel tersimpan dan menghitung ulang semua rincian/rekap sebelum ZIP dibuat. Tidak ada perubahan training, arsitektur, LR, label, split atau prediksi.
+
+`TRAINING_CODE_SHA256` mempertahankan identitas training versi awal E46/E47 agar folder/checkpoint yang sama masih dapat dilanjutkan pada workspace yang sama. `NOTEBOOK_CODE_SHA256` tetap berubah untuk mencatat source laporan terbaru. Pengujian membandingkan definisi training dan identitas cache dengan commit `2181cfc`. Jika kelak training berubah, identitas training harus diperbarui.
+
+Jika training sudah berjalan, biarkan selesai dan simpan ZIP. Buka [Colab pembaru ZIP tanpa training](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/05_Perbarui_Prediksi_Hasil_Tanpa_Training.ipynb), upload ZIP E46/E47 lengkap, lalu unduh `_Prediksi_Lengkap.zip`. Tidak memerlukan GPU/dataset/model. ZIP sumber utuh, hanya Excel04 diubah; empat Excel lain disalin byte-identik. Metrik/CV yang sudah ada dipertahankan. Pembaru menolak hasil dengan ringkasan kosong; perbaikan E44/E45 lama tidak termasuk cakupannya.
+
+[Verifikasi pembaruan pelaporan](../verifikasi/verification_prediction_breakdown.md).
 
 ## Rujukan dan interpretasi
 

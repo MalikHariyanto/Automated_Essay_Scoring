@@ -264,6 +264,12 @@ def validate_refit_download(folder, bundle, manifest, cfg):
         display_value = summary[0].get(title)
         if not isinstance(display_value,str) or '(n=5)' not in display_value or abs(float(display_value.split(' ± ')[0])-np.mean(values))>5e-4 or abs(float(display_value.split(' ± ')[1].split(' (n=')[0])-np.std(values,ddof=1))>5e-4:
             raise RuntimeError('Unduhan dihentikan: ringkasan CV tidak cocok dengan lima fold: '+key)
+    try:
+        verify_prediction_report_tables({'Nilai Guru dan Prediksi':prediction,
+            'Selisih Tepat':rows(file,'Selisih Tepat'),'Toleransi Selisih':rows(file,'Toleransi Selisih')},
+            cfg['score_min'],cfg['score_max'])
+    except ValueError as error:
+        raise RuntimeError('Unduhan dihentikan: rincian/rekap selisih prediksi tidak cocok: '+str(error)) from error
     history = rows(names[4],'Fusion (S3)')
     if len(history)!=cfg['expected_refit_epochs'] or any(r['Tahap']!='Latihan final' for r in history):
         raise RuntimeError('Unduhan dihentikan: history refit baru tidak lengkap atau tercampur CV lama.')
@@ -283,6 +289,6 @@ def validate_refit_download(folder, bundle, manifest, cfg):
             raise RuntimeError('Unduhan dihentikan: jejak LR tidak cocok dengan scheduler.')
     proof = {'status':'PASSED','excel_count':5,'test_rows':len(prediction),'cv_rows_reused':5,
              'new_cv_fits':0,'refit_epochs':len(history),'test_metrics_recomputed_match':True,
-             'summaries_nonempty':True,'lr_trace_matches':True}
+             'summaries_nonempty':True,'lr_trace_matches':True,'prediction_breakdown_verified':True}
     dump(folder/'verifikasi_unduhan.json',proof)
     return proof

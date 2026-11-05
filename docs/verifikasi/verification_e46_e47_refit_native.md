@@ -1,5 +1,7 @@
 # Verifikasi E46/E47 refit-only dan gate unduhan — 5 November 2026
 
+Catatan ini merekam **versi awal** E46/E47 pada commit `2181cfc`. Pembaruan pelaporan berikutnya menambah rincian prediksi tanpa mengubah training; identitas source dan pengujiannya ada di [verifikasi rincian prediksi](verification_prediction_breakdown.md). Hash/cell count di bawah adalah versi awal.
+
 Kedua notebook memakai ulang CV acuan dan melakukan satu refit baru dengan horizon scheduler25. Pengujian berikut adalah fixture sintetis/randomTransformerCPU, bukan training/pretrainedGPU atau hasil penelitian E46/E47.
 
 ## Identitas source

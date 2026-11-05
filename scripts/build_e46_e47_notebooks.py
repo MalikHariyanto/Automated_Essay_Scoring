@@ -8,6 +8,9 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 PLACEHOLDER = '__NOTEBOOK_CODE_SHA256__'
+TRAINING_HASH = {
+    46:'162193a0b2ab2bbb10fcbff69ee9400515b726d4f33cd8eef410194e69f0de21',
+    47:'e303f5375a5d11aeed78d315f8c53a34c2d81a988e149e6d6e9bd330111ca429'}
 SPECS = [
     dict(number=46,base='E43',pin='7241a21dfec37c942948b754da3960fba4c7731c',
          base_name='AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU',layers=4,refit=18,
@@ -76,7 +79,11 @@ def build_one(spec):
         s=c['source'] if isinstance(c['source'],str) else ''.join(c['source'])
         s=s.replace(old_hash,PLACEHOLDER).replace(spec['base_name'],'__REFIT_NAME__')
         s=s.replace(spec['base'],e).replace('__REFIT_NAME__',name)
-        if role=='imports':s=s.replace('from collections import Counter','from collections import Counter\nfrom io import BytesIO')
+        if role=='imports':
+            s=s.replace('from collections import Counter','from collections import Counter\nfrom io import BytesIO')
+            s+=f"\n# Identitas training tetap; pembaruan rincian laporan tidak memulai training ulang.\nTRAINING_CODE_SHA256 = '{TRAINING_HASH[spec['number']]}'\n"
+        if role=='dataset_definitions':
+            s=replace_once(s,'code_hash = NOTEBOOK_CODE_SHA256','code_hash = TRAINING_CODE_SHA256')
         if role=='hyperparameters':
             s+=f'''\n# REUSE CV DAN REFIT — satu training baru, bukan lima fold baru.
 CV_SOURCE_FILE = os.environ.get('AES300_CV_ZIP', '')
@@ -155,9 +162,25 @@ REFIT_SCHEDULER_EPOCHS = EPOCHS  # Horizon mengikuti 25 epoch pada CV acuan.
         if role=='training_execute':
             s=s.replace('observer=on_training_stage)','observer=on_training_stage,reused_cv=reused_cv)')
             s=s.replace("'Hasil validasi silang (lima fold)'","'CV acuan dipakai ulang (bukan lima fit baru)'")
+            s=replace_once(s,"    show(comparison,'Nilai guru, prediksi mentah, dan pembulatan pada data uji',rows=len(comparison),columns=8)",
+'''    prediction_rows=[{'ID Jawaban':friendly_value('row_id',r['row_id']),
+                      'Nilai Guru':r['skor_guru'],'Prediksi S3':r['Prediksi S3'],
+                      'Pembulatan S3':r['Pembulatan S3']} for r in comparison.to_dict('records')]
+    prediction_tables=prediction_report_tables(prediction_rows,cfg['score_min'],cfg['score_max'])
+    for title,data in prediction_tables.items():
+        frame=pd.DataFrame(data)
+        show(frame,title+' — TEST',rows=len(frame),columns=len(frame.columns))''')
         if role=='definition:evaluation_report':
             s=s.replace('def final_rows():','def final_rows(file=file):').replace('def summaries():','def summaries(file=file):')
+            s=replace_once(s,"        sheets['Nilai Guru dan Prediksi']=Table(['ID Jawaban','Nilai Guru','Prediksi S3','Pembulatan S3','Selisih S3'],per_answer())",'''        parameters={r['name']:r['value'] for r in source.records('01_konfigurasi.xlsx','Parameter')}
+        original_columns=['ID Jawaban','Nilai Guru','Prediksi S3','Pembulatan S3','Selisih S3']
+        original_rows=[dict(zip(original_columns,r)) for r in per_answer()]
+        detailed=prediction_report_tables(original_rows,parameters['score_min'],parameters['score_max'])
+        for title,records in detailed.items():
+            headers=list(records[0])
+            sheets[title]=Table(headers,[[r[key] for key in headers] for r in records])''')
             s=s.replace("['Ringkasan Validasi','", "['Asal CV','Lima fold diimpor dari ZIP acuan terverifikasi. Tidak ada training/evaluasi CV baru.'],\n        ['Ringkasan Validasi','")
+            s=s.replace("['Asal CV','", "['Rincian selisih','Selisih Tepat =n; Toleransi Selisih ≤n. Normalisasi 0–1 berbeda dari pembulatan: 1 poin = 0,01. Hanya data test; nilai mentah tidak diubah untuk metrik.'],\n        ['Asal CV','")
             # E47 inherits the old OOF export loop; its cv-fold filenames do not occur here.
             addition="""    old = '09_CV_acuan_dipakai_ulang.xlsx'
     sheets['Provenansi CV'] = source.copy(old,'Provenansi')
@@ -199,7 +222,15 @@ export_reused_cv(reused_cv,journal)
 print('CV acuan lolos verifikasi:',reused_cv['base_experiment'],'| 5 fold lama | 0 fit baru | refit',reused_cv['selected_epoch'],'epoch')
 show(pd.DataFrame(reused_cv['cv_rows']),'CV acuan yang dipakai ulang',rows=5)
 ''','outputs':[],'execution_count':None}]
-    n['cells'][0]['source']=intro(spec,name)
+    prediction_source=(ROOT/'scripts/prediction_report_native.py').read_text()
+    prediction_tree=ast.parse(prediction_source)
+    prediction_helpers='\n\n'.join(ast.get_source_segment(prediction_source,x) for x in prediction_tree.body
+                                 if isinstance(x,ast.FunctionDef) and x.name!='update_prediction_zip')+'\n'
+    index=next(i for i,c in enumerate(n['cells']) if c['metadata'].get(role_key)=='definition:cv_reuse_helpers')+1
+    n['cells'][index:index]=[
+        {'cell_type':'markdown','metadata':{},'source':'## Rincian prediksi dan selisih — pelaporan saja\n\nSkor mentah 0–100, salinan normalisasi 0–1, dan pembulatan ditampilkan terpisah. Kategori tepat 0/1/2/3/4/5/10 berbeda dari toleransi ≤n. Fungsi ini tidak menjalankan model atau mengubah training.\n'},
+        {'cell_type':'code','metadata':{role_key:'definition:prediction_report_helpers'},'source':prediction_helpers,'outputs':[],'execution_count':None}]
+    n['cells'][0]['source']=intro(spec,name)+'\n**Rincian prediksi lengkap:** Excel04 → Nilai Guru dan Prediksi (mentah, normalisasi, pembulatan); Selisih Tepat (=0/1/2/3/4/5/10 poin); Toleransi Selisih (≤0/1/2/3/4/5/10). Jumlah dan persentase hanya test. Perubahan ini khusus laporan; identitas training/checkpoint versi awal E46/E47 dipertahankan.\n'
     fp=hashlib.sha256('\n'.join(c['source'] for c in n['cells'] if c['cell_type']=='code').encode()).hexdigest()
     for i,c in enumerate(n['cells']):
         c['source']=c['source'].replace(PLACEHOLDER,fp);c['id']=e.lower()+f'-{i:03d}-'+hashlib.sha256(c['source'].encode()).hexdigest()[:8]
@@ -210,7 +241,8 @@ show(pd.DataFrame(reused_cv['cv_rows']),'CV acuan yang dipakai ulang',rows=5)
         refit_epochs=spec['refit'],scheduler_horizon_epochs=25,cv_source_experiment=spec['base'],cv_source_zip_sha256=spec['zip_sha'],
         loss='MSE',ranking=False,new_cv_results=False,
         treatment='Keep parent model/selected epochs; align refit scheduler horizon25 with reused CV; no new CV fits',
-        download_validation_required=True,export_summary_closure_fixed=True)
+        download_validation_required=True,export_summary_closure_fixed=True,prediction_breakdown=True,
+        reporting_only_update=True,training_code_sha256=TRAINING_HASH[spec['number']])
     text=json.dumps(n,ensure_ascii=False,indent=1)+'\n'
     for folder in ['notebooks/experiments','aes-learning/notebooks/experiments']:(ROOT/folder/(name+'.ipynb')).write_text(text)
     print(json.dumps({'name':name,'cells':len(n['cells']),'code_sha256':fp}))
