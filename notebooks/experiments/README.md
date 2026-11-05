@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E46/E47 · diagnostik refit, CV lama dipakai ulang
+
+[**E46 Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E46_E43_S3_Refit18_Schedule25_Native_Learnable_GPU.ipynb) · [Source E46](AES_300_E46_E43_S3_Refit18_Schedule25_Native_Learnable_GPU.ipynb) · [**E47 Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E47_E45_S3_Refit7_Schedule25_Native_Learnable_GPU.ipynb) · [Source E47](AES_300_E47_E45_S3_Refit7_Schedule25_Native_Learnable_GPU.ipynb) · [Metode/pemakaian](../../docs/eksperimen/eksperimen_e46_e47_refit_schedule_native_gpu.md).
+
+E46:resepE43/refit18epoch;E47:resepE45/refit7epoch. HorizonjadwalLRtetap25padasetiaprefit. Upload`fix_dataset_300.xlsx`+ZIPhasilE43atauE45asli. Hash/text/label/split/fold/settings/historyCVdiverifikasi;0CVbaru,5foldlamadipakaiulang,BGEbekudarifile02. Satu refit+testbaru,lossMSE,LRpuncak5e-6/1e-4,tanpasweepseed. Source187cell/91cellkodePythonbiasa. TabelCVlama/OOFlamadanrefit/testbarudipisahkan;bugringkasankosongdiperbaiki,gatedownloadmemverifikasifile/metric/count/vektor/LRsebelumZIP. BelumadahasilpenelitianE46/E47;E43tetapacuan.
+
 ## E45 · E43 + Scalar Mix seluruh 12 layer · S3 native
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb) · [Source](AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb) · [Metode dan paper](../../docs/eksperimen/eksperimen_e45_scalar_mix12_native_gpu.md).

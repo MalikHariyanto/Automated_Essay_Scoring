@@ -2,6 +2,8 @@
 
 Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **satu label `rater` (0–100)**. Notebook berjalan di Colab; HTML untuk belajar dan membaca hasil.
 
+**Diagnostik terbaru E46/E47:** [E46 Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E46_E43_S3_Refit18_Schedule25_Native_Learnable_GPU.ipynb) memakaiE43/refit18; [E47 Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E47_E45_S3_Refit7_Schedule25_Native_Learnable_GPU.ipynb) memakaiE45/refit7. Keduanya horizonLR25,memakaiulang5CVterverifikasi,tanpaCVbaru. Uploaddataset+ZIPhasilacuan. [Metode/input/pengaman unduhan](docs/eksperimen/eksperimen_e46_e47_refit_schedule_native_gpu.md). Belum ada hasilpenelitian.
+
 **Kandidat kedua E45:** [Colab Scalar Mix seluruh12layer dari E43](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb), loss tetapMSE,S3saja,5-fold/25epoch/patience5. [Metode dan paper](docs/eksperimen/eksperimen_e45_scalar_mix12_native_gpu.md). Belum ada hasil penelitianE45.
 
 **Kandidat E44:** [Colab MSE + ListNet dari E43](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb), ranking hanya jawaban untuk soal yang sama, S3 saja, 5-fold/25 epoch/patience5. [Metode dan paper](docs/eksperimen/eksperimen_e44_listnet_native_gpu.md). E43 tetap acuan; belum ada hasil penelitian E44.

@@ -1,5 +1,15 @@
 # Eksperimen lanjutan · acuan aktif E43
 
+## Setelah hasil E44/E45: audit refit E46/E47 disetujui
+
+E44 telah selesai:meanRMSECV6,2100/test6,0337/MAEtest4,5917. E45selesai:meanRMSECV5,7645/test6,3814/MAEtest4,8481. E45bukan kalahpadasemuaukuran;CV-nya lebihbaikE43,tetapitestlebihburuk. E43tetapacuanpengguna. Keduanyarefit7epoch,sedangkanE43refit18. Exporterrusakpadaduasheet ringkasan akibatvariabel`file`late-boundtertimpaloopOOF;60test/240OOF tersimpan,makaanalisisdapatdihitungulangtanparetraining. Sumber/HTMLlama belumdiubah.
+
+Auditkode memastikan `total_steps=len(loader)*epochs` danwarmup10%dari total. CVmenggunakanhorizon25epoch,refitmenggunakanselectedepochs7/18. Dengan192training/batch8,CVepoch7mempunyaiLRakhir80%puncak;refit240data7epochmencapaiLR0. WarmupCV2,5epoch menjadi0,7epoch saatrefit7,atau1,8epoch saatrefit18. Ini perbedaanprotokoloptimisasi yangdapatdiuji,bukankesalahanmatematis ataupenyebabturunnyatestyangsudahterbukti.
+
+**E46 disetujui:** resepmodelE43/ScalarMix4+gamma/MSE,trainrefit18epochpilihanCV,horizonscheduler25epoch. **E47 disetujui:** resepE45/ScalarMix12+gamma/MSE,trainrefit7epochpilihanCV,horizonscheduler25epoch. Tidakmenambahepochtrainmenjadi25,tidakubahLRpuncak/arsitektur/dropout/split/seed,tidakmemakaiListNet. [Dua notebook dan metode](docs/eksperimen/eksperimen_e46_e47_refit_schedule_native_gpu.md). BelumadahasilpenelitianE46/E47. LimaCVlama dipakaisebagaiinputpilihanepochsetelahhashZIP/dataset/fold/parametertersimpandiverifikasi;berartiinisecarajelasdiagnostikrefit,bukan5CVbaruatauangkaCVbaru. BGEfrozenvectorsdipakaiulangdarifile02,hasiltestlama tidakmemilihepoch. Exporterbaru memperbaikigeneratorfilelate-bound dangatewajibmemblokirdownloadbilatable/metric/count/vektor/LRtidakvalid. Testhistoristetapeksploratif;perubahanini tidakdapatdiklaimmeningkatkanCVkarenaCVsama. Dua refitlebihhematdaripada12fitduaresepCVbaru.
+
+Rujukan auditoptimisasi: Mosbach,Andriushchenko&Klakow(2021), [On the Stability of Fine-tuning BERT: Misconceptions, Explanations, and Strong Baselines](https://arxiv.org/abs/2006.04884), [repositori penulis](https://github.com/uds-lsv/bert-stable-fine-tuning). README/abstrakresmidiverifikasi:membahasBERT/RoBERTa/ALBERT,kesulitanoptimisasi danvariasigeneralisasi. Paper tidakmenetapkanhorizonrefit25sebagaioptimumAES;penyelarasan25adalahhipotesismetodologisberdasarkankodeproyek.
+
 ## Dua kandidat paralel E44 dan E45
 
 Pengguna menyetujui E45 sebagai kode kedua,langsung dari E43. E44 mengujiMSE+0,1×ListNet;E45 tetapMSE dan memperluas ScalarMix4layerterakhir menjadi seluruh12layerTransformerRoBERTa. Gamma,LR5e-6/1e-4,BiGRU64perarah,co-attention,maskedmean,BGEfrozen,MLP dan dropout tetapE43. Setiap kandidat S3saja,satu5fold,maks25epoch,patience5,satu refit+test,tanpasweepseed/kontrolulang. E43tetapacuan;belum ada hasil penelitianE45. [Notebook/metode E45](docs/eksperimen/eksperimen_e45_scalar_mix12_native_gpu.md).
