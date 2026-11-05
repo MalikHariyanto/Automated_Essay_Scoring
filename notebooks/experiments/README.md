@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E49 · E43 + LDS inverse akar setelah smoothing
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E49_E43_S3_LDS_InverseSqrt_Native_Learnable_GPU.ipynb) · [Source](AES_300_E49_E43_S3_LDS_InverseSqrt_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e49_lds_inverse_sqrt_native_gpu.md).
+
+Satu perubahan dariE48:inverse pangkat1→0,5SETELAHsmoothing. Model/LR/protokolE43tetap;kernel5/sigma2/bin1tidakdiubah,tanpacap. CukupdatasetExcel,S3saja,5CVbaru,25epoch/patience5,saturefit+test. Meanbobottraining1,tanpanormalisasiulangpermicrobatch. OOF,prediksilengkap,selisihtepat/toleransi,auditpower/fingerprintdengangatesebelumZIP. BelumadahasilpenelitianE49.
+
 ## E48 · E43 + LDS-weighted MSE · S3 native
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E48_E43_S3_LDS_WeightedMSE_Native_Learnable_GPU.ipynb) · [Source](AES_300_E48_E43_S3_LDS_WeightedMSE_Native_Learnable_GPU.ipynb) · [Metode dan paper](../../docs/eksperimen/eksperimen_e48_lds_native_gpu.md).

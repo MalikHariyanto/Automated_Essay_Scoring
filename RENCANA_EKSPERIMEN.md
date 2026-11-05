@@ -1,5 +1,11 @@
 # Eksperimen lanjutan · acuan aktif E43
 
+## Keputusan terbaru: E49 LDS dengan inverse akar
+
+Pengguna menyetujui satu uji lanjutan setelah E48:kurangi eksponen inverseSETELAHsmoothing1→0,5. Gaussian5/sigma2/bin1,model/LR/dropout/scheduler/input/split E43 tetap. Tidak menambahcap/sampleratauTransformerpengganti. S3,5CVbaru,25epoch/patience5,saturefit+test,tanpaZIPacuan. [Notebook/metodeE49](docs/eksperimen/eksperimen_e49_lds_inverse_sqrt_native_gpu.md).
+
+E48sudahselesai:meanCV6,3908/test6,4777/MAE4,7292;empatfoldmemburuk,satuFold4membaik. Targettepatsetelahbulat6/60,raw≤3=29/60,≤5=39/60,>10=9/60. Bobotrare65 mencapai27,7485saatrefit;versiakar menghasilkan5,7106padadistribusitrainingyangsama. Ini temuanpembobotan,belumbuktisebabtunggalatauhasilE49. E43tetapacuan. Bandingkan melaluiCVterlebihdahulu;testhistoristetapeksploratif. Jika versi lebihlembut tetapkalah,pertahankanMSEE43sebelummengubahkomponenlain.
+
 ## Keputusan terbaru: E48 LDS-weighted MSE dari E43
 
 Pengguna mempertahankan seluruh arsitektur E43 dan menyetujui pengujian LDS-weighted MSE. [Notebook dan rancangan E48](docs/eksperimen/eksperimen_e48_lds_native_gpu.md). Distribusi label hanya train fold;Gaussian5/sigma2,bin1poin,inverse setelah smoothing,mean bobot training1. Label asli tidak diubah. Refit menghitung ulang240development;test tidak menentukan bobot. Metrik/earlystop tetap tanpa bobot. S3,5CVbaru,25epoch/patience5,saturefit+test;upload cukupExcel tanpaZIPacuan. Jadwal kembali E43 asli. Landasan Yangdkk.ICML2021DIR,termasukSTS-B;adaptasiAESbelumterbuktiunggul. Belum ada hasilpenelitianE48.
