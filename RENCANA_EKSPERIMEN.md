@@ -1,5 +1,11 @@
 # Eksperimen lanjutan · acuan aktif E43
 
+## Keputusan terbaru: E51 gated concatenation dari E50
+
+Pengguna menyetujui E51 langsung dari E50, mempertahankan multihead 4 dan seluruh komponen/LR/loss MSE. Satu perubahan fusion: gate per jawaban dengan Linear 1.024→2 + softmax, mengalikan kedua cabang dengan 2×alpha lalu concat 1.024. Logit awal nol menghasilkan pengali 1/1 dan prediksi awal identik E50; tambahan 2.050 parameter dilatih dengan LR head 1e-4. S3, 5 CV baru, 25 epoch/patience 5, satu refit/test, tanpa ZIP lama, loop seed atau kontrol ulang. [Metode dan Colab E51](docs/eksperimen/eksperimen_e51_gated_concat_native_gpu.md). Gate OOF/test disimpan dari forward prediksi yang sama; resume/regenerasi laporan tidak menambah evaluasi test. GMU Arevalo 2017 menjadi landasan; scalar softmax + concat/faktor 2 merupakan adaptasi, bukan replikasi GMU asli.
+
+E50 telah selesai: mean CV 5,7954, MAE validasi 4,4512, selisih mentah ≤5 sebanyak 157/240, menang 4/5 fold atas E43. Test E50: RMSE 5,3059/MAE 3,8856, mentah ≤3=30/60, ≤5=44/60, tepat bulat 5/60. Validasi E50 membaik, tetapi test E43 masih lebih baik (RMSE 5,1265/MAE 3,7817). Simpan E50 sebagai kandidat validasi; E51 menguji pengaturan RoBERTa–BGE di atas E50 sesuai pilihan pengguna. Belum ada hasil penelitian E51; pilih melalui validasi terlebih dahulu, sedangkan perbandingan test historis bersifat eksploratif.
+
 ## Keputusan terbaru: E50 multi-head co-attention4 dari E43
 
 Pengguna menyetujui penggantian modulco-attentionE43 menjadi4head×32,total128,denganQ/K/V/outputdipelajari. Dua arahsoftmaxindependen danroundtripperheaddipertahankan. BiGRU,ScalarMix4/gamma,maskedmean,BGEfrozen,fusionMLP/LRdanprotokolE43tetap;MSEbiasa,tanpaLDS/ranking. S3,5CVbaru,25epoch/patience5,saturefit+test,cukupExcel,tanpaZIP/seedloop/kontrolulang. [Metode/ColabE50](docs/eksperimen/eksperimen_e50_multihead_coattention_native_gpu.md). ReferensiVaswani2017+co-attentionAESZhangLitman2018;pilihan4headdanrangkaianproyekbelumterbuktioptimal.

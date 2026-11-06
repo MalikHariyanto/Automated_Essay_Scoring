@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E51 · E50 + gated concatenation
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E51_E50_S3_GatedConcat_Native_Learnable_GPU.ipynb) · [Source](AES_300_E51_E50_S3_GatedConcat_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e51_gated_concat_native_gpu.md).
+
+Gate per jawaban: Linear 1.024→2 + softmax; concat fitur dengan pengali 2×alpha, tetap 1.024 dimensi, tambahan 2.050 parameter. Logit awal nol menjaga fitur/prediksi awal identik E50. Semua komponen E50, MSE dan multihead 4 dipertahankan. Cukup dataset Excel; S3, 5 CV baru, maksimal 25 epoch/patience 5, satu refit dan test. Gate OOF/test tersimpan dalam cache prediksi; Excel 04 memuat alpha/pengali/statistik, 02 vektor sebelum/sesudah gate, dan 05 konfigurasi gate. Pemeriksaan ZIP wajib. Belum ada hasil penelitian E51.
+
 ## E50 · E43 + multi-head co-attention4
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb) · [Source](AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e50_multihead_coattention_native_gpu.md).
