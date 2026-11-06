@@ -2,6 +2,8 @@
 
 Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **satu label `rater` (0–100)**. Notebook berjalan di Colab; HTML untuk belajar dan membaca hasil.
 
+**E50 dari E43:** [Colab multi-head co-attention4](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb). BiGRU/ScalarMix/gamma/BGE/fusiontetap,MSEbiasa,tanpaLDS. CukupExcel;S3,5fold,25epoch/patience5. [Metode dan paper](docs/eksperimen/eksperimen_e50_multihead_coattention_native_gpu.md). BelumadahasilpenelitianE50.
+
 **E49 dari E43/E48:** [Colab LDS inverse akar](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E49_E43_S3_LDS_InverseSqrt_Native_Learnable_GPU.ipynb). Pangkat inverse setelah smoothing1→0,5;model/protokol tetap. Cukup datasetExcel;S3,5fold,25epoch/patience5. [Metode dan paper](docs/eksperimen/eksperimen_e49_lds_inverse_sqrt_native_gpu.md). Belum ada hasilpenelitianE49;E43tetapacuan.
 
 **E48 dari acuan E43:** [Colab LDS-weighted MSE](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E48_E43_S3_LDS_WeightedMSE_Native_Learnable_GPU.ipynb). Arsitektur tetap, hanya loss dibobot menurut distribusi skor training fold. S3,5fold,25epoch/patience5, cukup upload dataset Excel. Output OOF, rincian selisih test dan audit bobot LDS. [Metode dan paper](docs/eksperimen/eksperimen_e48_lds_native_gpu.md). Belum ada hasil penelitian E48.

@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E50 · E43 + multi-head co-attention4
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb) · [Source](AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e50_multihead_coattention_native_gpu.md).
+
+Co-attention128menjadi4head×32denganQKVOdipelajari,duaarah/roundtriptetap. BiGRU64/arah,ScalarMix4+gamma,BGEfrozen,fusionMLPtetap,MSEbiasa/LRE43. CukupdatasetExcel,S3,5CVbaru,maks25epoch/patience5,saturefit+test. OutputOOF/prediksilengkap/gatedownload,05ProyeksiMultihead24baris;02attentionrata-rataempathead. BelumadahasilpenelitianE50.
+
 ## E49 · E43 + LDS inverse akar setelah smoothing
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E49_E43_S3_LDS_InverseSqrt_Native_Learnable_GPU.ipynb) · [Source](AES_300_E49_E43_S3_LDS_InverseSqrt_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e49_lds_inverse_sqrt_native_gpu.md).

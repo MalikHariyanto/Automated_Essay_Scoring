@@ -1,5 +1,11 @@
 # Eksperimen lanjutan · acuan aktif E43
 
+## Keputusan terbaru: E50 multi-head co-attention4 dari E43
+
+Pengguna menyetujui penggantian modulco-attentionE43 menjadi4head×32,total128,denganQ/K/V/outputdipelajari. Dua arahsoftmaxindependen danroundtripperheaddipertahankan. BiGRU,ScalarMix4/gamma,maskedmean,BGEfrozen,fusionMLP/LRdanprotokolE43tetap;MSEbiasa,tanpaLDS/ranking. S3,5CVbaru,25epoch/patience5,saturefit+test,cukupExcel,tanpaZIP/seedloop/kontrolulang. [Metode/ColabE50](docs/eksperimen/eksperimen_e50_multihead_coattention_native_gpu.md). ReferensiVaswani2017+co-attentionAESZhangLitman2018;pilihan4headdanrangkaianproyekbelumterbuktioptimal.
+
+E49sudahselesai:meanCV5,9191/test5,7979/MAE4,4701;raw≤3=28/60,≤5=37/60,tepatbulat4/60. E49membaikdariE48,tetapbelummengalahkanE43CV5,8876/test5,1265/MAE3,7817. Bobotmaksrefit5,7106sesuairencana. JalurLDSditundadankembalikeMSEE43. AuditcakupantokenE43menunjukkansoal/referensitidakterpotong. E50mengujipencocokanjawaban–referensi,bukansekadarmenaikkanbatastoken. BelumadahasilpenelitianE50.
+
 ## Keputusan terbaru: E49 LDS dengan inverse akar
 
 Pengguna menyetujui satu uji lanjutan setelah E48:kurangi eksponen inverseSETELAHsmoothing1→0,5. Gaussian5/sigma2/bin1,model/LR/dropout/scheduler/input/split E43 tetap. Tidak menambahcap/sampleratauTransformerpengganti. S3,5CVbaru,25epoch/patience5,saturefit+test,tanpaZIPacuan. [Notebook/metodeE49](docs/eksperimen/eksperimen_e49_lds_inverse_sqrt_native_gpu.md).
