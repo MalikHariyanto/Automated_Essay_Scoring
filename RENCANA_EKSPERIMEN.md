@@ -1,5 +1,11 @@
 # Eksperimen lanjutan · acuan aktif E43
 
+## Keputusan terbaru: E53 EMA dari E43
+
+Pengguna menyetujui kode E53: pertahankan E43 full fine-tuning dan seluruh arsitektur/LR/loss, tambahkan EMA untuk validasi dan inferensi. Update pertama menyalin bobot online; sesudahnya decay `min(.99,(1+t)/(10+t))`, t hanya langkah optimizer berhasil dengan LR aktif. Batas decay0,99 dan warmup merupakan kandidat proyek, bukan optimum AES dari paper. Online tetap dilatih MSE; EMA tidak menggantikan online per epoch. Early stopping memilih RMSE EMA; refit ceil median bestepoch EMA CV, lalu satu test memakai EMA akhir refit. Laporan online/EMA per epoch adalah diagnostik satu lintasan training, bukan kontrol E43 yang dilatih ulang secara independen. [Metode dan Colab E53](docs/eksperimen/eksperimen_e53_ema_native_gpu.md).
+
+S3, satu5fold baru, maksimal25epoch/patience5, satu refit/test, seed tetap tanpa sweep/kontrol ulang; cukup Excel. Resume menyimpan online+EMA/counter serta seluruh state optimizer/RNG. Excel05 memisahkan statistik EMA checkpoint terpilih/akhir latihan dan mengaudit decay/update aktif. E52 belum membaik: CV6,0034/test5,7371/MAE4,3534, raw≤5=40/60. E43 tetap acuan CV5,8876/MAE OOF4,6122/≤5validasi151/240, test historis5,1265. Belum ada hasil penelitian E53; pilih melalui validasi, test historis bersifat eksploratif.
+
 ## Keputusan terbaru: E52 DoRA dari E43
 
 Pengguna memilih kembali ke E43 lalu menyetujui implementasi DoRA. RoBERTa full fine-tuning LR5e-6 diganti adapter DoRA resmi PEFT, rank8/alpha16/query-value/dropout0/LR1e-4; bobot dasar frozen, arah/magnitude belajar. Semua komponen fusion E43, loss MSE, input, split, fold dan aturan training tetap. Ini kandidat resep adaptasi dan LR, bukan klaim DoRA saja menyebabkan seluruh perbedaan. Satu 5-fold baru, maksimal25epoch/patience5, satu refit/test, tanpa multi-seed atau kontrol ulang. [Metode dan Colab E52](docs/eksperimen/eksperimen_e52_dora_native_gpu.md).

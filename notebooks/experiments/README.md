@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E53 · E43 + EMA pada bobot
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E53_E43_S3_EMA099_Native_Learnable_GPU.ipynb) · [Source](AES_300_E53_E43_S3_EMA099_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e53_ema_native_gpu.md).
+
+Model online memakai full fine-tuning E43 dan MSE biasa; salinan EMA dipakai untuk validasi, pemilihan epoch dan prediksi akhir. Batas decay 0,99, warmup offset 10; update hanya setelah optimizer berhasil dengan LR aktif. Arsitektur dan LR tetap E43, tanpa DoRA/multihead/gate. Langsung S3, satu 5-fold, maksimal25epoch/patience5, satu refit/test. Cukup Excel; kode native per section. Excel05 memisahkan RMSE online/EMA serta menyimpan counter/decay/checkpoint. Resume memulihkan kedua bobot. Belum ada hasil penelitian E53.
+
 ## E52 · E43 + DoRA pada RoBERTa
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E52_E43_S3_DoRA8_Native_Learnable_GPU.ipynb) · [Source](AES_300_E52_E43_S3_DoRA8_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e52_dora_native_gpu.md).
