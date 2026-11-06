@@ -1,5 +1,11 @@
 # Eksperimen lanjutan · acuan aktif E43
 
+## Keputusan terbaru: E52 DoRA dari E43
+
+Pengguna memilih kembali ke E43 lalu menyetujui implementasi DoRA. RoBERTa full fine-tuning LR5e-6 diganti adapter DoRA resmi PEFT, rank8/alpha16/query-value/dropout0/LR1e-4; bobot dasar frozen, arah/magnitude belajar. Semua komponen fusion E43, loss MSE, input, split, fold dan aturan training tetap. Ini kandidat resep adaptasi dan LR, bukan klaim DoRA saja menyebabkan seluruh perbedaan. Satu 5-fold baru, maksimal25epoch/patience5, satu refit/test, tanpa multi-seed atau kontrol ulang. [Metode dan Colab E52](docs/eksperimen/eksperimen_e52_dora_native_gpu.md).
+
+E43 menjadi acuan aktif: CV5,8876, MAE OOF4,6122, raw≤5validasi151/240; test historis5,1265. E50 tetap kandidat validasi5,7954, tetapi E51 tidak memperbaikinya (CV5,8453/test5,8802/MAE4,2694). E5 telah menguji LoRA biasa pada input jawaban saja, bukan DoRA atau resep E43. Rank/LR adapter adalah pilihan proyek yang perlu diuji; paper DoRA ICML2024 bukan bukti langsung optimalitas AES Indonesia. Penilaian kandidat melalui validasi; test historis bersifat eksploratif. Belum ada hasil penelitian E52.
+
 ## Keputusan terbaru: E51 gated concatenation dari E50
 
 Pengguna menyetujui E51 langsung dari E50, mempertahankan multihead 4 dan seluruh komponen/LR/loss MSE. Satu perubahan fusion: gate per jawaban dengan Linear 1.024→2 + softmax, mengalikan kedua cabang dengan 2×alpha lalu concat 1.024. Logit awal nol menghasilkan pengali 1/1 dan prediksi awal identik E50; tambahan 2.050 parameter dilatih dengan LR head 1e-4. S3, 5 CV baru, 25 epoch/patience 5, satu refit/test, tanpa ZIP lama, loop seed atau kontrol ulang. [Metode dan Colab E51](docs/eksperimen/eksperimen_e51_gated_concat_native_gpu.md). Gate OOF/test disimpan dari forward prediksi yang sama; resume/regenerasi laporan tidak menambah evaluasi test. GMU Arevalo 2017 menjadi landasan; scalar softmax + concat/faktor 2 merupakan adaptasi, bukan replikasi GMU asli.

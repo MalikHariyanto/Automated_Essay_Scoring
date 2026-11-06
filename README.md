@@ -2,6 +2,8 @@
 
 Versi aktif memakai **tiga teks**—soal, kunci jawaban, respons siswa—dan **satu label `rater` (0–100)**. Notebook berjalan di Colab; HTML untuk belajar dan membaca hasil.
 
+**E52 dari E43:** [Colab DoRA](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E52_E43_S3_DoRA8_Native_Learnable_GPU.ipynb). RoBERTa memakai adapter DoRA rank 8/alpha 16/query-value, LR 1e-4; bobot dasarnya frozen. BiGRU, co-attention satu head, ScalarMix/gamma, masked mean, BGE, concat dan MLP E43 tetap. S3, 5-fold, maksimal 25 epoch/patience 5; cukup Excel. [Metode dan paper](docs/eksperimen/eksperimen_e52_dora_native_gpu.md). Belum ada hasil penelitian E52.
+
 **E51 dari E50:** [Colab gated concatenation](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E51_E50_S3_GatedConcat_Native_Learnable_GPU.ipynb). Gate per jawaban dengan dua alpha, kondisi awal identik E50, tambahan 2.050 parameter. MSE dan multihead 4 tetap; cukup Excel; S3, 5-fold, 25 epoch/patience 5. Bobot gate OOF/test tersimpan bersama prediksi. [Metode dan paper](docs/eksperimen/eksperimen_e51_gated_concat_native_gpu.md). Belum ada hasil penelitian E51.
 
 **E50 dari E43:** [Colab multi-head co-attention4](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb). BiGRU/ScalarMix/gamma/BGE/fusiontetap,MSEbiasa,tanpaLDS. CukupExcel;S3,5fold,25epoch/patience5. [Metode dan paper](docs/eksperimen/eksperimen_e50_multihead_coattention_native_gpu.md). BelumadahasilpenelitianE50.

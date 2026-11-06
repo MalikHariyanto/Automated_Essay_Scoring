@@ -1,5 +1,11 @@
 # Katalog eksperimen AES
 
+## E52 · E43 + DoRA pada RoBERTa
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E52_E43_S3_DoRA8_Native_Learnable_GPU.ipynb) · [Source](AES_300_E52_E43_S3_DoRA8_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e52_dora_native_gpu.md).
+
+Implementasi resmi PEFT dengan `use_dora=True`, rank 8, alpha 16, target query/value seluruh layer, dropout adapter 0, LR 1e-4. Bobot dasar frozen; arah dan magnitude belajar. E43 sebelumnya melatih seluruh encoder dengan LR 5e-6, jadi metode adaptasi dan LR aktif berubah. Arsitektur E43 tetap, tanpa multihead/gate. Langsung S3, satu 5-fold, maksimal 25 epoch/patience 5; satu refit/test; cukup Excel. Laporan OOF/test lengkap dan audit adapter/frozen sebelum ZIP. Belum ada hasil penelitian E52.
+
 ## E51 · E50 + gated concatenation
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E51_E50_S3_GatedConcat_Native_Learnable_GPU.ipynb) · [Source](AES_300_E51_E50_S3_GatedConcat_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e51_gated_concat_native_gpu.md).
