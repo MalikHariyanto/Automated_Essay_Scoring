@@ -1,10 +1,16 @@
 # Katalog eksperimen AES
 
+## E54 · E43 + ConR pada representasi fusion
+
+[**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E54_E43_S3_ConR_Native_Learnable_GPU.ipynb) · [Source](AES_300_E54_E43_S3_ConR_Native_Learnable_GPU.ipynb).
+
+MSE +0,001×ConR, window5poin/temperature0,07/eta0,01perpoin; pasangan hanya soal sama dalam batch efektif8. Semua arsitektur/LR E43 tetap, tanpa EMA/DoRA/LDS. Recompute microbatch1 dengan RNG dipertahankan; pengaman anchor kosong/log-space. Preflight training-only, konfigurasi/resume terpisah dan Excel05 Diagnostik ConR mencatat loss/cakupan/langkah optimizer aktif. Cukup Excel; S3,5-fold,25epoch/patience5,satu refit/test. Referensi dan lisensi helper ada dalam notebook. Belum ada hasil penelitian E54.
+
 ## E53 · E43 + EMA pada bobot
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E53_E43_S3_EMA099_Native_Learnable_GPU.ipynb) · [Source](AES_300_E53_E43_S3_EMA099_Native_Learnable_GPU.ipynb) · [Metode](../../docs/eksperimen/eksperimen_e53_ema_native_gpu.md).
 
-Model online memakai full fine-tuning E43 dan MSE biasa; salinan EMA dipakai untuk validasi, pemilihan epoch dan prediksi akhir. Batas decay 0,99, warmup offset 10; update hanya setelah optimizer berhasil dengan LR aktif. Arsitektur dan LR tetap E43, tanpa DoRA/multihead/gate. Langsung S3, satu 5-fold, maksimal25epoch/patience5, satu refit/test. Cukup Excel; kode native per section. Excel05 memisahkan RMSE online/EMA serta menyimpan counter/decay/checkpoint. Resume memulihkan kedua bobot. Belum ada hasil penelitian E53.
+Model online memakai full fine-tuning E43 dan MSE biasa; salinan EMA dipakai untuk validasi, pemilihan epoch dan prediksi akhir. Batas decay 0,99, warmup offset 10; update hanya setelah optimizer berhasil dengan LR aktif. Arsitektur dan LR tetap E43, tanpa DoRA/multihead/gate. Langsung S3, satu 5-fold, maksimal25epoch/patience5, satu refit/test. Cukup Excel; kode native per section. Excel05 memisahkan RMSE online/EMA serta menyimpan counter/decay/checkpoint. Resume memulihkan kedua bobot. Hasil E53 yang diaudit: mean RMSE CV5,8627, RMSE test5,9063 dan MAE test4,6625; E43 tetap kontrol resep.
 
 ## E52 · E43 + DoRA pada RoBERTa
 
