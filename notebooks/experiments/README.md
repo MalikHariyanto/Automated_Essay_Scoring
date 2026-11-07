@@ -1,5 +1,12 @@
 # Katalog eksperimen AES
 
+## E55/E56 · kontrol MSE dan ConR dengan batch pasangan identik
+
+- **E55 MSE:** [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E55_E43_S3_PairedBatch_MSE_Native_Learnable_GPU.ipynb) · [Source](AES_300_E55_E43_S3_PairedBatch_MSE_Native_Learnable_GPU.ipynb).
+- **E56 MSE+0,001×ConR:** [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E56_E43_S3_PairedBatch_ConR_Native_Learnable_GPU.ipynb) · [Source](AES_300_E56_E43_S3_PairedBatch_ConR_Native_Learnable_GPU.ipynb).
+
+Sampler training-only mendahulukan anchor/teman dekat≤5poin/teman jauh>5poin untuk soal sama. Semua jawaban tepat sekali/epoch, tanpa oversampling/drop. Seed/epoch menghasilkan rencana identik pada kedua kode; hash/cakupan tersimpan di Excel05 Rencana Batch. E55 ConR hanya diagnostik koefisien0; E56 dioptimasi. Arsitektur/LR/split E43 tetap, S3/5-fold/25epoch/patience5/satu refit-test, cukup Excel. Tidak menyimpan checkpoint progres per epoch; model terbaik di RAM, file setelah fit selesai. Putus di tengah fit berarti mengulang fit itu. Dua runtime GPU terpisah untuk paralel. Belum ada hasil penelitian E55/E56.
+
 ## E54 · E43 + ConR pada representasi fusion
 
 [**Buka Colab**](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-learning/notebooks/experiments/AES_300_E54_E43_S3_ConR_Native_Learnable_GPU.ipynb) · [Source](AES_300_E54_E43_S3_ConR_Native_Learnable_GPU.ipynb).
