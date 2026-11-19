@@ -49,3 +49,7 @@ Dataset dibaca dari Drive semi-final yang sama. Pilih GPU, jalankan dari atas, l
 E2 menampilkan perangkat yang tersedia sebelum pembacaan dataset. Cell **Siapkan dataset dan split** menyiapkan cfg, bundle, manifest, dan output sekaligus. Pada runtime CPU dengan konfigurasi GPU, tahap model menampilkan status belum dijalankan dan menunggu GPU. Pilih T4, kemudian Run all dari awal pada sesi GPU.
 
 Revisi ini diuji dari setup sampai satu workbook 57 sheet menggunakan Transformer RoBERTa kecil berbobot acak di CPU. Workbook asli diuji untuk pembacaan label dan split tanpa CUDA. Pemakaian ulang fold/refit selesai juga diperiksa. Pengujian tersebut adalah uji teknis, sementara training pretrained pada T4 bergantung runtime Colab.
+
+## Membagikan workbook besar
+
+[Pecah Excel di Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/notebooks/06_Pecah_File_Excel.ipynb) menerima upload dari komputer, membagi file menjadi bagian maksimal30MiB, dan menyediakan tombol unduh beserta manifest checksum. Gunakan runtime CPU pada sesi baru.

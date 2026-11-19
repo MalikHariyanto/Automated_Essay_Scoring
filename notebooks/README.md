@@ -1,5 +1,7 @@
 # Notebook AES
 
+[Pecah Excel besar menjadi bagian maksimal 30 MiB](06_Pecah_File_Excel.ipynb) · Notebook CPU mandiri untuk mengunggah hasil ke chat.
+
 [E1 multi-trait reset](multitrait_reset/AES_Reset_E1_S3_MultiTrait.ipynb)
 
 **[Buka katalog tiga kelompok eksperimen](../eksperimen/README.md)** untuk memilih notebook dan HTML hasil sesuai input serta target.
