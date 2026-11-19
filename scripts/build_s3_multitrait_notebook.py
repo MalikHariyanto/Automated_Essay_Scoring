@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb'
 NAME = 'AES_S3_MultiTrait_3Sekolah.ipynb'
+E2_NAME = 'AES_E2_S3_MultiTrait_TraitHeads_3Sekolah.ipynb'
 EXPERIMENTS = Path('notebooks/experiments')
 PLACEHOLDER = '__NOTEBOOK_CODE_SHA256__'
 
@@ -66,6 +67,30 @@ def model_source(source):
             raise ValueError('S3 harus menghasilkan empat skor per jawaban.')""")
 
 
+def trait_heads_source(source):
+    source = model_source(source)
+    source = replace(source, '        self.head = nn.Sequential(nn.Linear(1024, 256), nn.GELU(),\n'
+                     '                                  nn.Dropout(s3_mlp_dropout), nn.Linear(256, len(TRAITS)))',
+                     '        # Pakai urutan inisialisasi E1 untuk menjaga bobot awal encoder dan pooling.\n'
+                     '        nn.Linear(1024, 256)\n'
+                     '        nn.Linear(256, len(TRAITS))')
+    source = replace(source, '        self.scalar_mix = ScalarMix(scalar_mix_layers, gamma_initial)',
+                     """        self.scalar_mix = ScalarMix(scalar_mix_layers, gamma_initial)
+        # Inisialisasi head di CPU tanpa menggeser urutan pengacakan training bersama.
+        with torch.random.fork_rng(devices=[]):
+            self.head = nn.ModuleDict({
+                name: nn.Sequential(
+                    nn.Linear(1024, 64), nn.GELU(), nn.Dropout(s3_mlp_dropout), nn.Linear(64, 1),
+                )
+                for name, *_ in TRAITS
+            })""")
+    return replace(source, "        prediction = self.head(features['concat'])",
+                   """        # Setiap head membaca vektor yang sama dan menghasilkan satu kolom skor.
+        prediction = torch.cat(
+            [self.head[name](features['concat']) for name, *_ in TRAITS], dim=1,
+        )""")
+
+
 def engine_source(source):
     source = replace(source, 'self.forward(ids).reshape(-1).float()', 'self.forward(ids).float()')
     return source[:source.index('        # Kembalikan skala asli')] + (
@@ -100,7 +125,8 @@ def config_source(source):
     return source
 
 
-def build():
+def build(trait_heads=False):
+    notebook_name = E2_NAME if trait_heads else NAME
     raw = (ROOT / EXPERIMENTS / BASE).read_bytes()
     base = json.loads(raw)
     source_by_role = {c['metadata']['aes43_role']: ''.join(c['source'])
@@ -245,6 +271,36 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
     markdown('## 20 · Unduh Excel')
     code('download', sections['download'])
 
+    if trait_heads:
+        # E1 dan E2 berbagi data/split/cache BGE. Config dan hash notebook
+        # membedakan folder run, checkpoint, serta hasil prediksi.
+        workflow_labels = ('prepare', 'cv_definition', 'final_model', 'report', 'export_execute')
+        for cell in cells:
+            role = cell['metadata'].get('aes_multitrait_role')
+            if cell['cell_type'] == 'markdown':
+                cell['source'] = (cell['source']
+                    .replace('# E43 S3 Multi-Trait', '# E2 S3 Multi-Trait')
+                    .replace('**Satu resep E43:**', '**Backbone E1 (resep E43):**')
+                    .replace('Validasi E43', 'Validasi E2')
+                    .replace('Hyperparameter E43', 'Hyperparameter E2')
+                    .replace('arsitektur S3 E43', 'arsitektur S3 E2')
+                    .replace('MLP bersama menghasilkan empat skor.',
+                             'Empat MLP khusus trait masing-masing menghasilkan satu skor.')
+                    .replace('MLP mengubah fitur gabungan 1024 menjadi empat skor.',
+                             'Setiap head mengubah vektor 1024 menjadi satu skor melalui 64 unit tersembunyi.')
+                    .replace('lima model E43', 'lima model E2')
+                    .replace('Refit E43', 'Refit E2'))
+            elif role in workflow_labels:
+                cell['source'] = cell['source'].replace('E43', 'E2')
+            elif role == 'architecture':
+                cell['source'] = replace(cell['source'], "('Concat → MLP', f'1024 → 256 → {len(TRAITS)}'",
+                                         "('Empat head khusus trait', '4 × (1024 → 64 → 1)'")
+            elif role == 'definition:SingleScoreModel':
+                cell['source'] = trait_heads_source(source_by_role[role])
+        cells[0]['source'] += """
+**Perbandingan E1 → E2.** E1 adalah notebook multi-trait dari E43 dengan head bersama `1024 → 256 → 4`. E2 memakai empat head `1024 → 64 → 1`, satu per trait. Semua head membaca vektor gabungan yang sama dan urutan keluaran tetap isi, organisasi, kebahasaan, mekanik. Dataset semi-final, split siswa, seed, LR, dropout, MSE, dan RMSE validasi mengikuti E1.
+"""
+
     fingerprint = hashlib.sha256('\n'.join(c['source'] for c in cells if c['cell_type'] == 'code').encode()).hexdigest()
     for index, cell in enumerate(cells):
         cell['source'] = cell['source'].replace(PLACEHOLDER, fingerprint)
@@ -253,16 +309,17 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
             ast.parse(cell['source'])
     notebook = {
         'cells': cells, 'nbformat': 4, 'nbformat_minor': 5,
-        'metadata': {'colab': {'name': NAME, 'provenance': []}, 'accelerator': 'GPU',
+        'metadata': {'colab': {'name': notebook_name, 'provenance': []}, 'accelerator': 'GPU',
                      'kernelspec': base['metadata']['kernelspec'],
                      'aes_standalone': {'code_sha256': fingerprint, 'base': BASE,
                                         'base_sha256': hashlib.sha256(raw).hexdigest()}},
     }
     serialized = json.dumps(notebook, ensure_ascii=False, indent=1) + '\n'
     for folder in (ROOT / EXPERIMENTS, ROOT / 'aes-learning' / EXPERIMENTS):
-        (folder / NAME).write_text(serialized)
-    print(f'{NAME} · {len(cells)} cells · {fingerprint}')
+        (folder / notebook_name).write_text(serialized)
+    print(f'{notebook_name} · {len(cells)} cells · {fingerprint}')
 
 
 if __name__ == '__main__':
     build()
+    build(trait_heads=True)
