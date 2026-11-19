@@ -1,5 +1,7 @@
 # Automated Essay Scoring
 
+**Rangkaian terbaru — [E1 multi-trait reset](eksperimen/03_tiga_input_multi_trait/reset/README.md)** memakai fusion sederhana dan satu workbook keluaran lengkap.
+
 Eksperimen penilaian esai Bahasa Indonesia dengan RoBERTa, BGE-M3, dan fusion S3. Pilih kelompok untuk membuka notebook Colab, HTML hasil, dan panduannya.
 
 | Kelompok eksperimen | Input dan target | Buka |
@@ -8,9 +10,9 @@ Eksperimen penilaian esai Bahasa Indonesia dengan RoBERTa, BGE-M3, dan fusion S3
 | **Tiga input · single-trait** | Soal + kunci jawaban + jawaban siswa → satu skor. | [Notebook dan HTML](eksperimen/02_tiga_input_single_trait/README.md) |
 | **Tiga input · multi-trait** | Soal + kunci jawaban + jawaban siswa → isi, organisasi, kebahasaan, mekanik. | [Notebook dan HTML](eksperimen/03_tiga_input_multi_trait/README.md) |
 
-## Eksperimen multi-trait terbaru
+## Hasil rangkaian multi-trait sebelumnya
 
-**Acuan aktif E3** memakai dropout MLP 0,2. E4 menguji sigmoid, dan E5 menguji attention antartait. Keduanya berangkat dari E3.
+**Acuan rangkaian sebelumnya E3** memakai dropout MLP 0,2. E4 menguji sigmoid, dan E5 menguji attention antartait. Keduanya berangkat dari E3.
 
 | Eksperimen | Perubahan | RMSE CV ↓ | RMSE test ↓ | Notebook |
 | --- | --- | --- | --- | --- |

@@ -176,6 +176,8 @@ def build(result_paths=()):
         folder = CATALOG / group
         lines = [f'# {title}', '', description, '', '[Semua kelompok](../README.md)', '',
                  '## Notebook', '']
+        if group == '03_tiga_input_multi_trait' and (folder / 'reset/README.md').exists():
+            lines += ['**[Mulai dari E1 reset](reset/README.md)** untuk rangkaian fusion sederhana. E1–E5 di bawah adalah rangkaian sebelumnya.', '']
         if group == '03_tiga_input_multi_trait':
             lines += ['| Eksperimen | Konfigurasi | Notebook | Jalankan |',
                       '| --- | --- | --- | --- |']
@@ -202,7 +204,7 @@ def build(result_paths=()):
         else:
             lines += ['- [Ringkasan hasil E1–E3](html/Hasil_AES_MultiTrait.html)',
                       '- [Agregat metrik](html/hasil_agregat.json)', '',
-                      'E3 adalah acuan aktif. Workbook E4/E5 belum tersedia pada pembaruan ini. '
+                      'Tabel dan HTML merangkum rangkaian sebelum reset. '
                       'E1 pada tabel hasil sama dengan E43 multi-trait pada workbook awal.']
         lines += ['', '## Lokasi file', '',
                   'Folder ini menjadi pintu masuk notebook dan HTML yang sudah dikelompokkan. '

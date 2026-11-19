@@ -1,3 +1,7 @@
+# Rangkaian aktif · E1 reset multi-trait
+
+Pengguna memulai ulang penomoran E1 untuk fusion sederhana. Builder scripts/build_multitrait_reset_notebook.py menghasilkan notebooks/multitrait_reset dan eksperimen/03_tiga_input_multi_trait/reset. Seluruh keluaran dikumpulkan menjadi satu workbook privat. Rangkaian E1–E5 sebelumnya tetap historis.
+
 # Katalog kelompok eksperimen · pembaruan 19 November 2026
 
 Pintu masuk pengguna adalah README.md dan eksperimen/README.md. Tiga kelompok berada di eksperimen/01_dua_input, eksperimen/02_tiga_input_single_trait, dan eksperimen/03_tiga_input_multi_trait. Kelompok pertama mencakup varian awal jawaban saja/context-pair. Notebook kelompok merupakan salinan byte-identik dari notebooks/experiments untuk menjaga perilaku dan fingerprint. Jalur notebook lama serta paket terenkripsi di downloads tetap melayani tautan sebelumnya.

@@ -6,6 +6,8 @@ Pertanyaan, kunci jawaban, dan jawaban siswa menjadi input. Target isi, organisa
 
 ## Notebook
 
+**[Mulai dari E1 reset](reset/README.md)** untuk rangkaian fusion sederhana. E1–E5 di bawah adalah rangkaian sebelumnya.
+
 | Eksperimen | Konfigurasi | Notebook | Jalankan |
 | --- | --- | --- | --- |
 | E1 | Baseline E43, head bersama | [File](notebooks/AES_E1_S3_MultiTrait_3Sekolah.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_E1_S3_MultiTrait_3Sekolah.ipynb) |
@@ -19,7 +21,7 @@ Pertanyaan, kunci jawaban, dan jawaban siswa menjadi input. Target isi, organisa
 - [Ringkasan hasil E1–E3](html/Hasil_AES_MultiTrait.html)
 - [Agregat metrik](html/hasil_agregat.json)
 
-E3 adalah acuan aktif. Workbook E4/E5 belum tersedia pada pembaruan ini. E1 pada tabel hasil sama dengan E43 multi-trait pada workbook awal.
+Tabel dan HTML merangkum rangkaian sebelum reset. E1 pada tabel hasil sama dengan E43 multi-trait pada workbook awal.
 
 ## Lokasi file
 
