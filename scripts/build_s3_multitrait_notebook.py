@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = 'AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb'
 NAME = 'AES_S3_MultiTrait_3Sekolah.ipynb'
 E2_NAME = 'AES_E2_S3_MultiTrait_TraitHeads_3Sekolah.ipynb'
+E3_NAME = 'AES_E3_S3_MultiTrait_Dropout02_3Sekolah.ipynb'
 EXPERIMENTS = Path('notebooks/experiments')
 PLACEHOLDER = '__NOTEBOOK_CODE_SHA256__'
 
@@ -125,8 +126,9 @@ def config_source(source):
     return source
 
 
-def build(trait_heads=False):
-    notebook_name = E2_NAME if trait_heads else NAME
+def build(experiment='E1'):
+    notebook_name = {'E1': NAME, 'E2': E2_NAME, 'E3': E3_NAME}[experiment]
+    trait_heads = experiment == 'E2'
     raw = (ROOT / EXPERIMENTS / BASE).read_bytes()
     base = json.loads(raw)
     source_by_role = {c['metadata']['aes43_role']: ''.join(c['source'])
@@ -271,34 +273,50 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
     markdown('## 20 · Unduh Excel')
     code('download', sections['download'])
 
-    if trait_heads:
-        # E1 dan E2 berbagi data/split/cache BGE. Config dan hash notebook
+    if experiment != 'E1':
+        # Semua eksperimen berbagi data/split/cache BGE. Config dan hash notebook
         # membedakan folder run, checkpoint, serta hasil prediksi.
         workflow_labels = ('prepare', 'cv_definition', 'final_model', 'report', 'export_execute')
         for cell in cells:
             role = cell['metadata'].get('aes_multitrait_role')
             if cell['cell_type'] == 'markdown':
                 cell['source'] = (cell['source']
-                    .replace('# E43 S3 Multi-Trait', '# E2 S3 Multi-Trait')
+                    .replace('# E43 S3 Multi-Trait', f'# {experiment} S3 Multi-Trait')
                     .replace('**Satu resep E43:**', '**Backbone E1 (resep E43):**')
-                    .replace('Validasi E43', 'Validasi E2')
-                    .replace('Hyperparameter E43', 'Hyperparameter E2')
-                    .replace('arsitektur S3 E43', 'arsitektur S3 E2')
-                    .replace('MLP bersama menghasilkan empat skor.',
-                             'Empat MLP khusus trait masing-masing menghasilkan satu skor.')
-                    .replace('MLP mengubah fitur gabungan 1024 menjadi empat skor.',
-                             'Setiap head mengubah vektor 1024 menjadi satu skor melalui 64 unit tersembunyi.')
-                    .replace('lima model E43', 'lima model E2')
-                    .replace('Refit E43', 'Refit E2'))
+                    .replace('Validasi E43', f'Validasi {experiment}')
+                    .replace('Hyperparameter E43', f'Hyperparameter {experiment}')
+                    .replace('arsitektur S3 E43', f'arsitektur S3 {experiment}')
+                    .replace('lima model E43', f'lima model {experiment}')
+                    .replace('Refit E43', f'Refit {experiment}'))
+                if trait_heads:
+                    cell['source'] = (cell['source']
+                        .replace('MLP bersama menghasilkan empat skor.',
+                                 'Empat MLP khusus trait masing-masing menghasilkan satu skor.')
+                        .replace('MLP mengubah fitur gabungan 1024 menjadi empat skor.',
+                                 'Setiap head mengubah vektor 1024 menjadi satu skor melalui 64 unit tersembunyi.'))
+            elif experiment == 'E3' and role == 'hyperparameters':
+                cell['source'] = replace(
+                    cell['source'],
+                    'S3_MLP_DROPOUT = 0.1             # Kembali ke E30; bukan dropout0.2 E38.',
+                    'S3_MLP_DROPOUT = 0.2             # E3: dropout MLP E1 dinaikkan dari 0,1 ke 0,2.',
+                )
             elif role in workflow_labels:
-                cell['source'] = cell['source'].replace('E43', 'E2')
-            elif role == 'architecture':
+                cell['source'] = cell['source'].replace('E43', experiment)
+            elif trait_heads and role == 'architecture':
                 cell['source'] = replace(cell['source'], "('Concat → MLP', f'1024 → 256 → {len(TRAITS)}'",
                                          "('Empat head khusus trait', '4 × (1024 → 64 → 1)'")
-            elif role == 'definition:SingleScoreModel':
+            elif trait_heads and role == 'definition:SingleScoreModel':
                 cell['source'] = trait_heads_source(source_by_role[role])
+    if trait_heads:
         cells[0]['source'] += """
 **Perbandingan E1 → E2.** E1 adalah notebook multi-trait dari E43 dengan head bersama `1024 → 256 → 4`. E2 memakai empat head `1024 → 64 → 1`, satu per trait. Semua head membaca vektor gabungan yang sama dan urutan keluaran tetap isi, organisasi, kebahasaan, mekanik. Dataset semi-final, split siswa, seed, LR, dropout, MSE, dan RMSE validasi mengikuti E1.
+"""
+
+    if experiment == 'E3':
+        cells[0]['source'] += """
+**Perbandingan E1 → E3.** E3 memakai head bersama E1 `1024 → 256 → 4` dengan dropout MLP 0,2. E1 memakai 0,1. Dataset semi-final, split siswa, seed, LR, MSE, dan RMSE validasi skala asli mengikuti E1. Bandingkan RMSE OOF gabungan dan per trait pada lima fold yang sama.
+
+Nilai 0,2 adalah kandidat yang diambil dari [konfigurasi PMAES](https://github.com/gdufsnlp/PMAES/blob/HEAD/main_PMAES_many2many.py#L43-L50). [Paper PMAES](https://aclanthology.org/2023.acl-long.83/) memakai arsitektur dan protokol berbeda, sehingga pengaruh dropout ini diuji kembali pada S3.
 """
 
     fingerprint = hashlib.sha256('\n'.join(c['source'] for c in cells if c['cell_type'] == 'code').encode()).hexdigest()
@@ -322,4 +340,5 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
 
 if __name__ == '__main__':
     build()
-    build(trait_heads=True)
+    build('E2')
+    build('E3')
