@@ -10,6 +10,7 @@ BASE = 'AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb'
 NAME = 'AES_S3_MultiTrait_3Sekolah.ipynb'
 E2_NAME = 'AES_E2_S3_MultiTrait_TraitHeads_3Sekolah.ipynb'
 E3_NAME = 'AES_E3_S3_MultiTrait_Dropout02_3Sekolah.ipynb'
+E4_NAME = 'AES_E4_S3_MultiTrait_Dropout02_Sigmoid_3Sekolah.ipynb'
 EXPERIMENTS = Path('notebooks/experiments')
 PLACEHOLDER = '__NOTEBOOK_CODE_SHA256__'
 
@@ -127,7 +128,7 @@ def config_source(source):
 
 
 def build(experiment='E1'):
-    notebook_name = {'E1': NAME, 'E2': E2_NAME, 'E3': E3_NAME}[experiment]
+    notebook_name = {'E1': NAME, 'E2': E2_NAME, 'E3': E3_NAME, 'E4': E4_NAME}[experiment]
     trait_heads = experiment == 'E2'
     raw = (ROOT / EXPERIMENTS / BASE).read_bytes()
     base = json.loads(raw)
@@ -294,11 +295,13 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
                                  'Empat MLP khusus trait masing-masing menghasilkan satu skor.')
                         .replace('MLP mengubah fitur gabungan 1024 menjadi empat skor.',
                                  'Setiap head mengubah vektor 1024 menjadi satu skor melalui 64 unit tersembunyi.'))
-            elif experiment == 'E3' and role == 'hyperparameters':
+            elif experiment in ('E3', 'E4') and role == 'hyperparameters':
                 cell['source'] = replace(
                     cell['source'],
                     'S3_MLP_DROPOUT = 0.1             # Kembali ke E30; bukan dropout0.2 E38.',
-                    'S3_MLP_DROPOUT = 0.2             # E3: dropout MLP E1 dinaikkan dari 0,1 ke 0,2.',
+                    ('S3_MLP_DROPOUT = 0.2             # E3: dropout MLP E1 dinaikkan dari 0,1 ke 0,2.'
+                     if experiment == 'E3' else
+                     'S3_MLP_DROPOUT = 0.2             # E4: dropout MLP 0,2 mengikuti E3.'),
                 )
             elif role in workflow_labels:
                 cell['source'] = cell['source'].replace('E43', experiment)
@@ -317,6 +320,33 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
 **Perbandingan E1 → E3.** E3 memakai head bersama E1 `1024 → 256 → 4` dengan dropout MLP 0,2. E1 memakai 0,1. Dataset semi-final, split siswa, seed, LR, MSE, dan RMSE validasi skala asli mengikuti E1. Bandingkan RMSE OOF gabungan dan per trait pada lima fold yang sama.
 
 Nilai 0,2 adalah kandidat yang diambil dari [konfigurasi PMAES](https://github.com/gdufsnlp/PMAES/blob/HEAD/main_PMAES_many2many.py#L43-L50). [Paper PMAES](https://aclanthology.org/2023.acl-long.83/) memakai arsitektur dan protokol berbeda, sehingga pengaruh dropout ini diuji kembali pada S3.
+"""
+
+    if experiment == 'E4':
+        for cell in cells:
+            role = cell['metadata'].get('aes_multitrait_role')
+            if role == 'definition:SingleScoreModel':
+                cell['source'] = replace(
+                    cell['source'],
+                    'nn.Dropout(s3_mlp_dropout), nn.Linear(256, len(TRAITS)))',
+                    'nn.Dropout(s3_mlp_dropout), nn.Linear(256, len(TRAITS)), nn.Sigmoid())',
+                )
+            elif role == 'prepare':
+                cell['source'] = replace(cell['source'], "'experiment': 'E4',",
+                                         "'experiment': 'E4', 'output_activation': 'sigmoid',")
+            elif role == 'architecture':
+                cell['source'] = replace(cell['source'], "f'1024 → 256 → {len(TRAITS)}'",
+                                         "f'1024 → 256 → {len(TRAITS)} → sigmoid'")
+            elif cell['cell_type'] == 'markdown':
+                cell['source'] = (cell['source']
+                    .replace('MLP bersama menghasilkan empat skor.',
+                             'MLP bersama menghasilkan empat skor melalui sigmoid.')
+                    .replace('MLP mengubah fitur gabungan 1024 menjadi empat skor.',
+                             'MLP mengubah fitur gabungan 1024 menjadi empat skor normalisasi melalui sigmoid.'))
+        cells[0]['source'] += """
+**Perbandingan E3 → E4.** E3 adalah acuan aktif dengan dropout MLP 0,2. E4 menambahkan sigmoid setelah layer linear terakhir pada head bersama `1024 → 256 → 4`. Sigmoid diterapkan saat training dan inferensi. Tiap keluaran berada pada rentang 0–1, lalu dikembalikan ke skala isi 1–4, organisasi 1–2, kebahasaan 1–2, mekanik 1–2. Loss tetap MSE target normalisasi; pemilihan epoch tetap memakai RMSE validasi skala asli.
+
+Keluaran sigmoid digunakan dalam [implementasi CTS](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py) dan [ProTACT](https://github.com/doheejin/ProTACT/blob/HEAD/models/ProTACT.py). E4 menguji adaptasi aktivasi ini pada S3. Checkpoint dan hasil E4 mempunyai folder run tersendiri. Bandingkan RMSE validasi dan hasil per trait dengan E3.
 """
 
     fingerprint = hashlib.sha256('\n'.join(c['source'] for c in cells if c['cell_type'] == 'code').encode()).hexdigest()
@@ -342,3 +372,4 @@ if __name__ == '__main__':
     build()
     build('E2')
     build('E3')
+    build('E4')
