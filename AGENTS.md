@@ -1,6 +1,8 @@
-# Rangkaian aktif · E1/E2 reset multi-trait
+# Rangkaian aktif · E1/E2/E3 reset multi-trait
 
 Pengguna memulai ulang penomoran E1 untuk fusion sederhana. Builder scripts/build_multitrait_reset_notebook.py menghasilkan notebooks/multitrait_reset dan eksperimen/03_tiga_input_multi_trait/reset. Seluruh keluaran dikumpulkan menjadi satu workbook privat. E2 reset memakai empat MLP1024→64→1 dengan dropout0,2, LR dan split mengikuti E1 reset. Builder scripts/build_multitrait_reset_e2_notebook.py. Rangkaian E1–E5 sebelumnya tetap historis.
+
+E3 reset disetujui dari E2: CLS bersama diganti scaled-dot-product attention token jawaban per trait (4 query768, normalstd0,02, LR1e-4, +3.072parameter), mask mengecualikan konteks/prefix/special/padding, mean antarwindow. Empat MLP E2, dropout0,2, LR, split, target/loss/metrik/5CV/refit/test tetap. Inisialisasi bersama/RNG E2 dipertahankan. Builder scripts/build_multitrait_reset_e3_notebook.py; model scripts/reset_e3_trait_attention.py; ekspor scripts/reset_e3_features.py. Satu Excel mencakup fitur pertrait dan attention satu contoh development checkpoint refit; tidak boleh disebut OOF atau penjelasan kausal. Uji teknis CPU Transformer acak menyelesaikan semua cell/65sheet/reuse, sedangkan training pretrained T4 E3 belum dijalankan. CTS dan Dong2017 adalah dasar ide; rancangan query/hyperparameter adaptasi proyek, bukan optimum paper.
 
 # Katalog kelompok eksperimen · pembaruan 19 November 2026
 

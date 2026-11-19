@@ -280,3 +280,6 @@ if __name__ == "__main__":
     from build_multitrait_reset_e2_notebook import build as build_e2
 
     build_e2()
+    from build_multitrait_reset_e3_notebook import build as build_e3
+
+    build_e3()

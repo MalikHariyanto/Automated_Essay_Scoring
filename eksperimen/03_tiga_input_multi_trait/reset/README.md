@@ -4,10 +4,23 @@
 | --- | --- | --- | --- |
 | E1 reset | MLP bersama 1024→256→4 | [File](notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) |
 | E2 reset | Empat MLP 1024→64→1 | [File](notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) |
+| E3 reset | Attention jawaban per trait + empat MLP E2 | [File](notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) |
 
-Keduanya memakai fusion sederhana, dataset semi-final, split siswa yang sama, dan dropout0,2. E2 adalah adaptasi ide representasi khusus trait dari [CTS](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py). Dimensi64 dipilih untuk menjaga anggaran parameter head mendekati E1.
+Ketiganya memakai fusion sederhana, dataset semi-final, split siswa yang sama, dan dropout0,2. E2 adalah adaptasi ide representasi khusus trait dari [CTS](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py). Dimensi64 dipilih untuk menjaga anggaran parameter head mendekati E1.
 
-E1 dan E2 dapat dijalankan di runtime GPU Colab terpisah. Hasil E2 diunduh sebagai Hasil_AES_Reset_E2_S3_MultiTrait.xlsx, dengan cakupan sheet yang sama seperti E1. Setiap konfigurasi mempunyai folder run dan checkpoint sendiri. Hasil penelitian keduanya menunggu run GPU pada data asli.
+E1 dan E2 dapat dijalankan di runtime GPU Colab terpisah. Hasil E2 diunduh sebagai Hasil_AES_Reset_E2_S3_MultiTrait.xlsx, dengan cakupan sheet yang sama seperti E1. Setiap konfigurasi mempunyai folder run dan checkpoint sendiri. Hasil penelitian dibaca dari workbook run masing-masing; notebook publik tidak berisi hasil atau data siswa.
+
+## E3 · Attention pooling khusus trait
+
+E3 berangkat dari E2 reset. CLS bersama diganti empat ringkasan berbobot dari token jawaban pada layer terakhir RoBERTa. Soal dan referensi tetap menjadi konteks encoder. Prefix, special token, konteks, dan padding dikecualikan dari pooling. Empat query768 menambah3.072 parameter, dengan skor dot-product/√768 dan softmax per trait/window. Hasilnya dirata-ratakan antarwindow, lalu masuk norm, concat BGE256, dan MLP trait1024→64→1.
+
+LR, dropout0,2, optimizer, scheduler, split, MSE target0–1, RMSE skala asli, 5CV, maksimal25epoch/patience5, dan aturan refit mengikuti E2. Inisialisasi parameter bersama dan RNG juga dipertahankan. Query awal normal std0,02; LR1e-4. Pilihan rumus dan angka tersebut adalah rancangan eksperimen, belum terbukti paling baik untuk dataset ini.
+
+Dasar ide: representasi dan attention khusus trait pada [CTS/Ridley dkk.2021](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py), serta attention pada AES hierarkis [Dong, Zhang, dan Yang2017](https://aclanthology.org/K17-1017/). CTS memakai LSTM dan attention tingkat kalimat/antartait; E3 mengadaptasi token attention pada RoBERTa+BGE.
+
+Satu Hasil_AES_Reset_E3_S3_MultiTrait.xlsx memuat cakupan keluaran E2, dengan fitur RoBERTa/concat terpisah per trait, query final, dan bobot token empat trait pada satu contoh development. Bobot berjumlah1 untuk setiap trait di tiap window. Angka ini adalah inspeksi checkpoint refit, bukan evaluasi OOF atau penjelasan sebab-akibat. Empat set fitur final membuat ukuran Excel lebih besar daripada E2.
+
+Uji teknis semua cell telah melewati 5CV, refit, test, satu workbook65sheet, unduh, dan pemakaian ulang fold/refit selesai memakai Transformer RoBERTa kecil berbobot acak di CPU. Mask/gradien/query/head/optimizer serta kesamaan inisialisasi E2 diperiksa tersendiri. Workbook dataset asli melewati pembacaan1.340×4label dan split1.070/270 pada runtime tanpa CUDA; tahap model memberi status menunggu GPU. Training pretrained E3 pada T4 belum dijalankan.
 
 ## E1 · Baseline multi-trait reset
 
@@ -24,7 +37,7 @@ Rangkaian ini dimulai kembali dari E1 dengan fusion sederhana. RoBERTa memakai C
 | Batch dan training | Micro1/efektif8, maksimal25epoch, patience5 |
 | Evaluasi | Lima fold development, refit median epoch, test sekali |
 | Seleksi epoch | RMSE skala asli |
-| Hasil penelitian | Menunggu run GPU pada data asli |
+| Hasil penelitian | Lihat workbook privat dari run GPU masing-masing |
 
 [Notebook](notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E1_S3_MultiTrait.ipynb)
 
