@@ -1,3 +1,7 @@
+# HTML hasil dan buku AES
+
+**[Buka katalog kelompok eksperimen](../eksperimen/README.md)** untuk memilih HTML yang sesuai. Ringkasan multi-trait ada di [hasil E1–E3](../eksperimen/03_tiga_input_multi_trait/html/Hasil_AES_MultiTrait.html).
+
 # Dua buku AES terbaru
 
 | Buku | Isi | Unduh |

@@ -1,3 +1,9 @@
+# Katalog kelompok eksperimen · pembaruan 19 November 2026
+
+Pintu masuk pengguna adalah README.md dan eksperimen/README.md. Tiga kelompok berada di eksperimen/01_dua_input, eksperimen/02_tiga_input_single_trait, dan eksperimen/03_tiga_input_multi_trait. Kelompok pertama mencakup varian awal jawaban saja/context-pair. Notebook kelompok merupakan salinan byte-identik dari notebooks/experiments untuk menjaga perilaku dan fingerprint. Jalur notebook lama serta paket terenkripsi di downloads tetap melayani tautan sebelumnya.
+
+Setelah mengubah notebook atau HTML sumber, jalankan scripts/build_experiment_catalog.py. Builder multi-trait sudah menyinkronkan katalog otomatis. E1 adalah E43 multi-trait historis, E3 adalah acuan aktif, E4/E5 menunggu hasil. Hasil agregat publik ada di eksperimen/03_tiga_input_multi_trait/html/hasil_agregat.json. Workbook siswa dan prediksi individual tetap privat.
+
 # Pilihan pengguna terbaru · notebook native dan mudah dipelajari
 
 **E55/E56 diotorisasi pengguna, 7 November 2026:** dua notebook paralel, kontrol MSE E55 dan MSE+0,001×ConR E56. Sampler identik `same_question_near_far_once_v1`: training-only, soal sama, anchor+near≤5/far>5 dan opsionalteman keempat, dua kelompok hingga4/batch8; sisa diacak, setiap jawaban sekali, tanpa oversampling/drop, RNGlokal seedfit+1000003×epoch. Split/label/arsitektur/LR tetap E43/E54; tanpa EMA. ConR E55 dihitung diagnostik koefisien0, tidak dioptimasi. Hash rencana/cakupan/unik dicatat Excel05 dan gate. Hentikan penyimpanan progres tiap epoch: beststate tetap RAM, file model setelah fold/refit selesai; fit terputus diulang, completedfold/refit boleh direuse. Recompute aktivasi tetap aktif untuk memori GPU. S3/5CVbaru/25epoch/patience5/saturefit-test/cukupExcel; dua runtime GPU terpisah. Tidak membuat file analisis tambahan; penjelasan cukup chat. Belum ada hasil penelitian E55/E56.

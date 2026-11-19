@@ -422,3 +422,5 @@ if __name__ == '__main__':
     build('E3')
     build('E4')
     build('E5')
+    from build_experiment_catalog import build as build_catalog
+    build_catalog()

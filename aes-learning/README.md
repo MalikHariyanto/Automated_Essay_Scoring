@@ -1,3 +1,7 @@
+# Tautan Colab dan katalog eksperimen
+
+Mulai dari **[tiga kelompok eksperimen](../eksperimen/README.md)** untuk membuka notebook dan HTML hasil.
+
 # Salinan notebook untuk tautan lama
 
 Folder ini dipertahankan karena sejumlah tautan Colab menggunakan `aes-learning/notebooks/`. **Jalur utama adalah [notebooks](../notebooks/README.md)**; mulai dari katalog di sana.

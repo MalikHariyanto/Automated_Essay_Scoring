@@ -1,3 +1,7 @@
+# Katalog notebook sumber
+
+**[Katalog utama sudah dikelompokkan](../../eksperimen/README.md)** menjadi eksperimen awal, tiga input single-trait, dan tiga input multi-trait.
+
 # Katalog eksperimen AES
 
 ## E55/E56 · kontrol MSE dan ConR dengan batch pasangan identik

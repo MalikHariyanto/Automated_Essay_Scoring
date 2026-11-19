@@ -1,3 +1,7 @@
+# Notebook AES
+
+**[Buka katalog tiga kelompok eksperimen](../eksperimen/README.md)** untuk memilih notebook dan HTML hasil sesuai input serta target.
+
 # Notebook: pilih lewat katalog
 
 Untuk eksperimen aktif tiga input, buka **[katalog eksperimen](experiments/README.md)**. Notebook utama mempertahankan kode; output eksekusi dibersihkan pada versi terbaru.
