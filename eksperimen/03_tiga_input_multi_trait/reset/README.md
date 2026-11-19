@@ -43,3 +43,9 @@ Hasil diunduh sebagai Hasil_AES_Reset_E1_S3_MultiTrait.xlsx. Workbook memuat 57 
 Fitur seluruh jawaban adalah inspeksi checkpoint refit. Hasil penelitian memakai prediksi OOF dan test tersendiri. Workbook memuat teks siswa dan disimpan secara privat.
 
 Dataset dibaca dari Drive semi-final yang sama. Pilih GPU, jalankan dari atas, lalu hubungkan Drive. Rangkaian E1–E5 sebelumnya dapat dibuka melalui [katalog historis](../README.md).
+
+## Pemeriksaan runtime E2
+
+E2 menampilkan perangkat yang tersedia sebelum pembacaan dataset. Cell **Siapkan dataset dan split** menyiapkan cfg, bundle, manifest, dan output sekaligus. Pada runtime CPU dengan konfigurasi GPU, tahap model menampilkan status belum dijalankan dan menunggu GPU. Pilih T4, kemudian Run all dari awal pada sesi GPU.
+
+Revisi ini diuji dari setup sampai satu workbook 57 sheet menggunakan Transformer RoBERTa kecil berbobot acak di CPU. Workbook asli diuji untuk pembacaan label dan split tanpa CUDA. Pemakaian ulang fold/refit selesai juga diperiksa. Pengujian tersebut adalah uji teknis, sementara training pretrained pada T4 bergantung runtime Colab.

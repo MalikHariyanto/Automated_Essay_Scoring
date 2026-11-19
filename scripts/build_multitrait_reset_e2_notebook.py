@@ -46,6 +46,13 @@ INTRO = """# E2 reset · S3 multi-trait · Native Learnable Code
 Jalankan E2 di runtime GPU Colab tersendiri agar bisa paralel dengan E1 reset.
 Hubungkan Drive ke dataset semi-final yang sama, lalu Run all dari atas.
 
+## Jalankan berurutan
+
+Periksa tabel runtime, hubungkan Drive, kemudian jalankan cell **Siapkan dataset dan split**.
+Cell tersebut menyiapkan cfg, bundle, manifest, dan output sekaligus.
+Pada runtime tanpa CUDA, tahap model menampilkan status belum dijalankan.
+Pilih T4 GPU untuk training. Semua tahap mempunyai heading dan output sendiri.
+
 ## Yang diuji
 
 E1 reset memakai satu MLP bersama 1024→256→4.
@@ -124,6 +131,117 @@ def build():
             )
         cell["source"] = source
         cell["id"] = f"reset-e2-{index}"
+
+    cells = notebook["cells"]
+    # Data and split are prepared together, after the split function is defined.
+    split_definition = next(
+        c
+        for c in cells
+        if c["metadata"].get("aes_multitrait_role") == "definition:make_split"
+    )
+    split_index = cells.index(split_definition)
+    if cells[split_index - 1]["cell_type"] == "markdown":
+        del cells[split_index - 1 : split_index + 1]
+    else:
+        cells.remove(split_definition)
+    prepare_index = next(
+        i
+        for i, c in enumerate(cells)
+        if c["metadata"].get("aes_multitrait_role") == "prepare"
+    )
+    cells[prepare_index:prepare_index] = [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": "### Definisi split siswa\n\nFungsi ini tersedia sebelum dataset dan manifest disiapkan.",
+        },
+        split_definition,
+    ]
+    prepare = next(
+        c for c in cells if c["metadata"].get("aes_multitrait_role") == "prepare"
+    )
+    start = prepare["source"].index("    'runtime':")
+    end = prepare["source"].index("\n})", start)
+    prepare["source"] = (
+        prepare["source"][:start]
+        + "    'runtime': runtime_information(),"
+        + prepare["source"][end:]
+    )
+    split = next(
+        c for c in cells if c["metadata"].get("aes_multitrait_role") == "split_execute"
+    )
+    start = split["source"].index("print(")
+    prepare["source"] += """
+# Selesaikan dataset dan split pada cell yang sama.
+manifest = make_split(bundle, cfg)
+output = run_folder(cfg, bundle)
+dump(output / 'split.json', manifest)
+print(f"Split siap: {len(manifest['development'])} development, {len(manifest['test'])} test.")
+"""
+    split["source"] = (
+        """if all(name in globals() for name in ('cfg', 'bundle', 'manifest', 'output')):
+"""
+        + "\n".join("    " + line for line in split["source"][start:].splitlines())
+        + """
+else:
+    print('Jalankan cell Siapkan dataset dan split terlebih dahulu.')
+"""
+    )
+    prepare_index = cells.index(prepare)
+    if cells[prepare_index - 1]["cell_type"] == "markdown":
+        cells[prepare_index - 1][
+            "source"
+        ] = "### Siapkan dataset dan split\n\nCell ini membuat cfg, bundle, manifest, dan output sekaligus. Pembacaan data dapat dijalankan pada CPU."
+    device_index = next(
+        i
+        for i, c in enumerate(cells)
+        if c["metadata"].get("aes_multitrait_role") == "definition:device_name"
+    )
+    cells[device_index + 1 : device_index + 1] = [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": "### Periksa runtime\n\nTabel menunjukkan perangkat yang benar-benar tersedia di sesi ini.",
+        },
+        {
+            "cell_type": "code",
+            "metadata": {"aes_multitrait_role": "runtime_check"},
+            "source": (ROOT / "scripts/reset_e2_runtime.py").read_text(),
+            "execution_count": None,
+            "outputs": [],
+        },
+    ]
+    stage_requirements = {
+        "token_preview": ("Cek tokenisasi", ()),
+        "bge_execute": ("Encoding BGE", ()),
+        "inspection": ("Inspeksi vektor sebelum training", ("bge",)),
+        "cv_execute": ("Lima fold CV", ("bge",)),
+        "refit_execute": ("Refit model", ("bge", "cv_summary", "folds")),
+        "test_execute": ("Evaluasi test", ("bge", "refit_result")),
+        "final_features": ("Inspeksi fitur final", ("bge", "refit_result")),
+        "export_execute": (
+            "Ekspor workbook",
+            (
+                "cv_summary",
+                "folds",
+                "final_info",
+                "test_prediction",
+                "inspection_sheets",
+            ),
+        ),
+        "download": ("Unduh workbook", ("report_path",)),
+    }
+    for index, cell in enumerate(cells):
+        role = cell["metadata"].get("aes_multitrait_role")
+        if role in stage_requirements:
+            label, required = stage_requirements[role]
+            cell["source"] = (
+                f"if model_stage_ready({label!r}, {required!r}):\n"
+                + "\n".join("    " + line for line in cell["source"].splitlines())
+                + "\n"
+            )
+        cell["id"] = f"reset-e2-{index}"
+    notebook["cells"] = cells
 
     notebook["cells"][0]["source"] = INTRO
     fingerprint = hashlib.sha256(
