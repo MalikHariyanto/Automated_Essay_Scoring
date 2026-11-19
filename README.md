@@ -1,6 +1,6 @@
 # Automated Essay Scoring
 
-**Rangkaian terbaru — [S3 multi-trait reset](eksperimen/03_tiga_input_multi_trait/reset/README.md)** memakai dataset semi-final dan satu workbook keluaran lengkap. [E3 reset](eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) melanjutkan empat head E2 dengan attention token jawaban khusus tiap trait.
+**Rangkaian terbaru — [S3 multi-trait reset](eksperimen/03_tiga_input_multi_trait/reset/README.md)** memakai dataset semi-final dan satu workbook keluaran lengkap. [E3 reset](eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) menguji attention token per trait. [E4 reset](eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) menguji attention antartrait dari dasar E2 dan dapat dijalankan paralel dengan E3 pada runtime GPU terpisah.
 
 Eksperimen penilaian esai Bahasa Indonesia dengan RoBERTa, BGE-M3, dan fusion S3. Pilih kelompok untuk membuka notebook Colab, HTML hasil, dan panduannya.
 

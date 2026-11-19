@@ -5,10 +5,23 @@
 | E1 reset | MLP bersama 1024→256→4 | [File](notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) |
 | E2 reset | Empat MLP 1024→64→1 | [File](notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) |
 | E3 reset | Attention jawaban per trait + empat MLP E2 | [File](notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) |
+| E4 reset | Hidden64 per trait + attention antartrait + regresor128→1 | [File](notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) |
 
-Ketiganya memakai fusion sederhana, dataset semi-final, split siswa yang sama, dan dropout0,2. E2 adalah adaptasi ide representasi khusus trait dari [CTS](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py). Dimensi64 dipilih untuk menjaga anggaran parameter head mendekati E1.
+Seluruhnya memakai fusion sederhana, dataset semi-final, split siswa yang sama, dan dropout0,2. E2 adalah adaptasi ide representasi khusus trait dari [CTS](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py). Dimensi64 dipilih untuk menjaga anggaran parameter head mendekati E1.
 
 E1 dan E2 dapat dijalankan di runtime GPU Colab terpisah. Hasil E2 diunduh sebagai Hasil_AES_Reset_E2_S3_MultiTrait.xlsx, dengan cakupan sheet yang sama seperti E1. Setiap konfigurasi mempunyai folder run dan checkpoint sendiri. Hasil penelitian dibaca dari workbook run masing-masing; notebook publik tidak berisi hasil atau data siswa.
+
+## E4 · Attention antartrait dari dasar E2
+
+E4 dapat dijalankan paralel dengan E3 pada runtime GPU terpisah. E4 memakai CLS RoBERTa, mean antarwindow, proyeksi BGE frozen, dan concat1024 seperti E2. Empat jalur Linear1024→64→GELU→Dropout0,2 membuat hidden per trait. Dot-product/√64 dan softmax menghubungkan satu hidden dengan tiga trait lainnya pada jawaban yang sama. Diagonal attention0; tiap baris berjumlah1. Hidden sendiri64 dan konteks64 digabung menjadi128, lalu Linear128→1 memberi skor.
+
+Attention tidak mempunyai proyeksi Q/K/V atau dropout tambahan. Head bertambah256 parameter menjadi262.916. Bobot hidden sendiri dan bias mengikuti inisialisasi E2; bobot regresor untuk konteks dimulai0 dan ikut dilatih dengan LR1e-4. Jalur ini mempertahankan prediksi awal E2, kemudian dapat mempelajari kontribusi antartrait. Parameter bersama dan keadaan RNG E2 juga dipertahankan. Label guru hanya target loss, bukan input attention. Tidak ada pencampuran jawaban antarsiswa.
+
+Resep training E2 dipertahankan: RoBERTa LR5e-6, komponen lain1e-4, AdamW/decay0,01, warmup10%/linear, clip1, micro1/efektif8, 5CV, maksimal25epoch/patience5, satu refit dan test. Loss tetap MSE0–1 dan seleksi epoch memakai RMSE skala asli. [CTS/Ridley dkk.2021](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py) menjadi dasar ide attention dari satu trait ke trait lainnya dan concat sebelum prediksi. Hidden64 RoBERTa+BGE, pembagi√64, serta inisialisasi bobot konteks0 merupakan adaptasi proyek; efektivitas E4 belum diketahui.
+
+Satu Hasil_AES_Reset_E4_S3_MultiTrait.xlsx mencakup keluaran E2 ditambah hidden/konteks/concat per trait, matriks attention final seluruh jawaban, dan norma bobot regresor konteks dibanding awal0. Fitur dan attention adalah inspeksi checkpoint refit final, bukan OOF atau bukti sebab-akibat. Metrik penelitian tetap dari prediksi OOF/test tersendiri. Ukuran workbook dapat lebih besar daripada E2.
+
+Uji teknis semua cell telah menyelesaikan 5CV, refit, test, satu workbook71sheet dan pemanggilan unduh memakai Transformer RoBERTa kecil berbobot acak di CPU. Pemakaian ulang hasil selesai, mask diagonal, normalisasi attention, isolasi antarjawaban, gradien antartrait, mixed precision, anggaran parameter, dan kesamaan inisialisasi E2 juga diperiksa. Dataset asli berhasil dibaca1.340×4label dan dibagi1.070/270 pada runtime tanpa CUDA; tahap model memberi status menunggu GPU. Training pretrained E4 di T4 belum dijalankan.
 
 ## E3 · Attention pooling khusus trait
 
