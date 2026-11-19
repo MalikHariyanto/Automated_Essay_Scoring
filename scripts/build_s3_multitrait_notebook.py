@@ -11,6 +11,7 @@ NAME = 'AES_S3_MultiTrait_3Sekolah.ipynb'
 E2_NAME = 'AES_E2_S3_MultiTrait_TraitHeads_3Sekolah.ipynb'
 E3_NAME = 'AES_E3_S3_MultiTrait_Dropout02_3Sekolah.ipynb'
 E4_NAME = 'AES_E4_S3_MultiTrait_Dropout02_Sigmoid_3Sekolah.ipynb'
+E5_NAME = 'AES_E5_S3_MultiTrait_InterTraitAttention_3Sekolah.ipynb'
 EXPERIMENTS = Path('notebooks/experiments')
 PLACEHOLDER = '__NOTEBOOK_CODE_SHA256__'
 
@@ -128,7 +129,7 @@ def config_source(source):
 
 
 def build(experiment='E1'):
-    notebook_name = {'E1': NAME, 'E2': E2_NAME, 'E3': E3_NAME, 'E4': E4_NAME}[experiment]
+    notebook_name = {'E1': NAME, 'E2': E2_NAME, 'E3': E3_NAME, 'E4': E4_NAME, 'E5': E5_NAME}[experiment]
     trait_heads = experiment == 'E2'
     raw = (ROOT / EXPERIMENTS / BASE).read_bytes()
     base = json.loads(raw)
@@ -295,13 +296,13 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
                                  'Empat MLP khusus trait masing-masing menghasilkan satu skor.')
                         .replace('MLP mengubah fitur gabungan 1024 menjadi empat skor.',
                                  'Setiap head mengubah vektor 1024 menjadi satu skor melalui 64 unit tersembunyi.'))
-            elif experiment in ('E3', 'E4') and role == 'hyperparameters':
+            elif experiment in ('E3', 'E4', 'E5') and role == 'hyperparameters':
                 cell['source'] = replace(
                     cell['source'],
                     'S3_MLP_DROPOUT = 0.1             # Kembali ke E30; bukan dropout0.2 E38.',
                     ('S3_MLP_DROPOUT = 0.2             # E3: dropout MLP E1 dinaikkan dari 0,1 ke 0,2.'
                      if experiment == 'E3' else
-                     'S3_MLP_DROPOUT = 0.2             # E4: dropout MLP 0,2 mengikuti E3.'),
+                     f'S3_MLP_DROPOUT = 0.2             # {experiment}: dropout MLP 0,2 mengikuti E3.'),
                 )
             elif role in workflow_labels:
                 cell['source'] = cell['source'].replace('E43', experiment)
@@ -349,6 +350,53 @@ Nilai 0,2 adalah kandidat yang diambil dari [konfigurasi PMAES](https://github.c
 Keluaran sigmoid digunakan dalam [implementasi CTS](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py) dan [ProTACT](https://github.com/doheejin/ProTACT/blob/HEAD/models/ProTACT.py). E4 menguji adaptasi aktivasi ini pada S3. Checkpoint dan hasil E4 mempunyai folder run tersendiri. Bandingkan RMSE validasi dan hasil per trait dengan E3.
 """
 
+    if experiment == 'E5':
+        module = (ROOT / 'scripts/trait_attention_native.py').read_text()
+        index = next(i for i, cell in enumerate(cells)
+                     if cell['metadata'].get('aes_multitrait_role') == 'definition:SingleScoreModel')
+        cells[index-1:index-1] = [
+            {'cell_type': 'markdown', 'metadata': {},
+             'source': '### `TraitAttentionHead`\n\nEmpat MLP 1024→64 membentuk representasi trait. Dot-product attention memilih informasi dari tiga trait lain, lalu Linear128→1 memberi skor tiap trait.'},
+            {'cell_type': 'code', 'metadata': {'aes_multitrait_role': 'definition:TraitAttentionHead'},
+             'source': module, 'outputs': [], 'execution_count': None},
+        ]
+        for cell in cells:
+            role = cell['metadata'].get('aes_multitrait_role')
+            if role == 'definition:SingleScoreModel':
+                source = trait_heads_source(source_by_role[role])
+                start = source.index('            self.head = nn.ModuleDict({')
+                end = source.index('            })', start) + len('            })')
+                source = source[:start] + (
+                    '            self.head = TraitAttentionHead([name for name, *_ in TRAITS], s3_mlp_dropout)'
+                ) + source[end:]
+                start = source.index('        # Setiap head membaca vektor yang sama')
+                end = source.index('        if prediction.shape', start)
+                source = source[:start] + "        prediction = self.head(features['concat'])\n" + source[end:]
+                cell['source'] = source
+            elif role == 'prepare':
+                cell['source'] = replace(
+                    cell['source'], "'experiment': 'E5',",
+                    "'experiment': 'E5', 'head_type': 'inter_trait_attention', 'trait_hidden': 64,",
+                )
+            elif role == 'architecture':
+                cell['source'] = replace(
+                    cell['source'], "('Concat → MLP', f'1024 → 256 → {len(TRAITS)}'",
+                    "('Representasi trait → attention → skor', '4 × (1024→64), attention antartrait, 128→1 per trait'",
+                )
+            elif cell['cell_type'] == 'markdown':
+                cell['source'] = (cell['source']
+                    .replace('MLP bersama menghasilkan empat skor.',
+                             'Empat representasi trait saling bertukar informasi lewat attention dan menghasilkan empat skor.')
+                    .replace('MLP mengubah fitur gabungan 1024 menjadi empat skor.',
+                             'TraitAttentionHead mengubah fitur gabungan 1024 menjadi empat skor melalui attention antartait.'))
+        cells[0]['source'] += """
+**E5 dapat dijalankan paralel dengan E4 di runtime GPU Colab terpisah.** E3 adalah acuan keduanya. E4 menguji sigmoid. E5 menguji empat representasi trait 64 dimensi dan dot-product attention antartrait, dengan keluaran linear dan dropout 0,2. Total parameter head E5 adalah 262.916, dibanding 263.428 pada E3. Dataset semi-final, split, seed, LR, MSE, dan RMSE skala asli mengikuti E3.
+
+E5 mengadaptasi [attention antartait dari CTS](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py). CTS membentuk representasi dari LSTM per trait. E5 membentuknya dari fusion S3 lewat MLP 1024→64. Dimensi 64 dan dropout 0,2 adalah rancangan proyek mengikuti anggaran head E2 dan baseline E3. Setiap trait mengambil weighted sum dari tiga trait lain sebelum prediksi. Empat nilai acuan dipakai untuk loss dan evaluasi. Forward head hanya menerima fitur teks.
+
+Hubungkan Drive pada kedua runtime agar keduanya membaca workbook semi-final yang sama. Hasil dan checkpoint dipisahkan melalui konfigurasi eksperimen dan hash notebook.
+"""
+
     fingerprint = hashlib.sha256('\n'.join(c['source'] for c in cells if c['cell_type'] == 'code').encode()).hexdigest()
     for index, cell in enumerate(cells):
         cell['source'] = cell['source'].replace(PLACEHOLDER, fingerprint)
@@ -373,3 +421,4 @@ if __name__ == '__main__':
     build('E2')
     build('E3')
     build('E4')
+    build('E5')
