@@ -10,9 +10,6 @@ BASE = 'AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb'
 NAME = 'AES_S3_MultiTrait_3Sekolah.ipynb'
 EXPERIMENTS = Path('notebooks/experiments')
 PLACEHOLDER = '__NOTEBOOK_CODE_SHA256__'
-# cfe7d09 uses the same dataset, model, fit, split and BGE feature computation.
-# Keep completed training reusable after changing cell layout and separating refit from test.
-TRAINING_CODE_SHA256 = 'cb20b425d2fc72b781ce5d0f52acab68d89e05d2992e4005dbe7ac500756622c'
 
 
 def replace(source, old, new):
@@ -89,13 +86,8 @@ def fit_source(source):
                      """                # Normalisasi per trait memberi bobot sama pada empat dimensi loss.
                 targets = torch.as_tensor((bundle.y[ids] - SCORE_MIN) / SCORE_SPAN,
                                           dtype=torch.float32, device=device)""")
-    return (source.replace('[B,1]', '[B,4]').replace('best_rmse', 'best_macro_nrmse')
-            .replace('metrics(bundle.y[validation], predicted, cfg)', 'metrics(bundle.y[validation], predicted)')
-            .replace("row['validation']['RMSE']", "row['validation']['macro_nRMSE']")
-            .replace('row["validation"]["RMSE"]', 'row["validation"]["macro_nRMSE"]')
-            .replace('RMSE validasi', 'macro nRMSE validasi').replace(':.4f} poin', ':.4f}')
-            .replace('best_validation_rmse', 'best_validation_macro_nrmse')
-            .replace('minimum validation RMSE in original score units', 'minimum validation macro nRMSE'))
+    return source.replace('[B,1]', '[B,4]').replace(
+        'metrics(bundle.y[validation], predicted, cfg)', 'metrics(bundle.y[validation], predicted)')
 
 
 def config_source(source):
@@ -141,14 +133,14 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
 - **Masukan encoder:** pertanyaan, kunci jawaban, jawaban. Email dipakai untuk pembagian kelompok. Jawaban duplikat juga dikelompokkan.
 - **Empat keluaran:** isi (1–4), organisasi (1–2), kebahasaan (1–2), mekanik (1–2). Rentang awal mengikuti kategori pada sampel. Cocokkan rentang di cell Pemetaan dengan rubrik resmi sebelum run penelitian. Target diambil langsung dari empat kolom rubrik.
 - **Satu resep E43:** RoBERTa pretrained dilatih ulang dengan LR 5e-6, LR layer lain 1e-4, Scalar Mix empat layer + gamma, BiGRU, co-attention satu head, masked mean, dan BGE-M3 frozen. MSE merata-ratakan error empat target pada skala 0–1.
-- **Validasi E43** memakai lima fold development. Epoch terbaik tiap fold memakai macro nRMSE, yaitu rata-rata RMSE per trait dibagi lebar skala masing-masing. Median epoch terbaik yang dibulatkan ke atas dipakai untuk satu refit pada seluruh development. Evaluasi test dilakukan setelah refit. Seed tetap mengikuti E43 asli.
+- **Validasi E43** memakai lima fold development. Epoch terbaik tiap fold memakai RMSE pada skala skor asli. Untuk memilih satu epoch bagi model bersama, hitung akar dari rata-rata kuadrat error seluruh pasangan skor jawaban × trait. Median epoch terbaik yang dibulatkan ke atas dipakai untuk satu refit pada seluruh development. Evaluasi test dilakukan setelah refit. Seed tetap mengikuti E43 asli.
 - **Cara baca kode:** heading kecil menjelaskan fungsi dan kelas. Heading yang menyebut tahap seperti **Hitung fitur BGE**, **Jalankan lima fold**, dan **Evaluasi test** masing-masing punya cell yang benar-benar menjalankan proses serta menampilkan hasilnya.
 - **Hasil** berupa Excel per trait, prediksi validasi dan test, serta checkpoint final. RMSE/Pearson memakai prediksi mentah, QWK/Gwet AC2 memakai kategori terdekat. Excel dan checkpoint tetap di runtime. Unduhan akhir mengirim Excel ke komputer. Hasil fold selesai bisa dipakai ulang selama filesystem runtime masih tersedia. Satu fit yang terputus dijalankan ulang.
 """)
     markdown('## 1 · Setup pustaka pada kernel Colab')
     reuse('dependency_setup')
     markdown('## 2 · Import dan ruang variabel notebook')
-    reuse('imports', lambda source: source + f"\nTRAINING_CODE_SHA256 = {TRAINING_CODE_SHA256!r}\n")
+    reuse('imports')
     markdown('## 3 · Nama model pretrained')
     reuse('model_names')
     markdown('## 4 · Pemetaan input dan empat target')
@@ -162,8 +154,7 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
 
     markdown('## 6 · Dataset semi-final di Google Drive')
     markdown('### `read_dataset` dan `Bundle`\n\nWorkbook dibaca sebagai tiga kolom teks dan matriks empat skor. Email hanya dipakai untuk membentuk kelompok split.')
-    reuse('dataset_definitions', lambda source: dataset_source(source).replace(
-        'code_hash = NOTEBOOK_CODE_SHA256', 'code_hash = TRAINING_CODE_SHA256'))
+    reuse('dataset_definitions', dataset_source)
     code('storage', sections['storage'])
     markdown('## 7 · Baca workbook dan periksa X serta y')
     code('prepare', sections['prepare'])
@@ -218,12 +209,12 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
     markdown('## 14 · Metrik evaluasi\n\nRMSE dan Pearson memakai prediksi mentah. QWK dan Gwet AC2 memakai kategori terdekat.')
     original_metrics = (ROOT / 'src/aes/metrics.py').read_text().split('\ndef selection_monitor(')[0]
     code('definition:trait_metrics', original_metrics)
-    markdown('### `metrics` dan `predictions_array`\n\nPeriksa bentuk empat skor, lalu hitung metrik per trait. Macro nRMSE dipakai saat memilih epoch.')
+    markdown('### `metrics` dan `predictions_array`\n\nPeriksa bentuk empat skor, lalu hitung metrik per trait. Pemilihan epoch memakai RMSE dari seluruh skor validasi pada skala asli.')
     code('metrics', sections['metrics'])
 
     markdown('## 15 · Learnable Code — optimizer, loss, dan satu fit')
     definition('optimizer_groups', 'Kelompokkan parameter dengan LR RoBERTa 5e-6 dan LR komponen lain 1e-4.')
-    definition('fit', 'Latih satu model dengan AdamW dan MSE dari empat target skala 0–1. Saat CV, pilih epoch dengan macro nRMSE validasi terkecil.',
+    definition('fit', 'Latih satu model dengan AdamW dan MSE dari empat target skala 0–1. Saat CV, pilih epoch dengan RMSE validasi terkecil.',
                edit=fit_source)
 
     markdown('## 16 · Validasi silang pada development')
@@ -265,8 +256,7 @@ Pilih **GPU** di Google Colab dan jalankan cell berurutan. Saat diminta, hubungk
         'metadata': {'colab': {'name': NAME, 'provenance': []}, 'accelerator': 'GPU',
                      'kernelspec': base['metadata']['kernelspec'],
                      'aes_standalone': {'code_sha256': fingerprint, 'base': BASE,
-                                        'base_sha256': hashlib.sha256(raw).hexdigest(),
-                                        'training_code_sha256': TRAINING_CODE_SHA256}},
+                                        'base_sha256': hashlib.sha256(raw).hexdigest()}},
     }
     serialized = json.dumps(notebook, ensure_ascii=False, indent=1) + '\n'
     for folder in (ROOT / EXPERIMENTS, ROOT / 'aes-learning' / EXPERIMENTS):

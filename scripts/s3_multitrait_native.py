@@ -152,13 +152,10 @@ print('Urutan empat keluaran MLP:', ', '.join(name for name, *_ in TRAITS))
 
 # %% metrics
 def metrics(teacher, prediction):
-    """RMSE dalam poin asli per trait, ditambah makro RMSE ternormalisasi untuk seleksi."""
+    """RMSE validasi pada seluruh pasangan skor asli, serta metrik per trait."""
     per_trait = evaluate(teacher, prediction, RUBRIC)
-    macro = float(np.mean([
-        per_trait[name]['RMSE'] / span
-        for (name, _, _, _), span in zip(TRAITS, SCORE_SPAN)
-    ]))
-    return {'macro_nRMSE': macro, 'traits': per_trait}
+    residual = np.asarray(teacher, dtype=float) - np.asarray(prediction, dtype=float)
+    return {'RMSE': float(np.sqrt(np.mean(residual ** 2))), 'traits': per_trait}
 
 
 def predictions_array(values, indices):
@@ -191,16 +188,16 @@ def run_cv(bundle, manifest, bge, cfg, output):
             release()
         prediction = predictions_array(result['prediction'], validation)
         evaluation = metrics(bundle.y[validation], prediction)
-        if not math.isclose(evaluation['macro_nRMSE'],
-                            result['training']['best_validation_macro_nrmse'], abs_tol=1e-6):
+        if not math.isclose(evaluation['RMSE'],
+                            result['training']['best_validation_rmse'], abs_tol=1e-6):
             raise ValueError(f'Prediksi dan epoch terpilih tidak cocok: {path}')
         results.append({**result, 'metrics': evaluation})
     indices = [i for result in results for i in result['identity']['validation']]
     if sorted(indices) != sorted(manifest['development']):
         raise ValueError('Setiap jawaban development harus memiliki tepat satu prediksi OOF.')
     return {
-        'eksperimen': 'E43', 'mean_cv_macro_nRMSE': float(np.mean([
-            r['metrics']['macro_nRMSE'] for r in results
+        'eksperimen': 'E43', 'mean_cv_RMSE': float(np.mean([
+            r['metrics']['RMSE'] for r in results
         ])),
         'epoch_refit': math.ceil(np.median([r['training']['best_epoch'] for r in results])),
     }, results
@@ -267,7 +264,7 @@ def evaluate_test(refit_result, bundle, manifest, bge, cfg, output):
 
 # %% report
 def trait_rows(values, **keys):
-    return [{**keys, 'trait': name, 'macro_nRMSE': values['macro_nRMSE'],
+    return [{**keys, 'trait': name,
              'RMSE': stats['RMSE'], 'Pearson': stats['Pearson'],
              'QWK': stats['QWK'], 'Gwet AC2': stats['AC2'],
              'proporsi_di_luar_skala': stats['out_of_range_fraction'],
@@ -296,7 +293,7 @@ def prediction_rows(bundle, indices, prediction, **keys):
 
 def history_rows(info, **keys):
     return [{**keys, **{k: v for k, v in row.items() if k != 'validation'},
-             'validation_macro_nRMSE': row.get('validation', {}).get('macro_nRMSE')}
+             'validation_RMSE': row.get('validation', {}).get('RMSE')}
             for row in info['history']]
 
 
@@ -332,9 +329,8 @@ def export_results(path, bundle, manifest, cfg, cv_summary, folds, final_info, p
         **bundle.summary, 'eksperimen': 'E43', 'dataset_version': cfg['dataset_version'],
         'development_rows': len(manifest['development']), 'test_rows': len(test),
         'split_sha256': manifest['split_sha256'], 'notebook_code_sha256': NOTEBOOK_CODE_SHA256,
-        'training_code_sha256': TRAINING_CODE_SHA256,
         'test_dipakai_untuk_seleksi_epoch': False, 'final_config': cfg,
-        'kriteria_early_stopping': 'Rata-rata empat RMSE per trait setelah dibagi lebar skala trait.',
+        'kriteria_early_stopping': 'Akar rata-rata kuadrat error seluruh skor validasi dalam satuan asli.',
     })
 
 # %% cv_execute
@@ -342,7 +338,7 @@ cv_summary, folds = run_cv(bundle, manifest, bge, cfg, output)
 display(pd.DataFrame([{
     'fold': result['identity']['fold'],
     'epoch_terpilih': result['training']['best_epoch'],
-    'macro_nRMSE_validasi': result['metrics']['macro_nRMSE'],
+    'RMSE_validasi': result['metrics']['RMSE'],
 } for result in folds]))
 display(pd.DataFrame([cv_summary]))
 
