@@ -90,16 +90,65 @@ cfg = config({
                 'accelerator': torch.cuda.get_device_name() if DEVICE == 'cuda' else None},
 })
 bundle = read_dataset(cfg)
+print(f"{len(bundle.rows)} jawaban, {bundle.summary['email_groups']} akun, "
+      f"{bundle.summary['connected_groups']} kelompok setelah penggabungan duplikat.")
+print(f"X berisi {len(INPUT_COLUMNS)} kolom teks: {', '.join(INPUT_COLUMNS)}")
+print(f"y berukuran {bundle.y.shape}")
+display(pd.DataFrame([{
+    'trait': name, 'kolom_target': column, 'minimum': low, 'maksimum': high,
+} for name, column, low, high in TRAITS]))
+
+# %% split_execute
 manifest = make_split(bundle, cfg)
 output = run_folder(cfg, bundle)
 dump(output / 'split.json', manifest)
 
-print(f"{len(bundle.rows)} jawaban, {bundle.summary['email_groups']} akun, "
-      f"{bundle.summary['connected_groups']} kelompok setelah penggabungan duplikat.")
 print(f"Development: {len(manifest['development'])} | Test: {len(manifest['test'])}")
 display(pd.DataFrame([{
     'fold': f['fold'], 'training': len(f['train']), 'validation': len(f['validation']),
 } for f in manifest['folds']]))
+
+# %% token_preview
+# Ambil satu jawaban development dan perlihatkan ukuran window serta posisi yang dipakai E43.
+example_index = manifest['development'][0]
+example_row = bundle.rows[example_index]
+example_context = (example_row['question'], example_row['reference'])
+example_tokenizer = tokenizer(cfg, 'roberta')
+example_windows, example_detail = pair_content_windows(
+    example_row['text'], example_context, example_tokenizer,
+    cfg['roberta_max_length'], cfg['roberta_overlap'], cfg,
+)
+display(pd.DataFrame([{
+    'id_jawaban': example_row['row_id'],
+    'window': n,
+    'panjang_input': len(window['input_ids']),
+    'token_referensi': len(reference),
+    'token_jawaban': len(answer),
+} for n, (window, reference, answer) in enumerate(zip(
+    example_windows, example_detail['reference_positions'], example_detail['answer_positions'],
+), 1)]))
+
+# %% bge_execute
+bge = bge_features(bundle, cfg, output)
+coverage = json.loads((output / 'bge_encoding.json').read_text())
+display(pd.DataFrame([{
+    'encoder_frozen': cfg['bge']['checkpoint'],
+    'jumlah_vektor': bge.shape[0], 'dimensi': bge.shape[1],
+    'cache_dipakai_ulang': coverage['reused'],
+    'token_jawaban_tidak_tercakup': coverage['answer_tokens_uncovered'],
+}]))
+
+# %% architecture
+display(pd.DataFrame([
+    ('RoBERTa', '768 per token', cfg['s3_encoder_lr']),
+    ('Scalar Mix 4 + gamma', '768 per token', cfg['scalar_mix_lr']),
+    ('BiGRU + co-attention', 2 * cfg['s3_sequence_hidden'], cfg['s3_layers_lr']),
+    ('Masked mean + proyeksi RoBERTa', 768, cfg['s3_layers_lr']),
+    ('BGE-M3 frozen', 1024, None),
+    ('Proyeksi BGE', 256, cfg['projection_lr']),
+    ('Concat → MLP', f'1024 → 256 → {len(TRAITS)}', cfg['s3_mlp_lr']),
+], columns=['bagian', 'dimensi', 'learning_rate']))
+print('Urutan empat keluaran MLP:', ', '.join(name for name, *_ in TRAITS))
 
 # %% metrics
 def metrics(teacher, prediction):
@@ -118,7 +167,7 @@ def predictions_array(values, indices):
         raise ValueError('Prediksi harus finite dan berukuran [jumlah jawaban, 4].')
     return array
 
-# %% experiment
+# %% cv_definition
 def run_cv(bundle, manifest, bge, cfg, output):
     """Validasi silang satu resep E43 pada development."""
     results = []
@@ -157,18 +206,22 @@ def run_cv(bundle, manifest, bge, cfg, output):
     }, results
 
 
-def refit_and_test(epochs, bundle, manifest, bge, cfg, output):
-    """Latih model E43 final pada development dan evaluasi sekali pada test."""
+# %% final_model
+def refit_checkpoint(epochs, bundle, manifest, bge, cfg, output):
+    """Latih pada development dan simpan checkpoint sebelum cell test dijalankan."""
     identity = {'refit_epochs': epochs, 'split': manifest['split_sha256']}
     model_path = output / 'final.pt'
-    complete = output / 'test_result.json'
-    test = manifest['test']
-    if complete.exists():
-        result = json.loads(complete.read_text())
-        if result['identity'] != identity or digest(model_path) != result['model_sha256']:
-            raise ValueError('Hasil test dan checkpoint final berbeda.')
-        print('Hasil test final yang sudah selesai dipakai ulang.', flush=True)
-        return result['training'], predictions_array(result['prediction'], test)
+    refit_path = output / 'refit_result.json'
+    test_path = output / 'test_result.json'
+    # Format lama menyimpan informasi refit bersama hasil test.
+    for saved in (refit_path, test_path):
+        if saved.is_file():
+            result = json.loads(saved.read_text())
+            if (result['identity'] != identity or not model_path.is_file()
+                or digest(model_path) != result['model_sha256']):
+                raise ValueError('Metadata refit dan checkpoint final berbeda.')
+            print('Checkpoint refit yang sudah selesai dipakai ulang.', flush=True)
+            return result
 
     print(f'Refit E43 · {epochs} epoch pada seluruh development.', flush=True)
     model, engine, info = fit('S3', manifest['development'], None, bundle, bge, cfg,
@@ -176,12 +229,41 @@ def refit_and_test(epochs, bundle, manifest, bge, cfg, output):
     pending = model_path.with_suffix('.pending.pt')
     save_model(pending, model, cfg, bundle, manifest, info)
     pending.replace(model_path)
-    prediction = predictions_array(engine.predict(test), test)
-    dump(complete, {'identity': identity, 'prediction': prediction.tolist(), 'training': info,
-                    'model_sha256': digest(model_path)})
+    result = {'identity': identity, 'training': info, 'model_sha256': digest(model_path)}
+    dump(refit_path, result)
     del model, engine
     release()
-    return info, prediction
+    return result
+
+
+# %% test_definition
+def evaluate_test(refit_result, bundle, manifest, bge, cfg, output):
+    """Baca checkpoint refit dan hitung satu prediksi untuk setiap jawaban test."""
+    complete = output / 'test_result.json'
+    model_path = output / 'final.pt'
+    if digest(model_path) != refit_result['model_sha256']:
+        raise ValueError('Checkpoint yang akan dievaluasi berbeda dari checkpoint refit.')
+    test = manifest['test']
+    if complete.exists():
+        result = json.loads(complete.read_text())
+        if (result['identity'] != refit_result['identity']
+            or result['model_sha256'] != refit_result['model_sha256']):
+            raise ValueError('Hasil test dan checkpoint final berbeda.')
+        print('Hasil test final yang sudah selesai dipakai ulang.', flush=True)
+        return predictions_array(result['prediction'], test)
+
+    payload = torch.load(model_path, map_location='cpu', weights_only=True)
+    device = device_name(cfg)
+    model = make_model('S3', cfg)
+    model.load_state_dict(payload['state'], strict=True)
+    del payload
+    model.to(device)
+    engine = Engine(model, bundle.texts, bge, cfg, device, contexts=contexts_from_bundle(bundle))
+    prediction = predictions_array(engine.predict(test), test)
+    dump(complete, {**refit_result, 'prediction': prediction.tolist()})
+    del model, engine
+    release()
+    return prediction
 
 # %% report
 def trait_rows(values, **keys):
@@ -250,20 +332,37 @@ def export_results(path, bundle, manifest, cfg, cv_summary, folds, final_info, p
         **bundle.summary, 'eksperimen': 'E43', 'dataset_version': cfg['dataset_version'],
         'development_rows': len(manifest['development']), 'test_rows': len(test),
         'split_sha256': manifest['split_sha256'], 'notebook_code_sha256': NOTEBOOK_CODE_SHA256,
+        'training_code_sha256': TRAINING_CODE_SHA256,
         'test_dipakai_untuk_seleksi_epoch': False, 'final_config': cfg,
         'kriteria_early_stopping': 'Rata-rata empat RMSE per trait setelah dibagi lebar skala trait.',
     })
 
-# %% execute
-bge = bge_features(bundle, cfg, output)
+# %% cv_execute
 cv_summary, folds = run_cv(bundle, manifest, bge, cfg, output)
+display(pd.DataFrame([{
+    'fold': result['identity']['fold'],
+    'epoch_terpilih': result['training']['best_epoch'],
+    'macro_nRMSE_validasi': result['metrics']['macro_nRMSE'],
+} for result in folds]))
 display(pd.DataFrame([cv_summary]))
-final_info, test_prediction = refit_and_test(cv_summary['epoch_refit'], bundle, manifest, bge, cfg, output)
-report_path = output / 'Hasil_AES_E43_S3_MultiTrait.xlsx'
-export_results(report_path, bundle, manifest, cfg, cv_summary, folds, final_info, test_prediction)
-display(pd.DataFrame(trait_rows(metrics(bundle.y[manifest['test']], test_prediction))))
-print(f'Excel hasil: {report_path}')
+
+# %% refit_execute
+refit_result = refit_checkpoint(cv_summary['epoch_refit'], bundle, manifest, bge, cfg, output)
+final_info = refit_result['training']
+display(pd.DataFrame(final_info['scalar_mix_weights']))
 print(f'Checkpoint final: {output / "final.pt"}')
+
+# %% test_execute
+test_prediction = evaluate_test(refit_result, bundle, manifest, bge, cfg, output)
+test_metrics = metrics(bundle.y[manifest['test']], test_prediction)
+display(pd.DataFrame(trait_rows(test_metrics)))
+print(f"Jawaban test dievaluasi: {len(test_prediction)}")
+
+# %% export_execute
+report_path = output / 'Hasil_AES_E43_S3_MultiTrait.xlsx'
+sheets = export_results(report_path, bundle, manifest, cfg, cv_summary, folds, final_info, test_prediction)
+display(pd.DataFrame.from_dict(sheets, orient='index').rename_axis('sheet'))
+print(f'Excel hasil: {report_path}')
 
 # %% download
 from google.colab import files
