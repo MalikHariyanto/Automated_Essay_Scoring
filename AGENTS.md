@@ -1,6 +1,6 @@
-# Rangkaian aktif · E1 reset multi-trait
+# Rangkaian aktif · E1/E2 reset multi-trait
 
-Pengguna memulai ulang penomoran E1 untuk fusion sederhana. Builder scripts/build_multitrait_reset_notebook.py menghasilkan notebooks/multitrait_reset dan eksperimen/03_tiga_input_multi_trait/reset. Seluruh keluaran dikumpulkan menjadi satu workbook privat. Rangkaian E1–E5 sebelumnya tetap historis.
+Pengguna memulai ulang penomoran E1 untuk fusion sederhana. Builder scripts/build_multitrait_reset_notebook.py menghasilkan notebooks/multitrait_reset dan eksperimen/03_tiga_input_multi_trait/reset. Seluruh keluaran dikumpulkan menjadi satu workbook privat. E2 reset memakai empat MLP1024→64→1 dengan dropout0,2, LR dan split mengikuti E1 reset. Builder scripts/build_multitrait_reset_e2_notebook.py. Rangkaian E1–E5 sebelumnya tetap historis.
 
 # Katalog kelompok eksperimen · pembaruan 19 November 2026
 

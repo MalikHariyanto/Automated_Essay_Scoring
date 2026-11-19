@@ -1,4 +1,15 @@
-# E1 · Baseline multi-trait reset
+# Rangkaian reset · S3 multi-trait
+
+| Eksperimen | Head penilaian | Notebook | Jalankan |
+| --- | --- | --- | --- |
+| E1 reset | MLP bersama 1024→256→4 | [File](notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) |
+| E2 reset | Empat MLP 1024→64→1 | [File](notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/reset/notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) |
+
+Keduanya memakai fusion sederhana, dataset semi-final, split siswa yang sama, dan dropout0,2. E2 adalah adaptasi ide representasi khusus trait dari [CTS](https://github.com/robert1ridley/cross-prompt-trait-scoring/blob/HEAD/models/CTS.py). Dimensi64 dipilih untuk menjaga anggaran parameter head mendekati E1.
+
+E1 dan E2 dapat dijalankan di runtime GPU Colab terpisah. Hasil E2 diunduh sebagai Hasil_AES_Reset_E2_S3_MultiTrait.xlsx, dengan cakupan sheet yang sama seperti E1. Setiap konfigurasi mempunyai folder run dan checkpoint sendiri. Hasil penelitian keduanya menunggu run GPU pada data asli.
+
+## E1 · Baseline multi-trait reset
 
 Rangkaian ini dimulai kembali dari E1 dengan fusion sederhana. RoBERTa memakai CLS layer terakhir, BGE-M3 frozen diproyeksikan ke 256 dimensi, concat1024 masuk MLP256 dan menghasilkan empat skor.
 

@@ -277,3 +277,6 @@ Satu workbook memuat data, token, fitur, riwayat training, OOF, prediksi test, d
 
 if __name__ == "__main__":
     build()
+    from build_multitrait_reset_e2_notebook import build as build_e2
+
+    build_e2()
