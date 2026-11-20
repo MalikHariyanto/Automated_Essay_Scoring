@@ -35,3 +35,6 @@ outputs/runs/
 
 # downloads/ memuat bagian paket HTML terenkripsi yang diverifikasi sebelum publikasi.
 # ZIP hasil/dataset asli tetap diabaikan oleh aturan *.zip dan /outputs/ di atas.
+
+# Hanya workbook hasil publik anonim yang sengaja dipublikasikan.
+!eksperimen/03_tiga_input_multi_trait/hasil/*_Publik.xlsx

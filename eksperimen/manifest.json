@@ -1,362 +1,832 @@
 [
   {
-    "source": "notebooks/experiments/AES_300_BGE_Frozen_Readout_Colab.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_BGE_Frozen_Readout_Colab.ipynb",
-    "sha256": "1a4df1fee817f8ad07752bbae2d812ff143538d68c0c1a7db3cba2906e93fe19"
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/README.md",
+    "sha256": "5e7214480fb8eed623435e1bd6dc7de46ee9c2e9852a799fd4e646f6c26caaf8"
   },
   {
-    "source": "notebooks/experiments/AES_300_BGE_M3_Ridge_Tiga_Input_Colab.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_BGE_M3_Ridge_Tiga_Input_Colab.ipynb",
-    "sha256": "dc206015080ebdbf483a7d242126f038dd8139b82bfb999af214671666ed527c"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E21_Tiga_Input_CPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E21_Tiga_Input_CPU.ipynb",
-    "sha256": "9629147eed8dc99224a6489a20f55c200b0ab943ad0d9952201ce5540cdbe428"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E21_Tiga_Input_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E21_Tiga_Input_GPU.ipynb",
-    "sha256": "7c8cd1ff18b87132d8c912ac0c750c524e3ec279e12ef464aebe72fd9ccb6948"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E22_Tiga_Input_ContextPair_CPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E22_Tiga_Input_ContextPair_CPU.ipynb",
-    "sha256": "eeb188a2dfe67e234e115e6418593ae71b2f2f780e0a0a74cfa14c8aa0931dff"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E22_Tiga_Input_ContextPair_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E22_Tiga_Input_ContextPair_GPU.ipynb",
-    "sha256": "47133bd3f5a98e31fe714d660252e58ba06bf38eaae26acf8dba91e3a721af0a"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb",
-    "sha256": "1020b582e2a53fb81869708cfc01c2a225f3d7aa6a3ea835ae9d054b9ca7e0dd"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb",
-    "sha256": "26d4f3b80720fc5e12b30a22e6cbf907b0f6a1ce565cbac402d502c697df0a64"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb",
-    "sha256": "369a13f8801bc729b9c78e0e6ac7c76339ef4bc94c9ca0740c9d363a9c4fe444"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb",
-    "sha256": "1da17270c24eac29a0e077c4d4cf177bc6a540f601a1a30c0fbe2ed7f243305e"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb",
-    "sha256": "33fb26c4efa70d7a2d5892b476ae3c1ea528b7fc4dfcc954573771b39661ac1a"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb",
-    "sha256": "026d771f04623e8eb244a73ee68ba4259667e725ee8d78dc041f0f9a3176b765"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E29_BiGRU_Attention_Ridge_Colab.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E29_BiGRU_Attention_Ridge_Colab.ipynb",
-    "sha256": "e387a52669cae6bc639f297b720a70f758f05f91db69c3577b917ae27e9bca02"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb",
-    "sha256": "d1791866de266fbbca8b8293d99f3fbc585460312fc8f1a870e8f4221cfbc04a"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E30_BiGRU_CoAttention_Ridge_Colab.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E30_BiGRU_CoAttention_Ridge_Colab.ipynb",
-    "sha256": "3838802a991fa60a2f8c6dfe94af4c2c489f9e614adffe9ef7492d3e3dd73ca0"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb",
-    "sha256": "19aec0a642338457265444fe9d16864810ec5f17eddbe4dbc1d75924bd2b2921"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E30_Lengkap_S1_S2_S3_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E30_Lengkap_S1_S2_S3_Native_Learnable_GPU.ipynb",
-    "sha256": "3d4f035d5e89989c5c7bd506e10bc06cc7f38d2726137568e204ca6163bfce4a"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E30_S3_MLP_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E30_S3_MLP_Native_Learnable_GPU.ipynb",
-    "sha256": "e7f603667c0de8657b0a625804228f0522c7b74b86f308083d973882e8c98af6"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E31_E25_GatedFusion_MLPLR5e6_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E31_E25_GatedFusion_MLPLR5e6_GPU.ipynb",
-    "sha256": "62b9fe58419d996ddc6dae0d2acaa97ae82716b01910bb599ab8afb63be2cf16"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E32_E25_CoAttention_GatedFusion_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E32_E25_CoAttention_GatedFusion_GPU.ipynb",
-    "sha256": "f886c0ce70b40b883e2fcf152c87cb02b3237bce0abbe4a304c19db87f1f30ce"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb",
-    "sha256": "43c97865854c07f79b1f2a2576cb16b2756e6e984dcb907b7bf84d027f9bbdf8"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E34_E33_BiGRU_CoAttention_LayersLR5e5_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E34_E33_BiGRU_CoAttention_LayersLR5e5_GPU.ipynb",
-    "sha256": "980acea9aa107262dad29f2615c558c693f94aaad175697621610ce89922b648"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E35_E30_LayersLR5e5_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E35_E30_LayersLR5e5_Native_Learnable_GPU.ipynb",
-    "sha256": "c833b03435424892f91b6557a5fd9be1719e422bd7b950815112e43f96134fd0"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E36_E30_S3_EncoderLR3e6_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E36_E30_S3_EncoderLR3e6_Native_Learnable_GPU.ipynb",
-    "sha256": "b2d5233fe18799e7a5df49dfad8e8f1fed3423fd9049a3b0e775651e195f1d89"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E37_E30_S3_EncoderLR5e6_vs7e6_3Seed_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E37_E30_S3_EncoderLR5e6_vs7e6_3Seed_Native_Learnable_GPU.ipynb",
-    "sha256": "47debc3b7dad202e1088a084f5497e252e2cd76e9a065730adb2996f582d8bd0"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E37_E30_S3_EncoderLR7e6_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E37_E30_S3_EncoderLR7e6_Native_Learnable_GPU.ipynb",
-    "sha256": "f0973d1128c6b9cbc68c56e25af002f918dcb562ac6d57959d80e9fb2026a0e0"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E38_E30_S3_MLPDropout02_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E38_E30_S3_MLPDropout02_Native_Learnable_GPU.ipynb",
-    "sha256": "b80cb54879a298d2b7e7f95495a3ab8279106e12fbf3301e795bcb072964801b"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E39_E30_S3_BiGRU128_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E39_E30_S3_BiGRU128_Native_Learnable_GPU.ipynb",
-    "sha256": "06ac20a283a612365b1575cfc1245498ef4603ff8146055f8e5b704bc2dd424f"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E40_E30_S3_LLRD095_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E40_E30_S3_LLRD095_Native_Learnable_GPU.ipynb",
-    "sha256": "5ac16575c729deb49b75869a07852e8912f57bb00e699b80cfc421c9597eba9c"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E41_E30_S3_ScalarMix4_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E41_E30_S3_ScalarMix4_Native_Learnable_GPU.ipynb",
-    "sha256": "c1ac4579fc3c181a8c87f595edd10d947255ce7b2311a5f63eaf24155e3aa183"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E42_E41_S3_ScalarMix4_Gamma_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E42_E41_S3_ScalarMix4_Gamma_Native_Learnable_GPU.ipynb",
-    "sha256": "c632af4fc1d2b56f0b1cd4302dfb45a17137cd0bc2bff34136f1ae7c81b86d19"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb",
-    "sha256": "7955c87e97982d5c2c4f85471f954e13bf14cb941236aa6a64cafab1aa4c45b4"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb",
-    "sha256": "078d4908b1795d899a3ea70835c94e90852c92311f76acca0c859e9c87ea6a1f"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb",
-    "sha256": "597c679d77189cbec9e9be7921795b3554845406d238c3f85d072e0949f74ab5"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E46_E43_S3_Refit18_Schedule25_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E46_E43_S3_Refit18_Schedule25_Native_Learnable_GPU.ipynb",
-    "sha256": "c9a4ac3ecf3f4805debf572f86b3d010cc45f9f4de38ffe0dc3f991f5d55ec5b"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E47_E45_S3_Refit7_Schedule25_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E47_E45_S3_Refit7_Schedule25_Native_Learnable_GPU.ipynb",
-    "sha256": "3ad21a66224d519a6dcd3a3f302d22e5d321a298c11390214edb8d94bfc736e9"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E48_E43_S3_LDS_WeightedMSE_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E48_E43_S3_LDS_WeightedMSE_Native_Learnable_GPU.ipynb",
-    "sha256": "1c3a9926c06e8164fcf07b903ee34cf315b849ba6363865e65b5500b0af5ed87"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E49_E43_S3_LDS_InverseSqrt_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E49_E43_S3_LDS_InverseSqrt_Native_Learnable_GPU.ipynb",
-    "sha256": "6c6ed63995123ff1acc0ccb4e411d0b8feb125a0a6ae4c4776716bf1ae901053"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E4_Tiga_Input_CPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E4_Tiga_Input_CPU.ipynb",
-    "sha256": "b51b95c9a72be6ba95af5332a5b4d09f18ad25ea0078e78615ca992c1149da98"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb",
-    "sha256": "fe9c433d4445fbd90cc3f98b20c5982e635147186b9a63990442ff86c579fed0"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E51_E50_S3_GatedConcat_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E51_E50_S3_GatedConcat_Native_Learnable_GPU.ipynb",
-    "sha256": "44e556b213d6d6795de0830cae397511a84e2cb03a833266846f0cc001eec708"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E52_E43_S3_DoRA8_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E52_E43_S3_DoRA8_Native_Learnable_GPU.ipynb",
-    "sha256": "07974afd8dd33cfa75b0b4acd557a30c7ea1a631994c8811ad2103330377ad17"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E53_E43_S3_EMA099_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E53_E43_S3_EMA099_Native_Learnable_GPU.ipynb",
-    "sha256": "f984d0394784e783e47459405bb6f910c3cecc4118c21fe9f9099281bc03b528"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E54_E43_S3_ConR_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E54_E43_S3_ConR_Native_Learnable_GPU.ipynb",
-    "sha256": "5c76315cf62f361ea92e9208eb001635a8e2266633a723f01d913a70da8ec0cd"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E55_E43_S3_PairedBatch_MSE_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E55_E43_S3_PairedBatch_MSE_Native_Learnable_GPU.ipynb",
-    "sha256": "416ce0ced2830a814165e01db9a124e1b74358c005fe3e09605cbfce5d40ac79"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E56_E43_S3_PairedBatch_ConR_Native_Learnable_GPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E56_E43_S3_PairedBatch_ConR_Native_Learnable_GPU.ipynb",
-    "sha256": "469b2b5d452661126ed8c651e89e9e78efd311f3f68ab3a1f1c26f2fba60a538"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E6_3Seed_CPU.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_E6_3Seed_CPU.ipynb",
-    "sha256": "20e9fc0f941a1ffd6d834c72511481a29176a9f42e0c834b755db86bf8d5bcc3"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E6_3Seed_GPU.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_E6_3Seed_GPU.ipynb",
-    "sha256": "3dbb87d2a019cb9809d6091062a7240e26f02b094174bdd0983f4bd7af7d6a3b"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E6_S3_LR5e6_CPU_Reuse.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_E6_S3_LR5e6_CPU_Reuse.ipynb",
-    "sha256": "ddaf09d78d962ea3a15dabb5d43fcaead5ca3c96e9ec4bc01c0b241d37dc8232"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E6_S3_LR5e6_GPU_Reuse.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_E6_S3_LR5e6_GPU_Reuse.ipynb",
-    "sha256": "62b00191c6855ede9f02228f4bea7d25c9a584c6fc7697c33a8cb8205f2a94ba"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E6_Tiga_Input_CPU.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E6_Tiga_Input_CPU.ipynb",
-    "sha256": "821c90df8c2b1e3e04c887fe68478c38b7f9f41b3b800d46ed672183f3591807"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E8_ContextPair_LR5e6_CPU.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_E8_ContextPair_LR5e6_CPU.ipynb",
-    "sha256": "09e4c989f1c09e7b817f838ba7a99fa1750afa1119d609543b0ffdbf03089276"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_E8_ContextPair_LR5e6_GPU.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_E8_ContextPair_LR5e6_GPU.ipynb",
-    "sha256": "01be404c63421fad50821ba6b69eae97eecd2b12021007b83f50e9d9e7fd2110"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_ContextPair_MLP.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_S3_ContextPair_MLP.ipynb",
-    "sha256": "8f844cf542a9ae322ec0ba1ff19cf015845732dd9ae305775c40eb98c23e055c"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_DoubleFrozen_MLP.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_S3_DoubleFrozen_MLP.ipynb",
-    "sha256": "8ba884a4f71222e2f8dde94de6f7b9f8b045660b6abe67b0e88e23b485dae1c0"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_DoubleFrozen_MLP_Manual.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_S3_DoubleFrozen_MLP_Manual.ipynb",
-    "sha256": "3e9af012d9bfe53794a3f6ce7a9c466c799286b25cea436fd650c5bf93198e45"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_Fusion_Ridge_Hemat_Colab.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_S3_Fusion_Ridge_Hemat_Colab.ipynb",
-    "sha256": "29aacf8dc6ddaa5cc33ddc6ccfa9c2739bc7e30b0cde5db34b076381331b6a56"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_Fusion_Ridge_Tiga_Input_Colab.ipynb",
-    "organized": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_S3_Fusion_Ridge_Tiga_Input_Colab.ipynb",
-    "sha256": "b9e285a651eb6ca4a3d138142a93de17817006bcf369210d74ecff48346f5916"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_Linear.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_S3_Linear.ipynb",
-    "sha256": "1066bbe5e9694bc392690d7ec5be9f25cc6799f6a30bf0d40e0699ad8b463cfb"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_LoRA_MLP_GPU.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_S3_LoRA_MLP_GPU.ipynb",
-    "sha256": "f746fb6792d97b9cba2013d11d0da51a250b0503bbd06ad42dd5521fe22fd3ac"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_MLP.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_S3_MLP.ipynb",
-    "sha256": "d310bef978bdca5fda39f903aaefa442331af5d689c9bb31b081f0bce8dc9e6e"
-  },
-  {
-    "source": "notebooks/experiments/AES_300_S3_MLP_LR5e6_CPU.ipynb",
-    "organized": "eksperimen/01_dua_input/notebooks/AES_300_S3_MLP_LR5e6_CPU.ipynb",
-    "sha256": "adebe8b52f5c974d17b852637b8115c67f41e829a523c015a43ca14547d6c3b5"
-  },
-  {
-    "source": "notebooks/experiments/AES_E2_S3_MultiTrait_TraitHeads_3Sekolah.ipynb",
-    "organized": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_E2_S3_MultiTrait_TraitHeads_3Sekolah.ipynb",
-    "sha256": "a1eddad0e2b877c44017672996ee065e26995960a94673ae0e632a9f563348a6"
-  },
-  {
-    "source": "notebooks/experiments/AES_E3_S3_MultiTrait_Dropout02_3Sekolah.ipynb",
-    "organized": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_E3_S3_MultiTrait_Dropout02_3Sekolah.ipynb",
-    "sha256": "f844776a32bb307c7a44ae70052c56500f314ae3fad742e85b40e47e0cac0a2c"
-  },
-  {
-    "source": "notebooks/experiments/AES_E4_S3_MultiTrait_Dropout02_Sigmoid_3Sekolah.ipynb",
-    "organized": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_E4_S3_MultiTrait_Dropout02_Sigmoid_3Sekolah.ipynb",
-    "sha256": "cd2765911d4ada667e965b8ea8a2529c150c883a09aab2161c03d12b944c399e"
-  },
-  {
-    "source": "notebooks/experiments/AES_E5_S3_MultiTrait_InterTraitAttention_3Sekolah.ipynb",
-    "organized": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_E5_S3_MultiTrait_InterTraitAttention_3Sekolah.ipynb",
-    "sha256": "aca8faeb9c708f02c2435f2259ed518021d3b428afceb9e8d55effcd5b11f805"
-  },
-  {
-    "source": "notebooks/experiments/AES_S3_MultiTrait_3Sekolah.ipynb",
-    "organized": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_E1_S3_MultiTrait_3Sekolah.ipynb",
-    "sha256": "c3f8149bcc44125c6976e8128a047872fba98807a184eafc1d637b1c598a2695"
-  },
-  {
-    "source": "docs/belajar_MLP_Spider.html",
-    "organized": "eksperimen/01_dua_input/html/belajar_MLP_Spider.html",
-    "sha256": "a7cd28b9ef7ff0b09cd788647f59b7705789b4267d8b7b55ac9b83436590262c"
-  },
-  {
-    "source": "downloads/Belajar_AES_MLP_Lengkap.html",
-    "organized": "eksperimen/01_dua_input/html/Belajar_AES_MLP_Lengkap.html",
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/html/Belajar_AES_MLP_Lengkap.html",
     "sha256": "647067ed0fc9dbc1ca527bdc5c1dbbc1fc46b709ce6a893401f8b116f479a0bf"
   },
   {
-    "source": "docs/belajar_Tiga_Input_Spider.html",
-    "organized": "eksperimen/02_tiga_input_single_trait/html/belajar_Tiga_Input_Spider.html",
-    "sha256": "9a3ae7606e9d2f76ec022892e60b995d8d51b5029000afd23d3d7d5fd033e53e"
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/html/belajar_MLP_Spider.html",
+    "sha256": "a7cd28b9ef7ff0b09cd788647f59b7705789b4267d8b7b55ac9b83436590262c"
   },
   {
-    "source": "downloads/Belajar_AES_Tiga_Input_Lengkap.html",
-    "organized": "eksperimen/02_tiga_input_single_trait/html/Belajar_AES_Tiga_Input_Lengkap.html",
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_E6_3Seed_CPU.ipynb",
+    "sha256": "20e9fc0f941a1ffd6d834c72511481a29176a9f42e0c834b755db86bf8d5bcc3"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_E6_3Seed_GPU.ipynb",
+    "sha256": "3dbb87d2a019cb9809d6091062a7240e26f02b094174bdd0983f4bd7af7d6a3b"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_E6_S3_LR5e6_CPU_Reuse.ipynb",
+    "sha256": "ddaf09d78d962ea3a15dabb5d43fcaead5ca3c96e9ec4bc01c0b241d37dc8232"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_E6_S3_LR5e6_GPU_Reuse.ipynb",
+    "sha256": "62b00191c6855ede9f02228f4bea7d25c9a584c6fc7697c33a8cb8205f2a94ba"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_S3_DoubleFrozen_MLP.ipynb",
+    "sha256": "8ba884a4f71222e2f8dde94de6f7b9f8b045660b6abe67b0e88e23b485dae1c0"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_S3_DoubleFrozen_MLP_Manual.ipynb",
+    "sha256": "3e9af012d9bfe53794a3f6ce7a9c466c799286b25cea436fd650c5bf93198e45"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_S3_Linear.ipynb",
+    "sha256": "1066bbe5e9694bc392690d7ec5be9f25cc6799f6a30bf0d40e0699ad8b463cfb"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_S3_LoRA_MLP_GPU.ipynb",
+    "sha256": "f746fb6792d97b9cba2013d11d0da51a250b0503bbd06ad42dd5521fe22fd3ac"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_S3_MLP.ipynb",
+    "sha256": "d310bef978bdca5fda39f903aaefa442331af5d689c9bb31b081f0bce8dc9e6e"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/notebooks/AES_300_S3_MLP_LR5e6_CPU.ipynb",
+    "sha256": "adebe8b52f5c974d17b852637b8115c67f41e829a523c015a43ca14547d6c3b5"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/README.md",
+    "sha256": "7685736045bf1b54968f97b56c48c89602baadb436f361b11bb87f2b056ac52f"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/__init__.py",
+    "sha256": "3f0d8fbcba2714dd37e94fed16a3bd54f469f74579e1e8d36466917c2a9b7405"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/ai_learning.py",
+    "sha256": "6de67b14e85b7ba7b8307061d389eeb4f36a4ae39b2b74509767c73365d67774"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/audit.py",
+    "sha256": "9c3d4bb63f836e9a753c7d6cd0c8e7a7a0c541ae64dc943ca7f93856367ae427"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/checkpoint.py",
+    "sha256": "21a68e27b5b08dd35326b584dcf5022f4eac2887f9a8d1d459f349e7a436d8fb"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/cleaning.py",
+    "sha256": "b63f261b91dac5b2c2dc7c8610ea54cfa265577f54977784d9c993c82adea587"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/cli.py",
+    "sha256": "b57eb6eb289aeaba34450f80699b2ef9b984d4da01e111340be1e954962dd76e"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/encoders.py",
+    "sha256": "908feb8016e0a01b7edd9379f00c4c2bc7ccef4bce920f7e8bd54f7394ed1bfe"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/experiment.py",
+    "sha256": "4a84323d4b6ff23191188db7892daef50e62dcd4c15ee0eed51c4e652df22d0f"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/inference.py",
+    "sha256": "67d7d6ee062cf0c48f3d3698a4f797d45514a237af7be86907a06b988d8bf415"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/inspection.py",
+    "sha256": "f27a91005d6f0dede635cc724d6a3df376aa9844d7249fe81c52c91132c017d3"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/io.py",
+    "sha256": "228ec371d7a37a3e471d0a5afed0165a77bbfbc9c8e53fb3cae7f95e6f2fbf50"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/metric_trace.py",
+    "sha256": "bea3ddfd03db244eb74ed4e988a20d9a7413a5fe16f692339a624dfa5dfe3054"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/metrics.py",
+    "sha256": "b4f9da91fe604af4cff6e46bc1019aaaafa14fdfcc14b566b826f54433b82818"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/model.py",
+    "sha256": "a82e1ef6cb6d3d32774ae59787f0df85ddcb46d8d6062afad6686ba20c2548a2"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/reporting.py",
+    "sha256": "1045e75d336fe1fef222d4e988fb2e4088c4b92fcd7af6aee3f11c147d80bb6f"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/script_entry.py",
+    "sha256": "4130533b4c2d775c956620a5eeae3cc2c1bcbb6c703191e8493e1a21e15c48fa"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/split.py",
+    "sha256": "8fdbd735d00fedebfaba100ece354fb9b17f0d9ea21905e6e082454bece61123"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/__init__.py",
+    "sha256": "e5ffb76b022e13ab8000ed3ea7900e556a810c0bca53ad1bee9252191320e6db"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/context_pair.py",
+    "sha256": "18403723e85d53814744d01e58705397d312ec48497297335971d79860dc2fe5"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/data.py",
+    "sha256": "2bd37215206c5066a6cc66fec370607185f9d230632dceedb37f2dd27d86ccff"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/display.py",
+    "sha256": "82949735c915f8ab02aefdd1ed0e332a16adfe756e973b431cf801a9516fc956"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/drive_checkpoint_cleanup.py",
+    "sha256": "67ed9341b8774451d1b8bcfaf73c57813d9e600a0d310ed34e7f57aecd4623d5"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/excel.py",
+    "sha256": "e3290d1f96d60f952929018734177cfbd0a6dd66475a7a9b7003e25bba81c07b"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/experiment.py",
+    "sha256": "89cdba1972519addf43bd76dec1174c15486ae1bb741b317fd7d697a1472cc3c"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/experimental_checkpoints.py",
+    "sha256": "0b1254ac25700b6e80e34ef13ab00f2ed0e994b423cd7817f5e0e1305c68baf4"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/lesson.py",
+    "sha256": "0de576d6acfd845957abb1d6dddb0569f029947a7bfabfcd439d198484972284"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/lora_fusion.py",
+    "sha256": "998d67fb9a370a14c2e298bc72faca32dbf10d29d43c580a54808f81b2c96ed7"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/lora_text_runtime.py",
+    "sha256": "6266ca77b8cc17b51b96cd8cc2bbaef719ea26694f1be86c8f27132acfac8169"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/manual_checkpoints.py",
+    "sha256": "6d496478c5212eaa84a47829f722b0367d51bc38d344801c2452d4ba7b4c6961"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/models.py",
+    "sha256": "0598829f6d74e36ea4ab4f8e9cdcd68927d35afb206688a7fcb13cda2a017475"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/presentation.py",
+    "sha256": "e94dfcacc73471f82ec38ec46cf14cf4278e6dbc66783d2d3bbf826a14f0693d"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/reuse_controls.py",
+    "sha256": "75af3179e7fe26d069e89be64d82f88d08cdcb54d44fede5bb671ab238a65fef"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/vectors.py",
+    "sha256": "9113c88820477c1f49e5227c4bc4c411cdd9061c76b4eb153b4674884795ff25"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/teacher_score/workflow.py",
+    "sha256": "d48501bd330357c4b9c423eefbdede9b1c1624d096891c65be288d879eabd53a"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/trainer.py",
+    "sha256": "9e4fbf059e63f3b863435b8be45ba51a6fc1284543d960d449d93dfdd584f373"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/windows.py",
+    "sha256": "cee225501a04efe570bec7d3aa0d8765d27d43493b40a488d04f0cec7efba9d4"
+  },
+  {
+    "group": "01_satu_variabel",
+    "path": "eksperimen/01_satu_variabel/src/aes/workbook.py",
+    "sha256": "59efa9c6aec4ec0acfc2d92c79d7ad64ba1b8b962f8e0f8f84e3316388b3b791"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/README.md",
+    "sha256": "78ad7e2cff980c6343ac1bce5f82fd8051b454d7a17c5e859682c1371f53b5b2"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/html/Belajar_AES_Tiga_Input_Lengkap.html",
     "sha256": "2fd9e9faefd3df96b17d874a2794d91863dc26d33bf5078a9e25f23810e98b59"
   },
   {
-    "source": "downloads/Panduan_E30_MLP.html",
-    "organized": "eksperimen/02_tiga_input_single_trait/html/Panduan_E30_MLP.html",
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/html/Panduan_E30_MLP.html",
     "sha256": "b0aa339f71ba278eacbbe9904ba43269716e024f60017c52b0b2fae0b2953baa"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/html/belajar_Tiga_Input_Spider.html",
+    "sha256": "9a3ae7606e9d2f76ec022892e60b995d8d51b5029000afd23d3d7d5fd033e53e"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_BGE_Frozen_Readout_Colab.ipynb",
+    "sha256": "1a4df1fee817f8ad07752bbae2d812ff143538d68c0c1a7db3cba2906e93fe19"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_BGE_M3_Ridge_Tiga_Input_Colab.ipynb",
+    "sha256": "dc206015080ebdbf483a7d242126f038dd8139b82bfb999af214671666ed527c"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E21_Tiga_Input_CPU.ipynb",
+    "sha256": "9629147eed8dc99224a6489a20f55c200b0ab943ad0d9952201ce5540cdbe428"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E21_Tiga_Input_GPU.ipynb",
+    "sha256": "7c8cd1ff18b87132d8c912ac0c750c524e3ec279e12ef464aebe72fd9ccb6948"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E22_Tiga_Input_ContextPair_CPU.ipynb",
+    "sha256": "eeb188a2dfe67e234e115e6418593ae71b2f2f780e0a0a74cfa14c8aa0931dff"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E22_Tiga_Input_ContextPair_GPU.ipynb",
+    "sha256": "47133bd3f5a98e31fe714d660252e58ba06bf38eaae26acf8dba91e3a721af0a"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E23_Tiga_Input_BiGRU_GPU.ipynb",
+    "sha256": "1020b582e2a53fb81869708cfc01c2a225f3d7aa6a3ea835ae9d054b9ca7e0dd"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E24_Tiga_Input_AttentionPooling_GPU.ipynb",
+    "sha256": "26d4f3b80720fc5e12b30a22e6cbf907b0f6a1ce565cbac402d502c697df0a64"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E25_Tiga_Input_Attention_GatedFusion_GPU.ipynb",
+    "sha256": "369a13f8801bc729b9c78e0e6ac7c76339ef4bc94c9ca0740c9d363a9c4fe444"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E26_Tiga_Input_BiGRU_Attention_GPU.ipynb",
+    "sha256": "1da17270c24eac29a0e077c4d4cf177bc6a540f601a1a30c0fbe2ed7f243305e"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E27_E23_BiGRU_CoAttention_GPU.ipynb",
+    "sha256": "33fb26c4efa70d7a2d5892b476ae3c1ea528b7fc4dfcc954573771b39661ac1a"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E28_E23_BiGRU_MLPLR5e6_GPU.ipynb",
+    "sha256": "026d771f04623e8eb244a73ee68ba4259667e725ee8d78dc041f0f9a3176b765"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E29_BiGRU_Attention_Ridge_Colab.ipynb",
+    "sha256": "e387a52669cae6bc639f297b720a70f758f05f91db69c3577b917ae27e9bca02"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E29_E26_BiGRU_Attention_MLPLR5e6_GPU.ipynb",
+    "sha256": "d1791866de266fbbca8b8293d99f3fbc585460312fc8f1a870e8f4221cfbc04a"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E30_BiGRU_CoAttention_Ridge_Colab.ipynb",
+    "sha256": "3838802a991fa60a2f8c6dfe94af4c2c489f9e614adffe9ef7492d3e3dd73ca0"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E30_E26_BiGRU_CoAttention_Pooling_GPU.ipynb",
+    "sha256": "19aec0a642338457265444fe9d16864810ec5f17eddbe4dbc1d75924bd2b2921"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E30_Lengkap_S1_S2_S3_Native_Learnable_GPU.ipynb",
+    "sha256": "3d4f035d5e89989c5c7bd506e10bc06cc7f38d2726137568e204ca6163bfce4a"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E30_S3_MLP_Native_Learnable_GPU.ipynb",
+    "sha256": "e7f603667c0de8657b0a625804228f0522c7b74b86f308083d973882e8c98af6"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E31_E25_GatedFusion_MLPLR5e6_GPU.ipynb",
+    "sha256": "62b9fe58419d996ddc6dae0d2acaa97ae82716b01910bb599ab8afb63be2cf16"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E32_E25_CoAttention_GatedFusion_GPU.ipynb",
+    "sha256": "f886c0ce70b40b883e2fcf152c87cb02b3237bce0abbe4a304c19db87f1f30ce"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E33_E30_BiGRU_CoAttention_MLPLR5e5_GPU.ipynb",
+    "sha256": "43c97865854c07f79b1f2a2576cb16b2756e6e984dcb907b7bf84d027f9bbdf8"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E34_E33_BiGRU_CoAttention_LayersLR5e5_GPU.ipynb",
+    "sha256": "980acea9aa107262dad29f2615c558c693f94aaad175697621610ce89922b648"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E35_E30_LayersLR5e5_Native_Learnable_GPU.ipynb",
+    "sha256": "c833b03435424892f91b6557a5fd9be1719e422bd7b950815112e43f96134fd0"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E36_E30_S3_EncoderLR3e6_Native_Learnable_GPU.ipynb",
+    "sha256": "b2d5233fe18799e7a5df49dfad8e8f1fed3423fd9049a3b0e775651e195f1d89"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E37_E30_S3_EncoderLR5e6_vs7e6_3Seed_Native_Learnable_GPU.ipynb",
+    "sha256": "47debc3b7dad202e1088a084f5497e252e2cd76e9a065730adb2996f582d8bd0"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E37_E30_S3_EncoderLR7e6_Native_Learnable_GPU.ipynb",
+    "sha256": "f0973d1128c6b9cbc68c56e25af002f918dcb562ac6d57959d80e9fb2026a0e0"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E38_E30_S3_MLPDropout02_Native_Learnable_GPU.ipynb",
+    "sha256": "b80cb54879a298d2b7e7f95495a3ab8279106e12fbf3301e795bcb072964801b"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E39_E30_S3_BiGRU128_Native_Learnable_GPU.ipynb",
+    "sha256": "06ac20a283a612365b1575cfc1245498ef4603ff8146055f8e5b704bc2dd424f"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E40_E30_S3_LLRD095_Native_Learnable_GPU.ipynb",
+    "sha256": "5ac16575c729deb49b75869a07852e8912f57bb00e699b80cfc421c9597eba9c"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E41_E30_S3_ScalarMix4_Native_Learnable_GPU.ipynb",
+    "sha256": "c1ac4579fc3c181a8c87f595edd10d947255ce7b2311a5f63eaf24155e3aa183"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E42_E41_S3_ScalarMix4_Gamma_Native_Learnable_GPU.ipynb",
+    "sha256": "c632af4fc1d2b56f0b1cd4302dfb45a17137cd0bc2bff34136f1ae7c81b86d19"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E43_E42_S3_MaskedMeanPooling_Native_Learnable_GPU.ipynb",
+    "sha256": "7955c87e97982d5c2c4f85471f954e13bf14cb941236aa6a64cafab1aa4c45b4"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E44_E43_S3_MSE_ListNet_Native_Learnable_GPU.ipynb",
+    "sha256": "078d4908b1795d899a3ea70835c94e90852c92311f76acca0c859e9c87ea6a1f"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E45_E43_S3_ScalarMix12_Native_Learnable_GPU.ipynb",
+    "sha256": "597c679d77189cbec9e9be7921795b3554845406d238c3f85d072e0949f74ab5"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E46_E43_S3_Refit18_Schedule25_Native_Learnable_GPU.ipynb",
+    "sha256": "c9a4ac3ecf3f4805debf572f86b3d010cc45f9f4de38ffe0dc3f991f5d55ec5b"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E47_E45_S3_Refit7_Schedule25_Native_Learnable_GPU.ipynb",
+    "sha256": "3ad21a66224d519a6dcd3a3f302d22e5d321a298c11390214edb8d94bfc736e9"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E48_E43_S3_LDS_WeightedMSE_Native_Learnable_GPU.ipynb",
+    "sha256": "1c3a9926c06e8164fcf07b903ee34cf315b849ba6363865e65b5500b0af5ed87"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E49_E43_S3_LDS_InverseSqrt_Native_Learnable_GPU.ipynb",
+    "sha256": "6c6ed63995123ff1acc0ccb4e411d0b8feb125a0a6ae4c4776716bf1ae901053"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E4_Tiga_Input_CPU.ipynb",
+    "sha256": "b51b95c9a72be6ba95af5332a5b4d09f18ad25ea0078e78615ca992c1149da98"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E50_E43_S3_MultiHeadCoAttention4_Native_Learnable_GPU.ipynb",
+    "sha256": "fe9c433d4445fbd90cc3f98b20c5982e635147186b9a63990442ff86c579fed0"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E51_E50_S3_GatedConcat_Native_Learnable_GPU.ipynb",
+    "sha256": "44e556b213d6d6795de0830cae397511a84e2cb03a833266846f0cc001eec708"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E52_E43_S3_DoRA8_Native_Learnable_GPU.ipynb",
+    "sha256": "07974afd8dd33cfa75b0b4acd557a30c7ea1a631994c8811ad2103330377ad17"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E53_E43_S3_EMA099_Native_Learnable_GPU.ipynb",
+    "sha256": "f984d0394784e783e47459405bb6f910c3cecc4118c21fe9f9099281bc03b528"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E54_E43_S3_ConR_Native_Learnable_GPU.ipynb",
+    "sha256": "5c76315cf62f361ea92e9208eb001635a8e2266633a723f01d913a70da8ec0cd"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E55_E43_S3_PairedBatch_MSE_Native_Learnable_GPU.ipynb",
+    "sha256": "416ce0ced2830a814165e01db9a124e1b74358c005fe3e09605cbfce5d40ac79"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E56_E43_S3_PairedBatch_ConR_Native_Learnable_GPU.ipynb",
+    "sha256": "469b2b5d452661126ed8c651e89e9e78efd311f3f68ab3a1f1c26f2fba60a538"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_E6_Tiga_Input_CPU.ipynb",
+    "sha256": "821c90df8c2b1e3e04c887fe68478c38b7f9f41b3b800d46ed672183f3591807"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_S3_Fusion_Ridge_Hemat_Colab.ipynb",
+    "sha256": "29aacf8dc6ddaa5cc33ddc6ccfa9c2739bc7e30b0cde5db34b076381331b6a56"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/notebooks/AES_300_S3_Fusion_Ridge_Tiga_Input_Colab.ipynb",
+    "sha256": "b9e285a651eb6ca4a3d138142a93de17817006bcf369210d74ecff48346f5916"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/README.md",
+    "sha256": "7685736045bf1b54968f97b56c48c89602baadb436f361b11bb87f2b056ac52f"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/__init__.py",
+    "sha256": "3f0d8fbcba2714dd37e94fed16a3bd54f469f74579e1e8d36466917c2a9b7405"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/ai_learning.py",
+    "sha256": "6de67b14e85b7ba7b8307061d389eeb4f36a4ae39b2b74509767c73365d67774"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/audit.py",
+    "sha256": "9c3d4bb63f836e9a753c7d6cd0c8e7a7a0c541ae64dc943ca7f93856367ae427"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/checkpoint.py",
+    "sha256": "21a68e27b5b08dd35326b584dcf5022f4eac2887f9a8d1d459f349e7a436d8fb"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/cleaning.py",
+    "sha256": "b63f261b91dac5b2c2dc7c8610ea54cfa265577f54977784d9c993c82adea587"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/cli.py",
+    "sha256": "b57eb6eb289aeaba34450f80699b2ef9b984d4da01e111340be1e954962dd76e"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/encoders.py",
+    "sha256": "908feb8016e0a01b7edd9379f00c4c2bc7ccef4bce920f7e8bd54f7394ed1bfe"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/experiment.py",
+    "sha256": "4a84323d4b6ff23191188db7892daef50e62dcd4c15ee0eed51c4e652df22d0f"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/inference.py",
+    "sha256": "67d7d6ee062cf0c48f3d3698a4f797d45514a237af7be86907a06b988d8bf415"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/inspection.py",
+    "sha256": "f27a91005d6f0dede635cc724d6a3df376aa9844d7249fe81c52c91132c017d3"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/io.py",
+    "sha256": "228ec371d7a37a3e471d0a5afed0165a77bbfbc9c8e53fb3cae7f95e6f2fbf50"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/metric_trace.py",
+    "sha256": "bea3ddfd03db244eb74ed4e988a20d9a7413a5fe16f692339a624dfa5dfe3054"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/metrics.py",
+    "sha256": "b4f9da91fe604af4cff6e46bc1019aaaafa14fdfcc14b566b826f54433b82818"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/model.py",
+    "sha256": "a82e1ef6cb6d3d32774ae59787f0df85ddcb46d8d6062afad6686ba20c2548a2"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/reporting.py",
+    "sha256": "1045e75d336fe1fef222d4e988fb2e4088c4b92fcd7af6aee3f11c147d80bb6f"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/script_entry.py",
+    "sha256": "4130533b4c2d775c956620a5eeae3cc2c1bcbb6c703191e8493e1a21e15c48fa"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/split.py",
+    "sha256": "8fdbd735d00fedebfaba100ece354fb9b17f0d9ea21905e6e082454bece61123"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/__init__.py",
+    "sha256": "e5ffb76b022e13ab8000ed3ea7900e556a810c0bca53ad1bee9252191320e6db"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/context_pair.py",
+    "sha256": "18403723e85d53814744d01e58705397d312ec48497297335971d79860dc2fe5"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/data.py",
+    "sha256": "2bd37215206c5066a6cc66fec370607185f9d230632dceedb37f2dd27d86ccff"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/display.py",
+    "sha256": "82949735c915f8ab02aefdd1ed0e332a16adfe756e973b431cf801a9516fc956"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/drive_checkpoint_cleanup.py",
+    "sha256": "67ed9341b8774451d1b8bcfaf73c57813d9e600a0d310ed34e7f57aecd4623d5"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/excel.py",
+    "sha256": "e3290d1f96d60f952929018734177cfbd0a6dd66475a7a9b7003e25bba81c07b"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/experiment.py",
+    "sha256": "89cdba1972519addf43bd76dec1174c15486ae1bb741b317fd7d697a1472cc3c"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/experimental_checkpoints.py",
+    "sha256": "0b1254ac25700b6e80e34ef13ab00f2ed0e994b423cd7817f5e0e1305c68baf4"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/lesson.py",
+    "sha256": "0de576d6acfd845957abb1d6dddb0569f029947a7bfabfcd439d198484972284"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/lora_fusion.py",
+    "sha256": "998d67fb9a370a14c2e298bc72faca32dbf10d29d43c580a54808f81b2c96ed7"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/lora_text_runtime.py",
+    "sha256": "6266ca77b8cc17b51b96cd8cc2bbaef719ea26694f1be86c8f27132acfac8169"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/manual_checkpoints.py",
+    "sha256": "6d496478c5212eaa84a47829f722b0367d51bc38d344801c2452d4ba7b4c6961"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/models.py",
+    "sha256": "0598829f6d74e36ea4ab4f8e9cdcd68927d35afb206688a7fcb13cda2a017475"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/presentation.py",
+    "sha256": "e94dfcacc73471f82ec38ec46cf14cf4278e6dbc66783d2d3bbf826a14f0693d"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/reuse_controls.py",
+    "sha256": "75af3179e7fe26d069e89be64d82f88d08cdcb54d44fede5bb671ab238a65fef"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/vectors.py",
+    "sha256": "9113c88820477c1f49e5227c4bc4c411cdd9061c76b4eb153b4674884795ff25"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/teacher_score/workflow.py",
+    "sha256": "d48501bd330357c4b9c423eefbdede9b1c1624d096891c65be288d879eabd53a"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/trainer.py",
+    "sha256": "9e4fbf059e63f3b863435b8be45ba51a6fc1284543d960d449d93dfdd584f373"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/windows.py",
+    "sha256": "cee225501a04efe570bec7d3aa0d8765d27d43493b40a488d04f0cec7efba9d4"
+  },
+  {
+    "group": "02_tiga_input_single_trait",
+    "path": "eksperimen/02_tiga_input_single_trait/src/aes/workbook.py",
+    "sha256": "59efa9c6aec4ec0acfc2d92c79d7ad64ba1b8b962f8e0f8f84e3316388b3b791"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/PROGRES.md",
+    "sha256": "5aadd34761899d5db73112697f0d7d71dbb52ea88ff0844e622a647b76b15f6b"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/README.md",
+    "sha256": "44c4015d8a98f9d850d7f71edc1599438b115da4cc4cbc2e1c25a5e1c3433000"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/hasil/Hasil_AES_Reset_E1_S3_MultiTrait_Publik.xlsx",
+    "sha256": "b5f73e696167c9f28038bb31616e632d8c799df0e2110f74dc5e0ee2861391d8"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/hasil/Hasil_AES_Reset_E2_S3_MultiTrait_Publik.xlsx",
+    "sha256": "9bda520cc5827a278653a27ecd11bcab16dca4238f2a6ec05e7419c15c282706"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/hasil/Hasil_AES_Reset_E3_S3_MultiTrait_Publik.xlsx",
+    "sha256": "58a1db107daef9d4c93cef913aa6bd5b50a5fca96778ca79cc9f03bc5191813e"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/hasil/Hasil_AES_Reset_E4_S3_MultiTrait_Publik.xlsx",
+    "sha256": "8587c95729d5e3aa8ee578c98aba92919b74c403c608790f60d4dd889eba7b4d"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/hasil/ringkasan.json",
+    "sha256": "a5c53deb8971e58c2919526b88a893a420550ed5f26dc36fee62b9b53adec800"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/html/Hasil_E1_E4_Reset.html",
+    "sha256": "57369863313c0837e8222d9fc98693d6b98216ed4af7780651112471740aa8db"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E1_S3_MultiTrait.ipynb",
+    "sha256": "650a4def2efe08e6c1d2c0d96c8928802f3ab5cbdf0a8cdd40da6b0c317a5be7"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb",
+    "sha256": "c3d6436f34636598021f28c5e5866f2fd8deffac38daa6c3209ac7696c87255a"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb",
+    "sha256": "b0051ac92185d2e3d115c9bfe97d9d6e3cbb5ba65e568b46b43cd7645aeec238"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb",
+    "sha256": "a00edc809e293bbacce7427da3400b46fa65db622aab3110fa3311033cec777e"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e2_notebook.py",
+    "sha256": "325c5183ed80aba04a05c6bac80de5a670e2bca596c79b3f817901bc005e8ccf"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e3_notebook.py",
+    "sha256": "64bddd899b8074504f87c31194ca0e8ea369c1344341cf6b3fcad93ea29d54e8"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e4_notebook.py",
+    "sha256": "e1cf666e107838b24fc62a92a72b385383972ab7d053e6c83b91d421b989019d"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_notebook.py",
+    "sha256": "b127809baf09f088cd136183256d38b7d83d90f94e712d19b4b9bfa645f1d58a"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e2_runtime.py",
+    "sha256": "1d71da37d83c95dbf7bc8921b99b4949616f8d33832113aed8b3caeb83fb2dd6"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e3_features.py",
+    "sha256": "6bf6bc34e0e0992516b0cffd43ba08c12fba5ef6f49b8af1ff31cacb0b27c327"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e3_trait_attention.py",
+    "sha256": "d6a55565aac444b7378f2b616fe64b594bf1c92bd7e6a19270ce9c14abc97ac9"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e4_features.py",
+    "sha256": "26197102125742a491aab1e086b436ec5f2e2698f95c8a6e7d63c753456819a5"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e4_intertrait_model.py",
+    "sha256": "0160f69886156d93186a866f2b71353bd786c3a4eb6ff7865555d285f60bd7bc"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_multitrait_features.py",
+    "sha256": "3277599fd24d3def8a6a474bcdb16219d2e845e9599145387abde640e5dd9cae"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_multitrait_inspection.py",
+    "sha256": "5e155a8bce549fe980e589d0035264a39883ba4806c84fd3b3ba36c53577e869"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_multitrait_model.py",
+    "sha256": "f909b48141d5f0e7b9d473e170538337929f7a3f084130f59e9becfb8a83261b"
   }
 ]

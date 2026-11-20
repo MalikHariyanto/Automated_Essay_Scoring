@@ -270,7 +270,7 @@ Satu workbook memuat data, token, fitur, riwayat training, OOF, prediksi test, d
     folder.mkdir(exist_ok=True)
     text = json.dumps(n, ensure_ascii=False, indent=1) + "\n"
     (folder / NAME).write_text(text)
-    organized = ROOT / "eksperimen/03_tiga_input_multi_trait/reset/notebooks"
+    organized = ROOT / "eksperimen/03_tiga_input_multi_trait/notebooks"
     organized.mkdir(parents=True, exist_ok=True)
     (organized / NAME).write_text(text)
 

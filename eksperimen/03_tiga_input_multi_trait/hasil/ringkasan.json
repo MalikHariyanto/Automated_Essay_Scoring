@@ -1,0 +1,206 @@
+[
+  {
+    "experiment": "E1",
+    "eksperimen": "Reset_E1",
+    "mean_cv_RMSE": 0.426831377168374,
+    "epoch_refit": 7.0,
+    "test_RMSE": 0.4685983884775845,
+    "test": [
+      {
+        "n": 270.0,
+        "trait": "isi",
+        "RMSE": 0.6698668230887588,
+        "Pearson": 0.4562258496347828,
+        "QWK": 0.4055584148224395,
+        "Gwet AC2": 0.8508891781691428,
+        "proporsi_di_luar_skala": 0.007407407407407408,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "organisasi",
+        "RMSE": 0.3208547443349958,
+        "Pearson": 0.3830579317789446,
+        "QWK": 0.3274725274725275,
+        "Gwet AC2": 0.8453191345959427,
+        "proporsi_di_luar_skala": 0.2666666666666667,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "kebahasaan",
+        "RMSE": 0.4273429600490057,
+        "Pearson": 0.3588503557095639,
+        "QWK": 0.2333629103815439,
+        "Gwet AC2": 0.6627766285468951,
+        "proporsi_di_luar_skala": 0.1925925925925926,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "mekanik",
+        "RMSE": 0.379534538078432,
+        "Pearson": 0.4308364516959384,
+        "QWK": 0.3331719128329298,
+        "Gwet AC2": 0.7375668232625952,
+        "proporsi_di_luar_skala": 0.2296296296296296,
+        "alasan_metrik_kosong": "{}"
+      }
+    ],
+    "file": "Hasil_AES_Reset_E1_S3_MultiTrait_Publik.xlsx",
+    "sha256": "b5f73e696167c9f28038bb31616e632d8c799df0e2110f74dc5e0ee2861391d8"
+  },
+  {
+    "experiment": "E2",
+    "eksperimen": "Reset_E2",
+    "mean_cv_RMSE": 0.4254487296692394,
+    "epoch_refit": 5.0,
+    "test_RMSE": 0.4665439379158263,
+    "test": [
+      {
+        "n": 270.0,
+        "trait": "isi",
+        "RMSE": 0.6678976395979973,
+        "Pearson": 0.4529783312765316,
+        "QWK": 0.4269254093389934,
+        "Gwet AC2": 0.8562687329268573,
+        "proporsi_di_luar_skala": 0.0,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "organisasi",
+        "RMSE": 0.3280053651772604,
+        "Pearson": 0.3553607167773277,
+        "QWK": 0.2989473684210526,
+        "Gwet AC2": 0.8298430434079083,
+        "proporsi_di_luar_skala": 0.1296296296296296,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "kebahasaan",
+        "RMSE": 0.4170795793250315,
+        "Pearson": 0.3708962868871299,
+        "QWK": 0.2432082794307892,
+        "Gwet AC2": 0.6517477105636528,
+        "proporsi_di_luar_skala": 0.09259259259259259,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "mekanik",
+        "RMSE": 0.3781835955834628,
+        "Pearson": 0.407892826088506,
+        "QWK": 0.314854577396057,
+        "Gwet AC2": 0.7333333333333334,
+        "proporsi_di_luar_skala": 0.02962962962962963,
+        "alasan_metrik_kosong": "{}"
+      }
+    ],
+    "file": "Hasil_AES_Reset_E2_S3_MultiTrait_Publik.xlsx",
+    "sha256": "9bda520cc5827a278653a27ecd11bcab16dca4238f2a6ec05e7419c15c282706"
+  },
+  {
+    "experiment": "E3",
+    "eksperimen": "Reset_E3",
+    "mean_cv_RMSE": 0.4257776652637687,
+    "epoch_refit": 5.0,
+    "test_RMSE": 0.472422294189313,
+    "test": [
+      {
+        "n": 270.0,
+        "trait": "isi",
+        "RMSE": 0.6936967245441719,
+        "Pearson": 0.3936420376947788,
+        "QWK": 0.3729734466742617,
+        "Gwet AC2": 0.8467765250072276,
+        "proporsi_di_luar_skala": 0.0,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "organisasi",
+        "RMSE": 0.3354812183594022,
+        "Pearson": 0.2894739395161667,
+        "QWK": 0.2572490706319702,
+        "Gwet AC2": 0.8322770199370408,
+        "proporsi_di_luar_skala": 0.06296296296296296,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "kebahasaan",
+        "RMSE": 0.4066598119740956,
+        "Pearson": 0.403469226012558,
+        "QWK": 0.2976545842217484,
+        "Gwet AC2": 0.6710112359550562,
+        "proporsi_di_luar_skala": 0.08148148148148149,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "mekanik",
+        "RMSE": 0.3655082762378258,
+        "Pearson": 0.4512654622377498,
+        "QWK": 0.3955223880597015,
+        "Gwet AC2": 0.7487787857641311,
+        "proporsi_di_luar_skala": 0.07777777777777778,
+        "alasan_metrik_kosong": "{}"
+      }
+    ],
+    "file": "Hasil_AES_Reset_E3_S3_MultiTrait_Publik.xlsx",
+    "sha256": "58a1db107daef9d4c93cef913aa6bd5b50a5fca96778ca79cc9f03bc5191813e"
+  },
+  {
+    "experiment": "E4",
+    "eksperimen": "Reset_E4",
+    "mean_cv_RMSE": 0.425284185916364,
+    "epoch_refit": 5.0,
+    "test_RMSE": 0.46644302000333226,
+    "test": [
+      {
+        "n": 270.0,
+        "trait": "isi",
+        "RMSE": 0.6671135631915956,
+        "Pearson": 0.4545842736483615,
+        "QWK": 0.4246717346233586,
+        "Gwet AC2": 0.8549837540191562,
+        "proporsi_di_luar_skala": 0.0,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "organisasi",
+        "RMSE": 0.3282517330410943,
+        "Pearson": 0.3530206891506956,
+        "QWK": 0.2899653979238754,
+        "Gwet AC2": 0.8246153846153845,
+        "proporsi_di_luar_skala": 0.1296296296296296,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "kebahasaan",
+        "RMSE": 0.4173893719955772,
+        "Pearson": 0.3689088870428547,
+        "QWK": 0.2590051457975986,
+        "Gwet AC2": 0.6559687823524728,
+        "proporsi_di_luar_skala": 0.09259259259259259,
+        "alasan_metrik_kosong": "{}"
+      },
+      {
+        "n": 270.0,
+        "trait": "mekanik",
+        "RMSE": 0.3785138958423916,
+        "Pearson": 0.4066761739581495,
+        "QWK": 0.314854577396057,
+        "Gwet AC2": 0.7333333333333334,
+        "proporsi_di_luar_skala": 0.03333333333333333,
+        "alasan_metrik_kosong": "{}"
+      }
+    ],
+    "file": "Hasil_AES_Reset_E4_S3_MultiTrait_Publik.xlsx",
+    "sha256": "8587c95729d5e3aa8ee578c98aba92919b74c403c608790f60d4dd889eba7b4d"
+  }
+]

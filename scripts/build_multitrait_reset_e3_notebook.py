@@ -176,7 +176,7 @@ digabungkan dengan proyeksi BGE256 dan masuk ke MLP trait yang bersangkutan.
     serialized = json.dumps(notebook, ensure_ascii=False, indent=1) + "\n"
     for folder in (
         ROOT / "notebooks/multitrait_reset",
-        ROOT / "eksperimen/03_tiga_input_multi_trait/reset/notebooks",
+        ROOT / "eksperimen/03_tiga_input_multi_trait/notebooks",
     ):
         folder.mkdir(parents=True, exist_ok=True)
         (folder / NAME).write_text(serialized)

@@ -1,28 +1,16 @@
-# Tiga input · empat trait
+# 3 variabel · multi-trait · E1–E4 reset
 
-Pertanyaan, kunci jawaban, dan jawaban siswa menjadi input. Target isi, organisasi, kebahasaan, dan mekanik. Penomoran E1–E5 berlaku di kelompok ini.
+Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, mekanik. Folder aktif ini hanya memuat empat eksperimen reset terakhir.
 
-[Semua kelompok](../README.md)
+| Eksperimen | Teknologi | RMSE CV | RMSE test | Notebook | Hasil Excel |
+| --- | --- | ---: | ---: | --- | --- |
+| E1 | Fusion sederhana/head bersama | 0.426831 | 0.468598 | [File](notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) | [Download](hasil/Hasil_AES_Reset_E1_S3_MultiTrait_Publik.xlsx) |
+| E2 | Empat head independen | 0.425449 | 0.466544 | [File](notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) | [Download](hasil/Hasil_AES_Reset_E2_S3_MultiTrait_Publik.xlsx) |
+| E3 | Attention token per trait | 0.425778 | 0.472422 | [File](notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E3_S3_MultiTrait_Publik.xlsx) |
+| E4 | Attention antartrait | 0.425284 | 0.466443 | [File](notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E4_S3_MultiTrait_Publik.xlsx) |
 
-## Notebook
+[HTML hasil](html/Hasil_E1_E4_Reset.html) · [Progres dan evaluasi](PROGRES.md) · [Source code](src/) · [Semua kelompok](../README.md)
 
-**[Mulai dari E1 reset](reset/README.md)** untuk rangkaian fusion sederhana. E1–E5 di bawah adalah rangkaian sebelumnya.
+Excel publik mempertahankan skor, prediksi anonim, empat metrik evaluasi dan riwayat training dari hasil run asli. Teks/identitas siswa dan vektor besar tidak disertakan; workbook asli tetap privat. File ini bukan workbook lengkap sebelum anonimisasi. Notebook Colab tetap mengekspor workbook privat lengkap.
 
-| Eksperimen | Konfigurasi | Notebook | Jalankan |
-| --- | --- | --- | --- |
-| E1 | Baseline E43, head bersama | [File](notebooks/AES_E1_S3_MultiTrait_3Sekolah.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_E1_S3_MultiTrait_3Sekolah.ipynb) |
-| E2 | Empat head khusus trait | [File](notebooks/AES_E2_S3_MultiTrait_TraitHeads_3Sekolah.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_E2_S3_MultiTrait_TraitHeads_3Sekolah.ipynb) |
-| E3 | E1 dengan dropout MLP 0,2 | [File](notebooks/AES_E3_S3_MultiTrait_Dropout02_3Sekolah.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_E3_S3_MultiTrait_Dropout02_3Sekolah.ipynb) |
-| E4 | E3 dengan sigmoid pada keluaran | [File](notebooks/AES_E4_S3_MultiTrait_Dropout02_Sigmoid_3Sekolah.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_E4_S3_MultiTrait_Dropout02_Sigmoid_3Sekolah.ipynb) |
-| E5 | E3 dengan attention antartait | [File](notebooks/AES_E5_S3_MultiTrait_InterTraitAttention_3Sekolah.ipynb) | [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_E5_S3_MultiTrait_InterTraitAttention_3Sekolah.ipynb) |
-
-## HTML hasil dan panduan
-
-- [Ringkasan hasil E1–E3](html/Hasil_AES_MultiTrait.html)
-- [Agregat metrik](html/hasil_agregat.json)
-
-Tabel dan HTML merangkum rangkaian sebelum reset. E1 pada tabel hasil sama dengan E43 multi-trait pada workbook awal.
-
-## Lokasi file
-
-Folder ini menjadi pintu masuk notebook dan HTML yang sudah dikelompokkan. Salinan di notebooks/experiments dan aes-learning/notebooks/experiments menyediakan jalur sumber untuk builder dan kompatibilitas tautan Colab yang sudah dibagikan.
+Notebook mandiri dapat dijalankan langsung di Colab T4. Source di src merupakan salinan helper untuk dibaca; builder pengembangan di scripts pada root mempertahankan jalur dependensi. Eksperimen multi-trait sebelum reset berada di [arsip](../../arsip/multitrait_sebelum_reset/).

@@ -133,7 +133,7 @@ def test_notebook_identity_copies_and_unchanged_e2_training_recipe():
         if c["cell_type"] == "code"
     )
     assert hashlib.sha256(code.encode()).hexdigest() == code_hash
-    copy = ROOT / "eksperimen/03_tiga_input_multi_trait/reset/notebooks" / E4.name
+    copy = ROOT / "eksperimen/03_tiga_input_multi_trait/notebooks" / E4.name
     assert copy.read_bytes() == E4.read_bytes()
     base, current = cells(E2), cells(E4)
     for role in (
