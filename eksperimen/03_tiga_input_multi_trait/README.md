@@ -10,6 +10,7 @@ Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, meka
 | E4 | Attention antartrait | 0.425284 | 0.466443 | [File](notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E4_S3_MultiTrait_Publik.xlsx) |
 | E5 | E2 + MSE berbobot untuk skor langka | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E5_S3_MultiTrait_WeightedLoss.ipynb) | — |
 | E6 | E2 + gate RoBERTa/BGE per trait | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E6_S3_MultiTrait_TraitGatedConcat.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E6_S3_MultiTrait_TraitGatedConcat.ipynb) | — |
+| E7 | E2 + campuran RoBERTa/BGE tetap per trait | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E7_S3_MultiTrait_StaticTraitMix.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E7_S3_MultiTrait_StaticTraitMix.ipynb) | — |
 
 [HTML hasil](html/Hasil_E1_E4_Reset.html) · [Progres dan evaluasi](PROGRES.md) · [Source code](src/) · [Semua kelompok](../README.md)
 
