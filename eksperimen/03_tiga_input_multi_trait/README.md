@@ -1,6 +1,6 @@
-# 3 variabel · multi-trait · E1–E4 reset
+# 3 variabel · multi-trait · eksperimen reset
 
-Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, mekanik. Folder aktif ini hanya memuat empat eksperimen reset terakhir.
+Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, mekanik.
 
 | Eksperimen | Teknologi | RMSE CV | RMSE test | Notebook | Hasil Excel |
 | --- | --- | ---: | ---: | --- | --- |
@@ -8,9 +8,16 @@ Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, meka
 | E2 | Empat head independen | 0.425449 | 0.466544 | [File](notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) | [Download](hasil/Hasil_AES_Reset_E2_S3_MultiTrait_Publik.xlsx) |
 | E3 | Attention token per trait | 0.425778 | 0.472422 | [File](notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E3_S3_MultiTrait_Publik.xlsx) |
 | E4 | Attention antartrait | 0.425284 | 0.466443 | [File](notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E4_S3_MultiTrait_Publik.xlsx) |
+| E5 | E2 + MSE berbobot untuk skor langka | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E5_S3_MultiTrait_WeightedLoss.ipynb) | — |
 
 [HTML hasil](html/Hasil_E1_E4_Reset.html) · [Progres dan evaluasi](PROGRES.md) · [Source code](src/) · [Semua kelompok](../README.md)
 
 Excel publik mempertahankan skor, prediksi anonim, empat metrik evaluasi dan riwayat training dari hasil run asli. Teks/identitas siswa dan vektor besar tidak disertakan; workbook asli tetap privat. File ini bukan workbook lengkap sebelum anonimisasi. Notebook Colab tetap mengekspor workbook privat lengkap.
 
 Notebook mandiri dapat dijalankan langsung di Colab T4. Source di src merupakan salinan helper untuk dibaca; builder pengembangan di scripts pada root mempertahankan jalur dependensi. Eksperimen multi-trait sebelum reset berada di [arsip](../../arsip/multitrait_sebelum_reset/).
+
+E5 menghitung bobot per kategori dan trait dari training fold, dengan rasio maksimum 2
+dan rerata bobot 1 per trait. Refit memakai seluruh development. Evaluasi tetap tanpa bobot.
+ZIP privat E5 mengelompokkan hasil ke workbook 01–05. Bagian yang melampaui batas
+dipecah menjadi workbook Excel terpisah dan setiap file diperiksa agar di bawah 30.000.000 byte.
+Mulai dari 04 untuk prediksi dan evaluasi, lalu 05 untuk bobot dan riwayat training.

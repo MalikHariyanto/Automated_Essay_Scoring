@@ -717,7 +717,7 @@
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/README.md",
-    "sha256": "44c4015d8a98f9d850d7f71edc1599438b115da4cc4cbc2e1c25a5e1c3433000"
+    "sha256": "0386399d2359b1209028efaa587d4e07a1f794199ee46c36e6298278c1086d6d"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -771,6 +771,11 @@
   },
   {
     "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E5_S3_MultiTrait_WeightedLoss.ipynb",
+    "sha256": "a4ea8f40dc213d611816fa49f035a631117841b629b71b062840808db4935986"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e2_notebook.py",
     "sha256": "325c5183ed80aba04a05c6bac80de5a670e2bca596c79b3f817901bc005e8ccf"
   },
@@ -783,6 +788,11 @@
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e4_notebook.py",
     "sha256": "e1cf666e107838b24fc62a92a72b385383972ab7d053e6c83b91d421b989019d"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e5_notebook.py",
+    "sha256": "e106d813920d9a27387d9cf4f345190ec2b88c5117149efc9030303d2e6ad48e"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -813,6 +823,16 @@
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e4_intertrait_model.py",
     "sha256": "0160f69886156d93186a866f2b71353bd786c3a4eb6ff7865555d285f60bd7bc"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e5_excel_zip.py",
+    "sha256": "a28d5579e7c24378b00b52943b6b76325b0d1fcb7fa8a37250bdf2ff35092546"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e5_weighted_loss.py",
+    "sha256": "3d9b5b524ac61a31369baeef3e2cb2cb7644e4bb4cec1c10fbc2944a1d950917"
   },
   {
     "group": "03_tiga_input_multi_trait",
