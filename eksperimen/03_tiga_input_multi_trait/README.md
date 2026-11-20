@@ -9,6 +9,7 @@ Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, meka
 | E3 | Attention token per trait | 0.425778 | 0.472422 | [File](notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E3_S3_MultiTrait_Publik.xlsx) |
 | E4 | Attention antartrait | 0.425284 | 0.466443 | [File](notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E4_S3_MultiTrait_Publik.xlsx) |
 | E5 | E2 + MSE berbobot untuk skor langka | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E5_S3_MultiTrait_WeightedLoss.ipynb) | — |
+| E6 | E2 + gate RoBERTa/BGE per trait | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E6_S3_MultiTrait_TraitGatedConcat.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E6_S3_MultiTrait_TraitGatedConcat.ipynb) | — |
 
 [HTML hasil](html/Hasil_E1_E4_Reset.html) · [Progres dan evaluasi](PROGRES.md) · [Source code](src/) · [Semua kelompok](../README.md)
 
@@ -21,3 +22,8 @@ dan rerata bobot 1 per trait. Refit memakai seluruh development. Evaluasi tetap 
 ZIP privat E5 mengelompokkan hasil ke workbook 01–05. Bagian yang melampaui batas
 dipecah menjadi workbook Excel terpisah dan setiap file diperiksa agar di bawah 30.000.000 byte.
 Mulai dari 04 untuk prediksi dan evaluasi, lalu 05 untuk bobot dan riwayat training.
+
+E6 memakai empat gate agar setiap trait dapat belajar campuran RoBERTa dan BGE sendiri.
+Gate mulai dengan pengali 1, memakai learning rate 1e-4, dan mengikuti loss MSE biasa E2.
+ZIP ringkas 04–05 tersedia sesudah test. ZIP lengkap 01–05 mencakup inspeksi vektor tambahan.
+Workbook 04 mencatat bobot gate OOF dan test serta ringkasan per trait.

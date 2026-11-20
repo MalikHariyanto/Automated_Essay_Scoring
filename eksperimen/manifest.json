@@ -717,7 +717,7 @@
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/README.md",
-    "sha256": "0386399d2359b1209028efaa587d4e07a1f794199ee46c36e6298278c1086d6d"
+    "sha256": "86795461332f95594b7bb5557d306417a011df2f7ac7f3848d0f3f1d02c36527"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -776,6 +776,11 @@
   },
   {
     "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E6_S3_MultiTrait_TraitGatedConcat.ipynb",
+    "sha256": "a3faa772d7f96fc713c1ccdff316c870cf28beebf047e1187c8e6204c8f0b707"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e2_notebook.py",
     "sha256": "325c5183ed80aba04a05c6bac80de5a670e2bca596c79b3f817901bc005e8ccf"
   },
@@ -793,6 +798,11 @@
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e5_notebook.py",
     "sha256": "e106d813920d9a27387d9cf4f345190ec2b88c5117149efc9030303d2e6ad48e"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e6_notebook.py",
+    "sha256": "9f9f0dbc5a54581c8ccf5f3a7a5b4fd454aaaf10aeeb0bab95b06733e5980577"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -833,6 +843,11 @@
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e5_weighted_loss.py",
     "sha256": "3d9b5b524ac61a31369baeef3e2cb2cb7644e4bb4cec1c10fbc2944a1d950917"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/reset_e6_trait_gate.py",
+    "sha256": "eac17ec3e66192fb7895f4a8f51f888dbf6d05da4f72a44b01c266fdf6250184"
   },
   {
     "group": "03_tiga_input_multi_trait",
