@@ -19,7 +19,9 @@ Resep Colab E13 berlaku untuk semua skenario: lima fold kelompok siswa yang sama
 maksimal 25 epoch, patience 5, pemilihan berdasarkan RMSE gabungan dalam satuan
 skor asli, dan MSE dengan target ternormalisasi. LR RoBERTa 5e-6, head/proyeksi
 1e-4. Seed dasar 42, CV memakai seed dasar + nomor fold seperti E13, dan satu
-refit seed 42 per skenario. Total 15 fit CV dan 3 refit.
+refit seed 42 per skenario. Semua skenario memerlukan 15 fit CV dan 3 refit.
+Untuk mengambil hasil S1 dan S2 saja, ubah RUN_SCENARIOS menjadi ('S1', 'S2')
+di bagian 5 sebelum menjalankan notebook.
 
 Pilih T4 GPU dan gunakan workbook semi-final E13. ZIP utama S3 memakai susunan
 E13: ringkas 04–05 dan lengkap 01–05. S1 dan S2 memperoleh ZIP ringkas masing-masing
@@ -64,7 +66,7 @@ MODEL = """class MultiTraitModel(nn.Module):
 
 CV_EXECUTE = """if model_stage_ready('Lima fold CV', ('bge',)):
     cv_results = {}
-    for scenario in SCENARIOS:
+    for scenario in RUN_SCENARIOS:
         folder = output / scenario
         summary, folds = run_cv(bundle, manifest, bge, cfg, folder, scenario)
         cv_results[scenario] = (summary, folds)
@@ -99,10 +101,11 @@ TEST_EXECUTE = """if model_stage_ready('Evaluasi test', ('bge', 'cv_results', 'r
         print(f'{scenario}: ZIP ringkas {quick_path}')
 
     # ZIP lengkap memakai model dan laporan S3, seperti alur E13.
-    cv_summary, folds = cv_results['S3']
-    refit_result = refits['S3']
-    final_info = refit_result['training']
-    test_prediction = test_predictions['S3']
+    if 'S3' in test_predictions:
+        cv_summary, folds = cv_results['S3']
+        refit_result = refits['S3']
+        final_info = refit_result['training']
+        test_prediction = test_predictions['S3']
     if 'google.colab' in sys.modules:
         from google.colab import files
         from ipywidgets import Button, HBox
@@ -112,7 +115,7 @@ TEST_EXECUTE = """if model_stage_ready('Evaluasi test', ('bge', 'cv_results', 'r
             button.on_click(lambda _: files.download(str(path)))
             return button
 
-        display(HBox([download_button(scenario, quick_paths[scenario]) for scenario in SCENARIOS]))
+        display(HBox([download_button(scenario, quick_paths[scenario]) for scenario in quick_paths]))
 """
 
 
@@ -120,7 +123,11 @@ def update_cell(role, source):
     if role == 'hyperparameters':
         return replace(source, {
             '# HIPERPARAMETER BASELINE E43; Scalar Mix empat layer terakhir.':
-                '# Resep training diwarisi dari Colab E13.',
+                """# Resep training diwarisi dari Colab E13.
+# Untuk mengambil ZIP S1 dan S2 saja, ganti baris berikut dengan ('S1', 'S2').
+RUN_SCENARIOS = ('S1', 'S2', 'S3')
+if not RUN_SCENARIOS or set(RUN_SCENARIOS) - set(SCENARIOS) or len(set(RUN_SCENARIOS)) != len(RUN_SCENARIOS):
+    raise ValueError('Pilih skenario unik dari S1, S2, dan S3.')""",
         })
     if role == 'prepare':
         return replace(source, {
@@ -197,8 +204,15 @@ def update_cell(role, source):
         return replace(source, {
             "model = make_model('S3', cfg)": "model = make_model(refit_result['identity']['scenario'], cfg)",
         })
+    if role == 'inspection':
+        return replace(source, {
+            "if model_stage_ready('Inspeksi vektor sebelum training'":
+                "if 'S3' in RUN_SCENARIOS and model_stage_ready('Inspeksi vektor sebelum training'",
+        })
     if role == 'final_features':
         return replace(source, {
+            "if model_stage_ready('Inspeksi fitur final'":
+                "if 'S3' in RUN_SCENARIOS and model_stage_ready('Inspeksi fitur final'",
             '    payload = torch.load(output / "final.pt", map_location="cpu", weights_only=True)':
                 '    s3_folder = output / "S3"\n'
                 '    payload = torch.load(s3_folder / "final.pt", map_location="cpu", weights_only=True)',
@@ -207,11 +221,15 @@ def update_cell(role, source):
         })
     if role == 'export_execute':
         return replace(source, {
+            "if model_stage_ready('Ekspor ZIP lengkap'":
+                "if 'S3' in RUN_SCENARIOS and model_stage_ready('Ekspor ZIP lengkap'",
             'Hasil_AES_Reset_E14_S3_MultiTrait.zip': 'Hasil_AES_Reset_E14_S1_S2_S3_MultiTrait.zip',
             'manifest, cfg, cv_summary': 'manifest, {**cfg, "scenario": "S3"}, cv_summary',
         })
     if role == 'download':
         return replace(source, {
+            "if model_stage_ready('Unduh ZIP lengkap'":
+                "if 'S3' in RUN_SCENARIOS and model_stage_ready('Unduh ZIP lengkap'",
             '    from google.colab import files\n    files.download(str(report_path))':
                 "    if 'google.colab' in sys.modules:\n        from google.colab import files\n        files.download(str(report_path))",
         })
