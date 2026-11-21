@@ -1,5 +1,7 @@
 # Naskah skripsi dan konteks penelitian
 
+Untuk resep eksperimen, ikuti notebook Colab seri reset yang terbaru. E14 mewarisi resep dan format ZIP E13. Naskah skripsi yang masih berkembang menjadi acuan konteks penelitian.
+
 Untuk rancangan atau analisis AES multi-trait, mulai dari [konteks penelitian dan naskah terbaru](docs/skripsi/README.md). Gunakan metadata run untuk data aktual dan resep yang dijalankan.
 
 # Organisasi terbaru, 20 November 2026

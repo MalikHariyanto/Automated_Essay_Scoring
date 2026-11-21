@@ -16,4 +16,6 @@
 
 ## Implikasi untuk pengembangan S3
 
+Konfigurasi Colab seri reset yang terbaru menjadi acuan eksperimen. E14 mengikuti resep E13, termasuk maksimal 25 epoch, patience 5, dan satu refit per skenario. Tabel hyperparameter di naskah yang masih berkembang digunakan untuk konteks penelitian. Catatan LR A/B di workbook brainstorming mendokumentasikan rancangan E14 sebelum koreksi ini.
+
 Pertahankan S1 dan S2 sebagai pembanding pada split yang sama. Gunakan S3 concat sebagai pembanding untuk perubahan fusion dan hyperparameter. Pilih konfigurasi melalui data development, laporkan empat metrik per trait, dan bedah kesalahan pada skor rendah. Untuk teknologi baru, gunakan rujukan yang langsung membahas AES multi-trait, terbit dalam lima tahun terakhir, dengan status Scopus Q1–Q3 atau SINTA 1–2 yang sudah diverifikasi. Catat setiap perubahan dari rancangan naskah agar hasil bisa ditelusuri ke konfigurasi run.
