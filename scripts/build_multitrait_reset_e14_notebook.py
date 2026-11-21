@@ -105,7 +105,14 @@ TEST_EXECUTE = """if model_stage_ready('Evaluasi test', ('bge', 'cv_results', 'r
     test_prediction = test_predictions['S3']
     if 'google.colab' in sys.modules:
         from google.colab import files
-        files.download(str(quick_paths['S3']))
+        from ipywidgets import Button, HBox
+
+        def download_button(scenario, path):
+            button = Button(description=f'Unduh ZIP {scenario}')
+            button.on_click(lambda _: files.download(str(path)))
+            return button
+
+        display(HBox([download_button(scenario, quick_paths[scenario]) for scenario in SCENARIOS]))
 """
 
 
