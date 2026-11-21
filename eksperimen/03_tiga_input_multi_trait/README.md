@@ -18,6 +18,11 @@ Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, meka
 | E12 | Ablasi E10 dengan attention antartrait saja | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E12_S3_MultiTrait_InterTraitAttentionOnly.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E12_S3_MultiTrait_InterTraitAttentionOnly.ipynb) | — |
 | E13 | Ablasi sinyal attention soal–jawaban langsung untuk organisasi | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E13_S3_MultiTrait_OrganisasiPromptAblation.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E13_S3_MultiTrait_OrganisasiPromptAblation.ipynb) | — |
 | E14 | S1, S2, S3; concat S3 dan MLP bersama 256 dengan resep Colab E13 | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E14_S1_S2_S3_MultiTrait.ipynb) | — |
+| E15 | Gate per trait untuk S3 dengan MLP bersama 256 dan pembanding S1/S2 | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E15_S1_S2_S3_TraitGatedConcat.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E15_S1_S2_S3_TraitGatedConcat.ipynb) | ZIP evaluasi per skenario |
+
+E15 mengekspor workbook 04–05 secara terpisah untuk S1, S2, dan S3. Workbook
+04 memuat validasi dan test per trait. Inspeksi S3 masuk ke ZIP 01–03.
+Setiap ZIP dapat dibuka sendiri dan ukurannya diverifikasi di bawah 30 MB.
 
 [HTML hasil](html/Hasil_E1_E4_Reset.html) · [Progres dan evaluasi](PROGRES.md) · [Source code](src/) · [Semua kelompok](../README.md)
 
