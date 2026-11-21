@@ -1,5 +1,7 @@
 # Automated Essay Scoring
 
+[Konteks penelitian dan naskah skripsi terbaru](docs/skripsi/README.md)
+
 Eksperimen dipisahkan menjadi tiga kelompok. Buka folder kelompok untuk notebook Colab, source code, dan hasilnya.
 
 | Kelompok | Buka |

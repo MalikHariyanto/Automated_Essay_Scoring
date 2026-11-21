@@ -1,3 +1,7 @@
+# Naskah skripsi dan konteks penelitian
+
+Untuk rancangan atau analisis AES multi-trait, mulai dari [konteks penelitian dan naskah terbaru](docs/skripsi/README.md). Gunakan metadata run untuk data aktual dan resep yang dijalankan.
+
 # Organisasi terbaru, 20 November 2026
 
 Pengguna meminta tiga kelompok: eksperimen/01_satu_variabel, 02_tiga_input_single_trait, 03_tiga_input_multi_trait. Kelompok terakhir hanya empat notebook E1–E4 reset, src, hasil Excel publik anonim, HTML, PROGRES.md. Multitrait historis berada di arsip/multitrait_sebelum_reset. Jangan pulihkan E1–E5 lama ke folder aktif. Builder reset menyinkronkan langsung ke kelompok aktif/notebooks. Root notebooks/scripts/src tetap dependensi pengembangan, source kelompok adalah salinan untuk dibaca. Catalog builder sekarang hanya memperbarui manifest; tidak menimpa README atau memulihkan katalog lama. Excel publik menyimpan metrik/prediksi anonim/history/config, tidak memuat teks, identitas atau vektor siswa; workbook asli tetap privat. E1–E4 training T4 sudah selesai berdasarkan workbook pengguna, bukan lagi status menunggu GPU. E4 best nominal0,466443 vs E2 0,466544, tidak mengklaim perbaikan signifikan.
