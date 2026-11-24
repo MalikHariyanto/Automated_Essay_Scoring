@@ -1,3 +1,5 @@
+> **Jalur aktif per 24 November 2026:** [E17C concat](https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/codex/e17c-concat-dropout01/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E17C_S3_Concat_Dropout01_Native_Learnable_GPU.ipynb). S3 memakai representasi RoBERTa dan BGE-M3 melalui concat serta regresi empat skor. Cosine similarity tidak digunakan pada jalur ini. E18A telah dinonaktifkan atas permintaan pengguna. Daftar eksperimen dan hasil terdahulu di bawah merupakan catatan riwayat.
+
 # 3 variabel · multi-trait · eksperimen reset
 
 Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, mekanik.
