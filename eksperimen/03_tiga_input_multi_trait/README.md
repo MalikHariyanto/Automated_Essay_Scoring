@@ -1,44 +1,43 @@
-> **Jalur aktif per 24 November 2026:** [E17C concat](https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/codex/e17c-concat-dropout01/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E17C_S3_Concat_Dropout01_Native_Learnable_GPU.ipynb). S3 memakai representasi RoBERTa dan BGE-M3 melalui concat serta regresi empat skor. Cosine similarity tidak digunakan pada jalur ini. E18A telah dinonaktifkan atas permintaan pengguna. Daftar eksperimen dan hasil terdahulu di bawah merupakan catatan riwayat.
+> **Jalur aktif per 24 November 2026:** [E17C concat](notebooks/AES_Reset_E17C_S3_Concat_Dropout01_Native_Learnable_GPU.ipynb). S3 menggabungkan RoBERTa 768 dimensi dan proyeksi BGE-M3 256 dimensi, lalu memakai MLP bersama. RoBERTa di-fine-tune penuh, BGE-M3 frozen, dan dropout MLP 0,1. Cosine similarity tidak digunakan. E18A dinonaktifkan; eksperimen sebelumnya tetap disimpan sebagai riwayat.
 
 # 3 variabel · multi-trait · eksperimen reset
 
-Input: soal, referensi, jawaban siswa. Target: isi, organisasi, kebahasaan, mekanik.
+Input: soal, referensi/kunci jawaban, jawaban siswa. Target: isi, organisasi, kebahasaan, mekanik.
+
+## Hasil historis E1–E4
 
 | Eksperimen | Teknologi | RMSE CV | RMSE test | Notebook | Hasil Excel |
 | --- | --- | ---: | ---: | --- | --- |
-| E1 | Fusion sederhana/head bersama | 0.426831 | 0.468598 | [File](notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) | [Download](hasil/Hasil_AES_Reset_E1_S3_MultiTrait_Publik.xlsx) |
-| E2 | Empat head independen | 0.425449 | 0.466544 | [File](notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) | [Download](hasil/Hasil_AES_Reset_E2_S3_MultiTrait_Publik.xlsx) |
-| E3 | Attention token per trait | 0.425778 | 0.472422 | [File](notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E3_S3_MultiTrait_Publik.xlsx) |
-| E4 | Attention antartrait | 0.425284 | 0.466443 | [File](notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E4_S3_MultiTrait_Publik.xlsx) |
-| E5 | E2 + MSE berbobot untuk skor langka | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E5_S3_MultiTrait_WeightedLoss.ipynb) | — |
-| E6 | E2 + gate RoBERTa/BGE per trait | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E6_S3_MultiTrait_TraitGatedConcat.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E6_S3_MultiTrait_TraitGatedConcat.ipynb) | — |
-| E7 | E2 + campuran RoBERTa/BGE tetap per trait | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E7_S3_MultiTrait_StaticTraitMix.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E7_S3_MultiTrait_StaticTraitMix.ipynb) | — |
-| E8 | E2 + jarak BGE jawaban–soal dan jawaban–kunci untuk isi | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E8_S3_MultiTrait_BGERelevance.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E8_S3_MultiTrait_BGERelevance.ipynb) | — |
-| E9 | Adaptasi ProTACT dengan attention soal–jawaban, attention antartrait, dan loss relasi | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E9_S3_MultiTrait_ProTACTAdaptation.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E9_S3_MultiTrait_ProTACTAdaptation.ipynb) | — |
-| E10 | Ablasi E9 dengan bobot loss relasi 0 | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E10_S3_MultiTrait_NoRelationLoss.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E10_S3_MultiTrait_NoRelationLoss.ipynb) | — |
-| E11 | Ablasi E10 dengan attention soal–jawaban saja | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E11_S3_MultiTrait_PromptAttentionOnly.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E11_S3_MultiTrait_PromptAttentionOnly.ipynb) | — |
-| E12 | Ablasi E10 dengan attention antartrait saja | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E12_S3_MultiTrait_InterTraitAttentionOnly.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E12_S3_MultiTrait_InterTraitAttentionOnly.ipynb) | — |
-| E13 | Ablasi sinyal attention soal–jawaban langsung untuk organisasi | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E13_S3_MultiTrait_OrganisasiPromptAblation.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E13_S3_MultiTrait_OrganisasiPromptAblation.ipynb) | — |
-| E14 | S1, S2, S3; concat S3 dan MLP bersama 256 dengan resep Colab E13 | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E14_S1_S2_S3_MultiTrait.ipynb) | — |
-| E15 | Gate per trait untuk S3 dengan MLP bersama 256 dan pembanding S1/S2 | Menunggu run | Menunggu run | [File](notebooks/AES_Reset_E15_S1_S2_S3_TraitGatedConcat.ipynb) · [Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Faes-learning/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E15_S1_S2_S3_TraitGatedConcat.ipynb) | ZIP evaluasi per skenario |
+| E1 | Fusion sederhana/head bersama | 0.426831 | 0.468598 | [File](notebooks/AES_Reset_E1_S3_MultiTrait.ipynb) | [Download](hasil/Hasil_AES_Reset_E1_S3_MultiTrait_Publik.xlsx) |
+| E2 | Empat head independen | 0.425449 | 0.466544 | [File](notebooks/AES_Reset_E2_S3_MultiTrait_TraitHeads.ipynb) | [Download](hasil/Hasil_AES_Reset_E2_S3_MultiTrait_Publik.xlsx) |
+| E3 | Attention token per trait | 0.425778 | 0.472422 | [File](notebooks/AES_Reset_E3_S3_MultiTrait_TraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E3_S3_MultiTrait_Publik.xlsx) |
+| E4 | Attention antartrait | 0.425284 | 0.466443 | [File](notebooks/AES_Reset_E4_S3_MultiTrait_InterTraitAttention.ipynb) | [Download](hasil/Hasil_AES_Reset_E4_S3_MultiTrait_Publik.xlsx) |
 
-E15 mengekspor workbook 04–05 secara terpisah untuk S1, S2, dan S3. Workbook
-04 memuat validasi dan test per trait. Inspeksi S3 masuk ke ZIP 01–03.
-Setiap ZIP dapat dibuka sendiri dan ukurannya diverifikasi di bawah 30 MB.
+E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,022%). Satu run belum cukup untuk menyatakan keunggulan statistik.
 
-[HTML hasil](html/Hasil_E1_E4_Reset.html) · [Progres dan evaluasi](PROGRES.md) · [Source code](src/) · [Semua kelompok](../README.md)
+## Eksperimen reset lanjutan
 
-Excel publik mempertahankan skor, prediksi anonim, empat metrik evaluasi dan riwayat training dari hasil run asli. Teks/identitas siswa dan vektor besar tidak disertakan; workbook asli tetap privat. File ini bukan workbook lengkap sebelum anonimisasi. Notebook Colab tetap mengekspor workbook privat lengkap.
+| Eksperimen | Perubahan utama | Status / catatan | Notebook |
+| --- | --- | --- | --- |
+| E16 | Gabungan E6 dynamic gate, E10 prompt/inter-trait attention, dan fondasi E14; independent trait heads 64. | Notebook tersedia; gunakan workbook hasil run untuk klaim metrik. | [E16](notebooks/AES_Reset_E16_E6_E10_E14_MultiTrait.ipynb) |
+| E17-A | Partial fine-tuning RoBERTa; embedding + 8 layer bawah frozen, 4 layer atas trainable. | Branch khusus; menjadi dasar E17-B. | [E17-A](notebooks/AES_Reset_E17A_PartialFineTuning.ipynb) |
+| E17-B | E17-A dengan tempered LDS inverse-square-root (power 0,5) hanya pada loss Isi. | Branch khusus; [PR #1 masih draft](https://github.com/MalikHariyanto/Automated_Essay_Scoring/pull/1). Belum ada klaim full GPU training atau peningkatan akurasi. | [E17-B](notebooks/AES_Reset_E17B_Isi_TemperedLDS.ipynb) |
+| E17C | Kontrol E14 S3 dengan dropout MLP 0,2 → 0,1; RoBERTa full fine-tuning, BGE-M3 frozen, concat. | **Jalur aktif.** Notebook tersedia; hasil training/test belum tercatat di repository. | [E17C](notebooks/AES_Reset_E17C_S3_Concat_Dropout01_Native_Learnable_GPU.ipynb) |
+| E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
-Notebook mandiri dapat dijalankan langsung di Colab T4. Source di src merupakan salinan helper untuk dibaca; builder pengembangan di scripts pada root mempertahankan jalur dependensi. Eksperimen multi-trait sebelum reset berada di [arsip](../../arsip/multitrait_sebelum_reset/).
+## Resep E17C
 
-E5 menghitung bobot per kategori dan trait dari training fold, dengan rasio maksimum 2
-dan rerata bobot 1 per trait. Refit memakai seluruh development. Evaluasi tetap tanpa bobot.
-ZIP privat E5 mengelompokkan hasil ke workbook 01–05. Bagian yang melampaui batas
-dipecah menjadi workbook Excel terpisah dan setiap file diperiksa agar di bawah 30.000.000 byte.
-Mulai dari 04 untuk prediksi dan evaluasi, lalu 05 untuk bobot dan riwayat training.
+- Input tiga teks: soal, kunci jawaban, dan jawaban siswa.
+- RoBERTa 768 dimensi di-fine-tune penuh; BGE-M3 1.024 dimensi tetap frozen.
+- Proyeksi BGE 1.024→256 + LayerNorm; concat dengan RoBERTa menjadi 1.024 dimensi.
+- Head bersama: Linear 1.024→256, GELU, dropout 0,1, Linear 256→4.
+- MSE pada target rubrik ternormalisasi 0–1; loss relasi antartrait 0.
+- Lima fold; maksimum 25 epoch; patience 5; seed training 42; split seed 2026.
+- Effective batch 8, microbatch 1; RoBERTa LR 5e-6; head/projection/LayerNorm LR 1e-4; weight decay 0,01; warmup 10%; gradient clipping 1,0.
+- E14 S3 menjadi kontrol dengan resep yang sama kecuali dropout MLP 0,2.
 
-E6 memakai empat gate agar setiap trait dapat belajar campuran RoBERTa dan BGE sendiri.
-Gate mulai dengan pengali 1, memakai learning rate 1e-4, dan mengikuti loss MSE biasa E2.
-ZIP ringkas 04–05 tersedia sesudah test. ZIP lengkap 01–05 mencakup inspeksi vektor tambahan.
-Workbook 04 mencatat bobot gate OOF dan test serta ringkasan per trait.
+Notebook E17C mengimplementasikan CV, refit, evaluasi test, inspeksi, dan ekspor workbook 01–05. Status kode tidak sama dengan hasil eksperimen: sebelum Run all pada GPU dan verifikasi workbook/ZIP, jangan mengklaim training, test, atau ekspor berhasil.
+
+[Progres dan batas bukti](PROGRES.md) · [Acuan Referensi Kedua](../../docs/skripsi/Acuan_Referensi_2_AES_E17A_E17B_E17C.md) · [Semua kelompok](../README.md)
+
+Excel publik mempertahankan skor dan prediksi anonim, metrik, konfigurasi, serta riwayat training. Identitas/teks siswa dan vektor besar tidak dipublikasikan; workbook asli tetap privat. Notebook Colab tetap mengekspor keluaran privat lengkap.
