@@ -71,3 +71,13 @@ SHA-256: `dfbd97128b09a4eb488dd890ccc3efd9b9fe232e74fcc00ee5504a03acc58226`.
 Dokumen DOCX tetap dapat diedit. Naskah telah dirender untuk memeriksa daftar, heading, tabel, diagram, dan perpindahan bab. Dua versi judul serta nama universitas diverifikasi terhadap sumber. Seluruh 30 entri daftar pustaka dipertahankan; 18 persamaan lain dipertahankan dan satu persamaan cosine diganti dengan concat. Ilustrasi teori dan logo di luar tiga diagram metode dipertahankan.
 
 Folder ini memuat draf dan catatan revisi. Data individual, alamat email peserta, serta workbook mentah tidak dimasukkan ke unggahan revisi ini. Tidak ada perubahan kode eksperimen pada revisi naskah ini.
+
+
+## Revisi lanjutan: abstrak dua bahasa dan tata letak persamaan
+
+Perbaikan berdasarkan permintaan 24 November 2026:
+
+- Menambahkan halaman **ABSTRACT** berbahasa Inggris setelah ABSTRAK Indonesia, beserta lima kata kunci terjemahan. Isi setara dengan abstrak Indonesia; status konfigurasi S3 tetap dalam pengembangan. Abstrak Indonesia dipertahankan. Kedua abstrak berupa satu paragraf, spasi 1,0, dan masing-masing di bawah 200 kata; versi Inggris berjumlah 150 kata berdasarkan pemisahan spasi.
+- Menata ulang **19 persamaan** agar rumus berada di tengah area teks dan nomor dalam kurung rata kanan pada baris yang sama. Posisi tengah mengikuti arahan pengguna pada revisi ini. Rumus tetap berupa equation Word yang dapat diedit; seluruh isi 19 persamaan sama dengan draf sebelumnya.
+- Menambahkan ABSTRACT ke daftar isi, menyesuaikan nomor Romawi bagian awal, dan memperbarui rujukan halaman daftar isi, gambar, serta tabel berdasarkan hasil render.
+- Judul, nama universitas, uraian penelitian lainnya, sembilan tabel isi, tiga diagram metode, serta daftar pustaka tetap sama dengan draf sebelum perbaikan ini.
