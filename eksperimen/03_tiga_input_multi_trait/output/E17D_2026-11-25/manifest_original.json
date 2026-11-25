@@ -1,0 +1,713 @@
+{
+  "xlsx_size_limit_bytes_exclusive": 30000000,
+  "table_row_start_is_zero_based": true,
+  "workbooks": [
+    {
+      "file": "01_Data_dan_Tokenisasi.xlsx",
+      "bytes": 18012531,
+      "sha256": "8888e553f8c4726757680812ea70e815d06d91e1a898d8a448df2bb36985fc78",
+      "sheet_sizes": {
+        "Info": {
+          "rows": 20,
+          "columns": 2
+        },
+        "Data dan label": {
+          "rows": 1340,
+          "columns": 9
+        },
+        "Split": {
+          "rows": 1340,
+          "columns": 3
+        },
+        "04_token_RoBERTa_input": {
+          "rows": 257547,
+          "columns": 7
+        },
+        "04_token_BGE_input": {
+          "rows": 281622,
+          "columns": 7
+        },
+        "04_token_Panjang_dan_coverage": {
+          "rows": 2680,
+          "columns": 20
+        },
+        "Anggota fold": {
+          "rows": 5350,
+          "columns": 3
+        }
+      },
+      "tables": [
+        {
+          "name": "Data dan label",
+          "row_start": 0,
+          "rows": 1340
+        },
+        {
+          "name": "Split",
+          "row_start": 0,
+          "rows": 1340
+        },
+        {
+          "name": "04_token_RoBERTa_input",
+          "row_start": 0,
+          "rows": 257547
+        },
+        {
+          "name": "04_token_BGE_input",
+          "row_start": 0,
+          "rows": 281622
+        },
+        {
+          "name": "04_token_Panjang_dan_coverage",
+          "row_start": 0,
+          "rows": 2680
+        },
+        {
+          "name": "Anggota fold",
+          "row_start": 0,
+          "rows": 5350
+        }
+      ]
+    },
+    {
+      "file": "02_Vektor_Jawaban_1_1.xlsx",
+      "bytes": 13442094,
+      "sha256": "9a9ea389ac370224bdb69876f41e67566e7b59e055281d561ab2d19668defe42",
+      "sheet_sizes": {
+        "Info": {
+          "rows": 20,
+          "columns": 2
+        },
+        "RoBERTa pretrained": {
+          "rows": 1340,
+          "columns": 769
+        }
+      },
+      "tables": [
+        {
+          "name": "RoBERTa pretrained",
+          "row_start": 0,
+          "rows": 1340
+        }
+      ]
+    },
+    {
+      "file": "02_Vektor_Jawaban_1_2.xlsx",
+      "bytes": 17988112,
+      "sha256": "b50358d443f84d649d6ca1901ffd3dde2cfa4f3da213abdab17301c9b154eef6",
+      "sheet_sizes": {
+        "Info": {
+          "rows": 20,
+          "columns": 2
+        },
+        "BGE frozen": {
+          "rows": 1340,
+          "columns": 1025
+        }
+      },
+      "tables": [
+        {
+          "name": "BGE frozen",
+          "row_start": 0,
+          "rows": 1340
+        }
+      ]
+    },
+    {
+      "file": "02_Vektor_Jawaban_2_1.xlsx",
+      "bytes": 13451168,
+      "sha256": "026bb98aa250098eaf75a815c4e661b233ea0e1004b4b82b59c0313403d3843b",
+      "sheet_sizes": {
+        "Info": {
+          "rows": 20,
+          "columns": 2
+        },
+        "Final_roberta": {
+          "rows": 1340,
+          "columns": 769
+        }
+      },
+      "tables": [
+        {
+          "name": "Final_roberta",
+          "row_start": 0,
+          "rows": 1340
+        }
+      ]
+    },
+    {
+      "file": "02_Vektor_Jawaban_2_2.xlsx",
+      "bytes": 22365405,
+      "sha256": "a85a780eddc84ef17a8e6c3593c00f5a353551479beacfa0f4989c10f18ca085",
+      "sheet_sizes": {
+        "Info": {
+          "rows": 20,
+          "columns": 2
+        },
+        "Final_projection": {
+          "rows": 1340,
+          "columns": 257
+        },
+        "Final_concat": {
+          "rows": 1340,
+          "columns": 1025
+        }
+      },
+      "tables": [
+        {
+          "name": "Final_projection",
+          "row_start": 0,
+          "rows": 1340
+        },
+        {
+          "name": "Final_concat",
+          "row_start": 0,
+          "rows": 1340
+        }
+      ]
+    },
+    {
+      "file": "03_Vektor_Kata_dan_Kalimat.xlsx",
+      "bytes": 10756539,
+      "sha256": "7a9122749f95c7554706e2b95d8d54892a4e6a60f5aeec4035a47266a3d4aa54",
+      "sheet_sizes": {
+        "Info": {
+          "rows": 20,
+          "columns": 2
+        },
+        "Kata_roberta_token_initial": {
+          "rows": 68,
+          "columns": 770
+        },
+        "Kata_roberta_token_contextual": {
+          "rows": 68,
+          "columns": 770
+        },
+        "Kata_roberta_word_initial": {
+          "rows": 55,
+          "columns": 771
+        },
+        "Kata_roberta_word_contextual": {
+          "rows": 55,
+          "columns": 771
+        },
+        "Kata_roberta_sentence_cls": {
+          "rows": 5,
+          "columns": 770
+        },
+        "Kata_roberta_metadata_token": {
+          "rows": 68,
+          "columns": 6
+        },
+        "Kata_roberta_metadata_word": {
+          "rows": 55,
+          "columns": 9
+        },
+        "Kata_roberta_metadata_sentence": {
+          "rows": 5,
+          "columns": 7
+        },
+        "Kata_roberta_kata_berulang": {
+          "rows": 10,
+          "columns": 6
+        },
+        "Kata_bge_token_initial": {
+          "rows": 76,
+          "columns": 1026
+        },
+        "Kata_bge_token_contextual": {
+          "rows": 76,
+          "columns": 1026
+        },
+        "Kata_bge_word_initial": {
+          "rows": 55,
+          "columns": 1027
+        },
+        "Kata_bge_word_contextual": {
+          "rows": 55,
+          "columns": 1027
+        },
+        "Kata_bge_sentence_cls": {
+          "rows": 5,
+          "columns": 1026
+        },
+        "Kata_bge_metadata_token": {
+          "rows": 76,
+          "columns": 6
+        },
+        "Kata_bge_metadata_word": {
+          "rows": 55,
+          "columns": 9
+        },
+        "Kata_bge_metadata_sentence": {
+          "rows": 5,
+          "columns": 7
+        },
+        "Kata_bge_kata_berulang": {
+          "rows": 10,
+          "columns": 6
+        },
+        "KataFina_roberta_token_initial": {
+          "rows": 68,
+          "columns": 770
+        },
+        "KataFina_roberta_token_contextu": {
+          "rows": 68,
+          "columns": 770
+        },
+        "KataFina_roberta_word_initial": {
+          "rows": 55,
+          "columns": 771
+        },
+        "KataFina_roberta_word_contextua": {
+          "rows": 55,
+          "columns": 771
+        },
+        "KataFina_roberta_sentence_cls": {
+          "rows": 5,
+          "columns": 770
+        },
+        "KataFina_roberta_metadata_token": {
+          "rows": 68,
+          "columns": 6
+        },
+        "KataFina_roberta_metadata_word": {
+          "rows": 55,
+          "columns": 9
+        },
+        "KataFina_roberta_metadata_sente": {
+          "rows": 5,
+          "columns": 7
+        },
+        "KataFina_roberta_kata_berulang": {
+          "rows": 10,
+          "columns": 6
+        },
+        "KataFina_bge_token_initial": {
+          "rows": 76,
+          "columns": 1026
+        },
+        "KataFina_bge_token_contextual": {
+          "rows": 76,
+          "columns": 1026
+        },
+        "KataFina_bge_word_initial": {
+          "rows": 55,
+          "columns": 1027
+        },
+        "KataFina_bge_word_contextual": {
+          "rows": 55,
+          "columns": 1027
+        },
+        "KataFina_bge_sentence_cls": {
+          "rows": 5,
+          "columns": 1026
+        },
+        "KataFina_bge_metadata_token": {
+          "rows": 76,
+          "columns": 6
+        },
+        "KataFina_bge_metadata_word": {
+          "rows": 55,
+          "columns": 9
+        },
+        "KataFina_bge_metadata_sentence": {
+          "rows": 5,
+          "columns": 7
+        },
+        "KataFina_bge_kata_berulang": {
+          "rows": 10,
+          "columns": 6
+        }
+      },
+      "tables": [
+        {
+          "name": "Kata_roberta_token_initial",
+          "row_start": 0,
+          "rows": 68
+        },
+        {
+          "name": "Kata_roberta_token_contextual",
+          "row_start": 0,
+          "rows": 68
+        },
+        {
+          "name": "Kata_roberta_word_initial",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "Kata_roberta_word_contextual",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "Kata_roberta_sentence_cls",
+          "row_start": 0,
+          "rows": 5
+        },
+        {
+          "name": "Kata_roberta_metadata_token",
+          "row_start": 0,
+          "rows": 68
+        },
+        {
+          "name": "Kata_roberta_metadata_word",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "Kata_roberta_metadata_sentence",
+          "row_start": 0,
+          "rows": 5
+        },
+        {
+          "name": "Kata_roberta_kata_berulang",
+          "row_start": 0,
+          "rows": 10
+        },
+        {
+          "name": "Kata_bge_token_initial",
+          "row_start": 0,
+          "rows": 76
+        },
+        {
+          "name": "Kata_bge_token_contextual",
+          "row_start": 0,
+          "rows": 76
+        },
+        {
+          "name": "Kata_bge_word_initial",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "Kata_bge_word_contextual",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "Kata_bge_sentence_cls",
+          "row_start": 0,
+          "rows": 5
+        },
+        {
+          "name": "Kata_bge_metadata_token",
+          "row_start": 0,
+          "rows": 76
+        },
+        {
+          "name": "Kata_bge_metadata_word",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "Kata_bge_metadata_sentence",
+          "row_start": 0,
+          "rows": 5
+        },
+        {
+          "name": "Kata_bge_kata_berulang",
+          "row_start": 0,
+          "rows": 10
+        },
+        {
+          "name": "KataFina_roberta_token_initial",
+          "row_start": 0,
+          "rows": 68
+        },
+        {
+          "name": "KataFina_roberta_token_contextual",
+          "row_start": 0,
+          "rows": 68
+        },
+        {
+          "name": "KataFina_roberta_word_initial",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "KataFina_roberta_word_contextual",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "KataFina_roberta_sentence_cls",
+          "row_start": 0,
+          "rows": 5
+        },
+        {
+          "name": "KataFina_roberta_metadata_token",
+          "row_start": 0,
+          "rows": 68
+        },
+        {
+          "name": "KataFina_roberta_metadata_word",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "KataFina_roberta_metadata_sentence",
+          "row_start": 0,
+          "rows": 5
+        },
+        {
+          "name": "KataFina_roberta_kata_berulang",
+          "row_start": 0,
+          "rows": 10
+        },
+        {
+          "name": "KataFina_bge_token_initial",
+          "row_start": 0,
+          "rows": 76
+        },
+        {
+          "name": "KataFina_bge_token_contextual",
+          "row_start": 0,
+          "rows": 76
+        },
+        {
+          "name": "KataFina_bge_word_initial",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "KataFina_bge_word_contextual",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "KataFina_bge_sentence_cls",
+          "row_start": 0,
+          "rows": 5
+        },
+        {
+          "name": "KataFina_bge_metadata_token",
+          "row_start": 0,
+          "rows": 76
+        },
+        {
+          "name": "KataFina_bge_metadata_word",
+          "row_start": 0,
+          "rows": 55
+        },
+        {
+          "name": "KataFina_bge_metadata_sentence",
+          "row_start": 0,
+          "rows": 5
+        },
+        {
+          "name": "KataFina_bge_kata_berulang",
+          "row_start": 0,
+          "rows": 10
+        }
+      ]
+    },
+    {
+      "file": "04_Prediksi_dan_Evaluasi.xlsx",
+      "bytes": 215944,
+      "sha256": "29063cb6d334884484d4c9015d4e73c2c5fb9f9abf76a2e6a7a3ee8fa7b2d271",
+      "sheet_sizes": {
+        "Info": {
+          "rows": 20,
+          "columns": 2
+        },
+        "Ringkasan CV": {
+          "rows": 1,
+          "columns": 3
+        },
+        "CV per Fold dan Trait": {
+          "rows": 20,
+          "columns": 10
+        },
+        "CV OOF per Trait": {
+          "rows": 4,
+          "columns": 8
+        },
+        "Prediksi OOF": {
+          "rows": 1070,
+          "columns": 21
+        },
+        "Test per Trait": {
+          "rows": 4,
+          "columns": 8
+        },
+        "Prediksi Test": {
+          "rows": 270,
+          "columns": 20
+        },
+        "Skor Terendah": {
+          "rows": 8,
+          "columns": 6
+        },
+        "Matriks Metrik CV dan Test": {
+          "rows": 8,
+          "columns": 7
+        },
+        "CM_OOF_isi": {
+          "rows": 4,
+          "columns": 5
+        },
+        "CM_OOF_organisasi": {
+          "rows": 2,
+          "columns": 3
+        },
+        "CM_OOF_kebahasaan": {
+          "rows": 2,
+          "columns": 3
+        },
+        "CM_OOF_mekanik": {
+          "rows": 2,
+          "columns": 3
+        },
+        "CM_Test_isi": {
+          "rows": 4,
+          "columns": 5
+        },
+        "CM_Test_organisasi": {
+          "rows": 2,
+          "columns": 3
+        },
+        "CM_Test_kebahasaan": {
+          "rows": 2,
+          "columns": 3
+        },
+        "CM_Test_mekanik": {
+          "rows": 2,
+          "columns": 3
+        }
+      },
+      "tables": [
+        {
+          "name": "Ringkasan CV",
+          "row_start": 0,
+          "rows": 1
+        },
+        {
+          "name": "CV per Fold dan Trait",
+          "row_start": 0,
+          "rows": 20
+        },
+        {
+          "name": "CV OOF per Trait",
+          "row_start": 0,
+          "rows": 4
+        },
+        {
+          "name": "Prediksi OOF",
+          "row_start": 0,
+          "rows": 1070
+        },
+        {
+          "name": "Test per Trait",
+          "row_start": 0,
+          "rows": 4
+        },
+        {
+          "name": "Prediksi Test",
+          "row_start": 0,
+          "rows": 270
+        },
+        {
+          "name": "Skor Terendah",
+          "row_start": 0,
+          "rows": 8
+        },
+        {
+          "name": "Matriks Metrik CV dan Test",
+          "row_start": 0,
+          "rows": 8
+        },
+        {
+          "name": "CM_OOF_isi",
+          "row_start": 0,
+          "rows": 4
+        },
+        {
+          "name": "CM_OOF_organisasi",
+          "row_start": 0,
+          "rows": 2
+        },
+        {
+          "name": "CM_OOF_kebahasaan",
+          "row_start": 0,
+          "rows": 2
+        },
+        {
+          "name": "CM_OOF_mekanik",
+          "row_start": 0,
+          "rows": 2
+        },
+        {
+          "name": "CM_Test_isi",
+          "row_start": 0,
+          "rows": 4
+        },
+        {
+          "name": "CM_Test_organisasi",
+          "row_start": 0,
+          "rows": 2
+        },
+        {
+          "name": "CM_Test_kebahasaan",
+          "row_start": 0,
+          "rows": 2
+        },
+        {
+          "name": "CM_Test_mekanik",
+          "row_start": 0,
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "file": "05_Riwayat_Pelatihan.xlsx",
+      "bytes": 18067,
+      "sha256": "5bf0609fd7a37e1b674252007f54c19b0b9d4823462a64e90529b6b1aaafd287",
+      "sheet_sizes": {
+        "Info": {
+          "rows": 20,
+          "columns": 2
+        },
+        "Riwayat Training": {
+          "rows": 48,
+          "columns": 26
+        },
+        "Diagnostik Scheduler Dev": {
+          "rows": 8,
+          "columns": 13
+        },
+        "Konfigurasi": {
+          "rows": 54,
+          "columns": 2
+        },
+        "Arsitektur": {
+          "rows": 6,
+          "columns": 2
+        }
+      },
+      "tables": [
+        {
+          "name": "Riwayat Training",
+          "row_start": 0,
+          "rows": 48
+        },
+        {
+          "name": "Diagnostik Scheduler Dev",
+          "row_start": 0,
+          "rows": 8
+        },
+        {
+          "name": "Konfigurasi",
+          "row_start": 0,
+          "rows": 54
+        },
+        {
+          "name": "Arsitektur",
+          "row_start": 0,
+          "rows": 6
+        }
+      ]
+    }
+  ]
+}

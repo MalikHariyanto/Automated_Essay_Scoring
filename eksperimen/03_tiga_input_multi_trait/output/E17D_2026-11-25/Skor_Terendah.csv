@@ -1,0 +1,9 @@
+bagian,trait,skor_terendah,n_label_terendah,n_terdeteksi,proporsi_terdeteksi
+OOF,isi,1,17,0,0
+OOF,organisasi,1,158,44,0.2784810126582278
+OOF,kebahasaan,1,226,82,0.3628318584070797
+OOF,mekanik,1,235,120,0.5106382978723404
+test,isi,1,3,0,0
+test,organisasi,1,35,10,0.2857142857142857
+test,kebahasaan,1,70,17,0.2428571428571429
+test,mekanik,1,56,18,0.3214285714285715

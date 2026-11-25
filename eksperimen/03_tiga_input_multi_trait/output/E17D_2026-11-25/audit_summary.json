@@ -1,0 +1,369 @@
+{
+  "E17C": {
+    "code_id": "E17C_CONCAT_SHARED256_DROPOUT01_FULL_FINETUNING_V1",
+    "source_sha256": "dfbd97128b09a4eb488dd890ccc3efd9b9fe232e74fcc00ee5504a03acc58226",
+    "split_sha256": "6822f9ac10607694d2002f4396231de90179581c51a6432a896c9eefc636d578",
+    "mean_cv_RMSE": 0.4227455592690408,
+    "OOF": {
+      "n": 1070,
+      "pooled_RMSE": 0.42358327387161737,
+      "macro_QWK": 0.4232556278585964,
+      "per_trait": [
+        {
+          "n": 1070,
+          "trait": "isi",
+          "RMSE": 0.5965464367628073,
+          "Pearson": 0.6426485467004975,
+          "QWK": 0.5871992551922918,
+          "Gwet AC2": 0.8809224623307036,
+          "proporsi_di_luar_skala": 0.02429906542056075,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 1070,
+          "trait": "organisasi",
+          "RMSE": 0.318417706916185,
+          "Pearson": 0.4485566050539188,
+          "QWK": 0.2957270430853525,
+          "Gwet AC2": 0.8285352955698094,
+          "proporsi_di_luar_skala": 0.1616822429906542,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 1070,
+          "trait": "kebahasaan",
+          "RMSE": 0.3646613841539633,
+          "Pearson": 0.4597031193660429,
+          "QWK": 0.3473841149362972,
+          "Gwet AC2": 0.7430442692540934,
+          "proporsi_di_luar_skala": 0.1411214953271028,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 1070,
+          "trait": "mekanik",
+          "RMSE": 0.3570094497768125,
+          "Pearson": 0.5212443350104728,
+          "QWK": 0.4627120982204441,
+          "Gwet AC2": 0.7515120581855301,
+          "proporsi_di_luar_skala": 0.1738317757009346,
+          "alasan_metrik_kosong": "{}"
+        }
+      ]
+    },
+    "test": {
+      "n": 270,
+      "pooled_RMSE": 0.46616938335496605,
+      "macro_QWK": 0.3470285051229659,
+      "per_trait": [
+        {
+          "n": 270,
+          "trait": "isi",
+          "RMSE": 0.6722465496506818,
+          "Pearson": 0.4627448599319073,
+          "QWK": 0.4117647058823529,
+          "Gwet AC2": 0.8506957708049115,
+          "proporsi_di_luar_skala": 0.003703703703703704,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 270,
+          "trait": "organisasi",
+          "RMSE": 0.3212733323095849,
+          "Pearson": 0.3903755324080097,
+          "QWK": 0.3647058823529412,
+          "Gwet AC2": 0.843076923076923,
+          "proporsi_di_luar_skala": 0.1666666666666667,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 270,
+          "trait": "kebahasaan",
+          "RMSE": 0.416175302073439,
+          "Pearson": 0.3675590448253857,
+          "QWK": 0.2664941785252264,
+          "Gwet AC2": 0.6624631656232327,
+          "proporsi_di_luar_skala": 0.07407407407407407,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 270,
+          "trait": "mekanik",
+          "RMSE": 0.375395413242793,
+          "Pearson": 0.4352705213100274,
+          "QWK": 0.3451492537313433,
+          "Gwet AC2": 0.727843684577809,
+          "proporsi_di_luar_skala": 0.1518518518518518,
+          "alasan_metrik_kosong": "{}"
+        }
+      ]
+    }
+  },
+  "E17D": {
+    "code_id": "E17D_CONCAT_REFIT_HORIZON25_V1",
+    "source_sha256": "dfbd97128b09a4eb488dd890ccc3efd9b9fe232e74fcc00ee5504a03acc58226",
+    "split_sha256": "6822f9ac10607694d2002f4396231de90179581c51a6432a896c9eefc636d578",
+    "mean_cv_RMSE": 0.4227325631386605,
+    "OOF": {
+      "n": 1070,
+      "pooled_RMSE": 0.42358732031908414,
+      "macro_QWK": 0.4268137173506209,
+      "per_trait": [
+        {
+          "n": 1070,
+          "trait": "isi",
+          "RMSE": 0.5963522387787573,
+          "Pearson": 0.6432661270173954,
+          "QWK": 0.5891788036845979,
+          "Gwet AC2": 0.8812359529862569,
+          "proporsi_di_luar_skala": 0.02149532710280374,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 1070,
+          "trait": "organisasi",
+          "RMSE": 0.3184976700769208,
+          "Pearson": 0.4485520811906029,
+          "QWK": 0.3098725945821773,
+          "Gwet AC2": 0.8305452447016916,
+          "proporsi_di_luar_skala": 0.1542056074766355,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 1070,
+          "trait": "kebahasaan",
+          "RMSE": 0.3646786995828878,
+          "Pearson": 0.4592382758252717,
+          "QWK": 0.3457738211700254,
+          "Gwet AC2": 0.7395541751656386,
+          "proporsi_di_luar_skala": 0.1308411214953271,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 1070,
+          "trait": "mekanik",
+          "RMSE": 0.3572639910067628,
+          "Pearson": 0.5212960992436396,
+          "QWK": 0.4624296499656829,
+          "Gwet AC2": 0.7495249467703735,
+          "proporsi_di_luar_skala": 0.1719626168224299,
+          "alasan_metrik_kosong": "{}"
+        }
+      ]
+    },
+    "test": {
+      "n": 270,
+      "pooled_RMSE": 0.4999359828360441,
+      "macro_QWK": 0.2938439851835662,
+      "per_trait": [
+        {
+          "n": 270,
+          "trait": "isi",
+          "RMSE": 0.749793018905987,
+          "Pearson": 0.442473948260714,
+          "QWK": 0.348362678953431,
+          "Gwet AC2": 0.8417826531371007,
+          "proporsi_di_luar_skala": 0.262962962962963,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 270,
+          "trait": "organisasi",
+          "RMSE": 0.3295543104436991,
+          "Pearson": 0.3548856571732558,
+          "QWK": 0.2973977695167286,
+          "Gwet AC2": 0.8413431269674713,
+          "proporsi_di_luar_skala": 0.4666666666666667,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 270,
+          "trait": "kebahasaan",
+          "RMSE": 0.4215748530976232,
+          "Pearson": 0.3616600647575048,
+          "QWK": 0.2333629103815439,
+          "Gwet AC2": 0.6627766285468951,
+          "proporsi_di_luar_skala": 0.1407407407407407,
+          "alasan_metrik_kosong": "{}"
+        },
+        {
+          "n": 270,
+          "trait": "mekanik",
+          "RMSE": 0.3888739850395072,
+          "Pearson": 0.4130028378017978,
+          "QWK": 0.2962525818825613,
+          "Gwet AC2": 0.7291337390333236,
+          "proporsi_di_luar_skala": 0.4111111111111111,
+          "alasan_metrik_kosong": "{}"
+        }
+      ]
+    }
+  },
+  "training": {
+    "1": {
+      "epochs": 8,
+      "best_epoch": 3,
+      "last_lr": 3.776993355481728e-06,
+      "amp_skipped_steps": 0,
+      "best_RMSE": 0.3994779337444302
+    },
+    "2": {
+      "epochs": 10,
+      "best_epoch": 5,
+      "last_lr": 3.332641196013289e-06,
+      "amp_skipped_steps": 0,
+      "best_RMSE": 0.436407827561699
+    },
+    "3": {
+      "epochs": 9,
+      "best_epoch": 4,
+      "last_lr": 3.555555555555556e-06,
+      "amp_skipped_steps": 0,
+      "best_RMSE": 0.3823614381332089
+    },
+    "4": {
+      "epochs": 8,
+      "best_epoch": 3,
+      "last_lr": 3.777777777777778e-06,
+      "amp_skipped_steps": 0,
+      "best_RMSE": 0.4624005240902525
+    },
+    "5": {
+      "epochs": 9,
+      "best_epoch": 4,
+      "last_lr": 3.555555555555556e-06,
+      "amp_skipped_steps": 0,
+      "best_RMSE": 0.4330150921721452
+    },
+    "refit": {
+      "epochs": 4,
+      "best_epoch": 4,
+      "last_lr": 4.666666666666667e-06,
+      "amp_skipped_steps": 0,
+      "best_RMSE": null
+    }
+  },
+  "diagnostic": [
+    {
+      "policy": "duration_horizon",
+      "trait": "isi",
+      "RMSE": 0.6683751905741299,
+      "Pearson": 0.5301832524946716,
+      "QWK": 0.3426294820717131,
+      "AC2": 0.8504223611015728,
+      "pooled_RMSE": 0.4633601201257491,
+      "epochs": 1,
+      "horizon_epochs": 1,
+      "warmup_steps": 10,
+      "holdout_rows": 220,
+      "refit_rows": 850,
+      "scope": "development_nested_holdout_not_test"
+    },
+    {
+      "policy": "duration_horizon",
+      "trait": "organisasi",
+      "RMSE": 0.326472653110488,
+      "Pearson": 0.4714194179300624,
+      "QWK": 0,
+      "AC2": 0.8197503494144296,
+      "pooled_RMSE": 0.4633601201257491,
+      "epochs": 1,
+      "horizon_epochs": 1,
+      "warmup_steps": 10,
+      "holdout_rows": 220,
+      "refit_rows": 850,
+      "scope": "development_nested_holdout_not_test"
+    },
+    {
+      "policy": "duration_horizon",
+      "trait": "kebahasaan",
+      "RMSE": 0.3860699877802935,
+      "Pearson": 0.4597832126383007,
+      "QWK": 0.4119302194710186,
+      "AC2": 0.7561402485269237,
+      "pooled_RMSE": 0.4633601201257491,
+      "epochs": 1,
+      "horizon_epochs": 1,
+      "warmup_steps": 10,
+      "holdout_rows": 220,
+      "refit_rows": 850,
+      "scope": "development_nested_holdout_not_test"
+    },
+    {
+      "policy": "duration_horizon",
+      "trait": "mekanik",
+      "RMSE": 0.3955383415335526,
+      "Pearson": 0.4402104530107777,
+      "QWK": 0.3813094894721661,
+      "AC2": 0.7528267915016205,
+      "pooled_RMSE": 0.4633601201257491,
+      "epochs": 1,
+      "horizon_epochs": 1,
+      "warmup_steps": 10,
+      "holdout_rows": 220,
+      "refit_rows": 850,
+      "scope": "development_nested_holdout_not_test"
+    },
+    {
+      "policy": "fixed_horizon_25",
+      "trait": "isi",
+      "RMSE": 0.6733481367268986,
+      "Pearson": 0.4570700823453693,
+      "QWK": 0.1988304093567251,
+      "AC2": 0.8552772891621223,
+      "pooled_RMSE": 0.4751229944706606,
+      "epochs": 1,
+      "horizon_epochs": 25,
+      "warmup_steps": 267,
+      "holdout_rows": 220,
+      "refit_rows": 850,
+      "scope": "development_nested_holdout_not_test"
+    },
+    {
+      "policy": "fixed_horizon_25",
+      "trait": "organisasi",
+      "RMSE": 0.370747703773065,
+      "Pearson": 0.3898719129089304,
+      "QWK": 0,
+      "AC2": 0.8197503494144296,
+      "pooled_RMSE": 0.4751229944706606,
+      "epochs": 1,
+      "horizon_epochs": 25,
+      "warmup_steps": 267,
+      "holdout_rows": 220,
+      "refit_rows": 850,
+      "scope": "development_nested_holdout_not_test"
+    },
+    {
+      "policy": "fixed_horizon_25",
+      "trait": "kebahasaan",
+      "RMSE": 0.4003936357969897,
+      "Pearson": 0.3595669102872036,
+      "QWK": 0,
+      "AC2": 0.7427423864965174,
+      "pooled_RMSE": 0.4751229944706606,
+      "epochs": 1,
+      "horizon_epochs": 25,
+      "warmup_steps": 267,
+      "holdout_rows": 220,
+      "refit_rows": 850,
+      "scope": "development_nested_holdout_not_test"
+    },
+    {
+      "policy": "fixed_horizon_25",
+      "trait": "mekanik",
+      "RMSE": 0.3896162250545405,
+      "Pearson": 0.3901602783412655,
+      "QWK": 0,
+      "AC2": 0.7359853949367412,
+      "pooled_RMSE": 0.4751229944706606,
+      "epochs": 1,
+      "horizon_epochs": 25,
+      "warmup_steps": 267,
+      "holdout_rows": 220,
+      "refit_rows": 850,
+      "scope": "development_nested_holdout_not_test"
+    }
+  ],
+  "matched_ids_labels_groups_folds": true
+}

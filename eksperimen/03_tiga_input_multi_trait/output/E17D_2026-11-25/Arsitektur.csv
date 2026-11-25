@@ -1,0 +1,7 @@
+bagian,dimensi
+RoBERTa CLS terakhir,768
+BGE frozen,1024
+Proyeksi BGE,256
+Concat,1024
+Hidden bersama,256
+Trait,4
