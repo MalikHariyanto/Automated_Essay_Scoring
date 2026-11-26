@@ -1,9 +1,11 @@
-# Ringkasan hasil E4 dan E17A
+# Ringkasan E43 dan E17C
 
-[Unduh Excel dua tab](Ringkasan_E4_dan_E17A.xlsx).
+[Unduh Excel revisi](Ringkasan_E43_dan_E17C.xlsx).
 
-Tab E4 memakai snapshot run E4 historis, bukan notebook CPU revisi: evaluasi S1/S2/S3, fold, pengaturan yang tercatat dan teknologi. Prediksi per jawaban E4 belum tersedia di sumber yang ditemukan dan ditandai belum tersedia; tidak diisi dari eksperimen lain. Sumber: docs/snapshots/mlp_context_snapshot.json pada commit44695cdfa44fc258010834673e5806aef261e320.
+Koreksi permintaan pengguna: tab pertama E43 tiga input–satu trait, tab kedua E17C tiga input–multi-trait. Nama/URL lama Ringkasan_E4_dan_E17A.xlsx dipertahankan sebagai alias, tetapi isinya sudah sama dengan file revisi.
 
-Tab E17A memakai workbook04/05 unggahan Reset_E17A_PartialFineTuning. Dipilih secara deskriptif karena RMSE test gabungan terendah di antara E17A–D yang tersedia, bukan pemenang CV atau bukti optimum global. Evaluasi per trait, daftar hyperparameter/teknologi dan seluruh pasangan skor acuan/prediksi test270+OOF1070 disajikan dengan format panjang empat trait (5360baris). Tidak memuat teks, nama, email, token, vektor atau kelompok siswa. Selisih absolut menggunakan rumus Excel dan seluruh nilai telah diperiksa terhadap sumber.
+E43: hasil ringkas audit run yang tercatat dalam repo; test RMSE5,1265457/Pearson0,7590896/QWK0,7201403/AC2 0,9873756, meanCV5,8875995. Teknologi dan hyperparameter dicocokkan dengan notebook E43: ScalarMix4+gamma, BiGRU64 per arah, co-attention, masked mean, BGE frozen/projection/concat/MLP. Pasangan prediksi perjawaban E43 tidak tersedia dalam sumber yang ditemukan dan ditandai belum tersedia; tidak diisi dari E4. Angka ringkas bukan hasil perhitungan ulang dari workbook asli pada sesi revisi.
 
-Skala E4 0–100 berbeda dari rubrik E17A (Isi1–4, lainnya1–2); RMSE kedua tab tidak langsung dapat diperingkatkan. Tidak ada training baru dalam penyusunan laporan ini.
+E17C tidak menggunakan cosine similarity. Pemilihan sebelumnya E17A berdasarkan RMSE test yang lebih rendah, bukan karena E17C memakai cosine. E17C mempunyai meanCV lebih rendah daripada E17A, tetapi tidak unggul pada semua metrik. Tab kedua diperbarui dari workbook04/05 E17C, termasuk seluruh270test+1070OOF dalam format empat trait (5360baris). Semua nilai dan selisih diperiksa terhadap sumber. Tanpa teks, identitas pribadi, email, token, vektor atau kelompok siswa.
+
+Skala E43 0–100 berbeda dari rubrik multi-trait. RMSE kedua tab tidak langsung dapat diperingkatkan. Tidak ada training baru.
