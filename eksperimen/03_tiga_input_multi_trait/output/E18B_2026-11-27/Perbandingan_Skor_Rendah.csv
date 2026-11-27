@@ -1,0 +1,49 @@
+eksperimen,bagian,trait,n_skor_1,skor_1_benar,skor_1_jadi_2,skor_2_jadi_1
+E13,OOF,isi,17,0,16,0
+E13,fold 1,isi,3,0,3,0
+E13,fold 2,isi,5,0,5,0
+E13,fold 3,isi,1,0,1,0
+E13,fold 4,isi,3,0,2,0
+E13,fold 5,isi,5,0,5,0
+E13,OOF,organisasi,158,57,101,42
+E13,fold 1,organisasi,26,3,23,0
+E13,fold 2,organisasi,35,13,22,11
+E13,fold 3,organisasi,31,14,17,17
+E13,fold 4,organisasi,30,4,26,2
+E13,fold 5,organisasi,36,23,13,12
+E13,OOF,kebahasaan,226,108,118,55
+E13,fold 1,kebahasaan,35,14,21,3
+E13,fold 2,kebahasaan,52,22,30,11
+E13,fold 3,kebahasaan,40,27,13,20
+E13,fold 4,kebahasaan,49,24,25,16
+E13,fold 5,kebahasaan,50,21,29,5
+E13,OOF,mekanik,235,137,98,75
+E13,fold 1,mekanik,33,14,19,7
+E13,fold 2,mekanik,51,25,26,13
+E13,fold 3,mekanik,52,42,10,13
+E13,fold 4,mekanik,50,28,22,35
+E13,fold 5,mekanik,49,28,21,7
+E18B,OOF,isi,17,0,12,0
+E18B,fold 1,isi,3,0,3,0
+E18B,fold 2,isi,5,0,3,0
+E18B,fold 3,isi,1,0,1,0
+E18B,fold 4,isi,3,0,2,0
+E18B,fold 5,isi,5,0,3,0
+E18B,OOF,organisasi,158,39,119,28
+E18B,fold 1,organisasi,26,6,20,1
+E18B,fold 2,organisasi,35,9,26,6
+E18B,fold 3,organisasi,31,15,16,18
+E18B,fold 4,organisasi,30,4,26,2
+E18B,fold 5,organisasi,36,5,31,1
+E18B,OOF,kebahasaan,226,97,129,56
+E18B,fold 1,kebahasaan,35,8,27,4
+E18B,fold 2,kebahasaan,52,17,35,10
+E18B,fold 3,kebahasaan,40,28,12,22
+E18B,fold 4,kebahasaan,49,21,28,12
+E18B,fold 5,kebahasaan,50,23,27,8
+E18B,OOF,mekanik,235,126,109,64
+E18B,fold 1,mekanik,33,13,20,7
+E18B,fold 2,mekanik,51,22,29,8
+E18B,fold 3,mekanik,52,40,12,13
+E18B,fold 4,mekanik,50,23,27,31
+E18B,fold 5,mekanik,49,28,21,5

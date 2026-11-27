@@ -23,7 +23,7 @@ E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,0
 | E17-A | Partial fine-tuning RoBERTa; embedding + 8 layer bawah frozen, 4 layer atas trainable. | Branch khusus; menjadi dasar E17-B. | [E17-A](notebooks/AES_Reset_E17A_PartialFineTuning.ipynb) |
 | E17-B | E17-A dengan tempered LDS inverse-square-root (power 0,5) hanya pada loss Isi. | Branch khusus; [PR #1 masih draft](https://github.com/MalikHariyanto/Automated_Essay_Scoring/pull/1). Belum ada klaim full GPU training atau peningkatan akurasi. | [E17-B](notebooks/AES_Reset_E17B_Isi_TemperedLDS.ipynb) |
 | E17C | Kontrol E14 S3 dengan dropout MLP 0,2 → 0,1; RoBERTa full fine-tuning, BGE-M3 frozen, concat. | **Jalur aktif.** Notebook tersedia; hasil training/test belum tercatat di repository. | [E17C](notebooks/AES_Reset_E17C_S3_Concat_Dropout01_Native_Learnable_GPU.ipynb) |
-| E18B | S3 E13 dengan paket Trial 60 E17E, lima fold development | Menunggu run | — | [File](notebooks/AES_Reset_E18B_E13_Trial60_Validasi.ipynb) | — |
+| E18B | S3 E13 dengan paket Trial 60 E17E, lima fold development | 0,419344 | — | [File](notebooks/AES_Reset_E18B_E13_Trial60_Validasi.ipynb) | [Audit hasil validasi](output/E18B_2026-11-27/README.md) |
 | E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
 ## Resep E17C

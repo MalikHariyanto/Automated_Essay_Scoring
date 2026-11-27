@@ -717,7 +717,7 @@
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/README.md",
-    "sha256": "cb9c05bd9392bc95ebe65aa05c00c29772b3d8b3175331fcdb7715d80ad4b018"
+    "sha256": "8fa4d38c308d5306504409f86bb48d7811691fba7722e0f8a9b0c0e9fbbc0742"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -828,6 +828,46 @@
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E9_S3_MultiTrait_ProTACTAdaptation.ipynb",
     "sha256": "5c754e10b11b6a27fdd06f81b0051e2301e0c38a10190a094b26109dc9b35b1d"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/E18B_2026-11-27/CV_OOF_per_Trait.csv",
+    "sha256": "8e71bae5ea2edf83da16a31d3b3ea55ee98caaf19f1fe27b46a1b5028c52c6b4"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/E18B_2026-11-27/CV_per_Fold_dan_Trait.csv",
+    "sha256": "d01aa70fe5f4e8b9d979988e8cd8416cb1535875914d2c78475c049f27f5383b"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/E18B_2026-11-27/Perbandingan_RMSE_Fold.csv",
+    "sha256": "ecf7540b2771805900c4f01a9150aadb69f0de1f74863259f30d510604ce5071"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/E18B_2026-11-27/Perbandingan_Skor_Rendah.csv",
+    "sha256": "7bff40d5ae3fac9908fce5fc07fc78e6ee8b1223d16da2349bdb2ec0c73386a4"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/E18B_2026-11-27/Progres_Fold.csv",
+    "sha256": "318af11c244c0e64ef89199ca940111fa85adb3305af862c0cd1a866241293a2"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/E18B_2026-11-27/README.md",
+    "sha256": "339f472cddb77b7821527c7b1c1836a0c29c9f474dcd555baf446542199e1b50"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/E18B_2026-11-27/Ringkasan_CV.csv",
+    "sha256": "2936ddba8a344a71e88ce329b15b4d2760cf1185ea7878c8de68f4a3f300443f"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/E18B_2026-11-27/Skor_Terendah.csv",
+    "sha256": "c5fabf7e25b9bb2562804abcd7efded9a14116faab530bac157b466cc9a5380e"
   },
   {
     "group": "03_tiga_input_multi_trait",
