@@ -28,6 +28,7 @@ E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,0
 | E20 | Resep E19 dengan perbandingan dua aturan pemilihan checkpoint dari lima fit yang sama | Menunggu run | — | [File](notebooks/AES_Reset_E20_E19_Pilih_Checkpoint_AB.ipynb) | — |
 | E20 konfirmasi | Ulang perbandingan checkpoint A/B pada lima fold development dengan seed dasar 43 | Siap dijalankan | — | [File](notebooks/AES_Reset_E20_Konfirmasi_Seed43.ipynb) | — |
 | E21 | S3 pada test holdout, ensemble lima fold untuk masing-masing aturan checkpoint A dan B | Siap dijalankan | — | [File](notebooks/AES_Reset_E21_S3_Test_Checkpoint_AB.ipynb) | — |
+| E22 | Pilot fitur konteks soal 10 khusus prediksi isi pada S3, lima fold development dengan resep E21 | Siap dijalankan | — | [File](notebooks/AES_Reset_E22_S3_Bukti_Konteks_Isi.ipynb) | — |
 | E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
 [Notebook E14 khusus S1 dan S2](notebooks/AES_Reset_E14_S1_S2_Banding_MultiTrait.ipynb) menghasilkan satu ZIP 01–05. Evaluasi dan riwayat training dibedakan lewat kolom `skenario` pada workbook 04–05.
