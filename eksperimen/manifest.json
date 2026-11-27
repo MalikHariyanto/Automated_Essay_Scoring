@@ -717,7 +717,7 @@
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/README.md",
-    "sha256": "e88ae216f5997efec6bf5c113ae2805601922326d0bd1606f6a62b8e6f8a5dc0"
+    "sha256": "a56f1dded66e5e029eb6830926b8ac874627f369addb49eb269ace25a33e170e"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -808,6 +808,11 @@
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E20_Konfirmasi_Seed43.ipynb",
     "sha256": "aa1b5524c42558e9b44456dde5a2b75230e45e1874da1983b230c3abacde6d0f"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E21_S3_Test_Checkpoint_AB.ipynb",
+    "sha256": "7cbddeb3280ee8e31e13213b5e3ac4058c8c4aef8d8badf9f804648388cc8a24"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -943,6 +948,11 @@
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e20_seed43_notebook.py",
     "sha256": "f72ce9a84087cd97d4cc6c5b16b5eeba1e66e9305ae0055e2891063df2d8d9b9"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/src/build_multitrait_reset_e21_notebook.py",
+    "sha256": "4343f65f6a7fe9af7bf4e5fc33f7c3ddaafb74ef08475686e77069d091050a9c"
   },
   {
     "group": "03_tiga_input_multi_trait",
