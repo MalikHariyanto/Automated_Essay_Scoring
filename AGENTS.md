@@ -1,5 +1,7 @@
 # Naskah skripsi dan konteks penelitian
 
+Saat pengguna meminta kode eksperimen Colab siap dijalankan, publikasikan notebook dan builder yang sudah diperiksa di branch eksperimen khusus, lalu kirim tautan GitHub dan Colab. Simpan data siswa, output notebook dari run penelitian, dan workbook privat di luar publikasi.
+
 Untuk resep eksperimen, ikuti notebook Colab seri reset yang terbaru. E14 mewarisi resep dan format ZIP E13. Naskah skripsi yang masih berkembang menjadi acuan konteks penelitian.
 
 Untuk rancangan atau analisis AES multi-trait, mulai dari [konteks penelitian dan naskah terbaru](docs/skripsi/README.md). Gunakan metadata run untuk data aktual dan resep yang dijalankan.
