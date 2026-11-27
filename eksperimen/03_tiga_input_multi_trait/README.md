@@ -26,6 +26,8 @@ E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,0
 | E18B | S3 E13 dengan paket Trial 60 E17E, lima fold development | 0,419344 | — | [File](notebooks/AES_Reset_E18B_E13_Trial60_Validasi.ipynb) | [Audit hasil validasi](output/E18B_2026-11-27/README.md) |
 | E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
+[Notebook E14 khusus S1 dan S2](notebooks/AES_Reset_E14_S1_S2_Banding_MultiTrait.ipynb) menghasilkan satu ZIP 01–05. Evaluasi dan riwayat training dibedakan lewat kolom `skenario` pada workbook 04–05.
+
 ## Resep E17C
 
 - Input tiga teks: soal, kunci jawaban, dan jawaban siswa.
