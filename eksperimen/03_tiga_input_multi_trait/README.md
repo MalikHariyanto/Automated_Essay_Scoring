@@ -26,6 +26,7 @@ E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,0
 | E18B | S3 E13 dengan paket Trial 60 E17E, lima fold development | 0,419344 | — | [File](notebooks/AES_Reset_E18B_E13_Trial60_Validasi.ipynb) | [Audit hasil validasi](output/E18B_2026-11-27/README.md) |
 | E19 | S3 E13 dengan rasio bobot loss organisasi 1,2× untuk skor 1, lima fold development | Menunggu run | — | [File](notebooks/AES_Reset_E19_E13_Bobot_Organisasi_Validasi.ipynb) | — |
 | E20 | Resep E19 dengan perbandingan dua aturan pemilihan checkpoint dari lima fit yang sama | Menunggu run | — | [File](notebooks/AES_Reset_E20_E19_Pilih_Checkpoint_AB.ipynb) | — |
+| E20 konfirmasi | Ulang perbandingan checkpoint A/B pada lima fold development dengan seed dasar 43 | Siap dijalankan | — | [File](notebooks/AES_Reset_E20_Konfirmasi_Seed43.ipynb) | — |
 | E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
 [Notebook E14 khusus S1 dan S2](notebooks/AES_Reset_E14_S1_S2_Banding_MultiTrait.ipynb) menghasilkan satu ZIP 01–05. Evaluasi dan riwayat training dibedakan lewat kolom `skenario` pada workbook 04–05.
