@@ -2,6 +2,19 @@
 
 Notebook: `eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E17E_S3_Optuna_TPE_Native_Learnable_GPU.ipynb`.
 
+## Lanjut dari pencarian yang selesai
+
+[Buka peluncur konfirmasi dan test di Colab](https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Fe17e-optuna-gpu/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E17E_Lanjut_Konfirmasi_dan_Test.ipynb).
+Pilih T4, hubungkan Drive study asal, lalu Run all. Mode bawaan
+`confirm_final` memeriksa anggaran pencarian, menjalankan konfirmasi,
+mengunci seleksi dari validasi, dan melanjutkan refit/test.
+Ranking Excel berfungsi sebagai ringkasan. Snapshot SQLite, kontrak study,
+dan hasil yang sudah selesai di Drive diperlukan untuk melanjutkan.
+
+Kontrak training memakai identitas kode E17E asli agar study bisa dipulihkan.
+Metadata `aes_stage_launcher` menyimpan checksum sumber dan kode peluncur.
+Peluncur dibangun dengan `python scripts/build_e17e_confirm_final_notebook.py`.
+
 ## Menjalankan
 
 1. Buka notebook di Colab; pilih Runtime → Change runtime type → T4 GPU.
