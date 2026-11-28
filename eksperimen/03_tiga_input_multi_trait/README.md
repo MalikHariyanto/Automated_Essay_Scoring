@@ -32,6 +32,7 @@ E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,0
 | E23 | Bobot loss isi skor 1 sebesar 2×, lima fold development dengan resep E21 | 0,431853 (B) | — | [File](notebooks/AES_Reset_E23_S3_Bobot_Isi_2x.ipynb) | [Arsip](output/checkpoints/E23.json) |
 | E23 konfirmasi | Bobot isi 2× pada lima fold yang sama dengan seed dasar 44 | 0,428296 (B) | — | [File](notebooks/AES_Reset_E23_Konfirmasi_Seed44.ipynb) | [Arsip](output/checkpoints/E23-Seed44.json) |
 | E24 | Pilot NLI frozen untuk cek konteks sekolah/rumah di soal 10 | Pilot selesai | — | [File](notebooks/AES_Reset_E24_Pilot_Bukti_Konteks_NLI.ipynb) | [Hasil pilot](output/checkpoints/E24/README.md) |
+| E24B | Pilot NLI frozen untuk empat unsur soal 10, dibandingkan dengan lokasi E24 | Siap dijalankan | — | [File](notebooks/AES_Reset_E24B_Pilot_Empat_Unsur_NLI.ipynb) | — |
 | E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
 [Register paper dan konfigurasi](../../docs/skripsi/Register_Bukti_AES_MultiTrait.xlsx) · [Arsip checkpoint](output/checkpoints/README.md)

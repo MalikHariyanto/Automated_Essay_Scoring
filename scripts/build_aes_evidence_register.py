@@ -218,7 +218,7 @@ def inventory(notebook):
         source = ''.join(cell['source'])
         if role == 'pilot_settings':
             for field, value in re.findall(r'^([A-Z][A-Z0-9_]+)\s*=\s*([^#\n]+)', source, re.M):
-                if field in ('MODEL_ID', 'MODEL_REVISION', 'DEVICE', 'BATCH', 'MAX_TOKENS'):
+                if field in ('MODEL_ID', 'MODEL_REVISION', 'DEVICE', 'BATCH', 'MAX_TOKENS', 'AUDIT_THRESHOLD', 'REQUIRED_CRITERIA'):
                     results[field] = (value.strip(), 'pilot_nli', role)
         elif role == 'hyperparameters':
             for field, value in re.findall(r'^([A-Z][A-Z0-9_]+)\s*=\s*([^#\n]+)', source, re.M):
@@ -279,7 +279,7 @@ def build_workbook():
             link = project_url(path)
             code_hash = notebook.get('metadata', {}).get('aes_standalone', {}).get('code_sha256')
             for field, (value, key, role) in inventory(notebook).items():
-                configured.append((run, field, value, ('NLI' if key == 'pilot_nli' else CONFIG.get(key, 'Lihat kode')), role, link))
+                configured.append((run, field, value, (('NLI4' if run == 'E24B' else 'NLI') if key == 'pilot_nli' else CONFIG.get(key, 'Lihat kode')), role, link))
         else:
             default = (None, None)
             path, branch = extra.get(run, default)
