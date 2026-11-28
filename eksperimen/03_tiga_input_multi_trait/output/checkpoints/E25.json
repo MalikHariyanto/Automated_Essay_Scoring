@@ -1,0 +1,4831 @@
+{
+  "run": "E25",
+  "experiment": "Reset_E25_S3_Kontrol_Isi_1x_Seed44",
+  "source": {
+    "name": "Hasil_AES_Reset_E25_Kontrol_Seed44_Validasi_04_05.zip",
+    "sha256": "2793ccfa066c744acb0d2d010f08a20e81bf3bb9d641849de7b13481a29815ad",
+    "workbook_sha256": {
+      "04_Prediksi_dan_Evaluasi.xlsx": "2c0361310ff21534fd279f113cb7b910d8481d4a9c68d03d2e03f1265ad8b9e2",
+      "05_Riwayat_Pelatihan.xlsx": "3747260dbea8f206f8ab8d3a0b5fcb911175a92501aa286d3548eff29fb53925"
+    }
+  },
+  "metadata": {
+    "rows": 1340,
+    "connected_groups": 134,
+    "development_rows": 1070,
+    "split_sha256": "f7fba02006ae61f96fa586fb6b87de678038b38679ac0629af101cb66e69c16c",
+    "notebook_code_sha256": "e0b27606b643b1167a30b45c2301f2383f669293706f529fc684fd610ce14938",
+    "source_sha256": "dfbd97128b09a4eb488dd890ccc3efd9b9fe232e74fcc00ee5504a03acc58226",
+    "fold_selesai": 5,
+    "test_dipakai_untuk_seleksi_epoch": false,
+    "test_dievaluasi": false,
+    "e23_seed44_source_sha256": "dd2cddec96523d271a53caa075c5c13e419e8306d6bad71f56c690c66d051902"
+  },
+  "config": {
+    "expected_rows": null,
+    "dataset_version": "semi-final",
+    "traits": [
+      [
+        "isi",
+        "Skor_Isi",
+        1,
+        4
+      ],
+      [
+        "organisasi",
+        "Skor_Organisasi",
+        1,
+        2
+      ],
+      [
+        "kebahasaan",
+        "Skor_Tata_Bahasa",
+        1,
+        2
+      ],
+      [
+        "mekanik",
+        "Skor_Mekanik",
+        1,
+        2
+      ]
+    ],
+    "roberta": {
+      "checkpoint": "flax-community/indonesian-roberta-base",
+      "revision": "cc5ecee7de8532880ad08d802292a6f42865bc83"
+    },
+    "bge": {
+      "checkpoint": "BAAI/bge-m3",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "bge_batch": 4,
+    "s3_fusion": "concat",
+    "fusion_variant": "organisasi_prompt_ablation",
+    "head_type": "independent_trait_heads",
+    "trait_hidden": 64,
+    "trait_corr_threshold": 0.7,
+    "trait_relation_weight": 0.0,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "gradient_clip": 1.0,
+    "encoder_lr": 5e-06,
+    "s3_encoder_lr": 5e-06,
+    "projection_lr": 0.0001,
+    "head_lr": 0.0001,
+    "s3_mlp_lr": 0.0001,
+    "s3_layers_lr": 0.0001,
+    "dropout": 0.1,
+    "s3_mlp_dropout": 0.2,
+    "micro_batch": 1,
+    "effective_batch": 8,
+    "roberta_max_length": 512,
+    "roberta_overlap": 128,
+    "bge_max_length": 1024,
+    "bge_overlap": 128,
+    "context_max_tokens": 192,
+    "question_max_tokens": 64,
+    "epochs": 25,
+    "early_stopping_patience": 5,
+    "folds": 5,
+    "test_fraction": 0.2,
+    "split_seed": 2026,
+    "split_candidates": 128,
+    "seed": 44,
+    "organization_loss_ratio": 1.2,
+    "isi_loss_ratio": 1.0,
+    "checkpoint_rmse_margin": 0.01
+  },
+  "tables": {
+    "Ringkasan CV": [
+      {
+        "fold_selesai": 5,
+        "jumlah_fold": 5,
+        "jawaban_OOF": 1070,
+        "mean_cv_RMSE": 0.4224543722009129
+      }
+    ],
+    "E25 vs E23 per Trait": [
+      {
+        "trait": "isi",
+        "metrik": "RMSE",
+        "E25 1x (B)": 0.6122827180744828,
+        "E23 2x (B)": 0.6036927758864785,
+        "delta E23 minus E25": -0.00858994218800424
+      },
+      {
+        "trait": "isi",
+        "metrik": "Pearson",
+        "E25 1x (B)": 0.6319319338036563,
+        "E23 2x (B)": 0.6487757261658006,
+        "delta E23 minus E25": 0.01684379236214428
+      },
+      {
+        "trait": "isi",
+        "metrik": "QWK",
+        "E25 1x (B)": 0.5900245463204943,
+        "E23 2x (B)": 0.6219890113697824,
+        "delta E23 minus E25": 0.03196446504928807
+      },
+      {
+        "trait": "isi",
+        "metrik": "Gwet AC2",
+        "E25 1x (B)": 0.8741512499826231,
+        "E23 2x (B)": 0.8859782280967115,
+        "delta E23 minus E25": 0.01182697811408839
+      },
+      {
+        "trait": "organisasi",
+        "metrik": "RMSE",
+        "E25 1x (B)": 0.329305108581519,
+        "E23 2x (B)": 0.3293656844558424,
+        "delta E23 minus E25": 6.057587432345413e-05
+      },
+      {
+        "trait": "organisasi",
+        "metrik": "Pearson",
+        "E25 1x (B)": 0.4652458661776662,
+        "E23 2x (B)": 0.4777037252453203,
+        "delta E23 minus E25": 0.01245785906765406
+      },
+      {
+        "trait": "organisasi",
+        "metrik": "QWK",
+        "E25 1x (B)": 0.4364718607067872,
+        "E23 2x (B)": 0.4417417544453375,
+        "delta E23 minus E25": 0.005269893738550246
+      },
+      {
+        "trait": "organisasi",
+        "metrik": "Gwet AC2",
+        "E25 1x (B)": 0.8150486565998906,
+        "E23 2x (B)": 0.8161277213352687,
+        "delta E23 minus E25": 0.00107906473537811
+      },
+      {
+        "trait": "kebahasaan",
+        "metrik": "RMSE",
+        "E25 1x (B)": 0.3642530181411199,
+        "E23 2x (B)": 0.3709024804709048,
+        "delta E23 minus E25": 0.006649462329784916
+      },
+      {
+        "trait": "kebahasaan",
+        "metrik": "Pearson",
+        "E25 1x (B)": 0.48967923106631,
+        "E23 2x (B)": 0.4706563564059207,
+        "delta E23 minus E25": -0.01902287466038927
+      },
+      {
+        "trait": "kebahasaan",
+        "metrik": "QWK",
+        "E25 1x (B)": 0.472667535263128,
+        "E23 2x (B)": 0.4383473025348852,
+        "delta E23 minus E25": -0.03432023272824281
+      },
+      {
+        "trait": "kebahasaan",
+        "metrik": "Gwet AC2",
+        "E25 1x (B)": 0.7651904784726409,
+        "E23 2x (B)": 0.7505552492714814,
+        "delta E23 minus E25": -0.01463522920115945
+      },
+      {
+        "trait": "mekanik",
+        "metrik": "RMSE",
+        "E25 1x (B)": 0.3463042238132857,
+        "E23 2x (B)": 0.3542401046526248,
+        "delta E23 minus E25": 0.007935880839339104
+      },
+      {
+        "trait": "mekanik",
+        "metrik": "Pearson",
+        "E25 1x (B)": 0.5891276612171741,
+        "E23 2x (B)": 0.5615640069774904,
+        "delta E23 minus E25": -0.02756365423968365
+      },
+      {
+        "trait": "mekanik",
+        "metrik": "QWK",
+        "E25 1x (B)": 0.5703713423435245,
+        "E23 2x (B)": 0.5396596324029952,
+        "delta E23 minus E25": -0.0307117099405293
+      },
+      {
+        "trait": "mekanik",
+        "metrik": "Gwet AC2",
+        "E25 1x (B)": 0.7857284493223764,
+        "E23 2x (B)": 0.782847718526663,
+        "delta E23 minus E25": -0.002880730795713382
+      }
+    ],
+    "E25 vs E23 Ringkasan": [
+      {
+        "konfigurasi": "E25 kontrol 1x",
+        "RMSE rata-rata fold": 0.428445306213117,
+        "macro QWK rata-rata fold": 0.5117242469275849,
+        "label isi 1": 17,
+        "isi 1 terdeteksi": 1,
+        "label 2–4 ke 1": 1
+      },
+      {
+        "konfigurasi": "E23 bobot 2x",
+        "RMSE rata-rata fold": 0.4282963038241402,
+        "macro QWK rata-rata fold": 0.5058343938915192,
+        "label isi 1": 17,
+        "isi 1 terdeteksi": 2,
+        "label 2–4 ke 1": 2
+      }
+    ],
+    "Progres Fold": [
+      {
+        "fold": 1,
+        "RMSE": 0.4059014702300479,
+        "epoch_terpilih": 3,
+        "epoch_dijalankan": 8,
+        "menit_training": 11.92724137548333
+      },
+      {
+        "fold": 2,
+        "RMSE": 0.4322143156722578,
+        "epoch_terpilih": 5,
+        "epoch_dijalankan": 10,
+        "menit_training": 14.34925905511667
+      },
+      {
+        "fold": 3,
+        "RMSE": 0.3897852307781974,
+        "epoch_terpilih": 6,
+        "epoch_dijalankan": 11,
+        "menit_training": 15.7124552607
+      },
+      {
+        "fold": 4,
+        "RMSE": 0.4610352657552869,
+        "epoch_terpilih": 4,
+        "epoch_dijalankan": 9,
+        "menit_training": 12.89531071775
+      },
+      {
+        "fold": 5,
+        "RMSE": 0.4233355785687746,
+        "epoch_terpilih": 6,
+        "epoch_dijalankan": 11,
+        "menit_training": 15.79790597663333
+      }
+    ],
+    "Isi 1 Latih dan Validasi B": [
+      {
+        "fold": 1,
+        "bagian": "latih",
+        "jumlah jawaban": 850,
+        "label 1": 14,
+        "label 1 terdeteksi": 6,
+        "label 2–4 salah jadi 1": 3
+      },
+      {
+        "fold": 1,
+        "bagian": "validasi",
+        "jumlah jawaban": 220,
+        "label 1": 3,
+        "label 1 terdeteksi": 0,
+        "label 2–4 salah jadi 1": 1
+      },
+      {
+        "fold": 2,
+        "bagian": "latih",
+        "jumlah jawaban": 850,
+        "label 1": 12,
+        "label 1 terdeteksi": 3,
+        "label 2–4 salah jadi 1": 5
+      },
+      {
+        "fold": 2,
+        "bagian": "validasi",
+        "jumlah jawaban": 220,
+        "label 1": 5,
+        "label 1 terdeteksi": 0,
+        "label 2–4 salah jadi 1": 0
+      },
+      {
+        "fold": 3,
+        "bagian": "latih",
+        "jumlah jawaban": 860,
+        "label 1": 16,
+        "label 1 terdeteksi": 0,
+        "label 2–4 salah jadi 1": 1
+      },
+      {
+        "fold": 3,
+        "bagian": "validasi",
+        "jumlah jawaban": 210,
+        "label 1": 1,
+        "label 1 terdeteksi": 0,
+        "label 2–4 salah jadi 1": 0
+      },
+      {
+        "fold": 4,
+        "bagian": "latih",
+        "jumlah jawaban": 860,
+        "label 1": 14,
+        "label 1 terdeteksi": 0,
+        "label 2–4 salah jadi 1": 0
+      },
+      {
+        "fold": 4,
+        "bagian": "validasi",
+        "jumlah jawaban": 210,
+        "label 1": 3,
+        "label 1 terdeteksi": 1,
+        "label 2–4 salah jadi 1": 0
+      },
+      {
+        "fold": 5,
+        "bagian": "latih",
+        "jumlah jawaban": 860,
+        "label 1": 12,
+        "label 1 terdeteksi": 0,
+        "label 2–4 salah jadi 1": 0
+      },
+      {
+        "fold": 5,
+        "bagian": "validasi",
+        "jumlah jawaban": 210,
+        "label 1": 5,
+        "label 1 terdeteksi": 0,
+        "label 2–4 salah jadi 1": 0
+      }
+    ],
+    "CV per Fold dan Trait": [
+      {
+        "fold": 1,
+        "epoch_terpilih": 3,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6039917427271102,
+        "Pearson": 0.5641108205444079,
+        "QWK": 0.489744872436218,
+        "Gwet AC2": 0.9011556798043084,
+        "proporsi_di_luar_skala": 0.05454545454545454
+      },
+      {
+        "fold": 1,
+        "epoch_terpilih": 3,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3129601943146238,
+        "Pearson": 0.4273367021330341,
+        "QWK": 0.2732558139534883,
+        "Gwet AC2": 0.8656718240545128,
+        "proporsi_di_luar_skala": 0.6863636363636364
+      },
+      {
+        "fold": 1,
+        "epoch_terpilih": 3,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3276907068988055,
+        "Pearson": 0.4749897205787325,
+        "QWK": 0.4728110599078341,
+        "Gwet AC2": 0.8480662983425414,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch_terpilih": 3,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.2981487988301147,
+        "Pearson": 0.5599420556641653,
+        "QWK": 0.5381526104417671,
+        "Gwet AC2": 0.8650108711600796,
+        "proporsi_di_luar_skala": 0.2
+      },
+      {
+        "fold": 2,
+        "epoch_terpilih": 5,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.598981283454134,
+        "Pearson": 0.6787377777760136,
+        "QWK": 0.6396618527650582,
+        "Gwet AC2": 0.8769473808717132,
+        "proporsi_di_luar_skala": 0.004545454545454545
+      },
+      {
+        "fold": 2,
+        "epoch_terpilih": 5,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3222071830673872,
+        "Pearson": 0.5002058664181493,
+        "QWK": 0.4638655462184874,
+        "Gwet AC2": 0.8253227285794467,
+        "proporsi_di_luar_skala": 0.2909090909090909
+      },
+      {
+        "fold": 2,
+        "epoch_terpilih": 5,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3807205902043975,
+        "Pearson": 0.4704094209597742,
+        "QWK": 0.4430723635465548,
+        "Gwet AC2": 0.7204357730632739,
+        "proporsi_di_luar_skala": 0.04090909090909091
+      },
+      {
+        "fold": 2,
+        "epoch_terpilih": 5,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3737547914528795,
+        "Pearson": 0.5577450476231743,
+        "QWK": 0.5013718239293808,
+        "Gwet AC2": 0.7357941975854876,
+        "proporsi_di_luar_skala": 0.05909090909090909
+      },
+      {
+        "fold": 3,
+        "epoch_terpilih": 6,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.4789838009909055,
+        "Pearson": 0.7628307658877173,
+        "QWK": 0.7324045363802404,
+        "Gwet AC2": 0.9340140246382552,
+        "proporsi_di_luar_skala": 0.09047619047619047
+      },
+      {
+        "fold": 3,
+        "epoch_terpilih": 6,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3280419428138759,
+        "Pearson": 0.5117156059345299,
+        "QWK": 0.4288775342014175,
+        "Gwet AC2": 0.7833731889154593,
+        "proporsi_di_luar_skala": 0.05714285714285714
+      },
+      {
+        "fold": 3,
+        "epoch_terpilih": 6,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3961278700119995,
+        "Pearson": 0.4212787062999316,
+        "QWK": 0.3574408901251739,
+        "Gwet AC2": 0.6892864348644832,
+        "proporsi_di_luar_skala": 0.0380952380952381
+      },
+      {
+        "fold": 3,
+        "epoch_terpilih": 6,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3373067109830594,
+        "Pearson": 0.662472695032944,
+        "QWK": 0.5844327176781002,
+        "Gwet AC2": 0.7828484764924857,
+        "proporsi_di_luar_skala": 0.480952380952381
+      },
+      {
+        "fold": 4,
+        "epoch_terpilih": 4,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6502843602079695,
+        "Pearson": 0.6335788034129484,
+        "QWK": 0.5334474746239453,
+        "Gwet AC2": 0.8799729427865784,
+        "proporsi_di_luar_skala": 0.2571428571428571
+      },
+      {
+        "fold": 4,
+        "epoch_terpilih": 4,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3621051240889556,
+        "Pearson": 0.3736481452008092,
+        "QWK": 0.3443037974683545,
+        "Gwet AC2": 0.759252660769338,
+        "proporsi_di_luar_skala": 0.2857142857142857
+      },
+      {
+        "fold": 4,
+        "epoch_terpilih": 4,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3720420886628134,
+        "Pearson": 0.5149143416302169,
+        "QWK": 0.4329432943294329,
+        "Gwet AC2": 0.6910466582597731,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "fold": 4,
+        "epoch_terpilih": 4,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3972516574176088,
+        "Pearson": 0.4683151024038855,
+        "QWK": 0.423739629865986,
+        "Gwet AC2": 0.6824280363642757,
+        "proporsi_di_luar_skala": 0.3380952380952381
+      },
+      {
+        "fold": 5,
+        "epoch_terpilih": 6,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6260934013908859,
+        "Pearson": 0.609382794157716,
+        "QWK": 0.5064200217627857,
+        "Gwet AC2": 0.8636497538120554,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "fold": 5,
+        "epoch_terpilih": 6,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3031514444914259,
+        "Pearson": 0.6291049106830602,
+        "QWK": 0.348941629249519,
+        "Gwet AC2": 0.8260521843446966,
+        "proporsi_di_luar_skala": 0.3380952380952381
+      },
+      {
+        "fold": 5,
+        "epoch_terpilih": 6,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3497865410015819,
+        "Pearson": 0.5814247487133124,
+        "QWK": 0.5017972681524083,
+        "Gwet AC2": 0.7718180471180915,
+        "proporsi_di_luar_skala": 0.09047619047619047
+      },
+      {
+        "fold": 5,
+        "epoch_terpilih": 6,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3325773270990344,
+        "Pearson": 0.6278637539760201,
+        "QWK": 0.5344325897187197,
+        "Gwet AC2": 0.7740264980832604,
+        "proporsi_di_luar_skala": 0.07142857142857142
+      }
+    ],
+    "CV OOF per Trait": [
+      {
+        "n": 1070,
+        "trait": "isi",
+        "RMSE": 0.594750501438055,
+        "Pearson": 0.6523891335735713,
+        "QWK": 0.5964870790215466,
+        "Gwet AC2": 0.8884183848076613,
+        "proporsi_di_luar_skala": 0.08224299065420561
+      },
+      {
+        "n": 1070,
+        "trait": "organisasi",
+        "RMSE": 0.3261505198225397,
+        "Pearson": 0.4632261411005626,
+        "QWK": 0.3818018412645666,
+        "Gwet AC2": 0.814084746965718,
+        "proporsi_di_luar_skala": 0.3345794392523365
+      },
+      {
+        "n": 1070,
+        "trait": "kebahasaan",
+        "RMSE": 0.3658633866854287,
+        "Pearson": 0.4758272581383315,
+        "QWK": 0.4421584895506324,
+        "Gwet AC2": 0.7477349125146401,
+        "proporsi_di_luar_skala": 0.03551401869158879
+      },
+      {
+        "n": 1070,
+        "trait": "mekanik",
+        "RMSE": 0.349297259599518,
+        "Pearson": 0.5645260355565993,
+        "QWK": 0.5179264486361785,
+        "Gwet AC2": 0.7714763589578644,
+        "proporsi_di_luar_skala": 0.2280373831775701
+      }
+    ],
+    "Pilihan Checkpoint": [
+      {
+        "fold": 1,
+        "pilihan": "A",
+        "epoch": 3,
+        "RMSE": 0.4059014702300479,
+        "macro_QWK": 0.4434910891848269
+      },
+      {
+        "fold": 1,
+        "pilihan": "B",
+        "epoch": 8,
+        "RMSE": 0.4157911255759001,
+        "macro_QWK": 0.4750576425788839
+      },
+      {
+        "fold": 2,
+        "pilihan": "A",
+        "epoch": 5,
+        "RMSE": 0.4322143156722578,
+        "macro_QWK": 0.5119928966148702
+      },
+      {
+        "fold": 2,
+        "pilihan": "B",
+        "epoch": 5,
+        "RMSE": 0.4322143156722578,
+        "macro_QWK": 0.5119928966148702
+      },
+      {
+        "fold": 3,
+        "pilihan": "A",
+        "epoch": 6,
+        "RMSE": 0.3897852307781974,
+        "macro_QWK": 0.525788919596233
+      },
+      {
+        "fold": 3,
+        "pilihan": "B",
+        "epoch": 4,
+        "RMSE": 0.3977480364940619,
+        "macro_QWK": 0.5393724370454874
+      },
+      {
+        "fold": 4,
+        "pilihan": "A",
+        "epoch": 4,
+        "RMSE": 0.4610352657552869,
+        "macro_QWK": 0.4336085490719297
+      },
+      {
+        "fold": 4,
+        "pilihan": "B",
+        "epoch": 7,
+        "RMSE": 0.4654239911817385,
+        "macro_QWK": 0.4456902025703576
+      },
+      {
+        "fold": 5,
+        "pilihan": "A",
+        "epoch": 6,
+        "RMSE": 0.4233355785687746,
+        "macro_QWK": 0.4728978772208581
+      },
+      {
+        "fold": 5,
+        "pilihan": "B",
+        "epoch": 4,
+        "RMSE": 0.4310490621416269,
+        "macro_QWK": 0.5865080558283251
+      }
+    ],
+    "A B per Fold dan Trait": [
+      {
+        "pilihan": "A",
+        "fold": 1,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6039917427271102,
+        "Pearson": 0.5641108205444079,
+        "QWK": 0.489744872436218,
+        "Gwet AC2": 0.9011556798043084,
+        "proporsi_di_luar_skala": 0.05454545454545454
+      },
+      {
+        "pilihan": "A",
+        "fold": 1,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3129601943146238,
+        "Pearson": 0.4273367021330341,
+        "QWK": 0.2732558139534883,
+        "Gwet AC2": 0.8656718240545128,
+        "proporsi_di_luar_skala": 0.6863636363636364
+      },
+      {
+        "pilihan": "A",
+        "fold": 1,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3276907068988055,
+        "Pearson": 0.4749897205787325,
+        "QWK": 0.4728110599078341,
+        "Gwet AC2": 0.8480662983425414,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "pilihan": "A",
+        "fold": 1,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.2981487988301147,
+        "Pearson": 0.5599420556641653,
+        "QWK": 0.5381526104417671,
+        "Gwet AC2": 0.8650108711600796,
+        "proporsi_di_luar_skala": 0.2
+      },
+      {
+        "pilihan": "B",
+        "fold": 1,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6294996541547333,
+        "Pearson": 0.5584941470606639,
+        "QWK": 0.5150915388421574,
+        "Gwet AC2": 0.9057533032971776,
+        "proporsi_di_luar_skala": 0.1772727272727273
+      },
+      {
+        "pilihan": "B",
+        "fold": 1,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.294095492033957,
+        "Pearson": 0.4879933865982698,
+        "QWK": 0.4154858299595142,
+        "Gwet AC2": 0.8861522159657964,
+        "proporsi_di_luar_skala": 0.4090909090909091
+      },
+      {
+        "pilihan": "B",
+        "fold": 1,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3403482766766032,
+        "Pearson": 0.4656539509969645,
+        "QWK": 0.4448598130841122,
+        "Gwet AC2": 0.8429090909090909,
+        "proporsi_di_luar_skala": 0.4318181818181818
+      },
+      {
+        "pilihan": "B",
+        "fold": 1,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3048444160196113,
+        "Pearson": 0.5601553306490973,
+        "QWK": 0.524793388429752,
+        "Gwet AC2": 0.8661818181818183,
+        "proporsi_di_luar_skala": 0.1545454545454545
+      },
+      {
+        "pilihan": "A",
+        "fold": 2,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.598981283454134,
+        "Pearson": 0.6787377777760136,
+        "QWK": 0.6396618527650582,
+        "Gwet AC2": 0.8769473808717132,
+        "proporsi_di_luar_skala": 0.004545454545454545
+      },
+      {
+        "pilihan": "A",
+        "fold": 2,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3222071830673872,
+        "Pearson": 0.5002058664181493,
+        "QWK": 0.4638655462184874,
+        "Gwet AC2": 0.8253227285794467,
+        "proporsi_di_luar_skala": 0.2909090909090909
+      },
+      {
+        "pilihan": "A",
+        "fold": 2,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3807205902043975,
+        "Pearson": 0.4704094209597742,
+        "QWK": 0.4430723635465548,
+        "Gwet AC2": 0.7204357730632739,
+        "proporsi_di_luar_skala": 0.04090909090909091
+      },
+      {
+        "pilihan": "A",
+        "fold": 2,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3737547914528795,
+        "Pearson": 0.5577450476231743,
+        "QWK": 0.5013718239293808,
+        "Gwet AC2": 0.7357941975854876,
+        "proporsi_di_luar_skala": 0.05909090909090909
+      },
+      {
+        "pilihan": "B",
+        "fold": 2,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.598981283454134,
+        "Pearson": 0.6787377777760136,
+        "QWK": 0.6396618527650582,
+        "Gwet AC2": 0.8769473808717132,
+        "proporsi_di_luar_skala": 0.004545454545454545
+      },
+      {
+        "pilihan": "B",
+        "fold": 2,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3222071830673872,
+        "Pearson": 0.5002058664181493,
+        "QWK": 0.4638655462184874,
+        "Gwet AC2": 0.8253227285794467,
+        "proporsi_di_luar_skala": 0.2909090909090909
+      },
+      {
+        "pilihan": "B",
+        "fold": 2,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3807205902043975,
+        "Pearson": 0.4704094209597742,
+        "QWK": 0.4430723635465548,
+        "Gwet AC2": 0.7204357730632739,
+        "proporsi_di_luar_skala": 0.04090909090909091
+      },
+      {
+        "pilihan": "B",
+        "fold": 2,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3737547914528795,
+        "Pearson": 0.5577450476231743,
+        "QWK": 0.5013718239293808,
+        "Gwet AC2": 0.7357941975854876,
+        "proporsi_di_luar_skala": 0.05909090909090909
+      },
+      {
+        "pilihan": "A",
+        "fold": 3,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.4789838009909055,
+        "Pearson": 0.7628307658877173,
+        "QWK": 0.7324045363802404,
+        "Gwet AC2": 0.9340140246382552,
+        "proporsi_di_luar_skala": 0.09047619047619047
+      },
+      {
+        "pilihan": "A",
+        "fold": 3,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3280419428138759,
+        "Pearson": 0.5117156059345299,
+        "QWK": 0.4288775342014175,
+        "Gwet AC2": 0.7833731889154593,
+        "proporsi_di_luar_skala": 0.05714285714285714
+      },
+      {
+        "pilihan": "A",
+        "fold": 3,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3961278700119995,
+        "Pearson": 0.4212787062999316,
+        "QWK": 0.3574408901251739,
+        "Gwet AC2": 0.6892864348644832,
+        "proporsi_di_luar_skala": 0.0380952380952381
+      },
+      {
+        "pilihan": "A",
+        "fold": 3,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3373067109830594,
+        "Pearson": 0.662472695032944,
+        "QWK": 0.5844327176781002,
+        "Gwet AC2": 0.7828484764924857,
+        "proporsi_di_luar_skala": 0.480952380952381
+      },
+      {
+        "pilihan": "B",
+        "fold": 3,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.5511549650264934,
+        "Pearson": 0.7584832646611434,
+        "QWK": 0.594066827093771,
+        "Gwet AC2": 0.8698067133681138,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "pilihan": "B",
+        "fold": 3,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3179237245907875,
+        "Pearson": 0.4887468138718615,
+        "QWK": 0.3944854928816003,
+        "Gwet AC2": 0.7963759772135022,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "pilihan": "B",
+        "fold": 3,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3672720249141807,
+        "Pearson": 0.505903287916073,
+        "QWK": 0.5208053691275167,
+        "Gwet AC2": 0.755897435897436,
+        "proporsi_di_luar_skala": 0.08571428571428572
+      },
+      {
+        "pilihan": "B",
+        "fold": 3,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.305086826532923,
+        "Pearson": 0.7193419632580976,
+        "QWK": 0.6481320590790617,
+        "Gwet AC2": 0.7974312713241993,
+        "proporsi_di_luar_skala": 0.319047619047619
+      },
+      {
+        "pilihan": "A",
+        "fold": 4,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6502843602079695,
+        "Pearson": 0.6335788034129484,
+        "QWK": 0.5334474746239453,
+        "Gwet AC2": 0.8799729427865784,
+        "proporsi_di_luar_skala": 0.2571428571428571
+      },
+      {
+        "pilihan": "A",
+        "fold": 4,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3621051240889556,
+        "Pearson": 0.3736481452008092,
+        "QWK": 0.3443037974683545,
+        "Gwet AC2": 0.759252660769338,
+        "proporsi_di_luar_skala": 0.2857142857142857
+      },
+      {
+        "pilihan": "A",
+        "fold": 4,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3720420886628134,
+        "Pearson": 0.5149143416302169,
+        "QWK": 0.4329432943294329,
+        "Gwet AC2": 0.6910466582597731,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "pilihan": "A",
+        "fold": 4,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3972516574176088,
+        "Pearson": 0.4683151024038855,
+        "QWK": 0.423739629865986,
+        "Gwet AC2": 0.6824280363642757,
+        "proporsi_di_luar_skala": 0.3380952380952381
+      },
+      {
+        "pilihan": "B",
+        "fold": 4,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6238924888136538,
+        "Pearson": 0.6347536811607262,
+        "QWK": 0.6012408347433729,
+        "Gwet AC2": 0.8741980446623631,
+        "proporsi_di_luar_skala": 0.02380952380952381
+      },
+      {
+        "pilihan": "B",
+        "fold": 4,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3987971410292985,
+        "Pearson": 0.3789914802918896,
+        "QWK": 0.2837209302325582,
+        "Gwet AC2": 0.7047734679532237,
+        "proporsi_di_luar_skala": 0.0380952380952381
+      },
+      {
+        "pilihan": "B",
+        "fold": 4,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3841882356754821,
+        "Pearson": 0.4429432841297918,
+        "QWK": 0.4180407371483996,
+        "Gwet AC2": 0.7175331226040756,
+        "proporsi_di_luar_skala": 0.01428571428571429
+      },
+      {
+        "pilihan": "B",
+        "fold": 4,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.4130331325057095,
+        "Pearson": 0.4671312056918932,
+        "QWK": 0.4797583081570997,
+        "Gwet AC2": 0.6876190476190477,
+        "proporsi_di_luar_skala": 0.1714285714285714
+      },
+      {
+        "pilihan": "A",
+        "fold": 5,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6260934013908859,
+        "Pearson": 0.609382794157716,
+        "QWK": 0.5064200217627857,
+        "Gwet AC2": 0.8636497538120554,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "pilihan": "A",
+        "fold": 5,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3031514444914259,
+        "Pearson": 0.6291049106830602,
+        "QWK": 0.348941629249519,
+        "Gwet AC2": 0.8260521843446966,
+        "proporsi_di_luar_skala": 0.3380952380952381
+      },
+      {
+        "pilihan": "A",
+        "fold": 5,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3497865410015819,
+        "Pearson": 0.5814247487133124,
+        "QWK": 0.5017972681524083,
+        "Gwet AC2": 0.7718180471180915,
+        "proporsi_di_luar_skala": 0.09047619047619047
+      },
+      {
+        "pilihan": "A",
+        "fold": 5,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3325773270990344,
+        "Pearson": 0.6278637539760201,
+        "QWK": 0.5344325897187197,
+        "Gwet AC2": 0.7740264980832604,
+        "proporsi_di_luar_skala": 0.07142857142857142
+      },
+      {
+        "pilihan": "B",
+        "fold": 5,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.652792267823443,
+        "Pearson": 0.5859900556582105,
+        "QWK": 0.5488202570496835,
+        "Gwet AC2": 0.8525817005753827,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "pilihan": "B",
+        "fold": 5,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3050416751058004,
+        "Pearson": 0.5955877886503246,
+        "QWK": 0.6101694915254237,
+        "Gwet AC2": 0.8476845209000172,
+        "proporsi_di_luar_skala": 0.3238095238095238
+      },
+      {
+        "pilihan": "B",
+        "fold": 5,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3469073717935486,
+        "Pearson": 0.6050090394135642,
+        "QWK": 0.5206847360912981,
+        "Gwet AC2": 0.777792474042722,
+        "proporsi_di_luar_skala": 0.3238095238095238
+      },
+      {
+        "pilihan": "B",
+        "fold": 5,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3219942279087789,
+        "Pearson": 0.6552591947317254,
+        "QWK": 0.6663577386468953,
+        "Gwet AC2": 0.8262787811939887,
+        "proporsi_di_luar_skala": 0.3333333333333333
+      }
+    ],
+    "OOF A B per Trait": [
+      {
+        "pilihan": "A",
+        "n": 1070,
+        "trait": "isi",
+        "RMSE": 0.594750501438055,
+        "Pearson": 0.6523891335735713,
+        "QWK": 0.5964870790215466,
+        "Gwet AC2": 0.8884183848076613,
+        "proporsi_di_luar_skala": 0.08224299065420561
+      },
+      {
+        "pilihan": "A",
+        "n": 1070,
+        "trait": "organisasi",
+        "RMSE": 0.3261505198225397,
+        "Pearson": 0.4632261411005626,
+        "QWK": 0.3818018412645666,
+        "Gwet AC2": 0.814084746965718,
+        "proporsi_di_luar_skala": 0.3345794392523365
+      },
+      {
+        "pilihan": "A",
+        "n": 1070,
+        "trait": "kebahasaan",
+        "RMSE": 0.3658633866854287,
+        "Pearson": 0.4758272581383315,
+        "QWK": 0.4421584895506324,
+        "Gwet AC2": 0.7477349125146401,
+        "proporsi_di_luar_skala": 0.03551401869158879
+      },
+      {
+        "pilihan": "A",
+        "n": 1070,
+        "trait": "mekanik",
+        "RMSE": 0.349297259599518,
+        "Pearson": 0.5645260355565993,
+        "QWK": 0.5179264486361785,
+        "Gwet AC2": 0.7714763589578644,
+        "proporsi_di_luar_skala": 0.2280373831775701
+      },
+      {
+        "pilihan": "B",
+        "n": 1070,
+        "trait": "isi",
+        "RMSE": 0.6122827180744828,
+        "Pearson": 0.6319319338036563,
+        "QWK": 0.5900245463204943,
+        "Gwet AC2": 0.8741512499826231,
+        "proporsi_di_luar_skala": 0.04392523364485981
+      },
+      {
+        "pilihan": "B",
+        "n": 1070,
+        "trait": "organisasi",
+        "RMSE": 0.329305108581519,
+        "Pearson": 0.4652458661776662,
+        "QWK": 0.4364718607067872,
+        "Gwet AC2": 0.8150486565998906,
+        "proporsi_di_luar_skala": 0.216822429906542
+      },
+      {
+        "pilihan": "B",
+        "n": 1070,
+        "trait": "kebahasaan",
+        "RMSE": 0.3642530181411199,
+        "Pearson": 0.48967923106631,
+        "QWK": 0.472667535263128,
+        "Gwet AC2": 0.7651904784726409,
+        "proporsi_di_luar_skala": 0.1803738317757009
+      },
+      {
+        "pilihan": "B",
+        "n": 1070,
+        "trait": "mekanik",
+        "RMSE": 0.3463042238132857,
+        "Pearson": 0.5891276612171741,
+        "QWK": 0.5703713423435245,
+        "Gwet AC2": 0.7857284493223764,
+        "proporsi_di_luar_skala": 0.205607476635514
+      }
+    ],
+    "Skor Terendah": [
+      {
+        "fold": 1,
+        "bagian": "validasi",
+        "trait": "isi",
+        "skor_terendah": 1,
+        "n_label_terendah": 3,
+        "n_terdeteksi": 0,
+        "proporsi_terdeteksi": 0
+      },
+      {
+        "fold": 1,
+        "bagian": "validasi",
+        "trait": "organisasi",
+        "skor_terendah": 1,
+        "n_label_terendah": 26,
+        "n_terdeteksi": 6,
+        "proporsi_terdeteksi": 0.2307692307692308
+      },
+      {
+        "fold": 1,
+        "bagian": "validasi",
+        "trait": "kebahasaan",
+        "skor_terendah": 1,
+        "n_label_terendah": 35,
+        "n_terdeteksi": 15,
+        "proporsi_terdeteksi": 0.4285714285714285
+      },
+      {
+        "fold": 1,
+        "bagian": "validasi",
+        "trait": "mekanik",
+        "skor_terendah": 1,
+        "n_label_terendah": 33,
+        "n_terdeteksi": 17,
+        "proporsi_terdeteksi": 0.5151515151515151
+      },
+      {
+        "fold": 2,
+        "bagian": "validasi",
+        "trait": "isi",
+        "skor_terendah": 1,
+        "n_label_terendah": 5,
+        "n_terdeteksi": 0,
+        "proporsi_terdeteksi": 0
+      },
+      {
+        "fold": 2,
+        "bagian": "validasi",
+        "trait": "organisasi",
+        "skor_terendah": 1,
+        "n_label_terendah": 35,
+        "n_terdeteksi": 17,
+        "proporsi_terdeteksi": 0.4857142857142857
+      },
+      {
+        "fold": 2,
+        "bagian": "validasi",
+        "trait": "kebahasaan",
+        "skor_terendah": 1,
+        "n_label_terendah": 52,
+        "n_terdeteksi": 26,
+        "proporsi_terdeteksi": 0.5
+      },
+      {
+        "fold": 2,
+        "bagian": "validasi",
+        "trait": "mekanik",
+        "skor_terendah": 1,
+        "n_label_terendah": 51,
+        "n_terdeteksi": 30,
+        "proporsi_terdeteksi": 0.5882352941176471
+      },
+      {
+        "fold": 3,
+        "bagian": "validasi",
+        "trait": "isi",
+        "skor_terendah": 1,
+        "n_label_terendah": 1,
+        "n_terdeteksi": 0,
+        "proporsi_terdeteksi": 0
+      },
+      {
+        "fold": 3,
+        "bagian": "validasi",
+        "trait": "organisasi",
+        "skor_terendah": 1,
+        "n_label_terendah": 31,
+        "n_terdeteksi": 18,
+        "proporsi_terdeteksi": 0.5806451612903226
+      },
+      {
+        "fold": 3,
+        "bagian": "validasi",
+        "trait": "kebahasaan",
+        "skor_terendah": 1,
+        "n_label_terendah": 40,
+        "n_terdeteksi": 21,
+        "proporsi_terdeteksi": 0.525
+      },
+      {
+        "fold": 3,
+        "bagian": "validasi",
+        "trait": "mekanik",
+        "skor_terendah": 1,
+        "n_label_terendah": 52,
+        "n_terdeteksi": 31,
+        "proporsi_terdeteksi": 0.5961538461538461
+      },
+      {
+        "fold": 4,
+        "bagian": "validasi",
+        "trait": "isi",
+        "skor_terendah": 1,
+        "n_label_terendah": 3,
+        "n_terdeteksi": 0,
+        "proporsi_terdeteksi": 0
+      },
+      {
+        "fold": 4,
+        "bagian": "validasi",
+        "trait": "organisasi",
+        "skor_terendah": 1,
+        "n_label_terendah": 30,
+        "n_terdeteksi": 15,
+        "proporsi_terdeteksi": 0.5
+      },
+      {
+        "fold": 4,
+        "bagian": "validasi",
+        "trait": "kebahasaan",
+        "skor_terendah": 1,
+        "n_label_terendah": 49,
+        "n_terdeteksi": 27,
+        "proporsi_terdeteksi": 0.5510204081632653
+      },
+      {
+        "fold": 4,
+        "bagian": "validasi",
+        "trait": "mekanik",
+        "skor_terendah": 1,
+        "n_label_terendah": 50,
+        "n_terdeteksi": 27,
+        "proporsi_terdeteksi": 0.54
+      },
+      {
+        "fold": 5,
+        "bagian": "validasi",
+        "trait": "isi",
+        "skor_terendah": 1,
+        "n_label_terendah": 5,
+        "n_terdeteksi": 0,
+        "proporsi_terdeteksi": 0
+      },
+      {
+        "fold": 5,
+        "bagian": "validasi",
+        "trait": "organisasi",
+        "skor_terendah": 1,
+        "n_label_terendah": 36,
+        "n_terdeteksi": 10,
+        "proporsi_terdeteksi": 0.2777777777777778
+      },
+      {
+        "fold": 5,
+        "bagian": "validasi",
+        "trait": "kebahasaan",
+        "skor_terendah": 1,
+        "n_label_terendah": 50,
+        "n_terdeteksi": 24,
+        "proporsi_terdeteksi": 0.48
+      },
+      {
+        "fold": 5,
+        "bagian": "validasi",
+        "trait": "mekanik",
+        "skor_terendah": 1,
+        "n_label_terendah": 49,
+        "n_terdeteksi": 27,
+        "proporsi_terdeteksi": 0.5510204081632653
+      },
+      {
+        "fold": null,
+        "bagian": "OOF",
+        "trait": "isi",
+        "skor_terendah": 1,
+        "n_label_terendah": 17,
+        "n_terdeteksi": 0,
+        "proporsi_terdeteksi": 0
+      },
+      {
+        "fold": null,
+        "bagian": "OOF",
+        "trait": "organisasi",
+        "skor_terendah": 1,
+        "n_label_terendah": 158,
+        "n_terdeteksi": 66,
+        "proporsi_terdeteksi": 0.4177215189873418
+      },
+      {
+        "fold": null,
+        "bagian": "OOF",
+        "trait": "kebahasaan",
+        "skor_terendah": 1,
+        "n_label_terendah": 226,
+        "n_terdeteksi": 113,
+        "proporsi_terdeteksi": 0.5
+      },
+      {
+        "fold": null,
+        "bagian": "OOF",
+        "trait": "mekanik",
+        "skor_terendah": 1,
+        "n_label_terendah": 235,
+        "n_terdeteksi": 132,
+        "proporsi_terdeteksi": 0.5617021276595745
+      }
+    ],
+    "Kesalahan Skor Rendah": [
+      {
+        "pilihan": "A",
+        "fold": 1,
+        "trait": "isi",
+        "jumlah label 1": 3,
+        "1 benar": 0,
+        "1 salah jadi 2": 3,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "A",
+        "fold": 1,
+        "trait": "organisasi",
+        "jumlah label 1": 26,
+        "1 benar": 6,
+        "1 salah jadi 2": 20,
+        "2 salah jadi 1": 5
+      },
+      {
+        "pilihan": "A",
+        "fold": 1,
+        "trait": "kebahasaan",
+        "jumlah label 1": 35,
+        "1 benar": 15,
+        "1 salah jadi 2": 20,
+        "2 salah jadi 1": 6
+      },
+      {
+        "pilihan": "A",
+        "fold": 1,
+        "trait": "mekanik",
+        "jumlah label 1": 33,
+        "1 benar": 17,
+        "1 salah jadi 2": 16,
+        "2 salah jadi 1": 7
+      },
+      {
+        "pilihan": "B",
+        "fold": 1,
+        "trait": "isi",
+        "jumlah label 1": 3,
+        "1 benar": 0,
+        "1 salah jadi 2": 3,
+        "2 salah jadi 1": 1
+      },
+      {
+        "pilihan": "B",
+        "fold": 1,
+        "trait": "organisasi",
+        "jumlah label 1": 26,
+        "1 benar": 9,
+        "1 salah jadi 2": 17,
+        "2 salah jadi 1": 4
+      },
+      {
+        "pilihan": "B",
+        "fold": 1,
+        "trait": "kebahasaan",
+        "jumlah label 1": 35,
+        "1 benar": 14,
+        "1 salah jadi 2": 21,
+        "2 salah jadi 1": 6
+      },
+      {
+        "pilihan": "B",
+        "fold": 1,
+        "trait": "mekanik",
+        "jumlah label 1": 33,
+        "1 benar": 16,
+        "1 salah jadi 2": 17,
+        "2 salah jadi 1": 6
+      },
+      {
+        "pilihan": "A",
+        "fold": 2,
+        "trait": "isi",
+        "jumlah label 1": 5,
+        "1 benar": 0,
+        "1 salah jadi 2": 5,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "A",
+        "fold": 2,
+        "trait": "organisasi",
+        "jumlah label 1": 35,
+        "1 benar": 17,
+        "1 salah jadi 2": 18,
+        "2 salah jadi 1": 11
+      },
+      {
+        "pilihan": "A",
+        "fold": 2,
+        "trait": "kebahasaan",
+        "jumlah label 1": 52,
+        "1 benar": 26,
+        "1 salah jadi 2": 26,
+        "2 salah jadi 1": 15
+      },
+      {
+        "pilihan": "A",
+        "fold": 2,
+        "trait": "mekanik",
+        "jumlah label 1": 51,
+        "1 benar": 30,
+        "1 salah jadi 2": 21,
+        "2 salah jadi 1": 17
+      },
+      {
+        "pilihan": "B",
+        "fold": 2,
+        "trait": "isi",
+        "jumlah label 1": 5,
+        "1 benar": 0,
+        "1 salah jadi 2": 5,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "B",
+        "fold": 2,
+        "trait": "organisasi",
+        "jumlah label 1": 35,
+        "1 benar": 17,
+        "1 salah jadi 2": 18,
+        "2 salah jadi 1": 11
+      },
+      {
+        "pilihan": "B",
+        "fold": 2,
+        "trait": "kebahasaan",
+        "jumlah label 1": 52,
+        "1 benar": 26,
+        "1 salah jadi 2": 26,
+        "2 salah jadi 1": 15
+      },
+      {
+        "pilihan": "B",
+        "fold": 2,
+        "trait": "mekanik",
+        "jumlah label 1": 51,
+        "1 benar": 30,
+        "1 salah jadi 2": 21,
+        "2 salah jadi 1": 17
+      },
+      {
+        "pilihan": "A",
+        "fold": 3,
+        "trait": "isi",
+        "jumlah label 1": 1,
+        "1 benar": 0,
+        "1 salah jadi 2": 1,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "A",
+        "fold": 3,
+        "trait": "organisasi",
+        "jumlah label 1": 31,
+        "1 benar": 18,
+        "1 salah jadi 2": 13,
+        "2 salah jadi 1": 20
+      },
+      {
+        "pilihan": "A",
+        "fold": 3,
+        "trait": "kebahasaan",
+        "jumlah label 1": 40,
+        "1 benar": 21,
+        "1 salah jadi 2": 19,
+        "2 salah jadi 1": 25
+      },
+      {
+        "pilihan": "A",
+        "fold": 3,
+        "trait": "mekanik",
+        "jumlah label 1": 52,
+        "1 benar": 31,
+        "1 salah jadi 2": 21,
+        "2 salah jadi 1": 9
+      },
+      {
+        "pilihan": "B",
+        "fold": 3,
+        "trait": "isi",
+        "jumlah label 1": 1,
+        "1 benar": 0,
+        "1 salah jadi 2": 1,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "B",
+        "fold": 3,
+        "trait": "organisasi",
+        "jumlah label 1": 31,
+        "1 benar": 15,
+        "1 salah jadi 2": 16,
+        "2 salah jadi 1": 16
+      },
+      {
+        "pilihan": "B",
+        "fold": 3,
+        "trait": "kebahasaan",
+        "jumlah label 1": 40,
+        "1 benar": 28,
+        "1 salah jadi 2": 12,
+        "2 salah jadi 1": 22
+      },
+      {
+        "pilihan": "B",
+        "fold": 3,
+        "trait": "mekanik",
+        "jumlah label 1": 52,
+        "1 benar": 37,
+        "1 salah jadi 2": 15,
+        "2 salah jadi 1": 12
+      },
+      {
+        "pilihan": "A",
+        "fold": 4,
+        "trait": "isi",
+        "jumlah label 1": 3,
+        "1 benar": 0,
+        "1 salah jadi 2": 2,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "A",
+        "fold": 4,
+        "trait": "organisasi",
+        "jumlah label 1": 30,
+        "1 benar": 15,
+        "1 salah jadi 2": 15,
+        "2 salah jadi 1": 22
+      },
+      {
+        "pilihan": "A",
+        "fold": 4,
+        "trait": "kebahasaan",
+        "jumlah label 1": 49,
+        "1 benar": 27,
+        "1 salah jadi 2": 22,
+        "2 salah jadi 1": 20
+      },
+      {
+        "pilihan": "A",
+        "fold": 4,
+        "trait": "mekanik",
+        "jumlah label 1": 50,
+        "1 benar": 27,
+        "1 salah jadi 2": 23,
+        "2 salah jadi 1": 20
+      },
+      {
+        "pilihan": "B",
+        "fold": 4,
+        "trait": "isi",
+        "jumlah label 1": 3,
+        "1 benar": 1,
+        "1 salah jadi 2": 1,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "B",
+        "fold": 4,
+        "trait": "organisasi",
+        "jumlah label 1": 30,
+        "1 benar": 15,
+        "1 salah jadi 2": 15,
+        "2 salah jadi 1": 29
+      },
+      {
+        "pilihan": "B",
+        "fold": 4,
+        "trait": "kebahasaan",
+        "jumlah label 1": 49,
+        "1 benar": 23,
+        "1 salah jadi 2": 26,
+        "2 salah jadi 1": 14
+      },
+      {
+        "pilihan": "B",
+        "fold": 4,
+        "trait": "mekanik",
+        "jumlah label 1": 50,
+        "1 benar": 32,
+        "1 salah jadi 2": 18,
+        "2 salah jadi 1": 23
+      },
+      {
+        "pilihan": "A",
+        "fold": 5,
+        "trait": "isi",
+        "jumlah label 1": 5,
+        "1 benar": 0,
+        "1 salah jadi 2": 4,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "A",
+        "fold": 5,
+        "trait": "organisasi",
+        "jumlah label 1": 36,
+        "1 benar": 10,
+        "1 salah jadi 2": 26,
+        "2 salah jadi 1": 3
+      },
+      {
+        "pilihan": "A",
+        "fold": 5,
+        "trait": "kebahasaan",
+        "jumlah label 1": 50,
+        "1 benar": 24,
+        "1 salah jadi 2": 26,
+        "2 salah jadi 1": 7
+      },
+      {
+        "pilihan": "A",
+        "fold": 5,
+        "trait": "mekanik",
+        "jumlah label 1": 49,
+        "1 benar": 27,
+        "1 salah jadi 2": 22,
+        "2 salah jadi 1": 10
+      },
+      {
+        "pilihan": "B",
+        "fold": 5,
+        "trait": "isi",
+        "jumlah label 1": 5,
+        "1 benar": 0,
+        "1 salah jadi 2": 5,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "B",
+        "fold": 5,
+        "trait": "organisasi",
+        "jumlah label 1": 36,
+        "1 benar": 24,
+        "1 salah jadi 2": 12,
+        "2 salah jadi 1": 11
+      },
+      {
+        "pilihan": "B",
+        "fold": 5,
+        "trait": "kebahasaan",
+        "jumlah label 1": 50,
+        "1 benar": 25,
+        "1 salah jadi 2": 25,
+        "2 salah jadi 1": 7
+      },
+      {
+        "pilihan": "B",
+        "fold": 5,
+        "trait": "mekanik",
+        "jumlah label 1": 49,
+        "1 benar": 34,
+        "1 salah jadi 2": 15,
+        "2 salah jadi 1": 9
+      }
+    ],
+    "Kesalahan Skor Rendah OOF": [
+      {
+        "pilihan": "A",
+        "trait": "isi",
+        "jumlah label 1": 17,
+        "1 benar": 0,
+        "1 salah jadi 2": 15,
+        "2 salah jadi 1": 0
+      },
+      {
+        "pilihan": "A",
+        "trait": "organisasi",
+        "jumlah label 1": 158,
+        "1 benar": 66,
+        "1 salah jadi 2": 92,
+        "2 salah jadi 1": 61
+      },
+      {
+        "pilihan": "A",
+        "trait": "kebahasaan",
+        "jumlah label 1": 226,
+        "1 benar": 113,
+        "1 salah jadi 2": 113,
+        "2 salah jadi 1": 73
+      },
+      {
+        "pilihan": "A",
+        "trait": "mekanik",
+        "jumlah label 1": 235,
+        "1 benar": 132,
+        "1 salah jadi 2": 103,
+        "2 salah jadi 1": 63
+      },
+      {
+        "pilihan": "B",
+        "trait": "isi",
+        "jumlah label 1": 17,
+        "1 benar": 1,
+        "1 salah jadi 2": 15,
+        "2 salah jadi 1": 1
+      },
+      {
+        "pilihan": "B",
+        "trait": "organisasi",
+        "jumlah label 1": 158,
+        "1 benar": 80,
+        "1 salah jadi 2": 78,
+        "2 salah jadi 1": 71
+      },
+      {
+        "pilihan": "B",
+        "trait": "kebahasaan",
+        "jumlah label 1": 226,
+        "1 benar": 116,
+        "1 salah jadi 2": 110,
+        "2 salah jadi 1": 64
+      },
+      {
+        "pilihan": "B",
+        "trait": "mekanik",
+        "jumlah label 1": 235,
+        "1 benar": 149,
+        "1 salah jadi 2": 86,
+        "2 salah jadi 1": 67
+      }
+    ],
+    "Riwayat Training": [
+      {
+        "fold": 1,
+        "epoch": 1,
+        "train_mse_scaled": 0.2683995229718001,
+        "train_weighted_mse_scaled": 0.2691451095066527,
+        "train_relation_loss": 0.1893418903999469,
+        "train_total_loss": 0.2691451095066527,
+        "optimizer_steps": 107,
+        "active_lr_steps": 106,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 1,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.456017674355089
+      },
+      {
+        "fold": 1,
+        "epoch": 2,
+        "train_mse_scaled": 0.1226146147087874,
+        "train_weighted_mse_scaled": 0.1254311827663332,
+        "train_relation_loss": 0.1197043671941056,
+        "train_total_loss": 0.1254311827663332,
+        "optimizer_steps": 214,
+        "active_lr_steps": 213,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.441128422470722
+      },
+      {
+        "fold": 1,
+        "epoch": 3,
+        "train_mse_scaled": 0.1161193547214327,
+        "train_weighted_mse_scaled": 0.1184855264912852,
+        "train_relation_loss": 0.1133196230670985,
+        "train_total_loss": 0.1184855264912852,
+        "optimizer_steps": 321,
+        "active_lr_steps": 320,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 3,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4059014702300479
+      },
+      {
+        "fold": 1,
+        "epoch": 4,
+        "train_mse_scaled": 0.1061235903413035,
+        "train_weighted_mse_scaled": 0.1087171947311007,
+        "train_relation_loss": 0.1043303496215273,
+        "train_total_loss": 0.1087171947311007,
+        "optimizer_steps": 428,
+        "active_lr_steps": 427,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 3,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.4342388546512734
+      },
+      {
+        "fold": 1,
+        "epoch": 5,
+        "train_mse_scaled": 0.09590405297465622,
+        "train_weighted_mse_scaled": 0.09797077928313656,
+        "train_relation_loss": 0.1054119241018506,
+        "train_total_loss": 0.09797077928313656,
+        "optimizer_steps": 535,
+        "active_lr_steps": 534,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 3,
+        "epochs_without_improvement": 2,
+        "validation_RMSE": 0.4318767813234951
+      },
+      {
+        "fold": 1,
+        "epoch": 6,
+        "train_mse_scaled": 0.08782946544233709,
+        "train_weighted_mse_scaled": 0.0897865872778108,
+        "train_relation_loss": 0.1006783100217581,
+        "train_total_loss": 0.0897865872778108,
+        "optimizer_steps": 642,
+        "active_lr_steps": 641,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 3,
+        "epochs_without_improvement": 3,
+        "validation_RMSE": 0.4087299187589735
+      },
+      {
+        "fold": 1,
+        "epoch": 7,
+        "train_mse_scaled": 0.07975857087191851,
+        "train_weighted_mse_scaled": 0.08154060744050452,
+        "train_relation_loss": 0.09982072424910525,
+        "train_total_loss": 0.08154060744050452,
+        "optimizer_steps": 749,
+        "active_lr_steps": 748,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 3,
+        "epochs_without_improvement": 4,
+        "validation_RMSE": 0.4167512618900062
+      },
+      {
+        "fold": 1,
+        "epoch": 8,
+        "train_mse_scaled": 0.07566136172342607,
+        "train_weighted_mse_scaled": 0.07734263178056983,
+        "train_relation_loss": 0.09537813247455394,
+        "train_total_loss": 0.07734263178056983,
+        "optimizer_steps": 856,
+        "active_lr_steps": 855,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 3,
+        "epochs_without_improvement": 5,
+        "validation_RMSE": 0.4157911255759001
+      },
+      {
+        "fold": 2,
+        "epoch": 1,
+        "train_mse_scaled": 0.2453900513146073,
+        "train_weighted_mse_scaled": 0.2471603287141496,
+        "train_relation_loss": 0.1562878074365504,
+        "train_total_loss": 0.2471603287141496,
+        "optimizer_steps": 107,
+        "active_lr_steps": 106,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 1,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.5035293717746513
+      },
+      {
+        "fold": 2,
+        "epoch": 2,
+        "train_mse_scaled": 0.1251361273809829,
+        "train_weighted_mse_scaled": 0.1278818278090672,
+        "train_relation_loss": 0.1237651774462532,
+        "train_total_loss": 0.1278818278090672,
+        "optimizer_steps": 214,
+        "active_lr_steps": 213,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4716733937284702
+      },
+      {
+        "fold": 2,
+        "epoch": 3,
+        "train_mse_scaled": 0.1106245073144708,
+        "train_weighted_mse_scaled": 0.1128648175010184,
+        "train_relation_loss": 0.1293212341955479,
+        "train_total_loss": 0.1128648175010184,
+        "optimizer_steps": 321,
+        "active_lr_steps": 320,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.4969595083701319
+      },
+      {
+        "fold": 2,
+        "epoch": 4,
+        "train_mse_scaled": 0.1030671200183604,
+        "train_weighted_mse_scaled": 0.1052954778645653,
+        "train_relation_loss": 0.1131671276798143,
+        "train_total_loss": 0.1052954778645653,
+        "optimizer_steps": 428,
+        "active_lr_steps": 427,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.445101759808225
+      },
+      {
+        "fold": 2,
+        "epoch": 5,
+        "train_mse_scaled": 0.09090746800100212,
+        "train_weighted_mse_scaled": 0.09307731170611291,
+        "train_relation_loss": 0.1080039063326138,
+        "train_total_loss": 0.09307731170611291,
+        "optimizer_steps": 535,
+        "active_lr_steps": 534,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 5,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4322143156722578
+      },
+      {
+        "fold": 2,
+        "epoch": 6,
+        "train_mse_scaled": 0.08551150972790578,
+        "train_weighted_mse_scaled": 0.08754193384529037,
+        "train_relation_loss": 0.1038354650120634,
+        "train_total_loss": 0.08754193384529037,
+        "optimizer_steps": 642,
+        "active_lr_steps": 641,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 5,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.4425491103901566
+      },
+      {
+        "fold": 2,
+        "epoch": 7,
+        "train_mse_scaled": 0.07806161113768159,
+        "train_weighted_mse_scaled": 0.08004854571019464,
+        "train_relation_loss": 0.09597501228837406,
+        "train_total_loss": 0.08004854571019464,
+        "optimizer_steps": 749,
+        "active_lr_steps": 748,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 5,
+        "epochs_without_improvement": 2,
+        "validation_RMSE": 0.4711723856664799
+      },
+      {
+        "fold": 2,
+        "epoch": 8,
+        "train_mse_scaled": 0.0745552208929268,
+        "train_weighted_mse_scaled": 0.07638039425707094,
+        "train_relation_loss": 0.09422271816059948,
+        "train_total_loss": 0.07638039425707094,
+        "optimizer_steps": 856,
+        "active_lr_steps": 855,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 5,
+        "epochs_without_improvement": 3,
+        "validation_RMSE": 0.454290656753682
+      },
+      {
+        "fold": 2,
+        "epoch": 9,
+        "train_mse_scaled": 0.06751567023066694,
+        "train_weighted_mse_scaled": 0.06914623124675606,
+        "train_relation_loss": 0.09040525001665468,
+        "train_total_loss": 0.06914623124675606,
+        "optimizer_steps": 963,
+        "active_lr_steps": 962,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 5,
+        "epochs_without_improvement": 4,
+        "validation_RMSE": 0.4506847781073392
+      },
+      {
+        "fold": 2,
+        "epoch": 10,
+        "train_mse_scaled": 0.06338521653464448,
+        "train_weighted_mse_scaled": 0.06490493211960283,
+        "train_relation_loss": 0.08906427128678736,
+        "train_total_loss": 0.06490493211960283,
+        "optimizer_steps": 1070,
+        "active_lr_steps": 1069,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 5,
+        "epochs_without_improvement": 5,
+        "validation_RMSE": 0.4464006735035363
+      },
+      {
+        "fold": 3,
+        "epoch": 1,
+        "train_mse_scaled": 0.4457330653931252,
+        "train_weighted_mse_scaled": 0.4458363153627901,
+        "train_relation_loss": 0.1421067940331129,
+        "train_total_loss": 0.4458363153627901,
+        "optimizer_steps": 108,
+        "active_lr_steps": 107,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 1,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.491284493097509
+      },
+      {
+        "fold": 3,
+        "epoch": 2,
+        "train_mse_scaled": 0.1250920206064705,
+        "train_weighted_mse_scaled": 0.1280265778253737,
+        "train_relation_loss": 0.1126065265300662,
+        "train_total_loss": 0.1280265778253737,
+        "optimizer_steps": 216,
+        "active_lr_steps": 215,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4729696293775796
+      },
+      {
+        "fold": 3,
+        "epoch": 3,
+        "train_mse_scaled": 0.1153158241637907,
+        "train_weighted_mse_scaled": 0.117652778324487,
+        "train_relation_loss": 0.1130542075088204,
+        "train_total_loss": 0.117652778324487,
+        "optimizer_steps": 324,
+        "active_lr_steps": 323,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.5027047478689005
+      },
+      {
+        "fold": 3,
+        "epoch": 4,
+        "train_mse_scaled": 0.1025921303378202,
+        "train_weighted_mse_scaled": 0.1050048114097715,
+        "train_relation_loss": 0.1111285742296469,
+        "train_total_loss": 0.1050048114097715,
+        "optimizer_steps": 432,
+        "active_lr_steps": 431,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.3977480364940619
+      },
+      {
+        "fold": 3,
+        "epoch": 5,
+        "train_mse_scaled": 0.0943501363769661,
+        "train_weighted_mse_scaled": 0.09644539724794476,
+        "train_relation_loss": 0.1030204783501049,
+        "train_total_loss": 0.09644539724794476,
+        "optimizer_steps": 540,
+        "active_lr_steps": 539,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.4006268957667238
+      },
+      {
+        "fold": 3,
+        "epoch": 6,
+        "train_mse_scaled": 0.08800816025130104,
+        "train_weighted_mse_scaled": 0.09006985386218984,
+        "train_relation_loss": 0.09420184916491772,
+        "train_total_loss": 0.09006985386218984,
+        "optimizer_steps": 648,
+        "active_lr_steps": 647,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.3897852307781974
+      },
+      {
+        "fold": 3,
+        "epoch": 7,
+        "train_mse_scaled": 0.08227736301947558,
+        "train_weighted_mse_scaled": 0.08396895400310736,
+        "train_relation_loss": 0.09394412054463701,
+        "train_total_loss": 0.08396895400310736,
+        "optimizer_steps": 756,
+        "active_lr_steps": 755,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.4006054676292166
+      },
+      {
+        "fold": 3,
+        "epoch": 8,
+        "train_mse_scaled": 0.07623663150561909,
+        "train_weighted_mse_scaled": 0.07802908466863216,
+        "train_relation_loss": 0.09057326192512762,
+        "train_total_loss": 0.07802908466863216,
+        "optimizer_steps": 864,
+        "active_lr_steps": 863,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 2,
+        "validation_RMSE": 0.4092133141410383
+      },
+      {
+        "fold": 3,
+        "epoch": 9,
+        "train_mse_scaled": 0.06933917592027154,
+        "train_weighted_mse_scaled": 0.07076846066819027,
+        "train_relation_loss": 0.08334379949834371,
+        "train_total_loss": 0.07076846066819027,
+        "optimizer_steps": 972,
+        "active_lr_steps": 971,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 3,
+        "validation_RMSE": 0.4168187874486549
+      },
+      {
+        "fold": 3,
+        "epoch": 10,
+        "train_mse_scaled": 0.06537367794919911,
+        "train_weighted_mse_scaled": 0.06696713055486704,
+        "train_relation_loss": 0.08071758314144126,
+        "train_total_loss": 0.06696713055486704,
+        "optimizer_steps": 1080,
+        "active_lr_steps": 1079,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 4,
+        "validation_RMSE": 0.4509459356492653
+      },
+      {
+        "fold": 3,
+        "epoch": 11,
+        "train_mse_scaled": 0.06082287868945101,
+        "train_weighted_mse_scaled": 0.06214643865048772,
+        "train_relation_loss": 0.07626347720303552,
+        "train_total_loss": 0.06214643865048772,
+        "optimizer_steps": 1188,
+        "active_lr_steps": 1187,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 5,
+        "validation_RMSE": 0.4098079687980234
+      },
+      {
+        "fold": 4,
+        "epoch": 1,
+        "train_mse_scaled": 0.2877450089111144,
+        "train_weighted_mse_scaled": 0.2889611715158491,
+        "train_relation_loss": 0.1345711932701687,
+        "train_total_loss": 0.2889611715158491,
+        "optimizer_steps": 108,
+        "active_lr_steps": 107,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 1,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.5121659363183381
+      },
+      {
+        "fold": 4,
+        "epoch": 2,
+        "train_mse_scaled": 0.1122079249260254,
+        "train_weighted_mse_scaled": 0.1149043347481449,
+        "train_relation_loss": 0.111381287699522,
+        "train_total_loss": 0.1149043347481449,
+        "optimizer_steps": 216,
+        "active_lr_steps": 215,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.5010627790389917
+      },
+      {
+        "fold": 4,
+        "epoch": 3,
+        "train_mse_scaled": 0.1072879882366938,
+        "train_weighted_mse_scaled": 0.1096158235984974,
+        "train_relation_loss": 0.1093130770226031,
+        "train_total_loss": 0.1096158235984974,
+        "optimizer_steps": 324,
+        "active_lr_steps": 323,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.5237594065773737
+      },
+      {
+        "fold": 4,
+        "epoch": 4,
+        "train_mse_scaled": 0.09748384248746862,
+        "train_weighted_mse_scaled": 0.09941846092453573,
+        "train_relation_loss": 0.1018592990176796,
+        "train_total_loss": 0.09941846092453573,
+        "optimizer_steps": 432,
+        "active_lr_steps": 431,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4610352657552869
+      },
+      {
+        "fold": 4,
+        "epoch": 5,
+        "train_mse_scaled": 0.08846796387166928,
+        "train_weighted_mse_scaled": 0.09033448056106017,
+        "train_relation_loss": 0.09900080713275604,
+        "train_total_loss": 0.09033448056106017,
+        "optimizer_steps": 540,
+        "active_lr_steps": 539,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.4785395821588139
+      },
+      {
+        "fold": 4,
+        "epoch": 6,
+        "train_mse_scaled": 0.08392330309007923,
+        "train_weighted_mse_scaled": 0.08579141027497149,
+        "train_relation_loss": 0.09643644616549271,
+        "train_total_loss": 0.08579141027497149,
+        "optimizer_steps": 648,
+        "active_lr_steps": 647,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 2,
+        "validation_RMSE": 0.4731274773823055
+      },
+      {
+        "fold": 4,
+        "epoch": 7,
+        "train_mse_scaled": 0.07601009356426508,
+        "train_weighted_mse_scaled": 0.07760411752949653,
+        "train_relation_loss": 0.09234287545279882,
+        "train_total_loss": 0.07760411752949653,
+        "optimizer_steps": 756,
+        "active_lr_steps": 755,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 3,
+        "validation_RMSE": 0.4654239911817385
+      },
+      {
+        "fold": 4,
+        "epoch": 8,
+        "train_mse_scaled": 0.07136502508855788,
+        "train_weighted_mse_scaled": 0.07293868723686184,
+        "train_relation_loss": 0.08736774885463854,
+        "train_total_loss": 0.07293868723686184,
+        "optimizer_steps": 864,
+        "active_lr_steps": 863,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 4,
+        "validation_RMSE": 0.497601296719142
+      },
+      {
+        "fold": 4,
+        "epoch": 9,
+        "train_mse_scaled": 0.06465096187021117,
+        "train_weighted_mse_scaled": 0.06615149598337877,
+        "train_relation_loss": 0.08694852454605415,
+        "train_total_loss": 0.06615149598337877,
+        "optimizer_steps": 972,
+        "active_lr_steps": 971,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 5,
+        "validation_RMSE": 0.4847468133275196
+      },
+      {
+        "fold": 5,
+        "epoch": 1,
+        "train_mse_scaled": 0.2847455071848493,
+        "train_weighted_mse_scaled": 0.2869663618380464,
+        "train_relation_loss": 0.1344212989247036,
+        "train_total_loss": 0.2869663618380464,
+        "optimizer_steps": 108,
+        "active_lr_steps": 107,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 1,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4902017366871069
+      },
+      {
+        "fold": 5,
+        "epoch": 2,
+        "train_mse_scaled": 0.1220291247063446,
+        "train_weighted_mse_scaled": 0.1252603472133308,
+        "train_relation_loss": 0.1276011988174084,
+        "train_total_loss": 0.1252603472133308,
+        "optimizer_steps": 216,
+        "active_lr_steps": 215,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4668428891770229
+      },
+      {
+        "fold": 5,
+        "epoch": 3,
+        "train_mse_scaled": 0.1133625204122604,
+        "train_weighted_mse_scaled": 0.1160358986413908,
+        "train_relation_loss": 0.115120479949685,
+        "train_total_loss": 0.1160358986413908,
+        "optimizer_steps": 324,
+        "active_lr_steps": 323,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 2,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.4766925854761588
+      },
+      {
+        "fold": 5,
+        "epoch": 4,
+        "train_mse_scaled": 0.1022154551086038,
+        "train_weighted_mse_scaled": 0.1042839791359066,
+        "train_relation_loss": 0.1197878900720456,
+        "train_total_loss": 0.1042839791359066,
+        "optimizer_steps": 432,
+        "active_lr_steps": 431,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4310490621416269
+      },
+      {
+        "fold": 5,
+        "epoch": 5,
+        "train_mse_scaled": 0.09416350571758135,
+        "train_weighted_mse_scaled": 0.09660489928859914,
+        "train_relation_loss": 0.1083804849448592,
+        "train_total_loss": 0.09660489928859914,
+        "optimizer_steps": 540,
+        "active_lr_steps": 539,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 4,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.4536010910511701
+      },
+      {
+        "fold": 5,
+        "epoch": 6,
+        "train_mse_scaled": 0.08894353970468348,
+        "train_weighted_mse_scaled": 0.09101731719643413,
+        "train_relation_loss": 0.102690013816721,
+        "train_total_loss": 0.09101731719643413,
+        "optimizer_steps": 648,
+        "active_lr_steps": 647,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 0,
+        "validation_RMSE": 0.4233355785687746
+      },
+      {
+        "fold": 5,
+        "epoch": 7,
+        "train_mse_scaled": 0.08116796934113535,
+        "train_weighted_mse_scaled": 0.08318688045215229,
+        "train_relation_loss": 0.09990893700078866,
+        "train_total_loss": 0.08318688045215229,
+        "optimizer_steps": 756,
+        "active_lr_steps": 755,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 1,
+        "validation_RMSE": 0.438864620905103
+      },
+      {
+        "fold": 5,
+        "epoch": 8,
+        "train_mse_scaled": 0.07644131419825541,
+        "train_weighted_mse_scaled": 0.07827499259282228,
+        "train_relation_loss": 0.09455321548983109,
+        "train_total_loss": 0.07827499259282228,
+        "optimizer_steps": 864,
+        "active_lr_steps": 863,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 2,
+        "validation_RMSE": 0.4297871285944697
+      },
+      {
+        "fold": 5,
+        "epoch": 9,
+        "train_mse_scaled": 0.07150232669258447,
+        "train_weighted_mse_scaled": 0.07335837150816968,
+        "train_relation_loss": 0.08895375768025947,
+        "train_total_loss": 0.07335837150816968,
+        "optimizer_steps": 972,
+        "active_lr_steps": 971,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 3,
+        "validation_RMSE": 0.4303380162278121
+      },
+      {
+        "fold": 5,
+        "epoch": 10,
+        "train_mse_scaled": 0.06542847138385527,
+        "train_weighted_mse_scaled": 0.06693278401805802,
+        "train_relation_loss": 0.08943205531063858,
+        "train_total_loss": 0.06693278401805802,
+        "optimizer_steps": 1080,
+        "active_lr_steps": 1079,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 4,
+        "validation_RMSE": 0.4456428039747546
+      },
+      {
+        "fold": 5,
+        "epoch": 11,
+        "train_mse_scaled": 0.06153205514108481,
+        "train_weighted_mse_scaled": 0.06317233021511848,
+        "train_relation_loss": 0.08301521443334127,
+        "train_total_loss": 0.06317233021511848,
+        "optimizer_steps": 1188,
+        "active_lr_steps": 1187,
+        "amp_skipped_steps": 0,
+        "best_epoch_so_far": 6,
+        "epochs_without_improvement": 5,
+        "validation_RMSE": 0.4474218968089502
+      }
+    ],
+    "Metrik Validasi per Epoch": [
+      {
+        "fold": 1,
+        "epoch": 1,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6659442850623839,
+        "Pearson": 0.4843227050902301,
+        "QWK": 0.3220338983050847,
+        "Gwet AC2": 0.8505891028829169,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch": 1,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.326071713509528,
+        "Pearson": 0.3466121912030483,
+        "QWK": -0.008831521739130377,
+        "Gwet AC2": 0.861294352531845,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch": 1,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3985844929792036,
+        "Pearson": 0.3424651144975766,
+        "QWK": 0.3411764705882353,
+        "Gwet AC2": 0.8434084091717932,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch": 1,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3509050100741193,
+        "Pearson": 0.425121808374548,
+        "QWK": 0.3640350877192983,
+        "Gwet AC2": 0.8342017385428984,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch": 2,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.684393229310131,
+        "Pearson": 0.5419775434289773,
+        "QWK": 0.4287268770402611,
+        "Gwet AC2": 0.9029712091915526,
+        "proporsi_di_luar_skala": 0.3954545454545454
+      },
+      {
+        "fold": 1,
+        "epoch": 2,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.299072032250864,
+        "Pearson": 0.3971012644451686,
+        "QWK": 0.1281373844121532,
+        "Gwet AC2": 0.8761493713642334,
+        "proporsi_di_luar_skala": 0.2954545454545455
+      },
+      {
+        "fold": 1,
+        "epoch": 2,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3394706571836876,
+        "Pearson": 0.3873626330479774,
+        "QWK": 0.0822085889570553,
+        "Gwet AC2": 0.8164957558510377,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch": 2,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3244975201093147,
+        "Pearson": 0.5055018002235184,
+        "QWK": 0.08831908831908819,
+        "Gwet AC2": 0.8288270764442714,
+        "proporsi_di_luar_skala": 0.4
+      },
+      {
+        "fold": 1,
+        "epoch": 3,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6039917427271102,
+        "Pearson": 0.5641108205444079,
+        "QWK": 0.489744872436218,
+        "Gwet AC2": 0.9011556798043084,
+        "proporsi_di_luar_skala": 0.05454545454545454
+      },
+      {
+        "fold": 1,
+        "epoch": 3,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3129601943146238,
+        "Pearson": 0.4273367021330341,
+        "QWK": 0.2732558139534883,
+        "Gwet AC2": 0.8656718240545128,
+        "proporsi_di_luar_skala": 0.6863636363636364
+      },
+      {
+        "fold": 1,
+        "epoch": 3,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3276907068988055,
+        "Pearson": 0.4749897205787325,
+        "QWK": 0.4728110599078341,
+        "Gwet AC2": 0.8480662983425414,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch": 3,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.2981487988301147,
+        "Pearson": 0.5599420556641653,
+        "QWK": 0.5381526104417671,
+        "Gwet AC2": 0.8650108711600796,
+        "proporsi_di_luar_skala": 0.2
+      },
+      {
+        "fold": 1,
+        "epoch": 4,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6773069148291404,
+        "Pearson": 0.5688486655016074,
+        "QWK": 0.2624939349830179,
+        "Gwet AC2": 0.8346529888384179,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch": 4,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3007762004323306,
+        "Pearson": 0.4558085070608637,
+        "QWK": 0.3041497975708503,
+        "Gwet AC2": 0.8644669237688052,
+        "proporsi_di_luar_skala": 0.01818181818181818
+      },
+      {
+        "fold": 1,
+        "epoch": 4,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3385284566907291,
+        "Pearson": 0.4724692952433294,
+        "QWK": 0.4728110599078341,
+        "Gwet AC2": 0.8480662983425414,
+        "proporsi_di_luar_skala": 0.4454545454545454
+      },
+      {
+        "fold": 1,
+        "epoch": 4,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3007341615848024,
+        "Pearson": 0.5677164329840354,
+        "QWK": 0.524793388429752,
+        "Gwet AC2": 0.8661818181818183,
+        "proporsi_di_luar_skala": 0.3818181818181818
+      },
+      {
+        "fold": 1,
+        "epoch": 5,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6916392225750299,
+        "Pearson": 0.5676716808987899,
+        "QWK": 0.4328824141519251,
+        "Gwet AC2": 0.9013470502164633,
+        "proporsi_di_luar_skala": 0.4227272727272727
+      },
+      {
+        "fold": 1,
+        "epoch": 5,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.2825508638486626,
+        "Pearson": 0.4943483599618643,
+        "QWK": 0.3743536711478801,
+        "Gwet AC2": 0.8812619596683186,
+        "proporsi_di_luar_skala": 0.1227272727272727
+      },
+      {
+        "fold": 1,
+        "epoch": 5,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3183328503786635,
+        "Pearson": 0.4926191766741489,
+        "QWK": 0.471153846153846,
+        "Gwet AC2": 0.855811453813787,
+        "proporsi_di_luar_skala": 0.004545454545454545
+      },
+      {
+        "fold": 1,
+        "epoch": 5,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.2941676537101698,
+        "Pearson": 0.5741246638541323,
+        "QWK": 0.4968553459119497,
+        "Gwet AC2": 0.8609721417662857,
+        "proporsi_di_luar_skala": 0.05
+      },
+      {
+        "fold": 1,
+        "epoch": 6,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6063200770518159,
+        "Pearson": 0.573394585833651,
+        "QWK": 0.4382566585956417,
+        "Gwet AC2": 0.865849192484331,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 1,
+        "epoch": 6,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3184772495730654,
+        "Pearson": 0.4686479956700335,
+        "QWK": 0.3174767321613237,
+        "Gwet AC2": 0.8704675923654384,
+        "proporsi_di_luar_skala": 0.7181818181818181
+      },
+      {
+        "fold": 1,
+        "epoch": 6,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3222866033445062,
+        "Pearson": 0.4815875334824983,
+        "QWK": 0.4448598130841122,
+        "Gwet AC2": 0.8429090909090909,
+        "proporsi_di_luar_skala": 0.05
+      },
+      {
+        "fold": 1,
+        "epoch": 6,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3087395940396769,
+        "Pearson": 0.561240468502642,
+        "QWK": 0.5381526104417671,
+        "Gwet AC2": 0.8650108711600796,
+        "proporsi_di_luar_skala": 0.4772727272727273
+      },
+      {
+        "fold": 1,
+        "epoch": 7,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6241395599690904,
+        "Pearson": 0.541399063448383,
+        "QWK": 0.4820909970958374,
+        "Gwet AC2": 0.8780300348016824,
+        "proporsi_di_luar_skala": 0.004545454545454545
+      },
+      {
+        "fold": 1,
+        "epoch": 7,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3011424823029886,
+        "Pearson": 0.4806172745301857,
+        "QWK": 0.400396432111001,
+        "Gwet AC2": 0.8801980198019802,
+        "proporsi_di_luar_skala": 0.03181818181818181
+      },
+      {
+        "fold": 1,
+        "epoch": 7,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3527497648805443,
+        "Pearson": 0.4887985364050296,
+        "QWK": 0.5,
+        "Gwet AC2": 0.8532726860435647,
+        "proporsi_di_luar_skala": 0.02727272727272727
+      },
+      {
+        "fold": 1,
+        "epoch": 7,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3000951108538011,
+        "Pearson": 0.5774720082673734,
+        "QWK": 0.5381526104417671,
+        "Gwet AC2": 0.8650108711600796,
+        "proporsi_di_luar_skala": 0.09090909090909091
+      },
+      {
+        "fold": 1,
+        "epoch": 8,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6294996541547333,
+        "Pearson": 0.5584941470606639,
+        "QWK": 0.5150915388421574,
+        "Gwet AC2": 0.9057533032971776,
+        "proporsi_di_luar_skala": 0.1772727272727273
+      },
+      {
+        "fold": 1,
+        "epoch": 8,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.294095492033957,
+        "Pearson": 0.4879933865982698,
+        "QWK": 0.4154858299595142,
+        "Gwet AC2": 0.8861522159657964,
+        "proporsi_di_luar_skala": 0.4090909090909091
+      },
+      {
+        "fold": 1,
+        "epoch": 8,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3403482766766032,
+        "Pearson": 0.4656539509969645,
+        "QWK": 0.4448598130841122,
+        "Gwet AC2": 0.8429090909090909,
+        "proporsi_di_luar_skala": 0.4318181818181818
+      },
+      {
+        "fold": 1,
+        "epoch": 8,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3048444160196113,
+        "Pearson": 0.5601553306490973,
+        "QWK": 0.524793388429752,
+        "Gwet AC2": 0.8661818181818183,
+        "proporsi_di_luar_skala": 0.1545454545454545
+      },
+      {
+        "fold": 2,
+        "epoch": 1,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.7573331373943305,
+        "Pearson": 0.5379233842311872,
+        "QWK": 0.3962627786157198,
+        "Gwet AC2": 0.8467355523529445,
+        "proporsi_di_luar_skala": 0.04090909090909091
+      },
+      {
+        "fold": 2,
+        "epoch": 1,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3424194567663795,
+        "Pearson": 0.4146839654847016,
+        "QWK": 0,
+        "Gwet AC2": 0.8136157337367624,
+        "proporsi_di_luar_skala": 0.09090909090909091
+      },
+      {
+        "fold": 2,
+        "epoch": 1,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.4092601112307517,
+        "Pearson": 0.2748358772907529,
+        "QWK": 0.05757368060315271,
+        "Gwet AC2": 0.710358628679762,
+        "proporsi_di_luar_skala": 0.00909090909090909
+      },
+      {
+        "fold": 2,
+        "epoch": 1,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.394802366946768,
+        "Pearson": 0.3537725631262884,
+        "QWK": 0.1043803940726267,
+        "Gwet AC2": 0.7027027027027026,
+        "proporsi_di_luar_skala": 0.04545454545454546
+      },
+      {
+        "fold": 2,
+        "epoch": 2,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6684382831119019,
+        "Pearson": 0.6292647553715072,
+        "QWK": 0.5161982407208754,
+        "Gwet AC2": 0.8495131143073763,
+        "proporsi_di_luar_skala": 0.02272727272727273
+      },
+      {
+        "fold": 2,
+        "epoch": 2,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3196465981521614,
+        "Pearson": 0.50923023103135,
+        "QWK": 0.2811881188118811,
+        "Gwet AC2": 0.8113330128246774,
+        "proporsi_di_luar_skala": 0.3818181818181818
+      },
+      {
+        "fold": 2,
+        "epoch": 2,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.4261933828355737,
+        "Pearson": 0.348860625336664,
+        "QWK": 0.1686046511627907,
+        "Gwet AC2": 0.6745562130177515,
+        "proporsi_di_luar_skala": 0.4090909090909091
+      },
+      {
+        "fold": 2,
+        "epoch": 2,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3990973262158786,
+        "Pearson": 0.4522570590751488,
+        "QWK": 0.4053339740509371,
+        "Gwet AC2": 0.6883313132585117,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 2,
+        "epoch": 3,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.7478588819105012,
+        "Pearson": 0.6223296283754505,
+        "QWK": 0.3857334098297954,
+        "Gwet AC2": 0.8326229012725245,
+        "proporsi_di_luar_skala": 0.09090909090909091
+      },
+      {
+        "fold": 2,
+        "epoch": 3,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3776829794964672,
+        "Pearson": 0.4632670313155635,
+        "QWK": -0.008917197452229075,
+        "Gwet AC2": 0.8074304609998054,
+        "proporsi_di_luar_skala": 0.7045454545454546
+      },
+      {
+        "fold": 2,
+        "epoch": 3,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3986033532067637,
+        "Pearson": 0.4374853148121284,
+        "QWK": 0.1674389867160953,
+        "Gwet AC2": 0.7023127373144632,
+        "proporsi_di_luar_skala": 0.3272727272727273
+      },
+      {
+        "fold": 2,
+        "epoch": 3,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3564450005211221,
+        "Pearson": 0.5627868068582234,
+        "QWK": 0.3687010078387458,
+        "Gwet AC2": 0.7379773126697556,
+        "proporsi_di_luar_skala": 0.2727272727272727
+      },
+      {
+        "fold": 2,
+        "epoch": 4,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6329474156725011,
+        "Pearson": 0.6609469039397238,
+        "QWK": 0.4838350499065496,
+        "Gwet AC2": 0.8540583691566195,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 2,
+        "epoch": 4,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3256220072930432,
+        "Pearson": 0.4771630464744979,
+        "QWK": 0.4757446808510638,
+        "Gwet AC2": 0.8320702251785617,
+        "proporsi_di_luar_skala": 0.05
+      },
+      {
+        "fold": 2,
+        "epoch": 4,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3876785109298893,
+        "Pearson": 0.4303204748970079,
+        "QWK": 0.3707093821510298,
+        "Gwet AC2": 0.6979911837830417,
+        "proporsi_di_luar_skala": 0.004545454545454545
+      },
+      {
+        "fold": 2,
+        "epoch": 4,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3681243755317629,
+        "Pearson": 0.5286166473393603,
+        "QWK": 0.5013718239293808,
+        "Gwet AC2": 0.7357941975854876,
+        "proporsi_di_luar_skala": 0.004545454545454545
+      },
+      {
+        "fold": 2,
+        "epoch": 5,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.598981283454134,
+        "Pearson": 0.6787377777760136,
+        "QWK": 0.6396618527650582,
+        "Gwet AC2": 0.8769473808717132,
+        "proporsi_di_luar_skala": 0.004545454545454545
+      },
+      {
+        "fold": 2,
+        "epoch": 5,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3222071830673872,
+        "Pearson": 0.5002058664181493,
+        "QWK": 0.4638655462184874,
+        "Gwet AC2": 0.8253227285794467,
+        "proporsi_di_luar_skala": 0.2909090909090909
+      },
+      {
+        "fold": 2,
+        "epoch": 5,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3807205902043975,
+        "Pearson": 0.4704094209597742,
+        "QWK": 0.4430723635465548,
+        "Gwet AC2": 0.7204357730632739,
+        "proporsi_di_luar_skala": 0.04090909090909091
+      },
+      {
+        "fold": 2,
+        "epoch": 5,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3737547914528795,
+        "Pearson": 0.5577450476231743,
+        "QWK": 0.5013718239293808,
+        "Gwet AC2": 0.7357941975854876,
+        "proporsi_di_luar_skala": 0.05909090909090909
+      },
+      {
+        "fold": 2,
+        "epoch": 6,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6159545395529867,
+        "Pearson": 0.6679657053731755,
+        "QWK": 0.5039044556729444,
+        "Gwet AC2": 0.868942160247995,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 2,
+        "epoch": 6,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3221541478787452,
+        "Pearson": 0.4932743955936374,
+        "QWK": 0.2482412060301509,
+        "Gwet AC2": 0.8064683053040104,
+        "proporsi_di_luar_skala": 0.3136363636363637
+      },
+      {
+        "fold": 2,
+        "epoch": 6,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3967181725265169,
+        "Pearson": 0.4262966679130478,
+        "QWK": 0.4148936170212766,
+        "Gwet AC2": 0.6964375313597593,
+        "proporsi_di_luar_skala": 0.04545454545454546
+      },
+      {
+        "fold": 2,
+        "epoch": 6,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3779289116014868,
+        "Pearson": 0.5210548323226523,
+        "QWK": 0.4695845697329377,
+        "Gwet AC2": 0.734073052426041,
+        "proporsi_di_luar_skala": 0.3954545454545454
+      },
+      {
+        "fold": 2,
+        "epoch": 7,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.668119993032089,
+        "Pearson": 0.6753898571591251,
+        "QWK": 0.6125201288244766,
+        "Gwet AC2": 0.8703798263875249,
+        "proporsi_di_luar_skala": 0.2227272727272727
+      },
+      {
+        "fold": 2,
+        "epoch": 7,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3483492554732419,
+        "Pearson": 0.492288857929653,
+        "QWK": 0.4382978723404255,
+        "Gwet AC2": 0.8200752412627447,
+        "proporsi_di_luar_skala": 0.6181818181818182
+      },
+      {
+        "fold": 2,
+        "epoch": 7,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.3956046213065062,
+        "Pearson": 0.4422052879501709,
+        "QWK": 0.3512064343163538,
+        "Gwet AC2": 0.7129470375422573,
+        "proporsi_di_luar_skala": 0.3227272727272728
+      },
+      {
+        "fold": 2,
+        "epoch": 7,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.4046963340352162,
+        "Pearson": 0.5085274336817464,
+        "QWK": 0.4267100977198697,
+        "Gwet AC2": 0.7347640002411238,
+        "proporsi_di_luar_skala": 0.6181818181818182
+      },
+      {
+        "fold": 2,
+        "epoch": 8,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6312307640533117,
+        "Pearson": 0.6869630663740378,
+        "QWK": 0.5409788059592224,
+        "Gwet AC2": 0.8604739139626226,
+        "proporsi_di_luar_skala": 0.02727272727272727
+      },
+      {
+        "fold": 2,
+        "epoch": 8,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3315294251091018,
+        "Pearson": 0.4607951376413412,
+        "QWK": 0.3964601769911504,
+        "Gwet AC2": 0.8164717912837557,
+        "proporsi_di_luar_skala": 0.00909090909090909
+      },
+      {
+        "fold": 2,
+        "epoch": 8,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.4037132105932895,
+        "Pearson": 0.3704935191684386,
+        "QWK": 0.3415802075019952,
+        "Gwet AC2": 0.7052211585701736,
+        "proporsi_di_luar_skala": 0.03636363636363636
+      },
+      {
+        "fold": 2,
+        "epoch": 8,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3926469274637537,
+        "Pearson": 0.4648863203861459,
+        "QWK": 0.4519865487607423,
+        "Gwet AC2": 0.7283279822178317,
+        "proporsi_di_luar_skala": 0.05
+      },
+      {
+        "fold": 2,
+        "epoch": 9,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6088452114969828,
+        "Pearson": 0.7014802090401439,
+        "QWK": 0.6155443283272198,
+        "Gwet AC2": 0.873428056590912,
+        "proporsi_di_luar_skala": 0.04090909090909091
+      },
+      {
+        "fold": 2,
+        "epoch": 9,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3221195995161184,
+        "Pearson": 0.4990073069113519,
+        "QWK": 0.4161137440758294,
+        "Gwet AC2": 0.8378008320606667,
+        "proporsi_di_luar_skala": 0.3318181818181818
+      },
+      {
+        "fold": 2,
+        "epoch": 9,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.4301850992570555,
+        "Pearson": 0.366266103837497,
+        "QWK": 0.1823899371069182,
+        "Gwet AC2": 0.6718113489012566,
+        "proporsi_di_luar_skala": 0.4590909090909091
+      },
+      {
+        "fold": 2,
+        "epoch": 9,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.3910937602322662,
+        "Pearson": 0.4977194476392676,
+        "QWK": 0.4716217924409051,
+        "Gwet AC2": 0.7439509954058193,
+        "proporsi_di_luar_skala": 0.4636363636363636
+      },
+      {
+        "fold": 2,
+        "epoch": 10,
+        "n": 220,
+        "trait": "isi",
+        "RMSE": 0.6197881910288501,
+        "Pearson": 0.67079118762619,
+        "QWK": 0.5963662272889205,
+        "Gwet AC2": 0.8693739827868806,
+        "proporsi_di_luar_skala": 0.01363636363636364
+      },
+      {
+        "fold": 2,
+        "epoch": 10,
+        "n": 220,
+        "trait": "organisasi",
+        "RMSE": 0.3293195840835408,
+        "Pearson": 0.4587646429048906,
+        "QWK": 0.3131707317073171,
+        "Gwet AC2": 0.816245562747964,
+        "proporsi_di_luar_skala": 0.2590909090909091
+      },
+      {
+        "fold": 2,
+        "epoch": 10,
+        "n": 220,
+        "trait": "kebahasaan",
+        "RMSE": 0.4048742997714428,
+        "Pearson": 0.3628507354394462,
+        "QWK": 0.2695074709463198,
+        "Gwet AC2": 0.6919666297182195,
+        "proporsi_di_luar_skala": 0.1045454545454545
+      },
+      {
+        "fold": 2,
+        "epoch": 10,
+        "n": 220,
+        "trait": "mekanik",
+        "RMSE": 0.374943004205248,
+        "Pearson": 0.4929105928266902,
+        "QWK": 0.4636211985114846,
+        "Gwet AC2": 0.7459893048128343,
+        "proporsi_di_luar_skala": 0.06818181818181818
+      },
+      {
+        "fold": 3,
+        "epoch": 1,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.7728196903994883,
+        "Pearson": 0.6722234831580797,
+        "QWK": 0.3278404163052905,
+        "Gwet AC2": 0.8079151167754134,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 3,
+        "epoch": 1,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3249346020223405,
+        "Pearson": 0.4130339292916689,
+        "QWK": 0,
+        "Gwet AC2": 0.8290014578216729,
+        "proporsi_di_luar_skala": 0.119047619047619
+      },
+      {
+        "fold": 3,
+        "epoch": 1,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3526472909294162,
+        "Pearson": 0.4901513012766578,
+        "QWK": 0,
+        "Gwet AC2": 0.7698630136986302,
+        "proporsi_di_luar_skala": 0.02380952380952381
+      },
+      {
+        "fold": 3,
+        "epoch": 1,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3718184118247392,
+        "Pearson": 0.6082584936926281,
+        "QWK": 0,
+        "Gwet AC2": 0.6837715741920537,
+        "proporsi_di_luar_skala": 0.004761904761904762
+      },
+      {
+        "fold": 3,
+        "epoch": 2,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.7475354657585874,
+        "Pearson": 0.74070573916398,
+        "QWK": 0.5652314560217384,
+        "Gwet AC2": 0.8190800543836744,
+        "proporsi_di_luar_skala": 0.004761904761904762
+      },
+      {
+        "fold": 3,
+        "epoch": 2,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3429096765624784,
+        "Pearson": 0.449053583778438,
+        "QWK": 0.4884488448844884,
+        "Gwet AC2": 0.792902702444766,
+        "proporsi_di_luar_skala": 0.3523809523809524
+      },
+      {
+        "fold": 3,
+        "epoch": 2,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3473559766696034,
+        "Pearson": 0.5287751516359935,
+        "QWK": 0.5023696682464455,
+        "Gwet AC2": 0.7497488977034781,
+        "proporsi_di_luar_skala": 0.2761904761904762
+      },
+      {
+        "fold": 3,
+        "epoch": 2,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3126477056993606,
+        "Pearson": 0.6931389909590463,
+        "QWK": 0.658920539730135,
+        "Gwet AC2": 0.805693950177936,
+        "proporsi_di_luar_skala": 0.3142857142857143
+      },
+      {
+        "fold": 3,
+        "epoch": 3,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.8151151926244292,
+        "Pearson": 0.704765936280996,
+        "QWK": 0.3418270835651497,
+        "Gwet AC2": 0.7797754110465994,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 3,
+        "epoch": 3,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3261321784959646,
+        "Pearson": 0.4822372613688337,
+        "QWK": 0.3526203462176903,
+        "Gwet AC2": 0.8476052249637155,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 3,
+        "epoch": 3,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3505062344976687,
+        "Pearson": 0.4620618611221619,
+        "QWK": 0.3915715539947322,
+        "Gwet AC2": 0.7890699904122723,
+        "proporsi_di_luar_skala": 0.01428571428571429
+      },
+      {
+        "fold": 3,
+        "epoch": 3,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3423721054646839,
+        "Pearson": 0.6398580728930674,
+        "QWK": 0.5844327176781002,
+        "Gwet AC2": 0.7828484764924857,
+        "proporsi_di_luar_skala": 0.01904761904761905
+      },
+      {
+        "fold": 3,
+        "epoch": 4,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.5511549650264934,
+        "Pearson": 0.7584832646611434,
+        "QWK": 0.594066827093771,
+        "Gwet AC2": 0.8698067133681138,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 3,
+        "epoch": 4,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3179237245907875,
+        "Pearson": 0.4887468138718615,
+        "QWK": 0.3944854928816003,
+        "Gwet AC2": 0.7963759772135022,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "fold": 3,
+        "epoch": 4,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3672720249141807,
+        "Pearson": 0.505903287916073,
+        "QWK": 0.5208053691275167,
+        "Gwet AC2": 0.755897435897436,
+        "proporsi_di_luar_skala": 0.08571428571428572
+      },
+      {
+        "fold": 3,
+        "epoch": 4,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.305086826532923,
+        "Pearson": 0.7193419632580976,
+        "QWK": 0.6481320590790617,
+        "Gwet AC2": 0.7974312713241993,
+        "proporsi_di_luar_skala": 0.319047619047619
+      },
+      {
+        "fold": 3,
+        "epoch": 5,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.5241152826309445,
+        "Pearson": 0.7596058694449872,
+        "QWK": 0.7402571069386431,
+        "Gwet AC2": 0.931790469124671,
+        "proporsi_di_luar_skala": 0.3809523809523809
+      },
+      {
+        "fold": 3,
+        "epoch": 5,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3210319694026797,
+        "Pearson": 0.5170673974727207,
+        "QWK": 0.5205479452054795,
+        "Gwet AC2": 0.8416313479434699,
+        "proporsi_di_luar_skala": 0.5428571428571428
+      },
+      {
+        "fold": 3,
+        "epoch": 5,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3937922008130756,
+        "Pearson": 0.4678773068105307,
+        "QWK": 0.4645072363886975,
+        "Gwet AC2": 0.7376285265663779,
+        "proporsi_di_luar_skala": 0.4380952380952381
+      },
+      {
+        "fold": 3,
+        "epoch": 5,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3304194094777754,
+        "Pearson": 0.7128991364583613,
+        "QWK": 0.6653919694072657,
+        "Gwet AC2": 0.8153651374210905,
+        "proporsi_di_luar_skala": 0.5952380952380952
+      },
+      {
+        "fold": 3,
+        "epoch": 6,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.4789838009909055,
+        "Pearson": 0.7628307658877173,
+        "QWK": 0.7324045363802404,
+        "Gwet AC2": 0.9340140246382552,
+        "proporsi_di_luar_skala": 0.09047619047619047
+      },
+      {
+        "fold": 3,
+        "epoch": 6,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3280419428138759,
+        "Pearson": 0.5117156059345299,
+        "QWK": 0.4288775342014175,
+        "Gwet AC2": 0.7833731889154593,
+        "proporsi_di_luar_skala": 0.05714285714285714
+      },
+      {
+        "fold": 3,
+        "epoch": 6,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3961278700119995,
+        "Pearson": 0.4212787062999316,
+        "QWK": 0.3574408901251739,
+        "Gwet AC2": 0.6892864348644832,
+        "proporsi_di_luar_skala": 0.0380952380952381
+      },
+      {
+        "fold": 3,
+        "epoch": 6,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3373067109830594,
+        "Pearson": 0.662472695032944,
+        "QWK": 0.5844327176781002,
+        "Gwet AC2": 0.7828484764924857,
+        "proporsi_di_luar_skala": 0.480952380952381
+      },
+      {
+        "fold": 3,
+        "epoch": 7,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.5083719668646108,
+        "Pearson": 0.7426070329091551,
+        "QWK": 0.7315757938885561,
+        "Gwet AC2": 0.9219685900351261,
+        "proporsi_di_luar_skala": 0.1
+      },
+      {
+        "fold": 3,
+        "epoch": 7,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3324351993611662,
+        "Pearson": 0.5257844810401512,
+        "QWK": 0.4323421847670537,
+        "Gwet AC2": 0.773850247054352,
+        "proporsi_di_luar_skala": 0.2666666666666667
+      },
+      {
+        "fold": 3,
+        "epoch": 7,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.408009332484594,
+        "Pearson": 0.4445365809259445,
+        "QWK": 0.4080536912751678,
+        "Gwet AC2": 0.6984615384615385,
+        "proporsi_di_luar_skala": 0.02857142857142857
+      },
+      {
+        "fold": 3,
+        "epoch": 7,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3263619599694144,
+        "Pearson": 0.6708529861680528,
+        "QWK": 0.6118546845124282,
+        "Gwet AC2": 0.7858235594084652,
+        "proporsi_di_luar_skala": 0.3380952380952381
+      },
+      {
+        "fold": 3,
+        "epoch": 8,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.5144178724297406,
+        "Pearson": 0.7517673576174553,
+        "QWK": 0.7338086749851456,
+        "Gwet AC2": 0.9221937052546268,
+        "proporsi_di_luar_skala": 0.09523809523809523
+      },
+      {
+        "fold": 3,
+        "epoch": 8,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3569264237304964,
+        "Pearson": 0.4872752835931207,
+        "QWK": 0.4073964057626616,
+        "Gwet AC2": 0.7405890384240296,
+        "proporsi_di_luar_skala": 0.09523809523809523
+      },
+      {
+        "fold": 3,
+        "epoch": 8,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3980898181594688,
+        "Pearson": 0.4205606884294852,
+        "QWK": 0.3368421052631579,
+        "Gwet AC2": 0.683549602344077,
+        "proporsi_di_luar_skala": 0.1047619047619048
+      },
+      {
+        "fold": 3,
+        "epoch": 8,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3454336739907486,
+        "Pearson": 0.6662700630350066,
+        "QWK": 0.6364179104477612,
+        "Gwet AC2": 0.7773675263667771,
+        "proporsi_di_luar_skala": 0.1714285714285714
+      },
+      {
+        "fold": 3,
+        "epoch": 9,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.5217094040633959,
+        "Pearson": 0.7381137136101323,
+        "QWK": 0.7074370006146281,
+        "Gwet AC2": 0.9169139465875373,
+        "proporsi_di_luar_skala": 0.07142857142857142
+      },
+      {
+        "fold": 3,
+        "epoch": 9,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.328993471005178,
+        "Pearson": 0.5024356183611052,
+        "QWK": 0.4102159031068984,
+        "Gwet AC2": 0.7945456768986179,
+        "proporsi_di_luar_skala": 0.5380952380952381
+      },
+      {
+        "fold": 3,
+        "epoch": 9,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4396771530765544,
+        "Pearson": 0.4307540816299695,
+        "QWK": 0.4080536912751678,
+        "Gwet AC2": 0.6984615384615385,
+        "proporsi_di_luar_skala": 0.1285714285714286
+      },
+      {
+        "fold": 3,
+        "epoch": 9,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3481640433631041,
+        "Pearson": 0.6651269249130264,
+        "QWK": 0.6364179104477612,
+        "Gwet AC2": 0.7773675263667771,
+        "proporsi_di_luar_skala": 0.2666666666666667
+      },
+      {
+        "fold": 3,
+        "epoch": 10,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6216608827149277,
+        "Pearson": 0.7621788036568029,
+        "QWK": 0.5675881792183032,
+        "Gwet AC2": 0.8534606040765694,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 3,
+        "epoch": 10,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3494860384938823,
+        "Pearson": 0.5177144611527494,
+        "QWK": 0.4780177101134069,
+        "Gwet AC2": 0.7852897948750717,
+        "proporsi_di_luar_skala": 0.3333333333333333
+      },
+      {
+        "fold": 3,
+        "epoch": 10,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4345238710986757,
+        "Pearson": 0.4755419619225119,
+        "QWK": 0.4643557880967953,
+        "Gwet AC2": 0.7165550537299487,
+        "proporsi_di_luar_skala": 0.1523809523809524
+      },
+      {
+        "fold": 3,
+        "epoch": 10,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3405806934629976,
+        "Pearson": 0.6640816014094082,
+        "QWK": 0.6115906288532675,
+        "Gwet AC2": 0.7740477727566171,
+        "proporsi_di_luar_skala": 0.4095238095238095
+      },
+      {
+        "fold": 3,
+        "epoch": 11,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.5235343026834606,
+        "Pearson": 0.7559304836663553,
+        "QWK": 0.6872890441964817,
+        "Gwet AC2": 0.904901066919459,
+        "proporsi_di_luar_skala": 0.03333333333333333
+      },
+      {
+        "fold": 3,
+        "epoch": 11,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3386929614320729,
+        "Pearson": 0.515096658445746,
+        "QWK": 0.4657338209572269,
+        "Gwet AC2": 0.7871531736982136,
+        "proporsi_di_luar_skala": 0.2952380952380952
+      },
+      {
+        "fold": 3,
+        "epoch": 11,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4062104285966473,
+        "Pearson": 0.4543348382479042,
+        "QWK": 0.4080536912751678,
+        "Gwet AC2": 0.6984615384615385,
+        "proporsi_di_luar_skala": 0.09523809523809523
+      },
+      {
+        "fold": 3,
+        "epoch": 11,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3434563795460643,
+        "Pearson": 0.6306294242213675,
+        "QWK": 0.6011648518612307,
+        "Gwet AC2": 0.7775580820563519,
+        "proporsi_di_luar_skala": 0.1904761904761905
+      },
+      {
+        "fold": 4,
+        "epoch": 1,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.7629957677365369,
+        "Pearson": 0.5602487318913141,
+        "QWK": 0.1328047571853321,
+        "Gwet AC2": 0.8376617799140385,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 4,
+        "epoch": 1,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3577473505232388,
+        "Pearson": 0.2366202012867765,
+        "QWK": 0,
+        "Gwet AC2": 0.8352941176470589,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 4,
+        "epoch": 1,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4044559898139321,
+        "Pearson": 0.2992081268164538,
+        "QWK": 0,
+        "Gwet AC2": 0.7060881735479356,
+        "proporsi_di_luar_skala": 0.004761904761904762
+      },
+      {
+        "fold": 4,
+        "epoch": 1,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.4189575506095186,
+        "Pearson": 0.2115794071763413,
+        "QWK": 0,
+        "Gwet AC2": 0.6987087517934002,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "fold": 4,
+        "epoch": 2,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.7263249114532156,
+        "Pearson": 0.6058582341581374,
+        "QWK": 0.4428485936564931,
+        "Gwet AC2": 0.8219866367817803,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 4,
+        "epoch": 2,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3602026838940821,
+        "Pearson": 0.3167693637780932,
+        "QWK": 0.3,
+        "Gwet AC2": 0.7729729729729731,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 4,
+        "epoch": 2,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4025030125471385,
+        "Pearson": 0.3943291190702314,
+        "QWK": 0.2980671414038657,
+        "Gwet AC2": 0.6832786885245902,
+        "proporsi_di_luar_skala": 0.2619047619047619
+      },
+      {
+        "fold": 4,
+        "epoch": 2,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.4300617497076044,
+        "Pearson": 0.3162812414797352,
+        "QWK": 0.2810271041369472,
+        "Gwet AC2": 0.6666887110640831,
+        "proporsi_di_luar_skala": 0.2619047619047619
+      },
+      {
+        "fold": 4,
+        "epoch": 3,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.7714988971406849,
+        "Pearson": 0.6137691140350598,
+        "QWK": 0.5136050449608782,
+        "Gwet AC2": 0.872721006551549,
+        "proporsi_di_luar_skala": 0.5619047619047619
+      },
+      {
+        "fold": 4,
+        "epoch": 3,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.37522412104944,
+        "Pearson": 0.3066466626710682,
+        "QWK": 0.3093333333333333,
+        "Gwet AC2": 0.7635027165228507,
+        "proporsi_di_luar_skala": 0.3571428571428572
+      },
+      {
+        "fold": 4,
+        "epoch": 3,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3893653397537599,
+        "Pearson": 0.4112304227024646,
+        "QWK": 0.3598448108632396,
+        "Gwet AC2": 0.6892864348644832,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 4,
+        "epoch": 3,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.4579155018176956,
+        "Pearson": 0.3145608052477907,
+        "QWK": 0.3144570286475683,
+        "Gwet AC2": 0.646761984861228,
+        "proporsi_di_luar_skala": 0.5
+      },
+      {
+        "fold": 4,
+        "epoch": 4,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6502843602079695,
+        "Pearson": 0.6335788034129484,
+        "QWK": 0.5334474746239453,
+        "Gwet AC2": 0.8799729427865784,
+        "proporsi_di_luar_skala": 0.2571428571428571
+      },
+      {
+        "fold": 4,
+        "epoch": 4,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3621051240889556,
+        "Pearson": 0.3736481452008092,
+        "QWK": 0.3443037974683545,
+        "Gwet AC2": 0.759252660769338,
+        "proporsi_di_luar_skala": 0.2857142857142857
+      },
+      {
+        "fold": 4,
+        "epoch": 4,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3720420886628134,
+        "Pearson": 0.5149143416302169,
+        "QWK": 0.4329432943294329,
+        "Gwet AC2": 0.6910466582597731,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "fold": 4,
+        "epoch": 4,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3972516574176088,
+        "Pearson": 0.4683151024038855,
+        "QWK": 0.423739629865986,
+        "Gwet AC2": 0.6824280363642757,
+        "proporsi_di_luar_skala": 0.3380952380952381
+      },
+      {
+        "fold": 4,
+        "epoch": 5,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6422251752172429,
+        "Pearson": 0.6227225262931394,
+        "QWK": 0.6034772854739203,
+        "Gwet AC2": 0.871381531738219,
+        "proporsi_di_luar_skala": 0.01904761904761905
+      },
+      {
+        "fold": 4,
+        "epoch": 5,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3677772168115989,
+        "Pearson": 0.3649584149613061,
+        "QWK": 0.3604938271604938,
+        "Gwet AC2": 0.7571153936324846,
+        "proporsi_di_luar_skala": 0.1095238095238095
+      },
+      {
+        "fold": 4,
+        "epoch": 5,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4150446954673724,
+        "Pearson": 0.4284593999012191,
+        "QWK": 0.3700787401574803,
+        "Gwet AC2": 0.6412811387900357,
+        "proporsi_di_luar_skala": 0.1047619047619048
+      },
+      {
+        "fold": 4,
+        "epoch": 5,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.4427472988588646,
+        "Pearson": 0.4259519318603235,
+        "QWK": 0.3949579831932772,
+        "Gwet AC2": 0.6328938742807197,
+        "proporsi_di_luar_skala": 0.1095238095238095
+      },
+      {
+        "fold": 4,
+        "epoch": 6,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6402983571528876,
+        "Pearson": 0.639636945306104,
+        "QWK": 0.6194841185248348,
+        "Gwet AC2": 0.8753111884244696,
+        "proporsi_di_luar_skala": 0.08571428571428572
+      },
+      {
+        "fold": 4,
+        "epoch": 6,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3920686714793834,
+        "Pearson": 0.3867573488142592,
+        "QWK": 0.2844444444444445,
+        "Gwet AC2": 0.685976204408036,
+        "proporsi_di_luar_skala": 0.02380952380952381
+      },
+      {
+        "fold": 4,
+        "epoch": 6,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4094036943377913,
+        "Pearson": 0.4689787647327177,
+        "QWK": 0.4135534317984362,
+        "Gwet AC2": 0.6623854522069987,
+        "proporsi_di_luar_skala": 0.1428571428571428
+      },
+      {
+        "fold": 4,
+        "epoch": 6,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.405076813889476,
+        "Pearson": 0.4788244893629126,
+        "QWK": 0.475,
+        "Gwet AC2": 0.701067615658363,
+        "proporsi_di_luar_skala": 0.2285714285714286
+      },
+      {
+        "fold": 4,
+        "epoch": 7,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6238924888136538,
+        "Pearson": 0.6347536811607262,
+        "QWK": 0.6012408347433729,
+        "Gwet AC2": 0.8741980446623631,
+        "proporsi_di_luar_skala": 0.02380952380952381
+      },
+      {
+        "fold": 4,
+        "epoch": 7,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3987971410292985,
+        "Pearson": 0.3789914802918896,
+        "QWK": 0.2837209302325582,
+        "Gwet AC2": 0.7047734679532237,
+        "proporsi_di_luar_skala": 0.0380952380952381
+      },
+      {
+        "fold": 4,
+        "epoch": 7,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3841882356754821,
+        "Pearson": 0.4429432841297918,
+        "QWK": 0.4180407371483996,
+        "Gwet AC2": 0.7175331226040756,
+        "proporsi_di_luar_skala": 0.01428571428571429
+      },
+      {
+        "fold": 4,
+        "epoch": 7,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.4130331325057095,
+        "Pearson": 0.4671312056918932,
+        "QWK": 0.4797583081570997,
+        "Gwet AC2": 0.6876190476190477,
+        "proporsi_di_luar_skala": 0.1714285714285714
+      },
+      {
+        "fold": 4,
+        "epoch": 8,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6771950614808094,
+        "Pearson": 0.6082636158545411,
+        "QWK": 0.5181674565560821,
+        "Gwet AC2": 0.8347238947187341,
+        "proporsi_di_luar_skala": 0.01904761904761905
+      },
+      {
+        "fold": 4,
+        "epoch": 8,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3891267880207523,
+        "Pearson": 0.3619740822626778,
+        "QWK": 0.3,
+        "Gwet AC2": 0.7206385404789054,
+        "proporsi_di_luar_skala": 0.09523809523809523
+      },
+      {
+        "fold": 4,
+        "epoch": 8,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4167849998933728,
+        "Pearson": 0.4297865080008089,
+        "QWK": 0.3880326382592928,
+        "Gwet AC2": 0.6703009158307893,
+        "proporsi_di_luar_skala": 0.07142857142857142
+      },
+      {
+        "fold": 4,
+        "epoch": 8,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.4546489386337805,
+        "Pearson": 0.436966913247922,
+        "QWK": 0.4190700412007062,
+        "Gwet AC2": 0.6364707832268283,
+        "proporsi_di_luar_skala": 0.1
+      },
+      {
+        "fold": 4,
+        "epoch": 9,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6869416789671946,
+        "Pearson": 0.6130773708492208,
+        "QWK": 0.434847915884341,
+        "Gwet AC2": 0.8321252770542296,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 4,
+        "epoch": 9,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3433222061231592,
+        "Pearson": 0.3924616486517158,
+        "QWK": 0.3304347826086956,
+        "Gwet AC2": 0.7946940407945607,
+        "proporsi_di_luar_skala": 0.1380952380952381
+      },
+      {
+        "fold": 4,
+        "epoch": 9,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.4137708808543184,
+        "Pearson": 0.4171484723219772,
+        "QWK": 0.4439295644114921,
+        "Gwet AC2": 0.7104646353233145,
+        "proporsi_di_luar_skala": 0.0761904761904762
+      },
+      {
+        "fold": 4,
+        "epoch": 9,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.4230278274088368,
+        "Pearson": 0.4630045791493206,
+        "QWK": 0.4705882352941176,
+        "Gwet AC2": 0.6787821399956298,
+        "proporsi_di_luar_skala": 0.1095238095238095
+      },
+      {
+        "fold": 5,
+        "epoch": 1,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.7201031724840627,
+        "Pearson": 0.4814396466860171,
+        "QWK": 0.04803362353647556,
+        "Gwet AC2": 0.841640295578147,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 5,
+        "epoch": 1,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3667614894252897,
+        "Pearson": 0.3906841779368987,
+        "QWK": 0,
+        "Gwet AC2": 0.7967086156824783,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 5,
+        "epoch": 1,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3955602644444554,
+        "Pearson": 0.4489609639953911,
+        "QWK": 0,
+        "Gwet AC2": 0.6987087517934002,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 5,
+        "epoch": 1,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3894361034236378,
+        "Pearson": 0.4867137010241287,
+        "QWK": 0.08083441981747075,
+        "Gwet AC2": 0.7128685508152848,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 5,
+        "epoch": 2,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.7267849643806855,
+        "Pearson": 0.567323449978164,
+        "QWK": 0.4299271683954977,
+        "Gwet AC2": 0.8594599300292177,
+        "proporsi_di_luar_skala": 0.3095238095238095
+      },
+      {
+        "fold": 5,
+        "epoch": 2,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3261188123158826,
+        "Pearson": 0.5340554237816477,
+        "QWK": 0.6146788990825689,
+        "Gwet AC2": 0.83756606935671,
+        "proporsi_di_luar_skala": 0.1857142857142857
+      },
+      {
+        "fold": 5,
+        "epoch": 2,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3523362002671104,
+        "Pearson": 0.5629226148883305,
+        "QWK": 0.5555555555555556,
+        "Gwet AC2": 0.7683717082586514,
+        "proporsi_di_luar_skala": 0.1904761904761905
+      },
+      {
+        "fold": 5,
+        "epoch": 2,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3362416846343991,
+        "Pearson": 0.6075311959299579,
+        "QWK": 0.6328195829555756,
+        "Gwet AC2": 0.8021805494984736,
+        "proporsi_di_luar_skala": 0.2476190476190476
+      },
+      {
+        "fold": 5,
+        "epoch": 3,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.7400731608437158,
+        "Pearson": 0.5893953447227147,
+        "QWK": 0.5252611748587086,
+        "Gwet AC2": 0.8161872785505405,
+        "proporsi_di_luar_skala": 0.01904761904761905
+      },
+      {
+        "fold": 5,
+        "epoch": 3,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3354753405474576,
+        "Pearson": 0.5766264935869219,
+        "QWK": 0.5643153526970954,
+        "Gwet AC2": 0.7881498419530566,
+        "proporsi_di_luar_skala": 0.2619047619047619
+      },
+      {
+        "fold": 5,
+        "epoch": 3,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3523677188172112,
+        "Pearson": 0.5732491485035035,
+        "QWK": 0.5786407766990291,
+        "Gwet AC2": 0.7728739642389881,
+        "proporsi_di_luar_skala": 0.2761904761904762
+      },
+      {
+        "fold": 5,
+        "epoch": 3,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3528856577004703,
+        "Pearson": 0.6424022224462009,
+        "QWK": 0.5702005730659025,
+        "Gwet AC2": 0.7863827478638274,
+        "proporsi_di_luar_skala": 0.5333333333333333
+      },
+      {
+        "fold": 5,
+        "epoch": 4,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.652792267823443,
+        "Pearson": 0.5859900556582105,
+        "QWK": 0.5488202570496835,
+        "Gwet AC2": 0.8525817005753827,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "fold": 5,
+        "epoch": 4,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3050416751058004,
+        "Pearson": 0.5955877886503246,
+        "QWK": 0.6101694915254237,
+        "Gwet AC2": 0.8476845209000172,
+        "proporsi_di_luar_skala": 0.3238095238095238
+      },
+      {
+        "fold": 5,
+        "epoch": 4,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3469073717935486,
+        "Pearson": 0.6050090394135642,
+        "QWK": 0.5206847360912981,
+        "Gwet AC2": 0.777792474042722,
+        "proporsi_di_luar_skala": 0.3238095238095238
+      },
+      {
+        "fold": 5,
+        "epoch": 4,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3219942279087789,
+        "Pearson": 0.6552591947317254,
+        "QWK": 0.6663577386468953,
+        "Gwet AC2": 0.8262787811939887,
+        "proporsi_di_luar_skala": 0.3333333333333333
+      },
+      {
+        "fold": 5,
+        "epoch": 5,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6851558961111325,
+        "Pearson": 0.6034941955444202,
+        "QWK": 0.4374613641046775,
+        "Gwet AC2": 0.8291307994341915,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 5,
+        "epoch": 5,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3288816000268286,
+        "Pearson": 0.6334341451543469,
+        "QWK": 0.6146788990825689,
+        "Gwet AC2": 0.83756606935671,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 5,
+        "epoch": 5,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.350927621788675,
+        "Pearson": 0.5792786051095825,
+        "QWK": 0.553191489361702,
+        "Gwet AC2": 0.7801752519880464,
+        "proporsi_di_luar_skala": 0
+      },
+      {
+        "fold": 5,
+        "epoch": 5,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3496625439833905,
+        "Pearson": 0.6359151137755277,
+        "QWK": 0.6600181323662737,
+        "Gwet AC2": 0.8168338421282163,
+        "proporsi_di_luar_skala": 0.05238095238095238
+      },
+      {
+        "fold": 5,
+        "epoch": 6,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6260934013908859,
+        "Pearson": 0.609382794157716,
+        "QWK": 0.5064200217627857,
+        "Gwet AC2": 0.8636497538120554,
+        "proporsi_di_luar_skala": 0.009523809523809525
+      },
+      {
+        "fold": 5,
+        "epoch": 6,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3031514444914259,
+        "Pearson": 0.6291049106830602,
+        "QWK": 0.348941629249519,
+        "Gwet AC2": 0.8260521843446966,
+        "proporsi_di_luar_skala": 0.3380952380952381
+      },
+      {
+        "fold": 5,
+        "epoch": 6,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3497865410015819,
+        "Pearson": 0.5814247487133124,
+        "QWK": 0.5017972681524083,
+        "Gwet AC2": 0.7718180471180915,
+        "proporsi_di_luar_skala": 0.09047619047619047
+      },
+      {
+        "fold": 5,
+        "epoch": 6,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3325773270990344,
+        "Pearson": 0.6278637539760201,
+        "QWK": 0.5344325897187197,
+        "Gwet AC2": 0.7740264980832604,
+        "proporsi_di_luar_skala": 0.07142857142857142
+      },
+      {
+        "fold": 5,
+        "epoch": 7,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6571048619319027,
+        "Pearson": 0.5897954490117715,
+        "QWK": 0.5792922673656619,
+        "Gwet AC2": 0.8577136669600625,
+        "proporsi_di_luar_skala": 0.01904761904761905
+      },
+      {
+        "fold": 5,
+        "epoch": 7,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3241273192996512,
+        "Pearson": 0.5442453049101412,
+        "QWK": 0.5392646391284611,
+        "Gwet AC2": 0.8028775348362978,
+        "proporsi_di_luar_skala": 0.2095238095238095
+      },
+      {
+        "fold": 5,
+        "epoch": 7,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3486417481097956,
+        "Pearson": 0.5777983623233692,
+        "QWK": 0.5345501955671448,
+        "Gwet AC2": 0.7518938077698242,
+        "proporsi_di_luar_skala": 0.02380952380952381
+      },
+      {
+        "fold": 5,
+        "epoch": 7,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3346822892128323,
+        "Pearson": 0.6265084454769592,
+        "QWK": 0.5998160073597056,
+        "Gwet AC2": 0.7892332450812439,
+        "proporsi_di_luar_skala": 0.1142857142857143
+      },
+      {
+        "fold": 5,
+        "epoch": 8,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6394279861403198,
+        "Pearson": 0.6079703965956731,
+        "QWK": 0.529457214603052,
+        "Gwet AC2": 0.8489089939257616,
+        "proporsi_di_luar_skala": 0.02857142857142857
+      },
+      {
+        "fold": 5,
+        "epoch": 8,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3010307644330932,
+        "Pearson": 0.6158654235481027,
+        "QWK": 0.6142284569138277,
+        "Gwet AC2": 0.8562181003361136,
+        "proporsi_di_luar_skala": 0.4285714285714285
+      },
+      {
+        "fold": 5,
+        "epoch": 8,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3467336489033336,
+        "Pearson": 0.5990758056547825,
+        "QWK": 0.5280898876404494,
+        "Gwet AC2": 0.7759103641456584,
+        "proporsi_di_luar_skala": 0.2952380952380952
+      },
+      {
+        "fold": 5,
+        "epoch": 8,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3451898169782232,
+        "Pearson": 0.5983827902836708,
+        "QWK": 0.5161290322580645,
+        "Gwet AC2": 0.7679363750523232,
+        "proporsi_di_luar_skala": 0.2142857142857143
+      },
+      {
+        "fold": 5,
+        "epoch": 9,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6359965362013609,
+        "Pearson": 0.6188676032463564,
+        "QWK": 0.5827001753360608,
+        "Gwet AC2": 0.8738570379763734,
+        "proporsi_di_luar_skala": 0.08571428571428572
+      },
+      {
+        "fold": 5,
+        "epoch": 9,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3073467759926903,
+        "Pearson": 0.5923569654077554,
+        "QWK": 0.6323529411764706,
+        "Gwet AC2": 0.8715910480616361,
+        "proporsi_di_luar_skala": 0.09047619047619047
+      },
+      {
+        "fold": 5,
+        "epoch": 9,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.3560078908995799,
+        "Pearson": 0.5538793247208387,
+        "QWK": 0.4585365853658536,
+        "Gwet AC2": 0.7398074508162411,
+        "proporsi_di_luar_skala": 0.01904761904761905
+      },
+      {
+        "fold": 5,
+        "epoch": 9,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3392167149294942,
+        "Pearson": 0.6166976244911385,
+        "QWK": 0.5524542829643888,
+        "Gwet AC2": 0.7801752519880464,
+        "proporsi_di_luar_skala": 0.1380952380952381
+      },
+      {
+        "fold": 5,
+        "epoch": 10,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6498519605201857,
+        "Pearson": 0.587604327971959,
+        "QWK": 0.5497319833234068,
+        "Gwet AC2": 0.863082613262715,
+        "proporsi_di_luar_skala": 0.08571428571428572
+      },
+      {
+        "fold": 5,
+        "epoch": 10,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3175864446078417,
+        "Pearson": 0.587196965187045,
+        "QWK": 0.367601246105919,
+        "Gwet AC2": 0.8244476153413759,
+        "proporsi_di_luar_skala": 0.4714285714285714
+      },
+      {
+        "fold": 5,
+        "epoch": 10,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.370497999936664,
+        "Pearson": 0.5260096842509169,
+        "QWK": 0.4826086956521739,
+        "Gwet AC2": 0.7659016393442625,
+        "proporsi_di_luar_skala": 0.2666666666666667
+      },
+      {
+        "fold": 5,
+        "epoch": 10,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3659952821967508,
+        "Pearson": 0.5701286769791306,
+        "QWK": 0.5538461538461539,
+        "Gwet AC2": 0.8011785638497577,
+        "proporsi_di_luar_skala": 0.4285714285714285
+      },
+      {
+        "fold": 5,
+        "epoch": 11,
+        "n": 210,
+        "trait": "isi",
+        "RMSE": 0.6727257410494653,
+        "Pearson": 0.5729881040049206,
+        "QWK": 0.5144744511365844,
+        "Gwet AC2": 0.842928646404036,
+        "proporsi_di_luar_skala": 0.01904761904761905
+      },
+      {
+        "fold": 5,
+        "epoch": 11,
+        "n": 210,
+        "trait": "organisasi",
+        "RMSE": 0.3108243969171977,
+        "Pearson": 0.5744848989432426,
+        "QWK": 0.6185781006746238,
+        "Gwet AC2": 0.8645681381957774,
+        "proporsi_di_luar_skala": 0.2476190476190476
+      },
+      {
+        "fold": 5,
+        "epoch": 11,
+        "n": 210,
+        "trait": "kebahasaan",
+        "RMSE": 0.359106053366161,
+        "Pearson": 0.573685747678097,
+        "QWK": 0.4771784232365146,
+        "Gwet AC2": 0.7457798103436681,
+        "proporsi_di_luar_skala": 0.3619047619047619
+      },
+      {
+        "fold": 5,
+        "epoch": 11,
+        "n": 210,
+        "trait": "mekanik",
+        "RMSE": 0.3501664304623784,
+        "Pearson": 0.611644607193525,
+        "QWK": 0.5766698024459078,
+        "Gwet AC2": 0.7846153846153845,
+        "proporsi_di_luar_skala": 0.3809523809523809
+      }
+    ],
+    "Bobot Loss Organisasi": [
+      {
+        "fold": 1,
+        "skor": 1,
+        "n_training": 132,
+        "bobot_loss": 1.163852122318576
+      },
+      {
+        "fold": 1,
+        "skor": 2,
+        "n_training": 718,
+        "bobot_loss": 0.9698767685988133
+      },
+      {
+        "fold": 2,
+        "skor": 1,
+        "n_training": 123,
+        "bobot_loss": 1.166247427395381
+      },
+      {
+        "fold": 2,
+        "skor": 2,
+        "n_training": 727,
+        "bobot_loss": 0.9718728561628173
+      },
+      {
+        "fold": 3,
+        "skor": 1,
+        "n_training": 127,
+        "bobot_loss": 1.165574881409532
+      },
+      {
+        "fold": 3,
+        "skor": 2,
+        "n_training": 733,
+        "bobot_loss": 0.9713124011746104
+      },
+      {
+        "fold": 4,
+        "skor": 1,
+        "n_training": 128,
+        "bobot_loss": 1.165311653116531
+      },
+      {
+        "fold": 4,
+        "skor": 2,
+        "n_training": 732,
+        "bobot_loss": 0.9710930442637759
+      },
+      {
+        "fold": 5,
+        "skor": 1,
+        "n_training": 122,
+        "bobot_loss": 1.166892808683853
+      },
+      {
+        "fold": 5,
+        "skor": 2,
+        "n_training": 738,
+        "bobot_loss": 0.9724106739032112
+      }
+    ],
+    "Bobot Loss Isi": [
+      {
+        "fold": 1,
+        "skor": "1",
+        "n_training": 14,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 1,
+        "skor": "2–4",
+        "n_training": 836,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 2,
+        "skor": "1",
+        "n_training": 12,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 2,
+        "skor": "2–4",
+        "n_training": 838,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 3,
+        "skor": "1",
+        "n_training": 16,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 3,
+        "skor": "2–4",
+        "n_training": 844,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 4,
+        "skor": "1",
+        "n_training": 14,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 4,
+        "skor": "2–4",
+        "n_training": 846,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 5,
+        "skor": "1",
+        "n_training": 12,
+        "bobot_loss": 1
+      },
+      {
+        "fold": 5,
+        "skor": "2–4",
+        "n_training": 848,
+        "bobot_loss": 1
+      }
+    ]
+  }
+}

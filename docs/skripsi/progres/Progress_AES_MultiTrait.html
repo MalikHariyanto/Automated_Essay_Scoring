@@ -88,7 +88,7 @@ td.good{color:var(--mint)} td.bad{color:var(--warm)} .recipe{display:grid;grid-t
 </header>
 <section class="hero">
   <div><div class="eyebrow">Peta eksperimen · 28 November 2026</div><h1>Mencari komposisi terbaik S3</h1><p class="desc">Menelusuri pengaruh arsitektur, hyperparameter, dan aturan checkpoint pada empat trait penilaian.</p></div>
-  <div class="current"><div class="current-tag">Posisi sekarang</div><div class="current-title">E25 · kontrol seed 44</div><p class="desc">Notebook siap · lima fit development</p></div>
+  <div class="current"><div class="current-tag">Posisi sekarang</div><div class="current-title">E25 · kontrol seed 44</div><p class="desc">Selesai · bobot isi 1× dipertahankan</p></div>
 </section>
 
 <main class="grid">
@@ -122,8 +122,8 @@ td.good{color:var(--mint)} td.bad{color:var(--warm)} .recipe{display:grid;grid-t
   </div>
   <div class="fork" aria-hidden="true" style="transform:rotate(180deg)"></div>
   <div class="branch" aria-label="Keputusan setelah konfirmasi">
-    <article><h3>Bobot 2× menambah deteksi dengan trade-off kecil</h3><p>Pertahankan E23 sebagai kandidat isi dan laporkan selisih per trait.</p></article>
-    <article><h3>Bobot 2× tidak unggul pada kontrol sepadan</h3><p>Pertahankan bobot isi 1× sebagai resep utama.</p></article>
+    <article><h3>Bobot 2× memperbaiki isi</h3><p>Simpan E23 sebagai hasil khusus perbaikan isi.</p></article>
+    <article><h3>Bobot 1× lebih seimbang pada empat trait</h3><p>Pertahankan bobot isi 1× sebagai resep utama.</p></article>
   </div>
 </section>
 
@@ -138,7 +138,7 @@ td.good{color:var(--mint)} td.bad{color:var(--warm)} .recipe{display:grid;grid-t
   <section class="section" aria-labelledby="comparison-title">
     <h3 id="comparison-title">Empat metrik per trait</h3>
     <div class="controls" role="group" aria-label="Pilih pembanding metrik">
-      <button class="toggle" type="button" data-table="development" aria-pressed="true">Dev · E21 → E23 seed 44</button>
+      <button class="toggle" type="button" data-table="development" aria-pressed="true">Dev · E25 1× → E23 2×</button>
       <button class="toggle" type="button" data-table="test" aria-pressed="false">Test · E21 A → B</button>
     </div>
     <div class="table-wrap"><table>
@@ -165,13 +165,13 @@ hpo: {label:"E17E → E18B",title:"Trial 60 menekan RMSE",text:"Paket Optuna ter
 control: {label:"E19 → E21",title:"Checkpoint B jadi acuan test",text:"A memilih RMSE validasi terendah. B memilih macro QWK tertinggi dari epoch yang masih dalam margin +0,01 RMSE. E21 menggabungkan lima model per aturan di test.",metrics:[["0,4466","RMSE test B"],["0,4152","macro QWK test B"],["270","jawaban test"]],note:"A mencapai RMSE 0,4442 dan macro QWK 0,4114. Pilih tab Test untuk lihat trade-off per trait."},
 context: {label:"E22",title:"Petunjuk kata belum cukup",text:"Lima indikator sederhana menyuplai bukti untuk soal 10, misalnya petunjuk sekolah, waktu, dan konteks domestik.",metrics:[["0/17","deteksi isi 1"],["3","skor 2–4 salah turun"],["0,4927","macro QWK rata-rata fold"]],note:"Kasus kerja bakti di rumah turun dari prediksi 3,54 ke 3,29 dan masih jauh dari kategori 1."},
 weight: {label:"E23 seed 43",title:"Deteksi isi naik, ada trade-off",text:"Bobot loss isi skor 1 menjadi dua kali bobot kategori 2–4, dengan rata-rata bobot dinormalisasi di training tiap fold.",metrics:[["2/17","deteksi isi 1"],["3","skor 2–4 salah turun"],["0,4319","RMSE rata-rata fold"]],note:"Kedua deteksi muncul di fold 4. QWK isi naik 0,5834 → 0,6001, sementara QWK kebahasaan turun 0,4685 → 0,4222."},
-confirm: {label:"E23 seed 44",title:"Dua kasus yang sama kembali terdeteksi",text:"Deteksi isi skor 1 tetap pada dua jawaban soal 10 di fold 4. QWK isi naik dari 0,5834 pada E21-B ke 0,6220, tetapi QWK kebahasaan dan organisasi turun.",metrics:[["2/17","deteksi isi 1"],["0,4283","RMSE rata-rata fold"],["0,5058","macro QWK rata-rata fold"]],note:"Tiga skor 2–4 keliru turun ke 1. E21-B tetap acuan test S3."},
+confirm: {label:"E23 seed 44",title:"Dua kasus yang sama kembali terdeteksi",text:"Deteksi isi skor 1 tetap pada dua jawaban soal 10 di fold 4. QWK isi naik dari 0,5834 pada E21-B ke 0,6220, tetapi QWK kebahasaan dan organisasi turun.",metrics:[["2/17","deteksi isi 1"],["0,4283","RMSE rata-rata fold"],["0,5058","macro QWK rata-rata fold"]],note:"Dua skor 2–4 keliru turun ke 1. E21-B tetap acuan test S3."},
 pilot: {label:"E24 · pilot selesai",title:"Lokasi saja belum cukup",text:"Model NLI frozen mengenali beberapa kasus di luar konteks. Pada soal 10, dukungan sekolah rendah muncul pada 2 dari 8 skor isi 1 dan 2 dari 98 skor lebih tinggi.",metrics:[["5/5","arah sintetis sesuai"],["106/107","skor jawaban utuh"],["E21-B","acuan test S3"]],note:"Sebelum lima fit, perluas pilot ke lokasi kejadian utama, peristiwa, pelaku, dan waktu. Cek bukti jawaban utuh dan konflik antarkutipan."},
 four: {label:"E24B · pilot empat unsur",title:"Empat unsur menandai hampir semua jawaban",text:"Empat unsur menandai 8/8 jawaban isi 1 dan 97/98 jawaban isi 2–4. Cek lokasi E24 menandai masing-masing dua kasus.",metrics:[["106","jawaban utuh"],["3/5","arah probe sesuai"],["E21-B","acuan test S3"]],note:"Tahan lima fit. Jika eksplorasi diteruskan, audit potongan bukti konkret yang terkait dengan kejadian utama."},
 extract: {label:"E24C · ekstraksi bukti",title:"Probe lokasi utama gagal",text:"QA menjawab enam dari delapan probe, tetapi memilih lokasi pembanding dan melewatkan lokasi utama pada probe kritis.",metrics:[["6/8","probe lolos"],["3/4","probe kritis lolos"],["E21-B","acuan test S3"]],note:"Hentikan jalur ekstraksi. Keluaran kosong: 1/8 isi 1 dan 9/99 isi 2–4. Audit buta dari file masih kosong."},
-now: {label:"E25 · kontrol seed 44",title:"Apakah keuntungan isi berasal dari bobot 2×?",text:"E25 memakai bobot isi 1× dengan kode latihan, data, split, dan pengacakan E23 seed 44. Bandingkan checkpoint B dari kedua resep.",metrics:[["5","fit development"],["45–49","seed per fit"],["1× vs 2×","bobot isi"]],note:"Notebook siap. E23 seed 44 menangkap 2/17; tunggu kontrol E25 untuk melihat selisih yang sepadan."}
+now: {label:"E25 · kontrol seed 44",title:"Bobot 2× membantu isi, 1× lebih seimbang",text:"Pada seed dan split yang sama, bobot 2× menangkap satu tambahan skor isi 1 dan menambah satu salah turun. RMSE gabungan nyaris sama.",metrics:[["1 → 2","isi skor 1 terdeteksi"],["1 → 2","salah turun ke 1"],["0,5117 → 0,5058","macro QWK rata-rata fold"]],note:"Pertahankan 1× untuk sasaran empat trait. E21-B tetap satu-satunya dari pasangan resep ini yang dipakai sebagai acuan test."}
 };
-const tables={"development": [{"trait": "Isi", "left": [0.6106535503486199, 0.6302990246280895, 0.5834304644373294, 0.8764803784828475], "right": [0.6036927758864785, 0.6487757261658006, 0.6219890113697824, 0.8859782280967115]}, {"trait": "Organisasi", "left": [0.3254835273684586, 0.4682349512509877, 0.4582036427539578, 0.8340044487537787], "right": [0.3293656844558424, 0.4777037252453203, 0.4417417544453375, 0.8161277213352687]}, {"trait": "Kebahasaan", "left": [0.3698609641979615, 0.4636548079203568, 0.4684670445051595, 0.7620936566730506], "right": [0.3709024804709048, 0.4706563564059207, 0.4383473025348852, 0.7505552492714814]}, {"trait": "Mekanik", "left": [0.3433743129589874, 0.5861070101411148, 0.5368591911267415, 0.7793734825483394], "right": [0.3542401046526248, 0.5615640069774904, 0.5396596324029952, 0.782847718526663]}], "test": [{"trait": "Isi", "left": [0.662676660630752, 0.449691021945006, 0.412532637075718, 0.8604836803324158], "right": [0.6635267458287767, 0.4539510221342545, 0.4211833584671338, 0.8596514288787054]}, {"trait": "Organisasi", "left": [0.3124135372625135, 0.3956543770320512, 0.3274725274725275, 0.8453191345959427], "right": [0.3167215121532097, 0.3937522182922586, 0.3466192170818505, 0.844200807847663]}, {"trait": "Kebahasaan", "left": [0.3857213069841015, 0.4840550097430594, 0.3793103448275863, 0.6909997547617102], "right": [0.3867025278766675, 0.4749433933756147, 0.357947434292866, 0.6885277420791127]}, {"trait": "Mekanik", "left": [0.3223247722548008, 0.6112107085988246, 0.5263157894736842, 0.7924325602941031], "right": [0.3280915749078391, 0.595568372884082, 0.5351576658209496, 0.7984282907662082]}]};
+const tables={"development": [{"trait": "Isi", "left": [0.6122827180744828, 0.6319319338036563, 0.5900245463204943, 0.8741512499826231], "right": [0.6036927758864785, 0.6487757261658006, 0.6219890113697824, 0.8859782280967115]}, {"trait": "Organisasi", "left": [0.329305108581519, 0.4652458661776662, 0.4364718607067872, 0.8150486565998906], "right": [0.3293656844558424, 0.4777037252453203, 0.4417417544453375, 0.8161277213352687]}, {"trait": "Kebahasaan", "left": [0.3642530181411199, 0.48967923106631, 0.472667535263128, 0.7651904784726409], "right": [0.3709024804709048, 0.4706563564059207, 0.4383473025348852, 0.7505552492714814]}, {"trait": "Mekanik", "left": [0.3463042238132857, 0.5891276612171741, 0.5703713423435245, 0.7857284493223764], "right": [0.3542401046526248, 0.5615640069774904, 0.5396596324029952, 0.782847718526663]}], "test": [{"trait": "Isi", "left": [0.662676660630752, 0.449691021945006, 0.412532637075718, 0.8604836803324158], "right": [0.6635267458287767, 0.4539510221342545, 0.4211833584671338, 0.8596514288787054]}, {"trait": "Organisasi", "left": [0.3124135372625135, 0.3956543770320512, 0.3274725274725275, 0.8453191345959427], "right": [0.3167215121532097, 0.3937522182922586, 0.3466192170818505, 0.844200807847663]}, {"trait": "Kebahasaan", "left": [0.3857213069841015, 0.4840550097430594, 0.3793103448275863, 0.6909997547617102], "right": [0.3867025278766675, 0.4749433933756147, 0.357947434292866, 0.6885277420791127]}, {"trait": "Mekanik", "left": [0.3223247722548008, 0.6112107085988246, 0.5263157894736842, 0.7924325602941031], "right": [0.3280915749078391, 0.595568372884082, 0.5351576658209496, 0.7984282907662082]}]};
 const displayNum=n=>n.toFixed(3).replace(".",",");
 function chooseStage(id){
   const stage=stages[id];
@@ -193,7 +193,7 @@ function chooseTable(id){
   }).join("")+"</tr>").join("");
   document.getElementById("table-note").textContent=id==="test"
     ? "270 jawaban test. A dan B dari lima model per aturan."
-    : "1.070 prediksi validasi gabungan. E21-B → E23-B seed 44.";
+    : "1.070 prediksi validasi gabungan. Checkpoint B, seed 44 pada kedua run.";
 }
 for(const node of document.querySelectorAll("[data-id]")) node.addEventListener("click",()=>{
   chooseStage(node.dataset.id);

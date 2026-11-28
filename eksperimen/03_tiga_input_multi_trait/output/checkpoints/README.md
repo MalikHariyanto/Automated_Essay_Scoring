@@ -8,6 +8,7 @@ Folder ini menyimpan konfigurasi efektif dan bukti agregat yang bisa dipakai kem
 | E24 | [Ringkasan pilot NLI](E24/README.md) dan checksum terpisah dari hasil CV. |
 | E24B | [Ringkasan pilot empat unsur](E24B/README.md), dibandingkan dengan kontrol lokasi E24. |
 | E24C | [Ringkasan pilot ekstraksi bukti](E24C/README.md) dan keputusan akhir jalur pilot. |
+| E25 | [Kontrol bobot isi 1×](E25.json) dengan seed 44 yang sama dengan E23. Bobot 2× memperbaiki isi, dengan kompromi kebahasaan dan mekanik. |
 | E17E | Trial pencarian, lima-fold konfirmasi, cek stabilitas, dan konfigurasi akhir. ID 52 dan 60 adalah kandidat dari tahap berbeda. |
 | E14 / E14-S1S2 | Workbook dari unggahan terpisah, dipadankan dengan checksum pada manifest asli dan dikemas sementara untuk proses ekspor. Kolom skenario pada E14-S1S2 membedakan S1 dan S2. |
 | E5 | Pasangan workbook unggahan dengan metadata dataset, split, kode, dan konfigurasi identik. Checksum dibuat dari pasangan tersebut karena manifest run asli belum tersedia. |
