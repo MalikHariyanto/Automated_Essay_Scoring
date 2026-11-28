@@ -27,7 +27,7 @@ CONFIG_GROUPS = {
     'BGEM3': 'bge bge_batch',
     'FUSION': 's3_fusion fusion_variant',
     'HEAD': 'head_type trait_hidden',
-    'E43PATH': 'scalar_mix_layers scalar_mix_gamma_initial bigru_hidden',
+    'E43PATH': 'scalar_mix_layers scalar_mix_gamma_initial bigru_hidden scalar_mix_per_trait',
     'REL': 'trait_corr_threshold trait_relation_weight',
     'OPTIM': 'weight_decay warmup_ratio gradient_clip',
     'LR': 'encoder_lr s3_encoder_lr projection_lr head_lr s3_mlp_lr s3_layers_lr',
@@ -72,7 +72,9 @@ TABS = {
     'E28 vs E25 per Trait': ['trait', 'metrik', 'E28 ScalarMix (B)', 'E25 kontrol (B)', 'delta E28 minus E25'],
     'E28 vs E25 Ringkasan': ['konfigurasi', 'RMSE rata-rata fold', 'macro QWK rata-rata fold',
                             'label isi 1', 'isi 1 terdeteksi', 'label 2–4 ke 1'],
-    'ScalarMix Checkpoint B': ['fold', 'Indeks Layer RoBERTa', 'Layer ke-', 'Logit', 'Bobot Softmax', 'Bobot Awal', 'Gamma'],
+    'ScalarMix Checkpoint B': ['fold', 'trait', 'Indeks Layer RoBERTa', 'Layer ke-', 'Logit', 'Bobot Softmax', 'Bobot Awal', 'Gamma'],
+    'E29 vs E28 per Trait': ['trait', 'metrik', 'E29 (B)', 'Pembanding (B)', 'delta E29 minus pembanding'],
+    'E29 vs E25 per Trait': ['trait', 'metrik', 'E29 (B)', 'Pembanding (B)', 'delta E29 minus pembanding'],
     'Progres Fold': 'fold RMSE epoch_terpilih epoch_dijalankan menit_training'.split(),
     'Riwayat Training': (
         'fold skenario epoch validation_RMSE train_mse_scaled train_weighted_mse_scaled train_relation_loss '
@@ -99,7 +101,7 @@ TABS.update({f'CM_{split}_{trait}': ['aktual', 'prediksi_1', 'prediksi_2', 'pred
 RUN_FIELDS = (
     'rows connected_groups development_rows test_rows split_sha256 notebook_code_sha256 notebook_code_id '
     'source_sha256 fold_selesai selection_scope cv_is_post_selection test_previously_inspected_in_research '
-    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256 e25_seed44_source_sha256'
+    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256 e25_seed44_source_sha256 e28_source_sha256'
 ).split()
 
 
@@ -295,6 +297,8 @@ def build_workbook():
                 decision = pilot_decision if key == 'pilot_nli' else CONFIG.get(key, 'Lihat kode')
                 if run == 'E28' and key in ('scalar_mix_layers', 'scalar_mix_gamma_initial'):
                     decision = 'SMIX4'
+                if run == 'E29' and key.startswith('scalar_mix'):
+                    decision = 'SMIXTRAIT'
                 if run == 'E25' and key == 'isi_loss_ratio':
                     decision = 'PAIR44'
                 configured.append((run, field, value, decision, role, link))
