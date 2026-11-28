@@ -1,0 +1,122 @@
+{
+  "source_zip": "Hasil_AES_Reset_E24_Pilot_Bukti_Konteks.zip",
+  "source_zip_sha256": "b6ed1ce1a2a72b1d534df2d46d1553a5d9d86bbf3298dc2235c19755f24d7a5c",
+  "manifest": {
+    "stage": "pilot_development",
+    "model": "MoritzLaurer/mDeBERTa-v3-base-mnli-xnli",
+    "model_revision": "8adb042d524ecd5c26d3e3ba0e3fbcf7e2d0864c",
+    "device": "cpu",
+    "torch": "2.14.1+cpu",
+    "transformers": "4.48.3",
+    "scikit_learn": "1.6.1",
+    "batch": 4,
+    "max_tokens": 384,
+    "criteria": {
+      "sekolah": "Kejadian yang diceritakan berlangsung di sekolah.",
+      "rumah": "Kejadian yang diceritakan berlangsung di rumah."
+    },
+    "notebook_code_sha256": "d9dd665f8bdb8e3726d60a9f618be723a45f2a3239c64ac6b5673d4b3dadf260",
+    "split_sha256": "f7fba02006ae61f96fa586fb6b87de678038b38679ac0629af101cb66e69c16c",
+    "source_sha256": "dfbd97128b09a4eb488dd890ccc3efd9b9fe232e74fcc00ee5504a03acc58226",
+    "development_rows": 107,
+    "test_inference": false,
+    "s3_training": false,
+    "workbook_sha256": "bf4ce80976ecb79f118f3b9626642ee3c16ea6e9a217d49d636c2d57ba64b460"
+  },
+  "rows_full_answer": 106,
+  "synthetic": {
+    "correct_direction": 5,
+    "with_expected_direction": 5,
+    "scores": [
+      {
+        "kasus": "Sekolah langsung",
+        "arah_diharapkan": "sekolah",
+        "arah_skor": "sekolah",
+        "arah_sesuai": true,
+        "sekolah_utuh_entailment": 0.9883775115013123,
+        "rumah_utuh_entailment": 0.003259297693148255
+      },
+      {
+        "kasus": "Rumah langsung",
+        "arah_diharapkan": "rumah",
+        "arah_skor": "rumah",
+        "arah_sesuai": true,
+        "sekolah_utuh_entailment": 0.000389576074667275,
+        "rumah_utuh_entailment": 0.9956325888633728
+      },
+      {
+        "kasus": "Sekolah tersirat",
+        "arah_diharapkan": "sekolah",
+        "arah_skor": "sekolah",
+        "arah_sesuai": true,
+        "sekolah_utuh_entailment": 0.9926316738128662,
+        "rumah_utuh_entailment": 0.0006786909652873874
+      },
+      {
+        "kasus": "Rumah tersirat",
+        "arah_diharapkan": "rumah",
+        "arah_skor": "rumah",
+        "arah_sesuai": true,
+        "sekolah_utuh_entailment": 0.001225733896717429,
+        "rumah_utuh_entailment": 0.991359531879425
+      },
+      {
+        "kasus": "Sekolah disebut sebagai pembanding",
+        "arah_diharapkan": "rumah",
+        "arah_skor": "rumah",
+        "arah_sesuai": true,
+        "sekolah_utuh_entailment": 0.7218849658966064,
+        "rumah_utuh_entailment": 0.9954614043235779
+      },
+      {
+        "kasus": "Lokasi tak disebut",
+        "arah_diharapkan": null,
+        "arah_skor": "rumah",
+        "arah_sesuai": null,
+        "sekolah_utuh_entailment": 0.0003684332186821848,
+        "rumah_utuh_entailment": 0.0009210612042807043
+      }
+    ]
+  },
+  "development_summary": [
+    {
+      "label_isi": 1,
+      "n": 8,
+      "median_sekolah_utuh_entailment": 0.9911399781703949,
+      "median_rumah_utuh_entailment": 0.005513946525752544
+    },
+    {
+      "label_isi": 2,
+      "n": 11,
+      "median_sekolah_utuh_entailment": 0.9937314391136169,
+      "median_rumah_utuh_entailment": 0.003438915591686964
+    },
+    {
+      "label_isi": 3,
+      "n": 50,
+      "median_sekolah_utuh_entailment": 0.9976000785827637,
+      "median_rumah_utuh_entailment": 0.04749408736824989
+    },
+    {
+      "label_isi": 4,
+      "n": 38,
+      "median_sekolah_utuh_entailment": 0.9978291392326355,
+      "median_rumah_utuh_entailment": 0.01937266066670418
+    }
+  ],
+  "descriptive_counts": {
+    "school_score_below_0_50": {
+      "label_isi_1": 2,
+      "label_isi_2_sampai_4": 2
+    },
+    "both_location_scores_at_least_0_90": {
+      "label_isi_1": 0,
+      "label_isi_2_sampai_4": 8
+    },
+    "home_snippet_at_least_0_90_while_full_home_below_0_50": {
+      "label_isi_1": 1,
+      "label_isi_2_sampai_4": 6
+    }
+  },
+  "decision": "Hold full S3 training for the location-only feature. Extend the question requirements in a separate development pilot."
+}

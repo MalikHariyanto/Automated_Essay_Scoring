@@ -88,7 +88,7 @@ td.good{color:var(--mint)} td.bad{color:var(--warm)} .recipe{display:grid;grid-t
 </header>
 <section class="hero">
   <div><div class="eyebrow">Peta eksperimen · 28 November 2026</div><h1>Mencari komposisi terbaik S3</h1><p class="desc">Menelusuri pengaruh arsitektur, hyperparameter, dan aturan checkpoint pada empat trait penilaian.</p></div>
-  <div class="current"><div class="current-tag">Posisi sekarang</div><div class="current-title">E24 · pilot relevansi isi</div><p class="desc">Notebook pilot siap · menunggu hasil</p></div>
+  <div class="current"><div class="current-tag">Posisi sekarang</div><div class="current-title">E24 · pilot relevansi isi</div><p class="desc">Pilot selesai · lima fit ditahan</p></div>
 </section>
 
 <main class="grid">
@@ -112,11 +112,11 @@ td.good{color:var(--mint)} td.bad{color:var(--warm)} .recipe{display:grid;grid-t
     <div class="connector" aria-hidden="true"></div>
     <button class="node" type="button" data-id="confirm" aria-pressed="false"><span class="code">E23 · 44</span><span><span class="title">Konfirmasi dengan seed berbeda</span><br><span class="subtitle">Deteksi 2/17 terulang pada dua jawaban yang sama</span></span><span class="badge">Selesai</span></button>
     <div class="connector" aria-hidden="true"></div>
-    <button class="node" type="button" data-id="now" aria-pressed="true"><span class="code">E24</span><span><span class="title">Uji relevansi per tuntutan soal</span><br><span class="subtitle">Pilot fitur bukti konteks dari model lokal frozen</span></span><span class="badge">Pilot</span></button>
+    <button class="node" type="button" data-id="now" aria-pressed="true"><span class="code">E24</span><span><span class="title">Uji relevansi per tuntutan soal</span><br><span class="subtitle">Lokasi berguna pada beberapa kasus · cakupan sempit</span></span><span class="badge">Pilot</span></button>
   </div>
   <div class="fork" aria-hidden="true" style="transform:rotate(180deg)"></div>
   <div class="branch" aria-label="Keputusan setelah konfirmasi">
-    <article><h3>Deteksi meluas, trade-off terkendali</h3><p>Konfirmasi E24 pada seed tambahan di development.</p></article>
+    <article><h3>Deteksi meluas, trade-off terkendali</h3><p>Lanjut ke lima fold dengan resep E21-B jika fitur pilot lolos audit.</p></article>
     <article><h3>Deteksi tetap sempit atau trait lain turun</h3><p>Pertahankan E21-B. Periksa indikator dan kasus yang meleset.</p></article>
   </div>
 </section>
@@ -124,7 +124,7 @@ td.good{color:var(--mint)} td.bad{color:var(--warm)} .recipe{display:grid;grid-t
 <aside class="panel detail" aria-label="Detail dan metrik eksperimen">
   <section aria-live="polite">
     <div id="detail-label" class="eyebrow">Tahap terpilih · E24</div>
-    <h2 id="detail-title">Apakah model memahami konteks tugas?</h2>
+    <h2 id="detail-title">Lokasi saja belum cukup</h2>
     <p id="detail-text">Pilot menilai apakah jawaban memenuhi tuntutan soal, misalnya lokasi kejadian. Fitur ini hanya masuk ke head isi.</p>
     <div class="metrics" id="stage-metrics"></div>
     <p id="detail-note"></p>
@@ -160,7 +160,7 @@ control: {label:"E19 → E21",title:"Checkpoint B jadi acuan test",text:"A memil
 context: {label:"E22",title:"Petunjuk kata belum cukup",text:"Lima indikator sederhana menyuplai bukti untuk soal 10, misalnya petunjuk sekolah, waktu, dan konteks domestik.",metrics:[["0/17","deteksi isi 1"],["3","skor 2–4 salah turun"],["0,4927","macro QWK rata-rata fold"]],note:"Kasus kerja bakti di rumah turun dari prediksi 3,54 ke 3,29 dan masih jauh dari kategori 1."},
 weight: {label:"E23 seed 43",title:"Deteksi isi naik, ada trade-off",text:"Bobot loss isi skor 1 menjadi dua kali bobot kategori 2–4, dengan rata-rata bobot dinormalisasi di training tiap fold.",metrics:[["2/17","deteksi isi 1"],["3","skor 2–4 salah turun"],["0,4319","RMSE rata-rata fold"]],note:"Kedua deteksi muncul di fold 4. QWK isi naik 0,5834 → 0,6001, sementara QWK kebahasaan turun 0,4685 → 0,4222."},
 confirm: {label:"E23 seed 44",title:"Dua kasus yang sama kembali terdeteksi",text:"Deteksi isi skor 1 tetap pada dua jawaban soal 10 di fold 4. QWK isi naik dari 0,5834 pada E21-B ke 0,6220, tetapi QWK kebahasaan dan organisasi turun.",metrics:[["2/17","deteksi isi 1"],["0,4283","RMSE rata-rata fold"],["0,5058","macro QWK rata-rata fold"]],note:"Tiga skor 2–4 keliru turun ke 1. E21-B tetap acuan test S3."},
-now: {label:"E24 · siap dijalankan",title:"Apakah model memahami konteks tugas?",text:"Coba model lokal frozen yang membaca tuntutan soal dan teks jawaban, lalu memberi fitur bukti per kriteria ke head isi. Mulai dari konteks kejadian di soal 10.",metrics:[["2/17","acuan deteksi E23"],["5","fold untuk CV jika pilot lolos"],["E21-B","kontrol S3"]],note:"Pilot tanpa training S3 dulu. Kalau fiturnya bisa membedakan konteks sekolah dan rumah pada contoh development, jalankan lima fold dengan resep E21. Bandingkan kasus skor 1 baru, salah turun ke 1, dan empat metrik per trait. Hasil pretrained masih menunggu run Colab."}
+now: {label:"E24 · pilot selesai",title:"Lokasi saja belum cukup",text:"Model NLI frozen mengenali beberapa kasus di luar konteks. Pada soal 10, dukungan sekolah rendah muncul pada 2 dari 8 skor isi 1 dan 2 dari 98 skor lebih tinggi.",metrics:[["5/5","arah sintetis sesuai"],["106/107","skor jawaban utuh"],["E21-B","acuan test S3"]],note:"Sebelum lima fit, perluas pilot ke lokasi kejadian utama, peristiwa, pelaku, dan waktu. Cek bukti jawaban utuh dan konflik antarkutipan."}
 };
 const tables={"development": [{"trait": "Isi", "left": [0.6106535503486199, 0.6302990246280895, 0.5834304644373294, 0.8764803784828475], "right": [0.6036927758864785, 0.6487757261658006, 0.6219890113697824, 0.8859782280967115]}, {"trait": "Organisasi", "left": [0.3254835273684586, 0.4682349512509877, 0.4582036427539578, 0.8340044487537787], "right": [0.3293656844558424, 0.4777037252453203, 0.4417417544453375, 0.8161277213352687]}, {"trait": "Kebahasaan", "left": [0.3698609641979615, 0.4636548079203568, 0.4684670445051595, 0.7620936566730506], "right": [0.3709024804709048, 0.4706563564059207, 0.4383473025348852, 0.7505552492714814]}, {"trait": "Mekanik", "left": [0.3433743129589874, 0.5861070101411148, 0.5368591911267415, 0.7793734825483394], "right": [0.3542401046526248, 0.5615640069774904, 0.5396596324029952, 0.782847718526663]}], "test": [{"trait": "Isi", "left": [0.662676660630752, 0.449691021945006, 0.412532637075718, 0.8604836803324158], "right": [0.6635267458287767, 0.4539510221342545, 0.4211833584671338, 0.8596514288787054]}, {"trait": "Organisasi", "left": [0.3124135372625135, 0.3956543770320512, 0.3274725274725275, 0.8453191345959427], "right": [0.3167215121532097, 0.3937522182922586, 0.3466192170818505, 0.844200807847663]}, {"trait": "Kebahasaan", "left": [0.3857213069841015, 0.4840550097430594, 0.3793103448275863, 0.6909997547617102], "right": [0.3867025278766675, 0.4749433933756147, 0.357947434292866, 0.6885277420791127]}, {"trait": "Mekanik", "left": [0.3223247722548008, 0.6112107085988246, 0.5263157894736842, 0.7924325602941031], "right": [0.3280915749078391, 0.595568372884082, 0.5351576658209496, 0.7984282907662082]}]};
 const displayNum=n=>n.toFixed(3).replace(".",",");
