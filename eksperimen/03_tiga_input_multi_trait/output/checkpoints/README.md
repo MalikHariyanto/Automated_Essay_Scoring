@@ -1,6 +1,6 @@
 # Checkpoint eksperimen AES multi-trait
 
-Folder ini menyimpan konfigurasi efektif dan bukti agregat yang bisa dipakai kembali saat merancang eksperimen atau menulis skripsi. **E21-B** adalah acuan test S3. **E23 seed 43** adalah kandidat pembobotan isi di development. Status run selanjutnya tercatat di [register bukti](../../../../docs/skripsi/Register_Bukti_AES_MultiTrait.xlsx).
+Folder ini menyimpan konfigurasi efektif dan bukti agregat yang bisa dipakai kembali saat merancang eksperimen atau menulis skripsi. **E21-B** adalah acuan test S3. **E23 seed 43** adalah kandidat pembobotan isi di development. Seed 44 mengulang deteksi 2/17 pada dua jawaban yang sama. Status run selanjutnya tercatat di [register bukti](../../../../docs/skripsi/Register_Bukti_AES_MultiTrait.xlsx).
 
 | Artefak | Yang dicatat |
 |---|---|
