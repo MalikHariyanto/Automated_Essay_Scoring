@@ -69,6 +69,10 @@ TABS = {
     'E27 vs E25 per Trait': ['trait', 'metrik', 'E27 E43 (B)', 'E25 kontrol (B)', 'delta E27 minus E25'],
     'E27 vs E25 Ringkasan': ['konfigurasi', 'RMSE rata-rata fold', 'macro QWK rata-rata fold',
                             'label isi 1', 'isi 1 terdeteksi', 'label 2–4 ke 1'],
+    'E28 vs E25 per Trait': ['trait', 'metrik', 'E28 ScalarMix (B)', 'E25 kontrol (B)', 'delta E28 minus E25'],
+    'E28 vs E25 Ringkasan': ['konfigurasi', 'RMSE rata-rata fold', 'macro QWK rata-rata fold',
+                            'label isi 1', 'isi 1 terdeteksi', 'label 2–4 ke 1'],
+    'ScalarMix Checkpoint B': ['fold', 'Indeks Layer RoBERTa', 'Layer ke-', 'Logit', 'Bobot Softmax', 'Bobot Awal', 'Gamma'],
     'Progres Fold': 'fold RMSE epoch_terpilih epoch_dijalankan menit_training'.split(),
     'Riwayat Training': (
         'fold skenario epoch validation_RMSE train_mse_scaled train_weighted_mse_scaled train_relation_loss '
@@ -289,6 +293,8 @@ def build_workbook():
             for field, (value, key, role) in inventory(notebook).items():
                 pilot_decision = {'E24B': 'NLI4', 'E24C': 'SPANQA'}.get(run, 'NLI')
                 decision = pilot_decision if key == 'pilot_nli' else CONFIG.get(key, 'Lihat kode')
+                if run == 'E28' and key in ('scalar_mix_layers', 'scalar_mix_gamma_initial'):
+                    decision = 'SMIX4'
                 if run == 'E25' and key == 'isi_loss_ratio':
                     decision = 'PAIR44'
                 configured.append((run, field, value, decision, role, link))
