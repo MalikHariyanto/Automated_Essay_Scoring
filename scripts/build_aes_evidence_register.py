@@ -29,6 +29,7 @@ CONFIG_GROUPS = {
     'HEAD': 'head_type trait_hidden',
     'ORD32': 'ordinal_loss_weight ordinal_temperature',
     'EMA31': 'ema_maximum_decay ema_offset inference_weights',
+    'TG33': 'trait_gate',
     'TPE': 'hpo_recipe_trial hpo_recipe_archive_sha256',
     'E43PATH': 'scalar_mix_layers scalar_mix_gamma_initial bigru_hidden scalar_mix_per_trait',
     'REL': 'trait_corr_threshold trait_relation_weight',
@@ -93,6 +94,13 @@ TABS = {
     'E32 vs E31 per Fold': ['fold', 'E32 epoch', 'E31 epoch', 'E32 RMSE', 'E31 RMSE',
                             'E32 macro QWK', 'E31 macro QWK', 'delta RMSE', 'delta macro QWK'],
     'Loss Ordinal': ['fold', 'epoch', 'MSE weighted', 'ordinal BCE', 'ordinal contribution', 'total loss'],
+    'E33 vs E31 per Trait': ['trait', 'metrik', 'E33 (B)', 'Pembanding (B)', 'delta E33 minus pembanding'],
+    'E33 vs E28 per Trait': ['trait', 'metrik', 'E33 (B)', 'Pembanding (B)', 'delta E33 minus pembanding'],
+    'E33 vs E25 per Trait': ['trait', 'metrik', 'E33 (B)', 'Pembanding (B)', 'delta E33 minus pembanding'],
+    'E33 vs E31 per Fold': ['fold', 'E33 epoch', 'E31 epoch', 'E33 RMSE', 'E31 RMSE',
+                            'E33 macro QWK', 'E31 macro QWK', 'delta RMSE', 'delta macro QWK'],
+    'Gate Validasi B': ['fold', 'checkpoint', 'trait', 'n', 'gate mean', 'gate std',
+                       'gate min', 'gate max', 'weight norm', 'bias'],
     'Progres Fold': 'fold RMSE epoch_terpilih epoch_dijalankan menit_training'.split(),
     'Riwayat Training': (
         'fold skenario epoch validation_RMSE train_mse_scaled train_weighted_mse_scaled train_relation_loss '

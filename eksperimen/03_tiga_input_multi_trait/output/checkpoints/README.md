@@ -17,6 +17,7 @@ Folder ini menyimpan konfigurasi efektif dan bukti agregat yang bisa dipakai kem
 | E30 | [Transfer Trial 60 ke E29](E30.json). RMSE Isi turun, tetapi QWK empat trait turun. E29 tetap kandidat development yang diprioritaskan. |
 | E31 | [Hasil EMA pada E29](E31.json), perbaikan RMSE semua trait OOF dan fold 4, dengan trade-off QWK Organisasi/Mekanik. |
 | E32 | [EMA + auxiliary ordinal BCE](E32.json). QWK Isi/Organisasi naik sedikit, RMSE keduanya dan Pearson semua trait memburuk. Fold 4 memburuk pada RMSE/QWK; kontrol E31 dipertahankan. |
+| E33 | [Notebook gerbang antartrait](../../notebooks/AES_Reset_E33_S3_PerTrait_EMA_TraitGate.ipynb) memakai kontrol E31. Rancangan dan uji teknis, belum ada hasil pretrained atau JSON hasil penelitian. |
 | E17E | Trial pencarian, lima-fold konfirmasi, cek stabilitas, dan konfigurasi akhir. ID 52 dan 60 adalah kandidat dari tahap berbeda. |
 | E14 / E14-S1S2 | Workbook dari unggahan terpisah, dipadankan dengan checksum pada manifest asli dan dikemas sementara untuk proses ekspor. Kolom skenario pada E14-S1S2 membedakan S1 dan S2. |
 | E5 | Pasangan workbook unggahan dengan metadata dataset, split, kode, dan konfigurasi identik. Checksum dibuat dari pasangan tersebut karena manifest run asli belum tersedia. |
