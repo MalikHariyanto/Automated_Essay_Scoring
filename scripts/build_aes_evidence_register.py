@@ -62,6 +62,9 @@ HPO_COLUMNS = ('trial status RMSE encoder_lr aux_lr mlp_dropout weight_decay war
                'elapsed_seconds anchor retry_of seed mean_cv_RMSE epoch_refit pooled_OOF_RMSE macro_QWK').split()
 TABS = {
     'Ringkasan CV': 'skenario fold_selesai jumlah_fold jawaban_OOF mean_cv_RMSE epoch_refit'.split(),
+    'E25 vs E23 per Trait': ['trait', 'metrik', 'E25 1x (B)', 'E23 2x (B)', 'delta E23 minus E25'],
+    'E25 vs E23 Ringkasan': ['konfigurasi', 'RMSE rata-rata fold', 'macro QWK rata-rata fold',
+                            'label isi 1', 'isi 1 terdeteksi', 'label 2–4 ke 1'],
     'Progres Fold': 'fold RMSE epoch_terpilih epoch_dijalankan menit_training'.split(),
     'Riwayat Training': (
         'fold skenario epoch validation_RMSE train_mse_scaled train_weighted_mse_scaled train_relation_loss '
@@ -88,7 +91,7 @@ TABS.update({f'CM_{split}_{trait}': ['aktual', 'prediksi_1', 'prediksi_2', 'pred
 RUN_FIELDS = (
     'rows connected_groups development_rows test_rows split_sha256 notebook_code_sha256 notebook_code_id '
     'source_sha256 fold_selesai selection_scope cv_is_post_selection test_previously_inspected_in_research '
-    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping'
+    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256'
 ).split()
 
 
@@ -282,6 +285,8 @@ def build_workbook():
             for field, (value, key, role) in inventory(notebook).items():
                 pilot_decision = {'E24B': 'NLI4', 'E24C': 'SPANQA'}.get(run, 'NLI')
                 decision = pilot_decision if key == 'pilot_nli' else CONFIG.get(key, 'Lihat kode')
+                if run == 'E25' and key == 'isi_loss_ratio':
+                    decision = 'PAIR44'
                 configured.append((run, field, value, decision, role, link))
         else:
             default = (None, None)
