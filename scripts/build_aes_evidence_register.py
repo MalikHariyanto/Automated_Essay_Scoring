@@ -27,6 +27,7 @@ CONFIG_GROUPS = {
     'BGEM3': 'bge bge_batch',
     'FUSION': 's3_fusion fusion_variant',
     'HEAD': 'head_type trait_hidden',
+    'E43PATH': 'scalar_mix_layers scalar_mix_gamma_initial bigru_hidden',
     'REL': 'trait_corr_threshold trait_relation_weight',
     'OPTIM': 'weight_decay warmup_ratio gradient_clip',
     'LR': 'encoder_lr s3_encoder_lr projection_lr head_lr s3_mlp_lr s3_layers_lr',
@@ -65,6 +66,9 @@ TABS = {
     'E25 vs E23 per Trait': ['trait', 'metrik', 'E25 1x (B)', 'E23 2x (B)', 'delta E23 minus E25'],
     'E25 vs E23 Ringkasan': ['konfigurasi', 'RMSE rata-rata fold', 'macro QWK rata-rata fold',
                             'label isi 1', 'isi 1 terdeteksi', 'label 2–4 ke 1'],
+    'E27 vs E25 per Trait': ['trait', 'metrik', 'E27 E43 (B)', 'E25 kontrol (B)', 'delta E27 minus E25'],
+    'E27 vs E25 Ringkasan': ['konfigurasi', 'RMSE rata-rata fold', 'macro QWK rata-rata fold',
+                            'label isi 1', 'isi 1 terdeteksi', 'label 2–4 ke 1'],
     'Progres Fold': 'fold RMSE epoch_terpilih epoch_dijalankan menit_training'.split(),
     'Riwayat Training': (
         'fold skenario epoch validation_RMSE train_mse_scaled train_weighted_mse_scaled train_relation_loss '
@@ -91,7 +95,7 @@ TABS.update({f'CM_{split}_{trait}': ['aktual', 'prediksi_1', 'prediksi_2', 'pred
 RUN_FIELDS = (
     'rows connected_groups development_rows test_rows split_sha256 notebook_code_sha256 notebook_code_id '
     'source_sha256 fold_selesai selection_scope cv_is_post_selection test_previously_inspected_in_research '
-    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256'
+    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256 e25_seed44_source_sha256'
 ).split()
 
 

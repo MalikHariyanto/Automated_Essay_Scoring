@@ -35,6 +35,7 @@ E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,0
 | E24B | Pilot NLI frozen untuk empat unsur soal 10, dibandingkan dengan lokasi E24 | Pilot selesai | — | [File](notebooks/AES_Reset_E24B_Pilot_Empat_Unsur_NLI.ipynb) | [Hasil pilot](output/checkpoints/E24B/README.md) |
 | E24C | Pilot QA ekstraktif untuk empat unsur soal 10 dan audit buta | Pilot selesai | — | [File](notebooks/AES_Reset_E24C_Pilot_Ekstraksi_Bukti_QA.ipynb) | [Hasil pilot](output/checkpoints/E24C/README.md) |
 | E25 | Kontrol bobot isi 1× pada seed 44, dipasangkan dengan E23 2× | 0,428445 (B) | — | [File](notebooks/AES_Reset_E25_S3_Kontrol_Isi_1x_Seed44.ipynb) | [Arsip](output/checkpoints/E25.json) |
+| E27 | S3 dengan ScalarMix-4, BiGRU dan co-attention E43, empat head E25 | Siap dijalankan | — | [File](notebooks/AES_Reset_E27_S3_E43_CoAttention_MultiTrait.ipynb) | — |
 | E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
 [Register paper dan konfigurasi](../../docs/skripsi/Register_Bukti_AES_MultiTrait.xlsx) · [Arsip checkpoint](output/checkpoints/README.md)
