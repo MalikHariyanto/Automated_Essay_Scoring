@@ -24,6 +24,8 @@
 
 ## Acuan eksperimen terbaru
 
+[Dashboard progres](progres/Progress_AES_MultiTrait.html) · [Pratinjau flowchart](progres/Progress_AES_MultiTrait.png)
+
 E21-B menjadi acuan test S3. E23 seed 43 adalah kandidat bobot loss isi 2× yang masih berada di tahap development. Status konfirmasi seed 44 dan konfigurasi efektif ada di [register bukti](Register_Bukti_AES_MultiTrait.xlsx).
 
 ## Implikasi untuk pengembangan S3

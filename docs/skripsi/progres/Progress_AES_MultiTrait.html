@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Progres AES Multi-Trait</title>
+<style>
+:root{--bg:#0b131c;--surface:#101e2b;--card:#142433;--line:#294052;--ink:#f1f6fb;--muted:#a4bacb;--mint:#78ead0;--lime:#d8f687;--warm:#ffd298;--dark:#0b191c}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 73% 0,#173544 0,transparent 45%),var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;line-height:1.47}
+.wrap{max-width:1440px;margin:auto;padding:36px 53px 45px}
+header{display:flex;justify-content:space-between;align-items:center;padding-bottom:23px;border-bottom:1px solid var(--line);gap:16px}
+.identity{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:700;letter-spacing:.04em}
+.mark{display:grid;place-items:center;width:33px;height:33px;border-radius:9px;background:var(--mint);color:#152b2e;font:800 15px system-ui}
+a{color:inherit;text-decoration:none} .links{display:flex;gap:10px;flex-wrap:wrap}
+.link{font-size:13px;font-weight:700;padding:8px 12px;border:1px solid var(--line);border-radius:8px}
+.link:hover,.link:focus-visible{border-color:var(--mint)}
+.hero{display:grid;grid-template-columns:1fr minmax(265px,365px);align-items:end;gap:24px;padding:27px 0}
+h1,h2,h3,p{margin:0}
+h1{font-size:clamp(32px,4vw,57px);line-height:1.04;letter-spacing:-.053em;margin:9px 0 13px}
+.eyebrow{color:var(--mint);font:700 12px ui-monospace,monospace;letter-spacing:.095em;text-transform:uppercase}
+.desc{color:var(--muted);max-width:66ch;font-size:15px}
+.current{background:#1c302a;border:1px solid #4a6147;border-radius:13px;padding:13px 16px}
+.current-tag{color:var(--lime);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.current-title{font-size:18px;font-weight:750;margin:2px 0}
+.current .desc{font-size:12px}
+.grid{display:grid;grid-template-columns:minmax(0,1.54fr) minmax(0,1fr);gap:18px;align-items:start}
+.panel{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.panel-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.panel-top h2{font-size:18px}
+.map{padding:20px}
+.key{color:var(--muted);font-size:12px}
+.sources{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative}
+.source{border:1px solid var(--line);background:#122331;border-radius:10px;padding:10px 12px}
+.source b{font-size:14px}.source p{font-size:11px;color:var(--muted)}
+.fork{height:17px;position:relative}
+.fork:before{content:"";display:block;position:absolute;left:25%;right:25%;top:0;height:8px;border:1px solid #577887;border-top:0;border-radius:0 0 3px 3px}
+.fork:after{content:"";position:absolute;left:50%;top:8px;height:9px;border-left:1px solid #577887}
+.flow{display:grid;justify-items:stretch}
+.connector{height:13px;width:1px;background:#577887;margin:auto;position:relative}
+.connector:after{content:"";position:absolute;bottom:1px;left:-2px;width:4px;height:4px;border-right:1px solid #89aab9;border-bottom:1px solid #89aab9;transform:rotate(45deg)}
+.node{display:grid;grid-template-columns:105px minmax(0,1fr) auto;align-items:center;text-align:left;font:inherit;color:inherit;padding:8px 11px;gap:10px;border:1px solid var(--line);background:var(--card);border-radius:9px;cursor:pointer;min-height:50px;width:100%}
+.node:hover,.node:focus-visible{border-color:var(--mint)}
+.node .code{font:750 11px ui-monospace,monospace;color:var(--mint)}
+.node .title{font-size:14px;font-weight:750}
+.node .subtitle{color:var(--muted);font-size:11px}
+.node .badge{color:var(--muted);font-size:11px;border:1px solid var(--line);border-radius:20px;padding:3px 8px;white-space:nowrap}
+.node[aria-pressed="true"]{border-color:var(--lime);background:#20302c}
+.node[aria-pressed="true"] .badge{background:var(--lime);color:#23311d;border-color:var(--lime);font-weight:800}
+.branch{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.branch article{padding:9px 11px;background:#122331;border:1px solid var(--line);border-radius:9px}
+.branch h3{font-size:12px;color:var(--mint);margin-bottom:3px}
+.branch article+article h3{color:var(--warm)}
+.branch p{font-size:11px;color:var(--muted)}
+.detail{padding:20px}
+.detail h2{font-size:25px;line-height:1.14;letter-spacing:-.035em;margin:7px 0 10px}
+.detail p{color:var(--muted);font-size:13px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0}
+.metric{border:1px solid var(--line);background:#122331;border-radius:9px;padding:9px 8px}
+.metric b{font-size:19px;line-height:1.2;color:var(--mint);font-variant-numeric:tabular-nums}
+.metric span{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.section{border-top:1px solid var(--line);padding:11px 0 0;margin-top:13px}
+.section h3{font-size:13px;margin-bottom:5px}
+.controls{display:flex;gap:8px;margin:8px 0 10px}
+.toggle{font:inherit;font-size:11px;font-weight:750;color:var(--muted);padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:transparent;cursor:pointer}
+.toggle[aria-pressed="true"]{color:var(--ink);background:#234151;border-color:#547987}
+.toggle:focus-visible,.link:focus-visible,.node:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
+th,td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left} th{color:var(--muted)}
+td.good{color:var(--mint)} td.bad{color:var(--warm)} .recipe{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:0}
+.recipe dt{font-size:11px;color:var(--muted)} .recipe dd{margin:0;font-size:12px;font-weight:670}
+.foot{color:var(--muted);font-size:11px;margin-top:14px}
+@media(max-width:1010px){.wrap{padding:25px}.grid{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}.node{grid-template-columns:72px minmax(0,1fr) auto}}
+@media(max-width:740px){.wrap{padding:18px}.hero,.grid{grid-template-columns:1fr}.hero{gap:13px}.detail{grid-row:2}.node{grid-template-columns:64px minmax(0,1fr) auto;gap:7px}.node .badge{font-size:9px;padding:3px 5px}.map,.detail{padding:14px}.links{gap:5px}.link{font-size:10px;padding:6px}.identity{font-size:11px}.mark{width:24px;height:24px}.panel-top .key{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="identity"><span class="mark" aria-hidden="true">A</span> AES MULTI-TRAIT</div>
+  <nav class="links" aria-label="Sumber proyek">
+    <a class="link" href="https://github.com/MalikHariyanto/Automated_Essay_Scoring/blob/codex/aes-referensi-checkpoint/docs/skripsi/Register_Bukti_AES_MultiTrait.xlsx">Register bukti</a>
+    <a class="link" href="https://colab.research.google.com/github/MalikHariyanto/Automated_Essay_Scoring/blob/codex%2Fe23-konfirmasi-seed44/eksperimen/03_tiga_input_multi_trait/notebooks/AES_Reset_E23_Konfirmasi_Seed44.ipynb">Notebook E23</a>
+  </nav>
+</header>
+<section class="hero">
+  <div><div class="eyebrow">Peta eksperimen · 28 November 2026</div><h1>Mencari komposisi terbaik S3</h1><p class="desc">Menelusuri pengaruh arsitektur, hyperparameter, dan aturan checkpoint pada empat trait penilaian.</p></div>
+  <div class="current"><div class="current-tag">Posisi sekarang</div><div class="current-title">Rancangan E24 · cek relevansi isi</div><p class="desc">E23 selesai · E21-B tetap acuan test</p></div>
+</section>
+
+<main class="grid">
+<section class="panel map" aria-labelledby="map-heading">
+  <div class="panel-top"><h2 id="map-heading">Alur eksperimen</h2><span class="key">Klik tahap untuk buka detail</span></div>
+  <div class="sources">
+    <div class="source"><b>S1 · RoBERTa Indonesia</b><p>Encoder kontekstual · fine-tuned</p></div>
+    <div class="source"><b>S2 · BGE-M3</b><p>Encoder semantik · frozen</p></div>
+  </div>
+  <div class="fork" aria-hidden="true"></div>
+  <div class="flow" aria-label="Tahap eksperimen">
+    <button class="node" type="button" data-id="s3" aria-pressed="false"><span class="code">S3 · E13</span><span><span class="title">Gabungkan dua encoder</span><br><span class="subtitle">Concat, head per trait, dan attention</span></span><span class="badge">Fondasi</span></button>
+    <div class="connector" aria-hidden="true"></div>
+    <button class="node" type="button" data-id="hpo" aria-pressed="false"><span class="code">E17E → E18B</span><span><span class="title">Uji paket Optuna Trial 60</span><br><span class="subtitle">RMSE turun, QWK empat trait ikut turun</span></span><span class="badge">Selesai</span></button>
+    <div class="connector" aria-hidden="true"></div>
+    <button class="node" type="button" data-id="control" aria-pressed="false"><span class="code">E19 → E21</span><span><span class="title">Uji bobot organisasi dan checkpoint</span><br><span class="subtitle">E21-B menjadi acuan test S3</span></span><span class="badge">Acuan</span></button>
+    <div class="connector" aria-hidden="true"></div>
+    <button class="node" type="button" data-id="context" aria-pressed="false"><span class="code">E22</span><span><span class="title">Tambahkan petunjuk konteks</span><br><span class="subtitle">Pilot soal 10 · deteksi isi skor 1 tetap 0/17</span></span><span class="badge">Selesai</span></button>
+    <div class="connector" aria-hidden="true"></div>
+    <button class="node" type="button" data-id="weight" aria-pressed="false"><span class="code">E23 · 43</span><span><span class="title">Uji bobot isi skor 1 sebesar 2×</span><br><span class="subtitle">Deteksi 2/17 · kebahasaan menurun</span></span><span class="badge">Kandidat</span></button>
+    <div class="connector" aria-hidden="true"></div>
+    <button class="node" type="button" data-id="confirm" aria-pressed="false"><span class="code">E23 · 44</span><span><span class="title">Konfirmasi dengan seed berbeda</span><br><span class="subtitle">Deteksi 2/17 terulang pada dua jawaban yang sama</span></span><span class="badge">Selesai</span></button>
+    <div class="connector" aria-hidden="true"></div>
+    <button class="node" type="button" data-id="now" aria-pressed="true"><span class="code">E24</span><span><span class="title">Uji relevansi per tuntutan soal</span><br><span class="subtitle">Pilot fitur bukti konteks dari model lokal frozen</span></span><span class="badge">Rencana</span></button>
+  </div>
+  <div class="fork" aria-hidden="true" style="transform:rotate(180deg)"></div>
+  <div class="branch" aria-label="Keputusan setelah konfirmasi">
+    <article><h3>Deteksi meluas, trade-off terkendali</h3><p>Konfirmasi E24 pada seed tambahan di development.</p></article>
+    <article><h3>Deteksi tetap sempit atau trait lain turun</h3><p>Pertahankan E21-B. Periksa indikator dan kasus yang meleset.</p></article>
+  </div>
+</section>
+
+<aside class="panel detail" aria-label="Detail dan metrik eksperimen">
+  <section aria-live="polite">
+    <div id="detail-label" class="eyebrow">Tahap terpilih · E24</div>
+    <h2 id="detail-title">Apakah model memahami konteks tugas?</h2>
+    <p id="detail-text">Pilot menilai apakah jawaban memenuhi tuntutan soal, misalnya lokasi kejadian. Fitur ini hanya masuk ke head isi.</p>
+    <div class="metrics" id="stage-metrics"></div>
+    <p id="detail-note"></p>
+  </section>
+  <section class="section" aria-labelledby="comparison-title">
+    <h3 id="comparison-title">Empat metrik per trait</h3>
+    <div class="controls" role="group" aria-label="Pilih pembanding metrik">
+      <button class="toggle" type="button" data-table="development" aria-pressed="true">Dev · E21 → E23 seed 44</button>
+      <button class="toggle" type="button" data-table="test" aria-pressed="false">Test · E21 A → B</button>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th scope="col">Trait</th><th scope="col">RMSE ↓</th><th scope="col">Pearson ↑</th><th scope="col">QWK ↑</th><th scope="col">AC2 ↑</th></tr></thead>
+      <tbody id="table-values"></tbody>
+    </table></div>
+    <p class="foot" id="table-note"></p>
+  </section>
+  <section class="section"><h3>Kontrol E21-B untuk E24</h3>
+    <dl class="recipe">
+      <div><dt>RoBERTa · full fine-tuning</dt><dd>LR 5e−6</dd></div>
+      <div><dt>Proyeksi dan head</dt><dd>LR 1e−4 · dropout 0,2</dd></div>
+      <div><dt>Bobot organisasi</dt><dd>1,2× untuk skor 1</dd></div>
+      <div><dt>Margin checkpoint B</dt><dd>+0,01 RMSE pada development</dd></div>
+    </dl>
+  </section>
+</aside>
+</main>
+</div>
+<script>
+const stages={
+s3: {label:"S3 · E13",title:"Dua encoder, empat head",text:"RoBERTa 768 dimensi digabung dengan proyeksi BGE-M3 256 dimensi. E13 memakai attention soal–jawaban dan antartrait, dengan cabang prompt organisasi dilepas.",metrics:[["1.024","dimensi concat"],["4","head skor"],["0,4229","RMSE CV E13"]],note:"E13 menjadi kontrol arsitektur untuk uji paket Trial 60."},
+hpo: {label:"E17E → E18B",title:"Trial 60 menekan RMSE",text:"Paket Optuna terpilih dicoba pada arsitektur attention E13. Penurunan RMSE disertai QWK yang turun pada keempat trait.",metrics:[["0,4229","RMSE CV E13"],["0,4193","RMSE CV E18B"],["0/17","deteksi isi 1 E18B"]],note:"Trial 60 dipilih setelah konfirmasi. Setelan E21 kembali mengikuti resep E13."},
+control: {label:"E19 → E21",title:"Checkpoint B jadi acuan test",text:"A memilih RMSE validasi terendah. B memilih macro QWK tertinggi dari epoch yang masih dalam margin +0,01 RMSE. E21 menggabungkan lima model per aturan di test.",metrics:[["0,4466","RMSE test B"],["0,4152","macro QWK test B"],["270","jawaban test"]],note:"A mencapai RMSE 0,4442 dan macro QWK 0,4114. Pilih tab Test untuk lihat trade-off per trait."},
+context: {label:"E22",title:"Petunjuk kata belum cukup",text:"Lima indikator sederhana menyuplai bukti untuk soal 10, misalnya petunjuk sekolah, waktu, dan konteks domestik.",metrics:[["0/17","deteksi isi 1"],["3","skor 2–4 salah turun"],["0,4927","macro QWK rata-rata fold"]],note:"Kasus kerja bakti di rumah turun dari prediksi 3,54 ke 3,29 dan masih jauh dari kategori 1."},
+weight: {label:"E23 seed 43",title:"Deteksi isi naik, ada trade-off",text:"Bobot loss isi skor 1 menjadi dua kali bobot kategori 2–4, dengan rata-rata bobot dinormalisasi di training tiap fold.",metrics:[["2/17","deteksi isi 1"],["3","skor 2–4 salah turun"],["0,4319","RMSE rata-rata fold"]],note:"Kedua deteksi muncul di fold 4. QWK isi naik 0,5834 → 0,6001, sementara QWK kebahasaan turun 0,4685 → 0,4222."},
+confirm: {label:"E23 seed 44",title:"Dua kasus yang sama kembali terdeteksi",text:"Deteksi isi skor 1 tetap pada dua jawaban soal 10 di fold 4. QWK isi naik dari 0,5834 pada E21-B ke 0,6220, tetapi QWK kebahasaan dan organisasi turun.",metrics:[["2/17","deteksi isi 1"],["0,4283","RMSE rata-rata fold"],["0,5058","macro QWK rata-rata fold"]],note:"Tiga skor 2–4 keliru turun ke 1. E21-B tetap acuan test S3."},
+now: {label:"E24 · rancangan",title:"Apakah model memahami konteks tugas?",text:"Coba model lokal frozen yang membaca tuntutan soal dan teks jawaban, lalu memberi fitur bukti per kriteria ke head isi. Mulai dari konteks kejadian di soal 10.",metrics:[["2/17","acuan deteksi E23"],["5","fold untuk CV jika pilot lolos"],["E21-B","kontrol S3"]],note:"Pilot tanpa training S3 dulu. Kalau fiturnya bisa membedakan konteks sekolah dan rumah pada contoh development, jalankan lima fold dengan resep E21. Bandingkan kasus skor 1 baru, salah turun ke 1, dan empat metrik per trait. Rancangan ini belum punya hasil."}
+};
+const tables={"development": [{"trait": "Isi", "left": [0.6106535503486199, 0.6302990246280895, 0.5834304644373294, 0.8764803784828475], "right": [0.6036927758864785, 0.6487757261658006, 0.6219890113697824, 0.8859782280967115]}, {"trait": "Organisasi", "left": [0.3254835273684586, 0.4682349512509877, 0.4582036427539578, 0.8340044487537787], "right": [0.3293656844558424, 0.4777037252453203, 0.4417417544453375, 0.8161277213352687]}, {"trait": "Kebahasaan", "left": [0.3698609641979615, 0.4636548079203568, 0.4684670445051595, 0.7620936566730506], "right": [0.3709024804709048, 0.4706563564059207, 0.4383473025348852, 0.7505552492714814]}, {"trait": "Mekanik", "left": [0.3433743129589874, 0.5861070101411148, 0.5368591911267415, 0.7793734825483394], "right": [0.3542401046526248, 0.5615640069774904, 0.5396596324029952, 0.782847718526663]}], "test": [{"trait": "Isi", "left": [0.662676660630752, 0.449691021945006, 0.412532637075718, 0.8604836803324158], "right": [0.6635267458287767, 0.4539510221342545, 0.4211833584671338, 0.8596514288787054]}, {"trait": "Organisasi", "left": [0.3124135372625135, 0.3956543770320512, 0.3274725274725275, 0.8453191345959427], "right": [0.3167215121532097, 0.3937522182922586, 0.3466192170818505, 0.844200807847663]}, {"trait": "Kebahasaan", "left": [0.3857213069841015, 0.4840550097430594, 0.3793103448275863, 0.6909997547617102], "right": [0.3867025278766675, 0.4749433933756147, 0.357947434292866, 0.6885277420791127]}, {"trait": "Mekanik", "left": [0.3223247722548008, 0.6112107085988246, 0.5263157894736842, 0.7924325602941031], "right": [0.3280915749078391, 0.595568372884082, 0.5351576658209496, 0.7984282907662082]}]};
+const displayNum=n=>n.toFixed(3).replace(".",",");
+function chooseStage(id){
+  const stage=stages[id];
+  for(const button of document.querySelectorAll("[data-id]")) button.setAttribute("aria-pressed",button.dataset.id===id);
+  document.getElementById("detail-label").textContent="Tahap terpilih · "+stage.label;
+  document.getElementById("detail-title").textContent=stage.title;
+  document.getElementById("detail-text").textContent=stage.text;
+  document.getElementById("detail-note").textContent=stage.note;
+  document.getElementById("stage-metrics").innerHTML=stage.metrics.map(([value,label])=>`<div class="metric"><b>${value}</b><span>${label}</span></div>`).join("");
+}
+function chooseTable(id){
+  for(const button of document.querySelectorAll("[data-table]")) button.setAttribute("aria-pressed",button.dataset.table===id);
+  const rows=tables[id];
+  document.getElementById("table-values").innerHTML=rows.map(({trait,left,right})=>`<tr><th scope="row">${trait}</th>`+left.map((value,index)=>{
+    const after=right[index];
+    const score=(after-value)*(index===0?-1:1);
+    const tone=score>0?"good":score<0?"bad":"";
+    return `<td class="${tone}" title="${value.toFixed(5)} → ${after.toFixed(5)}">${displayNum(value)} → ${displayNum(after)}</td>`;
+  }).join("")+"</tr>").join("");
+  document.getElementById("table-note").textContent=id==="test"
+    ? "270 jawaban test. A dan B dari lima model per aturan."
+    : "1.070 prediksi validasi gabungan. E21-B → E23-B seed 44.";
+}
+for(const node of document.querySelectorAll("[data-id]")) node.addEventListener("click",()=>{
+  chooseStage(node.dataset.id);
+  if(matchMedia("(max-width:740px)").matches) document.querySelector(".detail").scrollIntoView({block:"start"});
+});
+for(const tab of document.querySelectorAll("[data-table]")) tab.addEventListener("click",()=>chooseTable(tab.dataset.table));
+chooseStage("now");
+chooseTable("development");
+</script>
+</body>
+</html>
