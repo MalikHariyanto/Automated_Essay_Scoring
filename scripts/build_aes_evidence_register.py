@@ -27,6 +27,7 @@ CONFIG_GROUPS = {
     'BGEM3': 'bge bge_batch',
     'FUSION': 's3_fusion fusion_variant',
     'HEAD': 'head_type trait_hidden',
+    'EMA31': 'ema_maximum_decay ema_offset inference_weights',
     'TPE': 'hpo_recipe_trial hpo_recipe_archive_sha256',
     'E43PATH': 'scalar_mix_layers scalar_mix_gamma_initial bigru_hidden scalar_mix_per_trait',
     'REL': 'trait_corr_threshold trait_relation_weight',
@@ -79,10 +80,16 @@ TABS = {
     'E30 vs E29 per Trait': ['trait', 'metrik', 'E30 (B)', 'Pembanding (B)', 'delta E30 minus pembanding'],
     'E30 vs E28 per Trait': ['trait', 'metrik', 'E30 (B)', 'Pembanding (B)', 'delta E30 minus pembanding'],
     'E30 vs E25 per Trait': ['trait', 'metrik', 'E30 (B)', 'Pembanding (B)', 'delta E30 minus pembanding'],
+    'E31 vs E29 per Trait': ['trait', 'metrik', 'E31 (B)', 'Pembanding (B)', 'delta E31 minus pembanding'],
+    'E31 vs E28 per Trait': ['trait', 'metrik', 'E31 (B)', 'Pembanding (B)', 'delta E31 minus pembanding'],
+    'E31 vs E25 per Trait': ['trait', 'metrik', 'E31 (B)', 'Pembanding (B)', 'delta E31 minus pembanding'],
+    'E31 vs E29 per Fold': ['fold', 'E31 epoch', 'E29 epoch', 'E31 RMSE', 'E29 RMSE',
+                            'E31 macro QWK', 'E29 macro QWK', 'delta RMSE', 'delta macro QWK'],
+    'Diagnostik EMA': ['fold', 'epoch', 'RMSE online', 'RMSE EMA', 'update EMA', 'decay EMA', 'checkpoint A', 'checkpoint B'],
     'Progres Fold': 'fold RMSE epoch_terpilih epoch_dijalankan menit_training'.split(),
     'Riwayat Training': (
         'fold skenario epoch validation_RMSE train_mse_scaled train_weighted_mse_scaled train_relation_loss '
-        'train_total_loss best_epoch_so_far epochs_without_improvement optimizer_steps active_lr_steps amp_skipped_steps'
+        'train_total_loss best_epoch_so_far epochs_without_improvement optimizer_steps active_lr_steps amp_skipped_steps validation_online_RMSE ema_updates ema_decay'
     ).split(),
     'Isi 1 Latih dan Validasi B': ['fold', 'bagian', 'jumlah jawaban', 'label 1',
                                  'label 1 terdeteksi', 'label 2–4 salah jadi 1'],
@@ -105,7 +112,7 @@ TABS.update({f'CM_{split}_{trait}': ['aktual', 'prediksi_1', 'prediksi_2', 'pred
 RUN_FIELDS = (
     'rows connected_groups development_rows test_rows split_sha256 notebook_code_sha256 notebook_code_id '
     'source_sha256 fold_selesai selection_scope cv_is_post_selection test_previously_inspected_in_research '
-    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256 e25_seed44_source_sha256 e28_source_sha256 e29_source_sha256'
+    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256 e25_seed44_source_sha256 e28_source_sha256 e29_source_sha256 inference_weights'
 ).split()
 
 
