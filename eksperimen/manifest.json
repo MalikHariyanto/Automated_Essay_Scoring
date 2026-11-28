@@ -1032,7 +1032,17 @@
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/README.md",
-    "sha256": "944540b5aa1b4e6ec2bb0e079e16fb379acf43b4569dcb8fbe8b080299432439"
+    "sha256": "62401a083f8822ded4e2cb03983864bff4b370c75e7c05beff2c1340683c4323"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/S1S2S3/Audit_Test_Sepadan.json",
+    "sha256": "47e3b79086b4c76d7a5267187a1c36759fcb80cf79aaaa1dee4149b7af88515f"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/S1S2S3/README.md",
+    "sha256": "b2e7890ad1ff7d7625b8fb90c0661c68c3df608bc5629cb2283e6c3ce2af385f"
   },
   {
     "group": "03_tiga_input_multi_trait",
