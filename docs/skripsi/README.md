@@ -14,13 +14,17 @@
 - E13 melaporkan skala isi 1–4 dan skala organisasi, kebahasaan, serta mekanik 1–2. Gunakan rubrik dan metadata eksperimen saat membaca empat metrik. Skor guru menjadi target.
 - Gunakan konfigurasi notebook dan workbook evaluasi untuk mendeskripsikan resep yang benar-benar dijalankan. Misalnya, E13 memakai satu seed pelatihan dan head per trait berukuran 64, sedangkan naskah merancang konfirmasi tiga seed dan MLP 256. [Katalog eksperimen multi-trait](../../eksperimen/03_tiga_input_multi_trait/README.md)
 
-## Status eksperimen per 24 November 2026
+## Resep historis per 24 November 2026
 
-- **E17C adalah jalur aktif repository.** S3 memakai RoBERTa 768 dimensi full fine-tuning dan BGE-M3 1.024 dimensi frozen. Fitur BGE diproyeksikan ke 256 dimensi, lalu di-concat dengan RoBERTa menjadi 1.024 dimensi. Head bersama memakai Linear 256, GELU, dropout 0,1, dan empat output. Kontrol E14 S3 menggunakan dropout 0,2. E17C tidak memakai cosine similarity.
+- **E17C adalah pembanding historis.** S3 memakai RoBERTa 768 dimensi full fine-tuning dan BGE-M3 1.024 dimensi frozen. Fitur BGE diproyeksikan ke 256 dimensi, lalu di-concat dengan RoBERTa menjadi 1.024 dimensi. Head bersama memakai Linear 256, GELU, dropout 0,1, dan empat output. Kontrol E14 S3 menggunakan dropout 0,2. E17C tidak memakai cosine similarity.
 - **E17-A** merupakan eksperimen partial fine-tuning: embedding dan delapan layer bawah RoBERTa frozen, empat layer atas trainable.
 - **E17-B** mempertahankan partial fine-tuning E17-A dan menguji tempered LDS khusus loss Isi. PR #1 masih draft; belum ada klaim full GPU training atau peningkatan akurasi.
 - **E18A** dinonaktifkan. Jalur BGE relevance/cosine tidak digunakan untuk eksperimen aktif.
 - Status notebook/kode tidak sama dengan hasil. Hasil E17C perlu diverifikasi melalui training GPU, CV, refit, test, dan ekspor workbook/ZIP sebelum dilaporkan.
+
+## Acuan eksperimen terbaru
+
+E21-B menjadi acuan test S3. E23 seed 43 adalah kandidat bobot loss isi 2× yang masih berada di tahap development. Status konfirmasi seed 44 dan konfigurasi efektif ada di [register bukti](Register_Bukti_AES_MultiTrait.xlsx).
 
 ## Implikasi untuk pengembangan S3
 
@@ -29,6 +33,8 @@ Konfigurasi Colab seri reset menjadi acuan eksperimen. E14 mengikuti resep E13, 
 Pertahankan S1 dan S2 sebagai pembanding pada split yang sama. Gunakan S3 concat sebagai pembanding untuk perubahan fusion dan hyperparameter. Pilih konfigurasi melalui data development, laporkan empat metrik per trait, dan bedah kesalahan pada skor rendah. Untuk teknologi baru, gunakan rujukan yang langsung membahas AES multi-trait, terbit dalam lima tahun terakhir, dengan status Scopus Q1–Q3 atau SINTA 1–2 yang sudah diverifikasi. Catat setiap perubahan dari rancangan naskah agar hasil bisa ditelusuri ke konfigurasi run.
 
 ## Acuan referensi
+
+- [Register bukti AES multi-trait](Register_Bukti_AES_MultiTrait.xlsx) menghubungkan paper, bukti indeks, angka lokal, versi notebook, dan keluaran terverifikasi. [Arsip checkpoint agregat](../../eksperimen/03_tiga_input_multi_trait/output/checkpoints/README.md)
 
 - [Acuan Referensi Pertama: Brainstorming AES Multi-Trait](Brainstorming_Referensi_AES_MultiTrait.xlsx)
 - [Acuan Referensi Kedua: evaluasi E17-A/E17-B/E17C, status E18A, roadmap, dan daftar pustaka](Acuan_Referensi_2_AES_E17A_E17B_E17C.md)

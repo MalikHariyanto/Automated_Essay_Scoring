@@ -1,3 +1,9 @@
+# Register bukti dan checkpoint AES
+
+Setiap kali pengguna meminta notebook kombinasi multi-trait baru atau hasilnya dijadikan acuan, perbarui `docs/skripsi/bukti/`, bangun ulang `docs/skripsi/Register_Bukti_AES_MultiTrait.xlsx` dengan `python scripts/build_aes_evidence_register.py`, dan commit register bersama perubahan. Sinkronkan acuan dari branch `codex/aes-referensi-checkpoint` bila branch eksperimen belum memuat versi terbaru. Catat provenance per komponen: nilai yang dikutip dari paper, nilai adaptasi atau setelan lokal, versi kode, dan hasil yang benar-benar tersedia. Gunakan rentang lima tahun terakhir serta verifikasi Scopus Q1–Q3/SINTA 1–2 dan relevansi langsung AES multi-trait sebelum menyebut sumber memenuhi syarat. Nilai seed, ambang, dan bobot lokal tidak boleh ditampilkan sebagai rekomendasi angka dari paper.
+
+Untuk hasil yang menjadi checkpoint, gunakan builder tersebut dengan `--archive ID path-zip`, periksa artefak staged, dan publikasikan hanya konfigurasi dan bukti agregat di `eksperimen/03_tiga_input_multi_trait/output/checkpoints/`. ZIP asli, workbook privat, teks atau skor per siswa, dan bobot model tetap di penyimpanan penelitian. Tambahkan status dan keputusan checkpoint di TSV, termasuk jika hasil run belum tersedia. Setelah publikasi, kirim tautan register dan arsip GitHub bersama tautan notebook terkait.
+
 # Naskah skripsi dan konteks penelitian
 
 Saat pengguna meminta kode eksperimen Colab siap dijalankan, publikasikan notebook dan builder yang sudah diperiksa di branch eksperimen khusus, lalu kirim tautan GitHub dan Colab. Simpan data siswa, output notebook dari run penelitian, dan workbook privat di luar publikasi.
