@@ -213,10 +213,14 @@ def inventory(notebook):
     results = {}
     for cell in notebook['cells']:
         role = cell.get('metadata', {}).get('aes_multitrait_role', '')
-        if role not in ('hyperparameters', 'prepare'):
+        if role not in ('hyperparameters', 'prepare', 'pilot_settings'):
             continue
         source = ''.join(cell['source'])
-        if role == 'hyperparameters':
+        if role == 'pilot_settings':
+            for field, value in re.findall(r'^([A-Z][A-Z0-9_]+)\s*=\s*([^#\n]+)', source, re.M):
+                if field in ('MODEL_ID', 'MODEL_REVISION', 'DEVICE', 'BATCH', 'MAX_TOKENS'):
+                    results[field] = (value.strip(), 'pilot_nli', role)
+        elif role == 'hyperparameters':
             for field, value in re.findall(r'^([A-Z][A-Z0-9_]+)\s*=\s*([^#\n]+)', source, re.M):
                 if field in SETTINGS or re.search('LOSS|DROPOUT|GATE|ATTENTION|WARMUP|CLIP|SEED|LR|BATCH|TOKENS', field):
                     results[field] = (value.strip(), SETTINGS.get(field, field.lower()), role)
@@ -275,7 +279,7 @@ def build_workbook():
             link = project_url(path)
             code_hash = notebook.get('metadata', {}).get('aes_standalone', {}).get('code_sha256')
             for field, (value, key, role) in inventory(notebook).items():
-                configured.append((run, field, value, CONFIG.get(key, 'Lihat kode'), role, link))
+                configured.append((run, field, value, ('NLI' if key == 'pilot_nli' else CONFIG.get(key, 'Lihat kode')), role, link))
         else:
             default = (None, None)
             path, branch = extra.get(run, default)
