@@ -38,7 +38,7 @@ E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,0
 | E27 | S3 dengan ScalarMix-4, BiGRU dan co-attention E43, empat head E25 | 0,434829 (B) | — | [File](notebooks/AES_Reset_E27_S3_E43_CoAttention_MultiTrait.ipynb) | [Arsip](output/checkpoints/E27.json) |
 | E28 | ScalarMix-4 + gamma pada fondasi attention E25 | 0,423389 (B) | — | [File](notebooks/AES_Reset_E28_S3_ScalarMix4_MultiTrait.ipynb) | [Arsip](output/checkpoints/E28.json) |
 | E29 | ScalarMix-4 + gamma terpisah per trait pada fondasi E25 | 0,423077 (B) | — | [File](notebooks/AES_Reset_E29_S3_ScalarMix_PerTrait.ipynb) | [Arsip](output/checkpoints/E29.json) |
-| E30 | Arsitektur E29 dengan paket hyperparameter E17E Trial 60 | Siap dijalankan | — | [File](notebooks/AES_Reset_E30_S3_ScalarMix_PerTrait_Trial60.ipynb) | — |
+| E30 | Arsitektur E29 dengan paket hyperparameter E17E Trial 60 | 0,423275 (B) | — | [File](notebooks/AES_Reset_E30_S3_ScalarMix_PerTrait_Trial60.ipynb) | [Arsip](output/checkpoints/E30.json) |
 | E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
 [Register paper dan konfigurasi](../../docs/skripsi/Register_Bukti_AES_MultiTrait.xlsx) · [Arsip checkpoint](output/checkpoints/README.md)

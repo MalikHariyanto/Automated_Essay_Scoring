@@ -717,7 +717,7 @@
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/README.md",
-    "sha256": "57a8a73305c19bc22db9bb9c066bd46f64f081c65901d6d77d5cd9cc68e91a02"
+    "sha256": "82eb7ac3d9d12d954d1d3166d01314d324081457b37d682e5c797e73c8216074"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -1071,13 +1071,18 @@
   },
   {
     "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/E30.json",
+    "sha256": "1fa70446a8abc055185f117ccc89ae5b767d9275aa95633d47973f6caea498c3"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/E5.json",
     "sha256": "cc5a69b5167818844f96e92faf55a03e56eb2b8e2a5133d9950b48b87433fe1a"
   },
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/README.md",
-    "sha256": "633dcb5db33b79a7afbc2ad666877d933961012419ebf794ec62b1ddc3b5b16b"
+    "sha256": "ec72efe59ad2a15b787e765e2ce4121113f0e193eced767738d5a2a6716ef4ec"
   },
   {
     "group": "03_tiga_input_multi_trait",
