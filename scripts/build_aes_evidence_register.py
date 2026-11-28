@@ -27,6 +27,7 @@ CONFIG_GROUPS = {
     'BGEM3': 'bge bge_batch',
     'FUSION': 's3_fusion fusion_variant',
     'HEAD': 'head_type trait_hidden',
+    'TPE': 'hpo_recipe_trial hpo_recipe_archive_sha256',
     'E43PATH': 'scalar_mix_layers scalar_mix_gamma_initial bigru_hidden scalar_mix_per_trait',
     'REL': 'trait_corr_threshold trait_relation_weight',
     'OPTIM': 'weight_decay warmup_ratio gradient_clip',
@@ -75,6 +76,9 @@ TABS = {
     'ScalarMix Checkpoint B': ['fold', 'trait', 'Indeks Layer RoBERTa', 'Layer ke-', 'Logit', 'Bobot Softmax', 'Bobot Awal', 'Gamma'],
     'E29 vs E28 per Trait': ['trait', 'metrik', 'E29 (B)', 'Pembanding (B)', 'delta E29 minus pembanding'],
     'E29 vs E25 per Trait': ['trait', 'metrik', 'E29 (B)', 'Pembanding (B)', 'delta E29 minus pembanding'],
+    'E30 vs E29 per Trait': ['trait', 'metrik', 'E30 (B)', 'Pembanding (B)', 'delta E30 minus pembanding'],
+    'E30 vs E28 per Trait': ['trait', 'metrik', 'E30 (B)', 'Pembanding (B)', 'delta E30 minus pembanding'],
+    'E30 vs E25 per Trait': ['trait', 'metrik', 'E30 (B)', 'Pembanding (B)', 'delta E30 minus pembanding'],
     'Progres Fold': 'fold RMSE epoch_terpilih epoch_dijalankan menit_training'.split(),
     'Riwayat Training': (
         'fold skenario epoch validation_RMSE train_mse_scaled train_weighted_mse_scaled train_relation_loss '
@@ -101,7 +105,7 @@ TABS.update({f'CM_{split}_{trait}': ['aktual', 'prediksi_1', 'prediksi_2', 'pred
 RUN_FIELDS = (
     'rows connected_groups development_rows test_rows split_sha256 notebook_code_sha256 notebook_code_id '
     'source_sha256 fold_selesai selection_scope cv_is_post_selection test_previously_inspected_in_research '
-    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256 e25_seed44_source_sha256 e28_source_sha256'
+    'test_dipakai_untuk_seleksi_epoch test_dievaluasi test_ensemble kriteria_early_stopping e23_seed44_source_sha256 e25_seed44_source_sha256 e28_source_sha256 e29_source_sha256'
 ).split()
 
 
@@ -299,6 +303,10 @@ def build_workbook():
                     decision = 'SMIX4'
                 if run == 'E29' and key.startswith('scalar_mix'):
                     decision = 'SMIXTRAIT'
+                if run == 'E30' and key in ('hpo_recipe_trial', 'hpo_recipe_archive_sha256', 's3_encoder_lr',
+                                           's3_mlp_lr', 's3_layers_lr', 'projection_lr', 'head_lr',
+                                           's3_mlp_dropout', 'weight_decay', 'warmup_ratio'):
+                    decision = 'TRIAL60TRANSFER'
                 if run == 'E25' and key == 'isi_loss_ratio':
                     decision = 'PAIR44'
                 configured.append((run, field, value, decision, role, link))
