@@ -13,6 +13,7 @@ Folder ini menyimpan konfigurasi efektif dan bukti agregat yang bisa dipakai kem
 | E26 | [Ensemble prediksi Isi](E26/README.md) dan perbandingan eksploratif dengan S1 serta E21-B. |
 | E27 | [Paket representasi E43 untuk S3](E27.json). Validasi sepadan dengan E25. RMSE Isi membaik; macro QWK dan tiga trait lain turun. |
 | E28 | [ScalarMix-4 pada E25](E28.json). Isi dan organisasi membaik pada empat metrik OOF; kebahasaan turun tipis dan mekanik beragam. |
+| E29 | [ScalarMix per trait](E29.json), sedikit di atas E28 pada RMSE mean fold dan macro QWK. Selisih kecil dan hasil antartrait beragam. |
 | E17E | Trial pencarian, lima-fold konfirmasi, cek stabilitas, dan konfigurasi akhir. ID 52 dan 60 adalah kandidat dari tahap berbeda. |
 | E14 / E14-S1S2 | Workbook dari unggahan terpisah, dipadankan dengan checksum pada manifest asli dan dikemas sementara untuk proses ekspor. Kolom skenario pada E14-S1S2 membedakan S1 dan S2. |
 | E5 | Pasangan workbook unggahan dengan metadata dataset, split, kode, dan konfigurasi identik. Checksum dibuat dari pasangan tersebut karena manifest run asli belum tersedia. |
