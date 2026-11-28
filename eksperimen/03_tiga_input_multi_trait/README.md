@@ -36,7 +36,7 @@ E4 terbaik nominal, tetapi peningkatan test terhadap E2 hanya 0,000101 poin (0,0
 | E24C | Pilot QA ekstraktif untuk empat unsur soal 10 dan audit buta | Pilot selesai | — | [File](notebooks/AES_Reset_E24C_Pilot_Ekstraksi_Bukti_QA.ipynb) | [Hasil pilot](output/checkpoints/E24C/README.md) |
 | E25 | Kontrol bobot isi 1× pada seed 44, dipasangkan dengan E23 2× | 0,428445 (B) | — | [File](notebooks/AES_Reset_E25_S3_Kontrol_Isi_1x_Seed44.ipynb) | [Arsip](output/checkpoints/E25.json) |
 | E27 | S3 dengan ScalarMix-4, BiGRU dan co-attention E43, empat head E25 | 0,434829 (B) | — | [File](notebooks/AES_Reset_E27_S3_E43_CoAttention_MultiTrait.ipynb) | [Arsip](output/checkpoints/E27.json) |
-| E28 | ScalarMix-4 + gamma pada fondasi attention E25 | Siap dijalankan | — | [File](notebooks/AES_Reset_E28_S3_ScalarMix4_MultiTrait.ipynb) | — |
+| E28 | ScalarMix-4 + gamma pada fondasi attention E25 | 0,423389 (B) | — | [File](notebooks/AES_Reset_E28_S3_ScalarMix4_MultiTrait.ipynb) | [Arsip](output/checkpoints/E28.json) |
 | E18A | BGE relevance/cosine pada trait Isi. | Dinonaktifkan; jangan diperlakukan sebagai jalur aktif. | [Branch E18A](https://github.com/MalikHariyanto/Automated_Essay_Scoring/tree/codex/e18a-isi-bge-relevance) |
 
 [Register paper dan konfigurasi](../../docs/skripsi/Register_Bukti_AES_MultiTrait.xlsx) · [Arsip checkpoint](output/checkpoints/README.md)
