@@ -1,0 +1,158 @@
+{
+  "source_zip": "Hasil_AES_Reset_E24C_Pilot_Ekstraksi_Bukti.zip",
+  "source_zip_sha256": "3f0dc4f81278342061436bd23d4af3a1596ef9721b595328823f9002314a67b6",
+  "manifest": {
+    "stage": "pilot_development",
+    "model": "timpal0l/mdeberta-v3-base-squad2",
+    "model_revision": "08d6e89c7a6557f967db2e1021f7f640483400ed",
+    "device": "cuda",
+    "torch": "2.14.1+cu130",
+    "transformers": "4.48.3",
+    "scikit_learn": "1.6.1",
+    "batch": 8,
+    "max_tokens": 384,
+    "max_answer_tokens": 32,
+    "doc_stride": 128,
+    "questions": {
+      "pelaku": "Siapa yang terlibat dalam kejadian utama?",
+      "peristiwa": "Apa kegiatan atau kejadian utama yang diceritakan?",
+      "waktu": "Kapan kejadian utama berlangsung?",
+      "lokasi": "Di mana kejadian utama berlangsung?"
+    },
+    "review_seed": 2026,
+    "review_rows": 15,
+    "probe_kritis_lolos": false,
+    "notebook_code_sha256": "ee95de85354b7ccdfcdfcc9b8427b3c3a9e44603c005a848b87ca340314b04b9",
+    "split_sha256": "f7fba02006ae61f96fa586fb6b87de678038b38679ac0629af101cb66e69c16c",
+    "source_sha256": "dfbd97128b09a4eb488dd890ccc3efd9b9fe232e74fcc00ee5504a03acc58226",
+    "development_rows": 107,
+    "test_inference": false,
+    "s3_training": false,
+    "workbook_sha256": "908d07de83a6f8372956eb1775a2e9452bab58c82b7c075439841a1a7e52ba4d"
+  },
+  "synthetic": {
+    "passed": 6,
+    "total": 8,
+    "critical_passed": 3,
+    "critical_total": 4,
+    "checks": [
+      {
+        "kasus": "Pelaku jelas",
+        "unsur": "pelaku",
+        "kritis": false,
+        "lolos": true
+      },
+      {
+        "kasus": "Kejadian jelas",
+        "unsur": "peristiwa",
+        "kritis": false,
+        "lolos": true
+      },
+      {
+        "kasus": "Waktu jelas",
+        "unsur": "waktu",
+        "kritis": false,
+        "lolos": true
+      },
+      {
+        "kasus": "Lokasi jelas",
+        "unsur": "lokasi",
+        "kritis": true,
+        "lolos": true
+      },
+      {
+        "kasus": "Lokasi pembanding",
+        "unsur": "lokasi",
+        "kritis": true,
+        "lolos": false
+      },
+      {
+        "kasus": "Lokasi tidak disebut",
+        "unsur": "lokasi",
+        "kritis": true,
+        "lolos": true
+      },
+      {
+        "kasus": "Waktu tidak disebut",
+        "unsur": "waktu",
+        "kritis": true,
+        "lolos": true
+      },
+      {
+        "kasus": "Lokasi jauh di teks panjang",
+        "unsur": "lokasi",
+        "kritis": false,
+        "lolos": false
+      }
+    ]
+  },
+  "rows_with_review_entries": 0,
+  "development_summary": [
+    {
+      "label_isi": 1,
+      "n": 8,
+      "ada_unsur_kosong": 1,
+      "pelaku_kosong": 1,
+      "peristiwa_kosong": 1,
+      "waktu_kosong": 0,
+      "lokasi_kosong": 0
+    },
+    {
+      "label_isi": 2,
+      "n": 11,
+      "ada_unsur_kosong": 2,
+      "pelaku_kosong": 2,
+      "peristiwa_kosong": 2,
+      "waktu_kosong": 1,
+      "lokasi_kosong": 0
+    },
+    {
+      "label_isi": 3,
+      "n": 50,
+      "ada_unsur_kosong": 4,
+      "pelaku_kosong": 0,
+      "peristiwa_kosong": 3,
+      "waktu_kosong": 2,
+      "lokasi_kosong": 0
+    },
+    {
+      "label_isi": 4,
+      "n": 38,
+      "ada_unsur_kosong": 3,
+      "pelaku_kosong": 2,
+      "peristiwa_kosong": 1,
+      "waktu_kosong": 1,
+      "lokasi_kosong": 1
+    }
+  ],
+  "historical_comparison": [
+    {
+      "pilot": "E24 lokasi",
+      "n": 106,
+      "label_isi_1_ditandai": 2,
+      "label_isi_1_total": 8,
+      "label_isi_2_4_ditandai": 2,
+      "label_isi_2_4_total": 98,
+      "aturan": "Skor dukungan lokasi < 0,50"
+    },
+    {
+      "pilot": "E24B empat unsur",
+      "n": 106,
+      "label_isi_1_ditandai": 8,
+      "label_isi_1_total": 8,
+      "label_isi_2_4_ditandai": 97,
+      "label_isi_2_4_total": 98,
+      "aturan": "Ada skor dukungan unsur < 0,50"
+    },
+    {
+      "pilot": "E24C ekstraksi QA",
+      "n": 107,
+      "label_isi_1_ditandai": 1,
+      "label_isi_1_total": 8,
+      "label_isi_2_4_ditandai": 9,
+      "label_isi_2_4_total": 99,
+      "aturan": "Model mengembalikan minimal satu bukti kosong"
+    }
+  ],
+  "decision": "Stop this extraction pilot path at the prespecified critical gate; retain E21-B as S3 test reference."
+}

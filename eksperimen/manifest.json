@@ -717,7 +717,7 @@
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/README.md",
-    "sha256": "b12718a51baa93c99a724bdefbc827299933b286fc1d87175523f2dd1f717604"
+    "sha256": "ecf757ccdf143f22afaded1a43aa87156cbfa098c9ac558bda74fd1be9ae6ff7"
   },
   {
     "group": "03_tiga_input_multi_trait",
@@ -1006,13 +1006,23 @@
   },
   {
     "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/E24C/README.md",
+    "sha256": "a85e2cd80b6de36ca0d9593efae8a2d92beab13f23b30cde85bf458b76f02b1c"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
+    "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/E24C/Ringkasan_Pilot_Ekstraksi_Bukti.json",
+    "sha256": "45a2154265d17dfe528a61f5ea15cdfcf9dfbbb378e65d05d724e9dbb43a09bb"
+  },
+  {
+    "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/E5.json",
     "sha256": "cc5a69b5167818844f96e92faf55a03e56eb2b8e2a5133d9950b48b87433fe1a"
   },
   {
     "group": "03_tiga_input_multi_trait",
     "path": "eksperimen/03_tiga_input_multi_trait/output/checkpoints/README.md",
-    "sha256": "d2ec5e7ebcd1aaa3445cebe8d6ab8b5896fbcf74bc1c5645d67d79e213d133cc"
+    "sha256": "f4e9a5ab7a1314c622388063924b1f1e1f7d237b710c2663ae521ac279425340"
   },
   {
     "group": "03_tiga_input_multi_trait",

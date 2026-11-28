@@ -291,6 +291,7 @@ def build_workbook():
         status = ('Hasil terarsip' if archive else 'Menunggu ZIP seed 44' if run == 'E23-Seed44'
                   else 'Hasil pilot terarsip' if run == 'E24' and (ARCHIVE / 'E24/Ringkasan_Pilot_NLI.json').exists()
                   else 'Hasil pilot terarsip' if run == 'E24B' and (ARCHIVE / 'E24B/Ringkasan_Pilot_Empat_Unsur.json').exists()
+                  else 'Hasil pilot terarsip' if run == 'E24C' and (ARCHIVE / 'E24C/Ringkasan_Pilot_Ekstraksi_Bukti.json').exists()
                   else 'Arsip repo sebelumnya' if run in ('E1','E2','E3','E4','E17D')
                   else 'Dinonaktifkan' if run == 'E18A' else 'Resep tersedia')
         notebooks.append((run, intro, status, link, fingerprint, code_hash))
